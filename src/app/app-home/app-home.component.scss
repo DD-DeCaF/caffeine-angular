@@ -1,0 +1,18 @@
+a {
+  color: white;
+  text-decoration: none;
+
+  &:active,
+  &:hover,
+  &:focus {
+    color: black;
+  }
+}
+
+mat-sidenav {
+  width: 320px;
+}
+
+.content {
+  overflow: auto;
+}

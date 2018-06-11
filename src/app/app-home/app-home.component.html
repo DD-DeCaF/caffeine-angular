@@ -1,0 +1,74 @@
+<mat-sidenav-container fxFlexFill>
+  <mat-sidenav #sidenav
+               class="mat-elevation-z3"
+               mode="side"
+               opened="true">
+
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <h1>
+          <a *ngIf="project" style="white-space: nowrap" routerLink="/app/project/{{ project.id }}">{{ project.name
+            }}</a>
+          <span *ngIf="project === null || project === undefined">iLoop Web Platform</span>
+        </h1>
+
+        <button mat-icon-button [matMenuTriggerFor]="projectsMenu">
+          <mat-icon>arrow_drop_down</mat-icon>
+        </button>
+
+        <!-- There is not option to set width of menu https://github.com/angular/material2/issues/4513 -->
+        <mat-menu #projectsMenu="matMenu" [xPosition]="'before'">
+          <mat-nav-list>
+            <mat-list-item routerLink="/app/home">
+              <p matLine fxFlexFill>Home</p>
+              <mat-icon>home</mat-icon>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item routerLink="/app/project/{{ project.id }}" *ngFor="let project of projects">
+              <p matLine>{{ project.name }}</p>
+              <mat-icon [ngStyle]="{color: project.color}">folder</mat-icon>
+            </mat-list-item>
+          </mat-nav-list>
+        </mat-menu>
+
+        <span fxFlex></span>
+
+        <button type="button" mat-icon-button (click)="sidenav.close()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <section [hidden]="!fetchingData">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </section>
+
+    <div *ngIf="project === null || project === undefined && (projects && projects.length > 0)">
+      <mat-nav-list>
+        <h3 mat-subheader>Projects</h3>
+        <mat-list-item routerLink="/app/project/{{project.id}}" *ngFor="let project of projects">
+          <mat-icon mat-list-icon [ngStyle]="{color: project.color}">folder</mat-icon>
+          <p matLine>{{ project.name }}</p>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-nav-list>
+    </div>
+    <mat-nav-list>
+      <mat-list-item routerLink="/app/home">
+        <mat-icon mat-list-icon>home</mat-icon>
+        <p matLine>Home</p>
+      </mat-list-item>
+    </mat-nav-list>
+
+  </mat-sidenav>
+
+  <div fxFlexFill fxLayout="column">
+    <app-toolbar [sidenav]="sidenav"></app-toolbar>
+
+    <div fxFlex class='content'>
+      <router-outlet>
+      </router-outlet>
+    </div>
+  </div>
+</mat-sidenav-container>
