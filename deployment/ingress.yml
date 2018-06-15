@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: caffeine
+spec:
+  tls:
+  - hosts:
+    - caffeine.dd-decaf.eu
+    secretName: decaf-tls
+  rules:
+  - host: caffeine.dd-decaf.eu
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: caffeine-staging
+          servicePort: 80
