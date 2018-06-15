@@ -10,35 +10,21 @@
     <!-- <app-search fxFlex>
       <h1> {{getTitle()}} </h1>
     </app-search> -->
-
     <button class="topright-menu"
             mat-icon-button
             type="button"
-            [matMenuTriggerFor]="appMenu">
-      <mat-icon>more_vert</mat-icon>
+            routerLink="/login"
+            *ngIf="!(sessionState | async).authenticated">
+      <mat-icon>lock</mat-icon>
+      Log In
     </button>
-    <mat-menu #appMenu="matMenu">
-      <!-- <button mat-menu-item>
-        <mat-icon>account_circle</mat-icon>
-        Account Settings
-      </button>
-      <button mat-menu-item>
-        <mat-icon>book</mat-icon>
-        API Documentation
-      </button> -->
-      <button mat-menu-item
-              routerLink="/logout"
-              *ngIf="(sessionState | async).authenticated">
-        <mat-icon>lock</mat-icon>
-        Log Out
-      </button>
-      <button mat-menu-item
-              routerLink="/logout"
-              *ngIf="!(sessionState | async).authenticated">
-        <mat-icon>lock</mat-icon>
-        Log In
-      </button>
-    </mat-menu>
-
+    <button class="topright-menu"
+            mat-icon-button
+            type="button"
+            routerLink="/logout"
+            *ngIf="(sessionState | async).authenticated">
+      <mat-icon>power_settings_new</mat-icon>
+      Logout
+    </button>
   </mat-toolbar-row>
 </mat-toolbar>
