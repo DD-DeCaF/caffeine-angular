@@ -19,7 +19,7 @@ import {
   MatPaginatorModule,
   MatTooltipModule,
   MatProgressBarModule,
-  MatChipsModule
+  MatChipsModule,
 } from '@angular/material';
 
 

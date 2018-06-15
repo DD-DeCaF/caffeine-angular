@@ -1,0 +1,41 @@
+<div fxLayoutAlign="center center"
+     *ngIf="showSearch">
+  <mat-form-field fxFlex
+                  floatPlaceholder="never">
+    <input matInput
+           fxFlex
+           type="text"
+           [matAutocomplete]="auto"
+           [placeholder]="placeholder"
+           [(ngModel)]="searchText"
+           (ngModelChange)="items = query()">
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let item of items | async"
+                [value]="item"
+                (onSelectionChange)="onItemSelection(item)">
+      {{item.text}}
+    </mat-option>
+  </mat-autocomplete>
+
+  <button mat-icon-button
+          (click)="toggleSearch()">
+    <mat-icon >cancel</mat-icon>
+  </button>
+</div>
+
+<div fxLayoutAlign="center center"
+     *ngIf="!showSearch">
+  <ng-content></ng-content>
+  <span fxFlex></span>
+  <button mat-icon-button
+          (click)="toggleSearch()">
+    <mat-icon>search</mat-icon>
+  </button>
+</div>
+
+
+
+
+
+

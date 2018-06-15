@@ -1,0 +1,99 @@
+<div class="md-hue-2 login-bg"
+     md-colors="{background: 'default-primary-700'}"
+     fxLayout="column"
+     fxLayoutAlign="center center"
+     flex>
+
+  <!-- <form class="login-form" name="loginForm"> -->
+    <mat-card fxLayout="column" style="min-width: 650px" layout-padding>
+      <mat-card-content fxLayout="row" fxLayoutGap="10">
+        <mat-card-content fxLayout="column" fxFlex="50">
+          <p>Log in with your social account</p>
+          <div flex></div>
+          <button (click)="github()" class="mat-raised-button github social-button" layout="row" mat-button>
+            <img src="/assets/images/github.svg" class="social-logo">Github
+          </button>
+          <button  ng-click="ctrl.signInWithSocial(loginForm, 'google')" class="mat-raised-button google social-button" layout="row" mat-button>
+            <img src="/assets/images/google-plus.svg" class="social-logo">Google
+          </button>
+          <button ng-click="ctrl.signInWithSocial(loginForm, 'twitter')" class="mat-raised-button twitter social-button" layout="row" mat-button>
+            <img src="/assets/images/twitter.svg" class="social-logo">Twitter
+          </button>
+          <div flex></div>
+
+        </mat-card-content>
+        <!-- <mat-divider></mat-divider> -->
+        <div class="vertical-divider"></div>
+        <mat-card-content layout="column" fxFlex="50">
+
+          <p>Or you can <a href="mailto:niko@biosustain.dtu.dk">contact us</a> and we provide you with credentials</p>
+
+          <!-- <mat-form-field class="mat-icon-float mat-icon-left"> TODO: mat-icon-left is a temp fix, remove once AM fixes this -->
+            <!-- Use floating label instead of placeholder -->
+            <!-- <label>Username</label>
+            <mat-icon>person</mat-icon>
+            <input ng-disabled="loginForm.$submitted"
+                 ng-model="ctrl.credentials.username"
+                 ng-change="loginForm.password.$setValidity('auth', true)"
+                 id="username"
+                 name="username"
+                 type="text"
+                 required>
+
+            <div ng-messages="loginForm.username.$error" ng-if="loginForm.username.$touched">
+              <div ng-message="required">You <b>must</b> specify a username.</div>
+            </div>
+          </mat-form-field> -->
+          <div fxLayoutAlign="center center">
+            <mat-icon>person</mat-icon>
+            <mat-form-field fxFlex>
+              <!-- <mat-label>Username</mat-label> -->
+              <input placeholder="Username" matInput>
+            </mat-form-field>
+          </div>
+
+          <div fxLayoutAlign="center center">
+            <mat-icon>lock</mat-icon>
+            <mat-form-field fxFlex>
+              <!-- <mat-label>Password</mat-label> -->
+              <input placeholder="Password" matInput>
+            </mat-form-field>
+          </div>
+
+          <!-- <mat-form-field class="mat-icon-float mat-icon-left"> TODO: mat-icon-left is a temp fix, remove once AM fixes this -->
+            <!-- Use floating label instead of placeholder -->
+            <!-- <label>Password</label>
+            <mat-icon>lock</mat-icon>
+            <input ng-disabled="loginForm.$submitted"
+                 ng-model="ctrl.credentials.password"
+                 ng-change="loginForm.password.$setValidity('auth', true)"
+                 id="password"
+                 name="password"
+                 type="password"
+                 required>
+
+            <div ng-messages="loginForm.password.$error" ng-if="loginForm.password.$touched">
+              <div ng-message="required">You <b>must</b> specify a password.</div>
+              <div ng-message="auth">Your username or password are incorrect.</div>
+            </div>
+          </mat-form-field> -->
+
+          <div layout="row" flex>
+            <span fxFlex></span>
+            <button
+              type="submit"
+              ng-disabled="loginForm.$invalid || loginForm.$submitted"
+              ng-click="ctrl.authenticate(loginForm, ctrl.credentials)"
+              class="mat-raised-button"
+              color="primary"
+              mat-button>Login
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card-content>
+      <mat-card-content layout="row">
+        <a href="/">Back to the home page</a>
+      </mat-card-content>
+    </mat-card>
+  <!-- </form> -->
+</div>

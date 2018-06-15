@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import * as template from './app-welcome.content.html';
 
 @Component({
