@@ -25,13 +25,13 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeNoSandbox'],
+    browsers: ['Chrome'],
     singleRun: false,
-    customLaunchers: {
-      ChromeNoSandbox: {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    }
+    // customLaunchers: {
+    //   ChromeNoSandbox: {
+    //     base: 'Chrome',
+    //     flags: ['--no-sandbox']
+    //   }
+    // }
   });
 };
