@@ -20,10 +20,8 @@ env:
     - IMAGE_TAG=travis-ci-test
     - IMAGE=${IMAGE_REPO}:${IMAGE_TAG}
 
-before_script:
-  - npm install -g @angular/cli
-
 before_install:
+  - npm install -g @angular/cli
   - npm i -g npm@6.1.0
 
 install:
@@ -35,6 +33,7 @@ cache:
   - "$HOME/.npm"
 
 script:
+  - node scripts/transpileMd.js src/app/app-welcome/app-welcome.content.md src/app/app-welcome/app-welcome.content.html
   - ng lint
   - ng test --watch false
 
