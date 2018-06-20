@@ -21,8 +21,12 @@ before_script:
   - npm install -g @angular/cli
 
 install:
-  - npm install
-  - npm run build
+  - npm ci
+  - ng build
+
+cache:
+  directories:
+  - "$HOME/.npm"
 
 script:
   - ng lint
