@@ -36,6 +36,7 @@ script:
   - node scripts/transpileMd.js src/app/app-welcome/app-welcome.content.md src/app/app-welcome/app-welcome.content.html
   - ng lint
   - ng test --watch false
+  - ./scripts/verify_license_headers.sh
 
 before_deploy:
   - ./scripts/install_gcloud.sh

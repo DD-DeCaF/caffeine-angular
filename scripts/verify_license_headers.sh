@@ -20,7 +20,7 @@ set -eu
 PATTERN="Novo Nordisk Foundation Center for Biosustainability"
 RET=0
 
-for file in $(find $@ -name '*.{html,scss,ts}')
+for file in $(find $@ -name '*.{html,css,sass,scss,ts,js}')
 do
   grep "${PATTERN}" ${file} >/dev/null
   if [[ $? != 0 ]]
