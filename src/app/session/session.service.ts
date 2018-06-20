@@ -96,16 +96,16 @@ export class SessionService {
 
 
   refresh() {
-    console.log('Session: Refreshing authorization token');
+    // console.log('Session: Refreshing authorization token');
     const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN)).val;
     return this.http.post(`${environment.IAM_API}/refresh`, `refresh_token=${refreshToken}`, {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     }).subscribe((response) => {
-      console.log(response);
-      console.log('Session: Token refresh successful, saving new authorization token in local storage');
+      // console.log(response);
+      // console.log('Session: Token refresh successful, saving new authorization token in local storage');
       localStorage.setItem(AUTHORIZATION_TOKEN, (<any>response).data);
     }, () => {
-      console.log('Session: Token refresh failure');
+      // console.log('Session: Token refresh failure');
     });
     // .then(response => {
       // $log.info();
@@ -133,10 +133,10 @@ export class SessionService {
             const credentials = new FirebaseCredentials(result.user.uid, idToken);
             this.authenticate(credentials);
         }).catch((error) => {
-            console.log(error);
+            // console.log(error);
         });
     }).catch((error) => {
-        console.log(error);
+        // console.log(error);
     });
   }
 
@@ -159,7 +159,7 @@ export class SessionService {
     return this.http.post(`${environment.IAM_API}${endpoint}`, params, {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     }).subscribe((response) => {
-      console.log(response);
+      // console.log(response);
       this.store.dispatch(new Signin());
       // localStorage.setItem(AUTHORIZATION_TOKEN, )
     }, () => {
@@ -181,7 +181,7 @@ export class SessionService {
 
   invalidate(): void {
     // TODO we could use https://github.com/dbfannin/ngx-logger
-    console.debug(`Session: Invalidating session and forcing user to re-login`);
+    // console.debug(`Session: Invalidating session and forcing user to re-login`);
     this.logout();
     // $state.go('login').then(() => {
     //   $mdToast.show($mdToast.simple()
