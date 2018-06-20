@@ -27,7 +27,6 @@ import {LoginComponent} from './app-login/app-login.component';
 import {AppMaterialModule} from './app-material.module';
 // import {SessionModule} from './session/session.module';
 import {AppRoutingModule} from './app-routing.module';
-import {SearchModule} from './search/search.module';
 import {RegistryModule} from './registry/registry.module';
 
 import {AppAuthService} from './app-auth.service';
@@ -51,7 +50,6 @@ import { SessionService } from './session/session.service';
     FlexLayoutModule,
     // SessionModule,
     AppMaterialModule,
-    SearchModule,
     RegistryModule,
     StoreModule.forRoot(reducers),
   ],
