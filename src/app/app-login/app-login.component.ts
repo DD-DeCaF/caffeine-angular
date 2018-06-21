@@ -35,18 +35,20 @@ export class LoginComponent implements OnInit {
     this.github = () => {
       sessionService.github()
         .then(() => {
-          if (this.nextUrl) {
-            this.router.navigateByUrl(this.nextUrl);
-          } else {
-            this.router.navigateByUrl('/');
-          }
+          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
         });
     };
     this.google = () => {
-      sessionService.google();
+      sessionService.google()
+        .then(() => {
+          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+        });
     };
     this.twitter = () => {
-      sessionService.twitter();
+      sessionService.twitter()
+        .then(() => {
+          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+        });
     };
   }
 
