@@ -17,7 +17,6 @@ import {CommonModule} from '@angular/common';
 import {SessionService} from './session.service';
 import {SessionInterceptorService} from './session-interceptor.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
-// import {AuthGuardService} from './auth-guard.service';
 
 @NgModule({
   imports: [
@@ -26,7 +25,6 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
   declarations: [],
   providers: [
     SessionService,
-    // AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: SessionInterceptorService,

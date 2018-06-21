@@ -16,7 +16,7 @@ The following sections provide an overview of what you can currently do on platf
 
 ### Login (optional)
 
-You can log in [here](https://app.dd-decaf.eu/login) or by navigating to
+You can log in [here](https://caffeine.dd-decaf.eu/login) or by navigating to
 the menu in the upper right-hand corner. We support sign-on through a number of social media platforms. Alternatively, you can [contact](mailto:niso@biosustain.dtu.dk) us for an account.
 
 <img src="/assets/gifs/login.gif" alt="Login screencast" width="650">
@@ -26,7 +26,7 @@ simulations) but necessary for uploading your own data.
 
 ### Interactive cell factory design and omics data integration
 
-In the [Interactive Map](https://app.dd-decaf.eu/app/pathwayvis) we utilize metabolic pathway maps as an intuitive user interface for model simulation and data analysis, giving biologists the ability to modify models in a visual way instead of writing programming code. For example, reactions can be deleted from the host organism.
+In the [Interactive Map](https://caffine.dd-decaf.eu/app/pathwayvis) we utilize metabolic pathway maps as an intuitive user interface for model simulation and data analysis, giving biologists the ability to modify models in a visual way instead of writing programming code. For example, reactions can be deleted from the host organism.
 
 <img src="/assets/gifs/knockout.gif" alt="Reaction knockout" width="650">
 
@@ -60,7 +60,7 @@ The application furthermore allows the user to analyze and integrate data with m
 
 ### Computational cell factory design
 
-In the [Pathways](https://app.dd-decaf.eu/app/pathways) application you can predict metabolic routes to products that your host can not natively produce and share with the [Interactive Map](https://app.dd-decaf.eu/app/pathwayvis) application for further inspection.
+In the [Pathways](https://caffine.dd-decaf.eu/app/pathways) application you can predict metabolic routes to products that your host can not natively produce and share with the [Interactive Map](https://caffine.dd-decaf.eu/app/pathwayvis) application for further inspection.
 
 <img src="/assets/gifs/pathways.gif" alt="Predicting heterologous pathways screencast" width="650">
 
@@ -68,13 +68,13 @@ In the near future, we will transform this application into a full-fledged compu
 
 ### Assessing the capabilities of cell factories
 
-The [Theoretical Yield](https://app.dd-decaf.eu/app/yields) application enables you to evaluate your strain performance in the context of the theoretical production and growth limits.
+The [Theoretical Yield](https://caffine.dd-decaf.eu/app/yields) application enables you to evaluate your strain performance in the context of the theoretical production and growth limits.
 
 <img src="/assets/gifs/theoretical-yield-app.gif" alt="Theoretical yield app" width="650">
 
 ### Uploading data
 
-The [Upload data](https://app.dd-decaf.eu/app/upload) application will appear in the left panel after you log in. It supports a number of different data types and experimental meta data.
+The [Upload data](https://caffine.dd-decaf.eu/app/upload) application will appear in the left panel after you log in. It supports a number of different data types and experimental meta data.
 
 <img src="/assets/gifs/upload-data.gif" alt="Uploading data" width="650">
 

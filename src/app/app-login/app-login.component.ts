@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import { SessionService } from '../session/session.service';
 
 @Component({
@@ -20,14 +21,26 @@ import { SessionService } from '../session/session.service';
   templateUrl: './app-login.component.html',
   styleUrls: ['./app-login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  public nextUrl: string;
   public github: () => void;
   public google: () => void;
   public twitter: () => void;
 
-  constructor(private sessionService: SessionService) {
+  constructor(
+    sessionService: SessionService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
     this.github = () => {
-      sessionService.github();
+      sessionService.github()
+        .then(() => {
+          if (this.nextUrl) {
+            this.router.navigateByUrl(this.nextUrl);
+          } else {
+            this.router.navigateByUrl('/');
+          }
+        });
     };
     this.google = () => {
       sessionService.google();
@@ -35,5 +48,11 @@ export class LoginComponent {
     this.twitter = () => {
       sessionService.twitter();
     };
+  }
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params: Params) => {
+      this.nextUrl = params.next;
+    });
   }
 }

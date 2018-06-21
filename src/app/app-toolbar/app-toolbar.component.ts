@@ -18,7 +18,6 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {SessionState} from '../session/store/session.reducers';
 import {Observable} from 'rxjs';
-// import {SessionService} from '../session/session.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -29,12 +28,7 @@ export class AppToolbarComponent implements OnInit {
   sessionState: Observable<SessionState>;
   @Input() sidenav: MatSidenav;
 
-  constructor(
-    // session: SessionService
-    private store: Store<AppState>,
-  ) {
-    // this.isAuthenticated = session.isAuthenticated();
-  }
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
     this.sessionState = this.store.select('session');
