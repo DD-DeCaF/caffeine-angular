@@ -26,7 +26,6 @@ before_install:
 
 install:
   - npm ci
-  - ng build
 
 cache:
   directories:
@@ -37,6 +36,7 @@ script:
   - ng lint
   - ng test --watch false
   - ./scripts/verify_license_headers.sh
+  - ng build
 
 before_deploy:
   - ./scripts/install_gcloud.sh
