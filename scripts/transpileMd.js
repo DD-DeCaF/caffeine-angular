@@ -10,7 +10,7 @@ const linkify = (tok, options) => {
   if (tok && tok.content) {
     tok = {
       ...tok,
-      content: toc.linkify(tok, options).content.replace('(#', '(/app/#'),
+      content: toc.linkify(tok, options).content,
     };
   }
   return tok;
