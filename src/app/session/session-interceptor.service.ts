@@ -16,16 +16,16 @@ import {Injectable, Injector} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
-import {AppAuthService} from '../app-auth.service';
+// import {AppAuthService} from '../app-auth.service';
 import {SessionService} from './session.service';
 
 @Injectable()
 export class SessionInterceptorService implements HttpInterceptor {
   // @matyasfodor TODO try to get the dependencies directly in the constuctor
-  constructor(private injector: Injector, private appAuthService: AppAuthService) {
+  constructor(private injector: Injector) {
   }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  public intercept(req: HttpRequest<Request>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Removed the dependency, the browser API should be sufficient.
     // const localStorage = this.injector.get(LocalStorageService);
     // const appAuth = this.injector.get(AppAuthService);
@@ -40,12 +40,12 @@ export class SessionInterceptorService implements HttpInterceptor {
 
     return next.handle(req).pipe(
       tap(
-        () => {},
-        response => {
+        () => { console.log(); },
+        (response) => {
           if (response.status === 401) {
             session.logout();
           }
-        }
+        },
       ));
   }
 }
