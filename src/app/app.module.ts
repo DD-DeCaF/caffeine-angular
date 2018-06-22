@@ -18,11 +18,11 @@ import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatDialogModule } from "@angular/material";
 
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
-import {LoginComponent} from './app-login/app-login.component';
 
 import {AppMaterialModule} from './app-material.module';
 // import {SessionModule} from './session/session.module';
@@ -32,6 +32,9 @@ import {AppAuthService} from './app-auth.service';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {reducers} from './store/app.reducers';
 import { SessionService } from './session/session.service';
+import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import {FormBuilder} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,7 +42,7 @@ import { SessionService } from './session/session.service';
     AppToolbarComponent,
     AppHomeComponent,
     AppWelcomeComponent,
-    LoginComponent,
+    LoginDialogComponent,
   ],
   imports: [
     HttpClientModule,
@@ -47,14 +50,19 @@ import { SessionService } from './session/session.service';
     BrowserAnimationsModule,
     AppRoutingModule,
     FlexLayoutModule,
+    MatDialogModule,
     // SessionModule,
     AppMaterialModule,
     StoreModule.forRoot(reducers),
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     AppAuthService,
     SessionService,
+    FormBuilder,
   ],
   bootstrap: [AppComponent],
+  entryComponents: [LoginDialogComponent],
 })
 export class AppModule { }
