@@ -22,9 +22,9 @@ describe('SessionService', () => {
     TestBed.configureTestingModule({
       providers: [
         // SessionService,
-        {provide: APP_BASE_HREF, useValue: 'https://iloop.biosustain.dtu.dk/'}
+        {provide: APP_BASE_HREF, useValue: 'https://iloop.biosustain.dtu.dk/'},
       ],
-      imports: [AppModule]
+      imports: [AppModule],
     });
   });
 

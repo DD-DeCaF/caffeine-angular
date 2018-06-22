@@ -47,7 +47,7 @@ import {
   exports: [MatButtonModule, MatCheckboxModule, MatListModule, MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule,
     MatCardModule, MatSidenavModule, MatMenuModule, MatAutocompleteModule, MatDialogModule, MatTableModule, MatSortModule,
     MatPaginatorModule, MatTooltipModule, MatProgressBarModule, MatChipsModule],
-  providers: [MatIconRegistry]
+  providers: [MatIconRegistry],
 })
 export class AppMaterialModule {
 }

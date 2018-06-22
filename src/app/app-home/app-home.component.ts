@@ -17,11 +17,9 @@ import {Component} from '@angular/core';
 @Component({
   selector: 'app-app-home',
   templateUrl: './app-home.component.html',
-  styleUrls: ['./app-home.component.scss']
+  styleUrls: ['./app-home.component.scss'],
 })
 export class AppHomeComponent {
-  title = 'app';
+  public title: string = 'app';
 
-  constructor() {
-  }
 }
