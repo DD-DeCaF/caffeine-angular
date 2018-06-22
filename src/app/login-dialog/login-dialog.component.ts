@@ -12,26 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import * as template from './login-dialog.component.html';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef} from '@angular/material';
+import {SessionService} from '../session/session.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import { SessionService } from '../session/session.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './app-login.component.html',
-  styleUrls: ['./app-login.component.scss'],
+  selector: 'app-login-dialog',
+  template: `<div class="container">${template}</div>`,
+  styleUrls: ['./login-dialog.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginDialogComponent {
+
+  public loginForm: FormGroup;
   public nextUrl: string;
   public github: () => void;
   public google: () => void;
   public twitter: () => void;
+  public uiStatus: string = 'ideal';
+  public error: string;
 
   constructor(
+    public fb: FormBuilder,
+    public dialogRef: MatDialogRef<LoginDialogComponent>,
     sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
-  ) {
+    private router: Router) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
     this.github = () => {
       sessionService.github()
         .then(() => {
@@ -56,5 +68,19 @@ export class LoginComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.nextUrl = params.next;
     });
+  }
+
+  public save(): void {
+    this.dialogRef.close(this.loginForm.value);
+  }
+
+  public close(): void {
+    this.dialogRef.close();
+  }
+
+  public submit(): void {
+    console.log('SUBMIT', this.loginForm);
+    this.uiStatus = 'error';
+    this.error = 'error';
   }
 }
