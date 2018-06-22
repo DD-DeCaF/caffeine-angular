@@ -22,15 +22,15 @@ import {Observable} from 'rxjs';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './app-toolbar.component.html',
-  styleUrls: ['./app-toolbar.component.scss']
+  styleUrls: ['./app-toolbar.component.scss'],
 })
 export class AppToolbarComponent implements OnInit {
-  sessionState: Observable<SessionState>;
-  @Input() sidenav: MatSidenav;
+  private sessionState: Observable<SessionState>;
+  @Input() public sidenav: MatSidenav;
 
   constructor(private store: Store<AppState>) {}
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.sessionState = this.store.select('session');
   }
 }
