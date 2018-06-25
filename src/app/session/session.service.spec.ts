@@ -21,8 +21,6 @@ describe('SessionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        // SessionService,
-        {provide: APP_BASE_HREF, useValue: 'https://iloop.biosustain.dtu.dk/'},
       ],
       imports: [AppModule],
     });
