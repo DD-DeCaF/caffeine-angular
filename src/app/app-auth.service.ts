@@ -22,9 +22,9 @@ export class AppAuthService {
   // location: any;
   public currentUrl: string = null;
 
-  constructor(private location: Location) {
+  constructor(location: Location) {
     // TODO this should use the observable and expose an observable.
-    this.location.subscribe((popStateEvent: PopStateEvent) => {
+    location.subscribe((popStateEvent: PopStateEvent) => {
       this.currentUrl = popStateEvent.url;
     });
   }
