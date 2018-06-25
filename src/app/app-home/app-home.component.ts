@@ -20,6 +20,5 @@ import {Component} from '@angular/core';
   styleUrls: ['./app-home.component.scss'],
 })
 export class AppHomeComponent {
-  public title: string = 'app';
-
+  public title = 'app';
 }

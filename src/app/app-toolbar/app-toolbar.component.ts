@@ -25,7 +25,7 @@ import {Observable} from 'rxjs';
   styleUrls: ['./app-toolbar.component.scss'],
 })
 export class AppToolbarComponent implements OnInit {
-  private sessionState: Observable<SessionState>;
+  public sessionState: Observable<SessionState>;
   @Input() public sidenav: MatSidenav;
 
   constructor(private store: Store<AppState>) {}

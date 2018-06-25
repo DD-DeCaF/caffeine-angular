@@ -22,7 +22,10 @@ const initialState: SessionState = {
   authenticated: false,
 };
 
-export function sessionReducer(state = initialState, action) {
+export function sessionReducer(
+  state: SessionState = initialState,
+  action: SessionActions.Sessionctions,
+): SessionState {
   switch (action.type) {
     // case (SessionActions.SIGNUP):
     case (SessionActions.SIGNIN):

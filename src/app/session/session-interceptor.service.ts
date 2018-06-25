@@ -23,7 +23,7 @@ export class SessionInterceptorService implements HttpInterceptor {
   // @matyasfodor TODO try to get the dependencies directly in the constuctor
   constructor(private injector: Injector) {
   }
-
+  // tslint:disable-next-line:no-any
   public intercept(req: HttpRequest<Request>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Removed the dependency, the browser API should be sufficient.
     // const localStorage = this.injector.get(LocalStorageService);
@@ -39,7 +39,7 @@ export class SessionInterceptorService implements HttpInterceptor {
 
     return next.handle(req).pipe(
       tap(
-        () => { console.log(); },
+        () => { /* no-empty */ },
         (response) => {
           if (response.status === 401) {
             session.logout();
