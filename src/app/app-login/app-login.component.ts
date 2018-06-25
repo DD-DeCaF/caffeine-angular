@@ -19,7 +19,7 @@ import { SessionService } from '../session/session.service';
 @Component({
   selector: 'app-login',
   templateUrl: './app-login.component.html',
-  styleUrls: ['./app-login.component.scss']
+  styleUrls: ['./app-login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   public nextUrl: string;
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   constructor(
     sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {
     this.github = () => {
       sessionService.github()
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.nextUrl = params.next;
     });

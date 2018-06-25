@@ -20,7 +20,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
   ],
   declarations: [],
   providers: [
@@ -29,8 +29,8 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
       provide: HTTP_INTERCEPTORS,
       useClass: SessionInterceptorService,
       multi: true,
-    }
-  ]
+    },
+  ],
 })
 export class SessionModule {
 }

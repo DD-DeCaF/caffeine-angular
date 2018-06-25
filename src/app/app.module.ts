@@ -55,6 +55,6 @@ import { SessionService } from './session/session.service';
     AppAuthService,
     SessionService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -15,7 +15,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {stringify} from 'query-string';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -23,7 +23,6 @@ import 'firebase/auth';
 import {environment} from '../../environments/environment';
 import {AppState} from '../store/app.reducers';
 import {Logout, Signin} from './store/session.actions';
-import {SessionState} from './store/session.reducers';
 
 const REFRESH_TOKEN = 'refreshToken';
 const AUTHORIZATION_TOKEN = 'authorizationToken';
@@ -38,7 +37,7 @@ class UserCredentials {
 class FirebaseCredentials {
   constructor(
     public uid: string,
-    public token: string
+    public token: string,
   ) {}
 }
 
@@ -55,64 +54,61 @@ interface ProviderMap {[key: string]: firebase.auth.AuthProvider; }
 
 @Injectable()
 export class SessionService {
-  sessionState: Observable<SessionState>;
-  readonly GOOGLE = 'google';
-  readonly GITHUB = 'github';
-  readonly TWITTER = 'twitter';
+  public readonly GOOGLE: string = 'google';
+  public readonly GITHUB: string = 'github';
+  public readonly TWITTER: string = 'twitter';
 
-  providers: ProviderMap = {
+  private providers: ProviderMap = {
     [this.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
     [this.GITHUB]: new firebase.auth.GithubAuthProvider(),
     [this.TWITTER]: new firebase.auth.TwitterAuthProvider(),
   };
 
   constructor(private http: HttpClient, private store: Store<AppState>) {
-    this.sessionState = this.store.select('session');
-
     firebase.initializeApp({
       apiKey: environment.FIREBASE_API_KEY,
       authDomain: environment.FIREBASE_AUTH_DOMAIN,
       databaseURL: environment.FIREBASE_DATABASE_URL,
       projectId: environment.FIREBASE_PROJECT_ID,
       storageBucket: environment.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: environment.FIREBASE_SENDER_ID
+      messagingSenderId: environment.FIREBASE_SENDER_ID,
     });
   }
 
-  expired(): boolean {
+  public expired(): boolean {
     return !localStorage.getItem(REFRESH_TOKEN) || this.expires() <= new Date();
   }
 
-  expires(): Date {
+  public expires(): Date {
     return new Date(JSON.parse(localStorage.getItem(REFRESH_TOKEN)).exp * 1000);
   }
 
-  authorizationExpired(): boolean {
+  public authorizationExpired(): boolean {
     return !localStorage.getItem(AUTHORIZATION_TOKEN) || this.authorizationExpires() <= new Date();
   }
 
-  authorizationExpires(): Date {
+  public authorizationExpires(): Date {
     const payload = JSON.parse(atob(localStorage.getItem(AUTHORIZATION_TOKEN).split('.')[1]));
     return new Date(payload.exp * 1000);
   }
 
 
-  refresh() {
+  public refresh(): Subscription {
     const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN)).val;
     return this.http.post(`${environment.IAM_API}/refresh`, `refresh_token=${refreshToken}`, {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    }).subscribe((response) => {
-      localStorage.setItem(AUTHORIZATION_TOKEN, (<any>response).data);
+    }).subscribe((response: HttpResponse<string>) => {
+      localStorage.setItem(AUTHORIZATION_TOKEN, response.body);
     }, () => {
       console.log('Session: Token refresh failure');
     });
   }
 
-  github = () => this.signInWithSocial(this.GITHUB);
-  google = () => this.signInWithSocial(this.GOOGLE);
-  twitter = () =>  this.signInWithSocial(this.TWITTER);
+  public github = () => this.signInWithSocial(this.GITHUB);
+  public google = () => this.signInWithSocial(this.GOOGLE);
+  public twitter = () => this.signInWithSocial(this.TWITTER);
 
-  private signInWithSocial(providerKey: string): Promise<any> {
+  private signInWithSocial(providerKey: string): Promise<void | Subscription> {
     firebase.auth().signOut();
     const provider = this.providers[providerKey];
     if (provider instanceof firebase.auth.GithubAuthProvider) {
@@ -130,7 +126,7 @@ export class SessionService {
     });
   }
 
-  authenticate(credentials: UserCredentials | FirebaseCredentials) {
+  public authenticate(credentials: UserCredentials | FirebaseCredentials): Subscription {
     const params = stringify(credentials);
     const endpoint = `/authenticate/${credentials instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
     return this.http.post(`${environment.IAM_API}${endpoint}`, params, {
@@ -145,11 +141,11 @@ export class SessionService {
     });
   }
 
-  invalidate(): void {
+  public invalidate(): void {
     this.logout();
   }
 
-  logout(next: string = null): void {
+  public logout(next: string = null): void {
     localStorage.removeItem(AUTHORIZATION_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
     this.store.dispatch(new Logout());

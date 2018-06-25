@@ -23,11 +23,11 @@ export const LOGOUT = 'LOGOUT';
 // }
 
 export class Signin implements Action {
-  readonly type = SIGNIN;
+  public readonly type: string = SIGNIN;
 }
 
 export class Logout implements Action {
-  readonly type = LOGOUT;
+  public readonly type: string = LOGOUT;
 }
 
 export type Sessionctions = Signin | Logout;

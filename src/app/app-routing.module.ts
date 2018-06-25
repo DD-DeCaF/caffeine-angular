@@ -26,13 +26,13 @@ const appRoutes: Route[] = [
     children: [
       {
         path: '',
-        component: AppWelcomeComponent
+        component: AppWelcomeComponent,
       },
-    ]
+    ],
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
 ];
 
@@ -43,8 +43,8 @@ const appRoutes: Route[] = [
     // LoginModule
   ],
   exports: [
-    RouterModule
-  ]
+    RouterModule,
+  ],
 })
 export class AppRoutingModule {
 }
