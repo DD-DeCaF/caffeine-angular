@@ -18,11 +18,11 @@ import {Location, PopStateEvent} from '@angular/common';
 @Injectable()
 export class AppAuthService {
   // isRequired = true;
-  public trustedURLs = new Set();
+  public trustedURLs: Set<string> = new Set();
   // location: any;
   public currentUrl: string = null;
 
-  constructor(private location: Location) {
+  constructor(location: Location) {
     // TODO this should use the observable and expose an observable.
     location.subscribe((popStateEvent: PopStateEvent) => {
       this.currentUrl = popStateEvent.url;
@@ -37,12 +37,12 @@ export class AppAuthService {
   //   return this.location._platformStrategy._platformLocation.location.href;
   // }
 
-  isTrustedURL(url: string): boolean {
+  public isTrustedURL(url: string): boolean {
     const currentURL = this.currentUrl;
     const currentHostname = (new URL(currentURL)).hostname;
 
     const urlObj = new URL(url, currentURL);
     return urlObj.hostname === currentHostname || Array.from(this.trustedURLs)
-      .some(trustedURL => urlObj.href.startsWith(trustedURL));
+      .some((trustedURL) => urlObj.href.startsWith(trustedURL));
   }
 }

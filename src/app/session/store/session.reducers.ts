@@ -22,8 +22,11 @@ const initialState: SessionState = {
   authenticated: false,
 };
 
-export function sessionReducer(state = initialState, action) {
-  switch ( action.type) {
+export function sessionReducer(
+  state: SessionState = initialState,
+  action: SessionActions.Sessionctions,
+): SessionState {
+  switch (action.type) {
     // case (SessionActions.SIGNUP):
     case (SessionActions.SIGNIN):
       return {
@@ -35,6 +38,7 @@ export function sessionReducer(state = initialState, action) {
         ...state,
         authenticated: false,
       };
+    default:
+      return state;
   }
-  return state;
 }

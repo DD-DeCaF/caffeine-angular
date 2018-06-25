@@ -20,5 +20,5 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  public title: string = 'app';
+  public title = 'app';
 }
