@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {stringify} from 'query-string';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -23,7 +23,6 @@ import 'firebase/auth';
 import {environment} from '../../environments/environment';
 import {AppState} from '../store/app.reducers';
 import {Logout, Signin} from './store/session.actions';
-import {SessionState} from './store/session.reducers';
 
 const REFRESH_TOKEN = 'refreshToken';
 const AUTHORIZATION_TOKEN = 'authorizationToken';
@@ -55,7 +54,6 @@ interface ProviderMap {[key: string]: firebase.auth.AuthProvider; }
 
 @Injectable()
 export class SessionService {
-  private sessionState: Observable<SessionState>;
   public readonly GOOGLE: string = 'google';
   public readonly GITHUB: string = 'github';
   public readonly TWITTER: string = 'twitter';
@@ -67,8 +65,6 @@ export class SessionService {
   };
 
   constructor(private http: HttpClient, private store: Store<AppState>) {
-    this.sessionState = this.store.select('session');
-
     firebase.initializeApp({
       apiKey: environment.FIREBASE_API_KEY,
       authDomain: environment.FIREBASE_AUTH_DOMAIN,
@@ -101,8 +97,8 @@ export class SessionService {
     const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN)).val;
     return this.http.post(`${environment.IAM_API}/refresh`, `refresh_token=${refreshToken}`, {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    }).subscribe((response) => {
-      localStorage.setItem(AUTHORIZATION_TOKEN, (<any> response).data);
+    }).subscribe((response: HttpResponse<string>) => {
+      localStorage.setItem(AUTHORIZATION_TOKEN, response.body);
     }, () => {
       console.log('Session: Token refresh failure');
     });
@@ -112,7 +108,7 @@ export class SessionService {
   public google = () => this.signInWithSocial(this.GOOGLE);
   public twitter = () => this.signInWithSocial(this.TWITTER);
 
-  private signInWithSocial(providerKey: string): Promise<any> {
+  private signInWithSocial(providerKey: string): Promise<void | Subscription> {
     firebase.auth().signOut();
     const provider = this.providers[providerKey];
     if (provider instanceof firebase.auth.GithubAuthProvider) {
