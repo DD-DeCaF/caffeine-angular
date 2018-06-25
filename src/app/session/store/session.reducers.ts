@@ -36,7 +36,6 @@ export function sessionReducer(state = initialState, action) {
         authenticated: false,
       };
     default:
-      break;
+      return state;
   }
-  return state;
 }
