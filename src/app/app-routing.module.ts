@@ -15,7 +15,6 @@
 import {NgModule} from '@angular/core';
 import {Route, RouterModule} from '@angular/router';
 import {AppHomeComponent} from './app-home/app-home.component';
-import {LoginComponent} from './app-login/app-login.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
 
 
@@ -29,10 +28,6 @@ const appRoutes: Route[] = [
         component: AppWelcomeComponent,
       },
     ],
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
   },
 ];
 
