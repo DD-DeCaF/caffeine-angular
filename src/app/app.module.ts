@@ -12,31 +12,53 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import * as Raven from 'raven-js';
+
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NgModule} from '@angular/core';
+import {NgModule, ErrorHandler} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {FlexLayoutModule} from '@angular/flex-layout';
+<<<<<<< HEAD
 import {MatDialogModule} from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+=======
+>>>>>>> feat: Sentry config
 
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
 
 import {AppMaterialModule} from './app-material.module';
-// import {SessionModule} from './session/session.module';
 import {AppRoutingModule} from './app-routing.module';
 
 import {AppAuthService} from './app-auth.service';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
+<<<<<<< HEAD
 import {LoginDialogComponent} from './login-dialog/login-dialog.component';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
+=======
+
+import {environment} from '../environments/environment';
+
+if (environment.sentryDSN) {
+  Raven
+    .config(environment.sentryDSN)
+    .install();
+}
+
+export class RavenErrorHandler implements ErrorHandler {
+  // tslint:disable-next-line:no-any
+  handleError(err: any): void {
+    Raven.captureException(err);
+  }
+}
+>>>>>>> feat: Sentry config
 
 @NgModule({
   declarations: [
@@ -65,7 +87,11 @@ import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
   providers: [
     AppAuthService,
     SessionService,
+<<<<<<< HEAD
     FormBuilder,
+=======
+    ...(environment.sentryDSN ? [{ provide: ErrorHandler, useClass: RavenErrorHandler }] : []),
+>>>>>>> feat: Sentry config
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginDialogComponent],
