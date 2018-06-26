@@ -32,7 +32,7 @@
     <button class="topright-menu"
             mat-icon-button
             type="button"
-            routerLink="/logout"
+            (click)="logout()"
             *ngIf="(sessionState | async).authenticated">
       <mat-icon>power_settings_new</mat-icon>
       Logout

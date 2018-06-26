@@ -28,7 +28,7 @@ export function sessionReducer(
 ): SessionState {
   switch (action.type) {
     // case (SessionActions.SIGNUP):
-    case (SessionActions.SIGNIN):
+    case (SessionActions.LOGIN):
       return {
         ...state,
         authenticated: true,

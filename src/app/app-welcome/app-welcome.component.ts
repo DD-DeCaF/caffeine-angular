@@ -15,6 +15,8 @@
 import {Component} from '@angular/core';
 
 import * as template from './app-welcome.content.html';
+import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
+import {MatDialog, MatDialogConfig} from '@angular/material';
 
 @Component({
   selector: 'app-app-welcome',
@@ -23,8 +25,14 @@ import * as template from './app-welcome.content.html';
 })
 export class AppWelcomeComponent {
 
-  constructor() {}
+  constructor(private dialog: MatDialog) {}
 
+  public openDialog(): void {
+    const dialogConfig = new MatDialogConfig();
 
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
 
+    this.dialog.open(LoginDialogComponent, dialogConfig);
+  }
 }
