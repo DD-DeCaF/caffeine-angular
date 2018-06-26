@@ -1,4 +1,4 @@
-import {Directive, HostListener} from '@angular/core';
+import {Directive, HostListener, HostBinding} from '@angular/core';
 import {LoginDialogComponent} from './login-dialog/login-dialog.component';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 
@@ -6,11 +6,12 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
   selector: '[appOpenDialog]',
 })
 export class OpenDialogDirective {
+  @HostBinding('style.cursor') cursor = 'pointer';
+  @HostListener('click', ['$event']) onClick($event: Event): void {
+    this.openDialog();
+  }
 
   constructor(private dialog: MatDialog) {}
-  @HostListener('click', ['$event']) onClick($event: Event): void{
-   this.openDialog();
-  }
 
   public openDialog(): void {
     const dialogConfig = new MatDialogConfig();
@@ -18,5 +19,4 @@ export class OpenDialogDirective {
     dialogConfig.autoFocus = true;
     this.dialog.open(LoginDialogComponent, dialogConfig);
   }
-
 }
