@@ -2,15 +2,20 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+export const environment: Configuration = {
   production: false,
-  IAM_API: 'https://api-staging.dd-decaf.eu/iam',
-  FIREBASE_API_KEY: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
-  FIREBASE_AUTH_DOMAIN: 'dd-decaf-cfbf6.firebaseapp.com',
-  FIREBASE_DATABASE_URL: 'https://dd-decaf-cfbf6.firebaseio.com',
-  FIREBASE_PROJECT_ID: 'dd-decaf-cfbf6',
-  FIREBASE_STORAGE_BUCKET: 'dd-decaf-cfbf6.appspot.com',
-  FIREBASE_SENDER_ID: '972933293195',
+  apis: {
+    iam: 'https://api-staging.dd-decaf.eu/iam',
+  },
+  sentryDSN: 'https://4ae40dd008994d91bc5632437fd5c395@sentry.io/1233153',
+  firebase: {
+    api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
+    auth_domain: 'dd-decaf-cfbf6.firebaseapp.com',
+    database_url: 'https://dd-decaf-cfbf6.firebaseio.com',
+    project_id: 'dd-decaf-cfbf6',
+    storage_bucket: 'dd-decaf-cfbf6.appspot.com',
+    sender_id: '972933293195',
+  },
 };
 
 /*
