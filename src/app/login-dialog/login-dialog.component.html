@@ -23,7 +23,7 @@
         close
       </i>
     </mat-card>
-    <mat-card fxLayout="column" style="min-width: 650px" layout-padding fxFlexAlign="center center">
+    <mat-card fxLayout="column" style="min-width: 650px" layout-padding fxFlexAlign="center center" *ngIf="!(sessionState | async).authenticated">
       <div  fxFlex="100" *ngIf="uiStatus == 'loading'" >
         <mat-progress-spinner  style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
       </div>
@@ -77,6 +77,14 @@
             </div>
           </mat-card-content>
         </form>
+      </mat-card-content>
+    </mat-card>
+    <mat-card fxLayout="column" style="min-width: 650px" layout-padding fxLayoutAlign="center" *ngIf="(sessionState | async).authenticated">
+      <mat-card-content fxLayout="row"  fxLayoutAlign="center">
+        <h3 class="loggedin">You are already logged in.</h3>
+      </mat-card-content>
+      <mat-card-content fxLayout="row"  fxLayoutAlign="center" class="logout">
+        <a (click)="logout()">logout</a>
       </mat-card-content>
     </mat-card>
   </mat-dialog-content>
