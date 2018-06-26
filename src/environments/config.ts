@@ -1,0 +1,15 @@
+interface Configuration {
+  production: boolean;
+  apis: {
+    iam: string;
+  };
+  sentryDSN?: string;
+  firebase: {
+    api_key: string;
+    auth_domain: string;
+    database_url: string;
+    project_id: string;
+    storage_bucket: string;
+    sender_id: string;
+  };
+}
