@@ -11,12 +11,12 @@
 <!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
-
 <div class="md-hue-2 login-bg"
      md-colors="{background: 'default-primary-700'}"
      fxLayout="column"
      fxLayoutAlign="center center"
      flex>
+
   <mat-dialog-content>
     <mat-card align="end">
       <i class="material-icons close-modal" (click)="close()">
@@ -24,7 +24,10 @@
       </i>
     </mat-card>
     <mat-card fxLayout="column" style="min-width: 650px" layout-padding>
-      <mat-card-content fxLayout="row" fxLayoutGap="10">
+      <div  fxFlex="100" *ngIf="uiStatus == 'loading'">
+        <div class="loader"  >Loading...</div>
+      </div>
+      <mat-card-content fxLayout="row" fxLayoutGap="10" *ngIf="uiStatus != 'loading'">
         <mat-card-content fxLayout="column" fxFlex="50">
           <p>Log in with your social account</p>
           <div flex></div>
@@ -40,19 +43,19 @@
             <img src="/assets/images/twitter.svg" class="social-logo">Twitter
           </button>
           <div flex></div>
-
         </mat-card-content>
         <div class="vertical-divider"></div>
-          <mat-card-content layout="column" fxFlex="50" [formGroup]="loginForm" novalidate >
+
+        <form fxFlex="50" [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+          <mat-card-content layout="column"   >
             <p>Or you can <a href="mailto:niko@biosustain.dtu.dk">contact us</a> and we provide you with credentials</p>
 
             <div fxLayoutAlign="center center">
               <mat-icon>person</mat-icon>
               <mat-form-field fxFlex>
-                <input formControlName="username" placeholder="Username" matInput>
+                <input formControlName="email" placeholder="Email" matInput>
               </mat-form-field>
             </div>
-
             <div fxLayoutAlign="center center">
               <mat-icon>lock</mat-icon>
               <mat-form-field fxFlex>
@@ -69,14 +72,11 @@
                 [disabled]="!loginForm.valid"
                 class="mat-raised-button"
                 color="primary"
-                (click)="submit()"
                 mat-button>Login
               </button>
             </div>
           </mat-card-content>
-      </mat-card-content>
-      <mat-card-content layout="row">
-        <a (click)="close()">Back to the home page</a>
+        </form>
       </mat-card-content>
     </mat-card>
   </mat-dialog-content>

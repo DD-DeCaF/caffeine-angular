@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as template from './login-dialog.component.html';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material';
@@ -24,24 +24,25 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
   template: `<div class="container">${template}</div>`,
   styleUrls: ['./login-dialog.component.scss'],
 })
-export class LoginDialogComponent {
+export class LoginDialogComponent implements OnInit {
 
   public loginForm: FormGroup;
   public nextUrl: string;
   public github: () => void;
   public google: () => void;
   public twitter: () => void;
-  public uiStatus: string = 'ideal';
+  public uiStatus: string;
   public error: string;
 
   constructor(
     public fb: FormBuilder,
     public dialogRef: MatDialogRef<LoginDialogComponent>,
-    sessionService: SessionService,
+    private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
     private router: Router) {
+    this.uiStatus = 'ideal';
     this.loginForm = this.fb.group({
-      username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
     this.github = () => {
@@ -79,8 +80,12 @@ export class LoginDialogComponent {
   }
 
   public submit(): void {
-    console.log('SUBMIT', this.loginForm);
-    this.uiStatus = 'error';
-    this.error = 'error';
+    this.uiStatus = 'loading';
+    this.sessionService.authenticate(this.loginForm.value) .then(() => {
+      this.close();
+    }).catch((error) => {
+      this.uiStatus = 'error';
+      this.error = error.error.message;
+    });
   }
 }

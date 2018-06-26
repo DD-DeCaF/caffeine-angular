@@ -18,7 +18,7 @@ import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatDialogModule } from "@angular/material";
+import { MatDialogModule } from '@angular/material';
 
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
@@ -54,6 +54,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     // SessionModule,
     AppMaterialModule,
     StoreModule.forRoot(reducers),
+
     FormsModule,
     ReactiveFormsModule,
   ],
