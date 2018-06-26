@@ -23,9 +23,9 @@
         close
       </i>
     </mat-card>
-    <mat-card fxLayout="column" style="min-width: 650px" layout-padding>
-      <div  fxFlex="100" *ngIf="uiStatus == 'loading'">
-        <div class="loader"  >Loading...</div>
+    <mat-card fxLayout="column" style="min-width: 650px" layout-padding fxFlexAlign="center center">
+      <div  fxFlex="100" *ngIf="uiStatus == 'loading'" >
+        <mat-progress-spinner  style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
       </div>
       <mat-card-content fxLayout="row" fxLayoutGap="10" *ngIf="uiStatus != 'loading'">
         <mat-card-content fxLayout="column" fxFlex="50">
@@ -34,11 +34,11 @@
           <button (click)="github()" class="mat-raised-button github social-button" layout="row" mat-button>
             <img src="/assets/images/github.svg" class="social-logo">Github
           </button>
-          <button ng-click="ctrl.signInWithSocial(loginForm, 'google')" class="mat-raised-button google social-button"
+          <button (click)="google()" class="mat-raised-button google social-button"
                   layout="row" mat-button>
             <img src="/assets/images/google-plus.svg" class="social-logo">Google
           </button>
-          <button ng-click="ctrl.signInWithSocial(loginForm, 'twitter')" class="mat-raised-button twitter social-button"
+          <button (click)="twitter()" class="mat-raised-button twitter social-button"
                   layout="row" mat-button>
             <img src="/assets/images/twitter.svg" class="social-logo">Twitter
           </button>

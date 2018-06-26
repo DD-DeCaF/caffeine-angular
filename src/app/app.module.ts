@@ -19,6 +19,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDialogModule } from '@angular/material';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
@@ -35,6 +36,7 @@ import { SessionService } from './session/session.service';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import {FormBuilder} from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { OpenDialogDirective } from './open-dialog.directive';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppHomeComponent,
     AppWelcomeComponent,
     LoginDialogComponent,
+    OpenDialogDirective,
   ],
   imports: [
     HttpClientModule,
@@ -51,6 +54,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     FlexLayoutModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     // SessionModule,
     AppMaterialModule,
     StoreModule.forRoot(reducers),

@@ -13,13 +13,12 @@
 // limitations under the License.
 
 import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog, MatDialogConfig, MatSidenav} from '@angular/material';
+import {MatSidenav} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {SessionService} from '../session/session.service';
 import {SessionState} from '../session/store/session.reducers';
 import {Observable} from 'rxjs';
-import {LoginDialogComponent} from '../login-dialog/login-dialog.component';
 
 @Component({
   selector: 'app-toolbar',
@@ -32,20 +31,12 @@ export class AppToolbarComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private dialog: MatDialog,
     private sessionService: SessionService) {}
 
   public ngOnInit(): void {
     this.sessionState = this.store.select('session');
   }
-  public openDialog(): void {
-    const dialogConfig = new MatDialogConfig();
 
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-
-    this.dialog.open(LoginDialogComponent, dialogConfig);
-  }
   public logout(): void {
     this.sessionService.logout();
   }

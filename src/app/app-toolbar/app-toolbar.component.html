@@ -24,7 +24,7 @@
     <button class="topright-menu"
             mat-icon-button
             type="button"
-            (click)="openDialog()"
+            appOpenDialog
             *ngIf="!(sessionState | async).authenticated">
       <mat-icon>lock</mat-icon>
       Log In
