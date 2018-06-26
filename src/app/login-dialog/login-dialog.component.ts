@@ -17,6 +17,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material';
 import {SessionService} from '../session/session.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {SessionState} from '../session/store/session.reducers';
+import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AppState} from '../store/app.reducers';
 
 @Component({
   selector: 'app-login-dialog',
@@ -32,13 +36,15 @@ export class LoginDialogComponent implements OnInit {
   public twitter: () => void;
   public uiStatus: string;
   public error: string;
+  public sessionState: Observable<SessionState>;
 
   constructor(
     public fb: FormBuilder,
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private store: Store<AppState>) {
     this.uiStatus = 'ideal';
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -68,6 +74,7 @@ export class LoginDialogComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.nextUrl = params.next;
     });
+    this.sessionState = this.store.select('session');
   }
 
   public save(): void {
@@ -86,5 +93,9 @@ export class LoginDialogComponent implements OnInit {
       this.uiStatus = 'error';
       this.error = error.error.message;
     });
+  }
+
+  public logout(): void {
+    this.sessionService.logout();
   }
 }
