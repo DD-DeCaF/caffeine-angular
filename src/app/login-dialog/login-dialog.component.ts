@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import * as template from './login-dialog.component.html';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material';
 import {SessionService} from '../session/session.service';
@@ -21,7 +20,7 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
   selector: 'app-login-dialog',
-  template: `<div class="container">${template}</div>`,
+  templateUrl: './login-dialog.component.html',
   styleUrls: ['./login-dialog.component.scss'],
 })
 export class LoginDialogComponent implements OnInit {

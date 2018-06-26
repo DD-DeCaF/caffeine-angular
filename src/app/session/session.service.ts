@@ -126,7 +126,7 @@ export class SessionService {
     });
   }
 
-  public authenticate(credentials: UserCredentials | FirebaseCredentials): Promise<void | Subscription> {
+  public authenticate(credentials: UserCredentials | FirebaseCredentials): Promise<void> {
     const params = stringify(credentials);
     const endpoint = `/authenticate/${credentials instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
     return new Promise((resolve, reject) => {
