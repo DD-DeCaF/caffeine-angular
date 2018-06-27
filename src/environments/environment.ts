@@ -1,13 +1,15 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+import {Configuration} from './configuration';
 
 export const environment: Configuration = {
   production: false,
   apis: {
     iam: 'https://api-staging.dd-decaf.eu/iam',
   },
-  sentryDSN: 'https://4ae40dd008994d91bc5632437fd5c395@sentry.io/1233153',
+  GATrackingID: null,
+  sentryDSN: null,
   firebase: {
     api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
     auth_domain: 'dd-decaf-cfbf6.firebaseapp.com',
@@ -16,6 +18,7 @@ export const environment: Configuration = {
     storage_bucket: 'dd-decaf-cfbf6.appspot.com',
     sender_id: '972933293195',
   },
+  trustedURLs: [],
 };
 
 /*

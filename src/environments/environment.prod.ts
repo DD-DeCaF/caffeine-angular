@@ -5,6 +5,7 @@ export const environment: Configuration = {
   apis: {
     iam: 'https://api.dd-decaf.eu/iam',
   },
+  GATrackingID: 'UA-106144097-2',
   sentryDSN: 'https://4f2d0b394b5a4215806fc38ae2424502@sentry.io/1233163',
   firebase: {
     api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
@@ -14,4 +15,5 @@ export const environment: Configuration = {
     storage_bucket: 'dd-decaf-cfbf6.appspot.com',
     sender_id: '972933293195',
   },
+  trustedURLs: [],
 };
