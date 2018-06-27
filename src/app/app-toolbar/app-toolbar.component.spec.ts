@@ -11,12 +11,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {async, ComponentFixture, TestBed, getTestBed} from '@angular/core/testing';
+import {StoreModule} from '@ngrx/store';
+import {MatSidenav} from '@angular/material';
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { StoreModule } from '@ngrx/store';
 import {AppMaterialModule} from '../app-material.module';
-import { AppToolbarComponent } from './app-toolbar.component';
-import { reducers } from '../store/app.reducers';
+import {AppToolbarComponent} from './app-toolbar.component';
+import {reducers} from '../store/app.reducers';
 
 describe('AppToolbarComponent', () => {
   let component: AppToolbarComponent;
@@ -25,6 +27,7 @@ describe('AppToolbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
+        BrowserAnimationsModule,
         AppMaterialModule,
         StoreModule.forRoot(reducers),
       ],
@@ -35,6 +38,8 @@ describe('AppToolbarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppToolbarComponent);
     component = fixture.componentInstance;
+    const element: ComponentFixture<MatSidenav> = getTestBed().createComponent(MatSidenav);
+    component.sidenav = element.componentInstance;
     fixture.detectChanges();
   });
 
@@ -42,4 +47,11 @@ describe('AppToolbarComponent', () => {
     expect(component).toBeTruthy();
   }));
 
+  it('should close sidenav on click', async(() => {
+    const button = fixture.debugElement.nativeElement.querySelector('button[role="menuButton"]');
+    button.click();
+    fixture.whenStable().then(() => {
+      expect(component.sidenav.opened).toBeTruthy();
+    });
+  }));
 });
