@@ -51,21 +51,24 @@ export class LoginDialogComponent implements OnInit {
       password: ['', Validators.required],
     });
     this.github = () => {
+      this.uiStatus = 'loading';
       sessionService.github()
         .then(() => {
-          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+          this.dialogRef.close();
         });
     };
     this.google = () => {
+      this.uiStatus = 'loading';
       sessionService.google()
         .then(() => {
-          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+          this.dialogRef.close();
         });
     };
     this.twitter = () => {
+      this.uiStatus = 'loading';
       sessionService.twitter()
         .then(() => {
-          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+          this.dialogRef.close();
         });
     };
   }
