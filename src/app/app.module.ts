@@ -17,8 +17,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatDialogModule } from '@angular/material';
+import {FlexLayoutModule} from '@angular/flex-layout';
+import {MatDialogModule} from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import {AppComponent} from './app.component';
@@ -32,11 +32,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppAuthService} from './app-auth.service';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {reducers} from './store/app.reducers';
-import { SessionService } from './session/session.service';
-import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import {SessionService} from './session/session.service';
+import {LoginDialogComponent} from './login-dialog/login-dialog.component';
 import {FormBuilder} from '@angular/forms';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OpenLoginDialogDirective } from './session/open-login-dialog.directive';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 @NgModule({
   declarations: [
