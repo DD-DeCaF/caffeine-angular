@@ -20,11 +20,6 @@ import {NgModule, ErrorHandler} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {FlexLayoutModule} from '@angular/flex-layout';
-<<<<<<< HEAD
-import {MatDialogModule} from '@angular/material';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-=======
->>>>>>> feat: Sentry config
 
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
@@ -37,12 +32,10 @@ import {AppAuthService} from './app-auth.service';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
-<<<<<<< HEAD
 import {LoginDialogComponent} from './login-dialog/login-dialog.component';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
-=======
 
 import {environment} from '../environments/environment';
 
@@ -58,7 +51,6 @@ export class RavenErrorHandler implements ErrorHandler {
     Raven.captureException(err);
   }
 }
->>>>>>> feat: Sentry config
 
 @NgModule({
   declarations: [
@@ -75,8 +67,6 @@ export class RavenErrorHandler implements ErrorHandler {
     BrowserAnimationsModule,
     AppRoutingModule,
     FlexLayoutModule,
-    MatDialogModule,
-    MatProgressSpinnerModule,
     // SessionModule,
     AppMaterialModule,
     StoreModule.forRoot(reducers),
@@ -87,11 +77,8 @@ export class RavenErrorHandler implements ErrorHandler {
   providers: [
     AppAuthService,
     SessionService,
-<<<<<<< HEAD
     FormBuilder,
-=======
     ...(environment.sentryDSN ? [{ provide: ErrorHandler, useClass: RavenErrorHandler }] : []),
->>>>>>> feat: Sentry config
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginDialogComponent],
