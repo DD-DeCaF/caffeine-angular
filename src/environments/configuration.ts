@@ -3,6 +3,7 @@ export interface Configuration {
   apis: {
     iam: string;
   };
+  GATrackingID?: string;
   sentryDSN?: string;
   firebase: {
     api_key: string;
@@ -12,4 +13,5 @@ export interface Configuration {
     storage_bucket: string;
     sender_id: string;
   };
+  trustedURLs: string[];
 }

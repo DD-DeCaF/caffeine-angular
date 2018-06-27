@@ -15,6 +15,7 @@
     "types": [
       "node",
       "jasmine",
+      "google.analytics"
     ],
     "lib": [
       "es2017",
