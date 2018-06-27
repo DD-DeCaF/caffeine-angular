@@ -7,7 +7,7 @@ const renderer = new marked.Renderer();
 
 renderer.link = (link => (href, title, text, ...rest) => {
   if (href === 'https://caffeine.dd-decaf.eu/login') {
-    return `<a appOpenDialog>${text}</a>`;
+    return `<a appOpenLoginDialog>${text}</a>`;
   }
   return link(href, title, text);
 })(renderer.link.bind(renderer));

@@ -36,7 +36,7 @@ import { SessionService } from './session/session.service';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import {FormBuilder} from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { OpenDialogDirective } from './open-dialog.directive';
+import { OpenLoginDialogDirective } from './session/open-login-dialog.directive';
 
 @NgModule({
   declarations: [
@@ -45,7 +45,7 @@ import { OpenDialogDirective } from './open-dialog.directive';
     AppHomeComponent,
     AppWelcomeComponent,
     LoginDialogComponent,
-    OpenDialogDirective,
+    OpenLoginDialogDirective,
   ],
   imports: [
     HttpClientModule,
