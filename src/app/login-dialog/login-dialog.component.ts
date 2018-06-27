@@ -16,7 +16,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef} from '@angular/material';
 import {SessionService} from '../session/session.service';
-import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ActivatedRoute, Params} from '@angular/router';
 import {SessionState} from '../session/store/session.reducers';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
@@ -43,7 +43,6 @@ export class LoginDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<LoginDialogComponent>,
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private store: Store<AppState>) {
     this.uiStatus = 'ideal';
     this.loginForm = this.fb.group({
@@ -51,21 +50,24 @@ export class LoginDialogComponent implements OnInit {
       password: ['', Validators.required],
     });
     this.github = () => {
+      this.uiStatus = 'loading';
       sessionService.github()
         .then(() => {
-          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+          this.dialogRef.close();
         });
     };
     this.google = () => {
+      this.uiStatus = 'loading';
       sessionService.google()
         .then(() => {
-          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+          this.dialogRef.close();
         });
     };
     this.twitter = () => {
+      this.uiStatus = 'loading';
       sessionService.twitter()
         .then(() => {
-          this.router.navigateByUrl(this.nextUrl ? this.nextUrl : '/');
+          this.dialogRef.close();
         });
     };
   }
