@@ -12,28 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {StateObservable, Store, StoreModule} from '@ngrx/store';
 
-// import { AppToolbarComponent } from './app-toolbar.component';
+import { AppToolbarComponent } from './app-toolbar.component';
+import {AppMaterialModule} from '../app-material.module';
 
-// describe('AppToolbarComponent', () => {
-//   let component: AppToolbarComponent;
-//   let fixture: ComponentFixture<AppToolbarComponent>;
+describe('AppToolbarComponent', () => {
+  let component: AppToolbarComponent;
+  let fixture: ComponentFixture<AppToolbarComponent>;
 
-//   beforeEach(async(() => {
-//     TestBed.configureTestingModule({
-//       declarations: [ AppToolbarComponent ]
-//     })
-//     .compileComponents();
-//   }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ AppToolbarComponent ],
+      imports: [AppMaterialModule, StoreModule],
+      providers: [Store, StateObservable],
+    }).compileComponents();
+  }));
 
-//   beforeEach(() => {
-//     fixture = TestBed.createComponent(AppToolbarComponent);
-//     component = fixture.componentInstance;
-//     fixture.detectChanges();
-//   });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppToolbarComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-//   it('should create', () => {
-//     expect(component).toBeTruthy();
-//   });
-// });
+  it('should created',
+    inject([ Store ], () => {
+      expect(component).toBeTruthy();
+    }));
+});
