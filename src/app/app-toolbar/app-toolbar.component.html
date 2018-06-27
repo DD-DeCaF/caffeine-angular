@@ -16,7 +16,7 @@
   <mat-toolbar-row>
     <button mat-icon-button
             type="button"
-            *ngIf="!sidenav.opened"
+            *ngIf="sidenav && !sidenav.opened"
             (click)="sidenav.open()">
       <mat-icon>menu</mat-icon>
     </button>

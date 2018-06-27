@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
-import {StateObservable, Store, StoreModule} from '@ngrx/store';
-
-import { AppToolbarComponent } from './app-toolbar.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { StoreModule } from '@ngrx/store';
 import {AppMaterialModule} from '../app-material.module';
+import { AppToolbarComponent } from './app-toolbar.component';
+import { reducers } from '../store/app.reducers';
 
 describe('AppToolbarComponent', () => {
   let component: AppToolbarComponent;
@@ -24,9 +24,11 @@ describe('AppToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppToolbarComponent ],
-      imports: [AppMaterialModule, StoreModule],
-      providers: [Store, StateObservable],
+      imports: [
+        AppMaterialModule,
+        StoreModule.forRoot(reducers),
+      ],
+      declarations: [AppToolbarComponent],
     }).compileComponents();
   }));
 
@@ -36,8 +38,8 @@ describe('AppToolbarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should created',
-    inject([ Store ], () => {
-      expect(component).toBeTruthy();
-    }));
+  it('should be created', async(() => {
+    expect(component).toBeTruthy();
+  }));
+
 });
