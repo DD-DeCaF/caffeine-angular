@@ -5,7 +5,7 @@ minimist = require('minimist');
 
 const renderer = new marked.Renderer();
 
-renderer.link = (link => (href, title, text, ...rest) => {
+renderer.link = (link => (href, title, text) => {
   if (href === 'https://caffeine.dd-decaf.eu/login') {
     return `<a appOpenLoginDialog>${text}</a>`;
   }
