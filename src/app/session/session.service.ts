@@ -133,15 +133,11 @@ export class SessionService {
       this.http.post(`${environment.IAM_API}${endpoint}`, params, {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       }).subscribe((response: AuthAPIResponse) => {
-        console.log(response, 'AUTHENTICATE');
         this.store.dispatch(new Login());
         localStorage.setItem(AUTHORIZATION_TOKEN, response.jwt);
         localStorage.setItem(REFRESH_TOKEN, JSON.stringify(response.refresh_token));
-        // call resolve here, no need to return anything
         resolve();
       }, (error) => {
-        console.log('Authentication failed', error);
-        // call reject with the error. You may want to turn it into a better format, it's better to do it here than in the component
         reject(error);
       });
     });
