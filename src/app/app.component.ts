@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import {Component} from '@angular/core';
-
+import { Router, NavigationEnd, Event } from '@angular/router';
+import '@types/google.analytics';
 @Component({
   selector: 'app-root',
   template: `<router-outlet></router-outlet>`,
@@ -21,4 +22,13 @@ import {Component} from '@angular/core';
 })
 export class AppComponent {
   public title = 'app';
+
+  constructor(router: Router) {
+    router.events.subscribe((event: Event) => {
+      if (event instanceof NavigationEnd) {
+        ga('set', 'page', event.urlAfterRedirects);
+        ga('send', 'pageview');
+      }
+    });
+  }
 }
