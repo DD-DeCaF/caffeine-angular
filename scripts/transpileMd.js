@@ -3,6 +3,15 @@ const fs = require('fs');
 const marked = require('marked');
 minimist = require('minimist');
 
+const renderer = new marked.Renderer();
+
+renderer.link = (link => (href, title, text) => {
+  if (href === 'https://caffeine.dd-decaf.eu/login') {
+    return `<a appOpenLoginDialog>${text}</a>`;
+  }
+  return link(href, title, text);
+})(renderer.link.bind(renderer));
+
 const argv = minimist(process.argv.slice(2));
 
 // Custom linkify method for addign fullpath
@@ -36,5 +45,5 @@ const license = `<!--Copyright 2018 Novo Nordisk Foundation Center for Biosustai
 <!--limitations under the License.-->
 
 `;
-const result = license + marked(inserted);
+const result = license + marked(inserted, {renderer});
 fs.writeFileSync(outputFile, result);

@@ -16,6 +16,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MatSidenav} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
+import {SessionService} from '../session/session.service';
 import {SessionState} from '../session/store/session.reducers';
 import {Observable} from 'rxjs';
 
@@ -28,9 +29,15 @@ export class AppToolbarComponent implements OnInit {
   public sessionState: Observable<SessionState>;
   @Input() public sidenav: MatSidenav;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private sessionService: SessionService) {}
 
   public ngOnInit(): void {
     this.sessionState = this.store.select('session');
+  }
+
+  public logout(): void {
+    this.sessionService.logout();
   }
 }

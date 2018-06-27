@@ -12,21 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.login-bg:before {
-  content: "";
-  position: fixed;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-
-  display: block;
-  background-image: url('/assets/images/background.png');
-
-  filter: blur(3px) brightness(80%);
-}
-
 .login-bg {
   position: fixed;
   left: 0;
@@ -82,4 +67,22 @@ mat-icon {
   border-left: 1px solid rgba(0, 0, 0, 0.12);
   width: 5px;
   margin: 0 5px;
+}
+
+.close-modal{
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  margin-left: 4%;
+}
+
+.logout {
+  cursor: pointer;
+  padding-bottom: 5%;
+}
+
+.loggedin {
+  padding-top: 5%;
 }

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component} from '@angular/core';
+
 import * as template from './app-welcome.content.html';
 
 @Component({
@@ -21,4 +22,5 @@ import * as template from './app-welcome.content.html';
   styleUrls: ['./app-welcome.component.scss'],
 })
 export class AppWelcomeComponent {
+
 }

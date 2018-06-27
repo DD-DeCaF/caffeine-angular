@@ -13,25 +13,43 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatDialogRef} from '@angular/material';
+import {SessionService} from '../session/session.service';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import { SessionService } from '../session/session.service';
+import {SessionState} from '../session/store/session.reducers';
+import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {AppState} from '../store/app.reducers';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './app-login.component.html',
-  styleUrls: ['./app-login.component.scss'],
+  selector: 'app-login-dialog',
+  templateUrl: './login-dialog.component.html',
+  styleUrls: ['./login-dialog.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginDialogComponent implements OnInit {
+
+  public loginForm: FormGroup;
   public nextUrl: string;
   public github: () => void;
   public google: () => void;
   public twitter: () => void;
+  public uiStatus: string;
+  public error: string;
+  public sessionState: Observable<SessionState>;
 
   constructor(
-    sessionService: SessionService,
+    public fb: FormBuilder,
+    public dialogRef: MatDialogRef<LoginDialogComponent>,
+    private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-  ) {
+    private store: Store<AppState>) {
+    this.uiStatus = 'ideal';
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
     this.github = () => {
       sessionService.github()
         .then(() => {
@@ -56,5 +74,28 @@ export class LoginComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe((params: Params) => {
       this.nextUrl = params.next;
     });
+    this.sessionState = this.store.select('session');
+  }
+
+  public save(): void {
+    this.dialogRef.close(this.loginForm.value);
+  }
+
+  public close(): void {
+    this.dialogRef.close();
+  }
+
+  public submit(): void {
+    this.uiStatus = 'loading';
+    this.sessionService.authenticate(this.loginForm.value) .then(() => {
+      this.close();
+    }).catch((error) => {
+      this.uiStatus = 'error';
+      this.error = error.error.message;
+    });
+  }
+
+  public logout(): void {
+    this.sessionService.logout();
   }
 }

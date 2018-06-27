@@ -15,19 +15,19 @@
 import {Action} from '@ngrx/store';
 
 // export const SIGNUP = 'SIGNUP';
-export const SIGNIN = 'SIGNIN';
+export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 
 // export class Singup implements Action {
 //   readonly type = SIGNUP;
 // }
 
-export class Signin implements Action {
-  public readonly type: string = SIGNIN;
+export class Login implements Action {
+  public readonly type: string = LOGIN;
 }
 
 export class Logout implements Action {
   public readonly type: string = LOGOUT;
 }
 
-export type Sessionctions = Signin | Logout;
+export type Sessionctions = Login | Logout;
