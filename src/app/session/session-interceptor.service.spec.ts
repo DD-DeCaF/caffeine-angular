@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// import { TestBed, inject } from '@angular/core/testing';
-// import {MockLocationStrategy} from "@angular/common/testing";
-// import { SessionInterceptorService } from './session-interceptor.service';
-//
-// describe('SessionInterceptorService', () => {
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       providers: [SessionInterceptorService]
-//     });
-//   });
-//
-//   it('should be created', inject([SessionInterceptorService], (service: SessionInterceptorService) => {
-//     expect(service).toBeTruthy();
-//   }));
-// });
+import { TestBed, inject } from '@angular/core/testing';
+import { SessionInterceptorService } from './session-interceptor.service';
+
+describe('SessionInterceptorService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [SessionInterceptorService],
+    });
+  });
+
+  it('should be created', inject([SessionInterceptorService], (service: SessionInterceptorService) => {
+    expect(service).toBeTruthy();
+  }));
+});
