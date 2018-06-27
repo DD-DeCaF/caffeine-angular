@@ -26,7 +26,7 @@
     </mat-card>
     <mat-card fxLayout="column" style="min-width: 650px" layout-padding fxFlexAlign="center center" *ngIf="!(sessionState | async).authenticated">
       <div  fxFlex="100" *ngIf="uiStatus == 'loading'" >
-        <mat-progress-spinner  style="margin:0 auto;" mode="indeterminate"></mat-progress-spinner>
+        <mat-progress-spinner class="loginSpinner" mode="indeterminate" [diameter]="40"></mat-progress-spinner>
       </div>
       <mat-card-content fxLayout="row" fxLayoutGap="10" *ngIf="uiStatus != 'loading'">
         <mat-card-content fxLayout="column" fxFlex="50">
