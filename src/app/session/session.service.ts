@@ -52,6 +52,16 @@ interface AuthAPIResponse {
 // TODO enforce key type somehow
 interface ProviderMap {[key: string]: firebase.auth.AuthProvider; }
 
+const firebaseConfig = environment.firebase;
+firebase.initializeApp({
+  apiKey: firebaseConfig.api_key,
+  authDomain: firebaseConfig.auth_domain,
+  databaseURL: firebaseConfig.database_url,
+  projectId: firebaseConfig.project_id,
+  storageBucket: firebaseConfig.storage_bucket,
+  messagingSenderId: firebaseConfig.sender_id,
+});
+
 @Injectable()
 export class SessionService {
   public readonly GOOGLE: string = 'google';
@@ -64,16 +74,9 @@ export class SessionService {
     [this.TWITTER]: new firebase.auth.TwitterAuthProvider(),
   };
 
-  constructor(private http: HttpClient, private store: Store<AppState>) {
-    const firebaseConfig = environment.firebase;
-    firebase.initializeApp({
-      apiKey: firebaseConfig.api_key,
-      authDomain: firebaseConfig.auth_domain,
-      databaseURL: firebaseConfig.database_url,
-      projectId: firebaseConfig.project_id,
-      storageBucket: firebaseConfig.storage_bucket,
-      messagingSenderId: firebaseConfig.sender_id,
-    });
+  constructor(
+    private http: HttpClient,
+    private store: Store<AppState>) {
   }
 
   public expired(): boolean {
