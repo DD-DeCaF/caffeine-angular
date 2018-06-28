@@ -18,9 +18,9 @@ set -xeu
 
 CONFIG=""
 if [ "${TRAVIS_BRANCH}" = "master" ]; then
-  CONFIG="--config production"
+  CONFIG="--configuration production"
 elif [ "${TRAVIS_BRANCH}" = "devel" ]; then
-  CONFIG="--config staging"
+  CONFIG="--configuration staging"
 fi
 
 ng build ${CONFIG}
