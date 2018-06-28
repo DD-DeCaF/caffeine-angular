@@ -14,13 +14,10 @@
 
 import {Component} from '@angular/core';
 
-import * as template from './app-welcome.content.html';
-
 @Component({
-  selector: 'app-app-welcome',
-  template: `<div class="container"><app-app-welcome-content></app-app-welcome-content></div>`,
-  styleUrls: ['./app-welcome.component.scss'],
+  selector: 'app-app-welcome-content',
+  templateUrl: './app-welcome.content.html',
 })
-export class AppWelcomeComponent {
+export class AppWelcomeContentComponent {
 
 }

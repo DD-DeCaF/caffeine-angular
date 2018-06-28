@@ -24,6 +24,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
+import { AppWelcomeContentComponent } from './app-welcome/app-welcome.content';
 
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
@@ -58,6 +59,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppToolbarComponent,
     AppHomeComponent,
     AppWelcomeComponent,
+    AppWelcomeContentComponent,
     LoginDialogComponent,
     OpenLoginDialogDirective,
   ],
