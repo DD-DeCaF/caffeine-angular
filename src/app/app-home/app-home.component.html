@@ -21,9 +21,7 @@
     <mat-toolbar color="primary">
       <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
         <h1>
-          <a *ngIf="project" style="white-space: nowrap" routerLink="/app/project/{{ project.id }}">{{ project.name
-            }}</a>
-          <span *ngIf="project === null || project === undefined">Caffeine</span>
+          Caffeine
         </h1>
 
         <button type="button" mat-icon-button (click)="sidenav.close()">
@@ -33,20 +31,6 @@
       </mat-toolbar-row>
     </mat-toolbar>
 
-    <section [hidden]="!fetchingData">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-    </section>
-
-    <div *ngIf="project === null || project === undefined && (projects && projects.length > 0)">
-      <mat-nav-list>
-        <h3 mat-subheader>Projects</h3>
-        <mat-list-item routerLink="/app/project/{{project.id}}" *ngFor="let project of projects">
-          <mat-icon mat-list-icon [ngStyle]="{color: project.color}">folder</mat-icon>
-          <p matLine>{{ project.name }}</p>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-nav-list>
-    </div>
     <mat-nav-list>
       <mat-list-item routerLink="/app/home">
         <mat-icon mat-list-icon>home</mat-icon>
