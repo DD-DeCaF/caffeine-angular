@@ -29,6 +29,7 @@
     "firebase": "^5.0.4",
     "potion-client": "^4.0.0-6",
     "query-string": "^6.1.0",
+    "raven-js": "^3.26.3",
     "rxjs": "^6.0.0",
     "tslint-eslint-rules": "^5.3.1",
     "zone.js": "^0.8.26"
@@ -38,6 +39,7 @@
     "@angular/cli": "~6.0.3",
     "@angular/compiler-cli": "^6.0.2",
     "@angular/language-service": "^6.0.2",
+    "@types/google.analytics": "0.0.39",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^10.1.4",
