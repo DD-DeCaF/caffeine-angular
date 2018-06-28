@@ -14,8 +14,6 @@
 
 import {Component} from '@angular/core';
 
-import * as template from './app-welcome.content.html';
-
 @Component({
   selector: 'app-app-welcome',
   template: `<div class="container"><app-app-welcome-content></app-app-welcome-content></div>`,
