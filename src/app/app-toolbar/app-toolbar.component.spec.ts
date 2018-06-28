@@ -15,10 +15,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {async, ComponentFixture, TestBed, getTestBed} from '@angular/core/testing';
 import {StoreModule} from '@ngrx/store';
 import {MatSidenav} from '@angular/material';
+import {HttpClient} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 
 import {AppMaterialModule} from '../app-material.module';
 import {AppToolbarComponent} from './app-toolbar.component';
 import {reducers} from '../store/app.reducers';
+import {SessionService} from '../session/session.service';
 
 describe('AppToolbarComponent', () => {
   let component: AppToolbarComponent;
@@ -29,9 +32,14 @@ describe('AppToolbarComponent', () => {
       imports: [
         BrowserAnimationsModule,
         AppMaterialModule,
+        HttpClientModule,
         StoreModule.forRoot(reducers),
       ],
       declarations: [AppToolbarComponent],
+      providers: [
+        SessionService,
+        HttpClient,
+      ],
     }).compileComponents();
   }));
 
