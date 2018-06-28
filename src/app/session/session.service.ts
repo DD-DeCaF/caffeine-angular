@@ -65,13 +65,14 @@ export class SessionService {
   };
 
   constructor(private http: HttpClient, private store: Store<AppState>) {
+    const firebaseConfig = environment.firebase;
     firebase.initializeApp({
-      apiKey: environment.FIREBASE_API_KEY,
-      authDomain: environment.FIREBASE_AUTH_DOMAIN,
-      databaseURL: environment.FIREBASE_DATABASE_URL,
-      projectId: environment.FIREBASE_PROJECT_ID,
-      storageBucket: environment.FIREBASE_STORAGE_BUCKET,
-      messagingSenderId: environment.FIREBASE_SENDER_ID,
+      apiKey: firebaseConfig.api_key,
+      authDomain: firebaseConfig.auth_domain,
+      databaseURL: firebaseConfig.database_url,
+      projectId: firebaseConfig.project_id,
+      storageBucket: firebaseConfig.storage_bucket,
+      messagingSenderId: firebaseConfig.sender_id,
     });
   }
 
@@ -95,7 +96,7 @@ export class SessionService {
 
   public refresh(): Subscription {
     const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN)).val;
-    return this.http.post(`${environment.IAM_API}/refresh`, `refresh_token=${refreshToken}`, {
+    return this.http.post(`${environment.apis.iam}/refresh`, `refresh_token=${refreshToken}`, {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     }).subscribe((response: HttpResponse<string>) => {
       localStorage.setItem(AUTHORIZATION_TOKEN, response.body);
@@ -130,7 +131,7 @@ export class SessionService {
     const params = stringify(credentials);
     const endpoint = `/authenticate/${credentials instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
     return new Promise((resolve, reject) => {
-      this.http.post(`${environment.IAM_API}${endpoint}`, params, {
+      this.http.post(`${environment.apis.iam}${endpoint}`, params, {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       }).subscribe((response: AuthAPIResponse) => {
         this.store.dispatch(new Login());
