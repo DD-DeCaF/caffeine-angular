@@ -11,18 +11,24 @@ import {ActivatedRoute, Params} from '@angular/router';
 describe('Component: Login', () => {
   let component: LoginDialogComponent;
   let fixture: ComponentFixture<LoginDialogComponent>;
-  const mockDialogRef = {
-    close: null,
-  };
+
   const returnValues = {
     authReturn: new Promise((resolve) => resolve()),
   };
+
+  const mockDialogRef = {
+    close: null,
+  };
+
   const mockSessionService = {
-    authenticate: () => (returnValues.authReturn),
+    authenticate: null,
   };
 
   beforeEach(async(() => {
     mockDialogRef.close = jasmine.createSpy('close'),
+    mockSessionService.authenticate = jasmine.createSpy('authenticate')
+      .and.callFake(() => (returnValues.authReturn)),
+
     TestBed.configureTestingModule({
       imports: [
         AppMaterialModule,

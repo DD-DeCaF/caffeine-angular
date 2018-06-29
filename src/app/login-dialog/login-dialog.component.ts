@@ -92,10 +92,8 @@ export class LoginDialogComponent implements OnInit {
     return this.sessionService
       .authenticate(this.loginForm.value)
       .then(() => {
-        console.log('succc');
         this.close();
       }).catch((error) => {
-        console.log('fail');
         this.uiStatus = 'error';
         this.error = error.error.message;
       });
