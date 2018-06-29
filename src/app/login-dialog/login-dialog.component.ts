@@ -87,14 +87,18 @@ export class LoginDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  public submit(): void {
+  public async submit(): Promise<void> {
     this.uiStatus = 'loading';
-    this.sessionService.authenticate(this.loginForm.value) .then(() => {
-      this.close();
-    }).catch((error) => {
-      this.uiStatus = 'error';
-      this.error = error.error.message;
-    });
+    return this.sessionService
+      .authenticate(this.loginForm.value)
+      .then(() => {
+        console.log('succc');
+        this.close();
+      }).catch((error) => {
+        console.log('fail');
+        this.uiStatus = 'error';
+        this.error = error.error.message;
+      });
   }
 
   public logout(): void {

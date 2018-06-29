@@ -3,7 +3,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppMaterialModule} from '../app-material.module';
 import {reducers} from '../store/app.reducers';
-import {HttpClient, HttpHandler} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {SessionService} from '../session/session.service';
 import {MatDialogRef} from '@angular/material';
@@ -13,11 +12,17 @@ describe('Component: Login', () => {
   let component: LoginDialogComponent;
   let fixture: ComponentFixture<LoginDialogComponent>;
   const mockDialogRef = {
-    close: jasmine.createSpy('close'),
+    close: null,
+  };
+  const returnValues = {
+    authReturn: new Promise((resolve) => resolve()),
+  };
+  const mockSessionService = {
+    authenticate: () => (returnValues.authReturn),
   };
 
-
   beforeEach(async(() => {
+    mockDialogRef.close = jasmine.createSpy('close'),
     TestBed.configureTestingModule({
       imports: [
         AppMaterialModule,
@@ -26,9 +31,10 @@ describe('Component: Login', () => {
         StoreModule.forRoot(reducers),
       ],
       providers: [
-        SessionService,
-        HttpClient,
-        HttpHandler,
+        {
+          provide: SessionService,
+          useValue: mockSessionService,
+        },
         {
           provide: MatDialogRef,
           useValue: mockDialogRef,
@@ -49,33 +55,47 @@ describe('Component: Login', () => {
     });
     fixture = TestBed.createComponent(LoginDialogComponent);
     component = fixture.componentInstance;
-    component.ngOnInit();
   }));
 
-  it('form invalid if is empty', () => {
+  it('should have an invalid form it\'s empty', () => {
     expect(component.loginForm.valid).toBeFalsy();
   });
 
-  it('email field validation', () => {
-    const email = component.loginForm.controls['email'];
-    expect(email.valid).toBeFalsy();
-  });
-
-  it('email field validity', () => {
-    const email = component.loginForm.controls['email'];
+  it('should have required error on email field', () => {
+    const email = component.loginForm.controls.email;
     const errors = email.errors || {};
-    expect(errors['required']).toBeTruthy();
+    expect(errors.required).toBeTruthy();
   });
 
-  it('submitting a loginForm', () => {
-    expect(component.loginForm.valid).toBeFalsy();
-    component.loginForm.controls['email'].setValue('test@test.com');
-    component.loginForm.controls['password'].setValue('pass4test');
+  it('should have a valid form if fileld out', () => {
+    component.loginForm.controls.email.setValue('test@test.com');
+    component.loginForm.controls.password.setValue('pass4test');
     expect(component.loginForm.valid).toBeTruthy();
-
     component.submit();
-
-   // check here if the user is authenticated or not
   });
 
+  it('should close the dialog on successful authentication', async(async () => {
+    returnValues.authReturn = new Promise((resolve, reject) => resolve());
+    component.loginForm.controls.email.setValue('test@test.com');
+    component.loginForm.controls.password.setValue('pass4test');
+    await component.submit();
+    fixture.whenStable().then(() => {
+      expect(mockDialogRef.close).toHaveBeenCalled();
+    });
+  }));
+
+  it('should fetch the error message on unsuccesful authentication', async(async () => {
+    returnValues.authReturn = new Promise((resolve, reject) => reject({
+      error: {
+        message: 'Authentication was not succesful',
+      },
+    }));
+    component.loginForm.controls.email.setValue('test@test.com');
+    component.loginForm.controls.password.setValue('pass4test');
+    await component.submit();
+    fixture.whenStable().then(() => {
+      expect(mockDialogRef.close).not.toHaveBeenCalled();
+      expect(component.uiStatus).toBe('error');
+    });
+  }));
 });
