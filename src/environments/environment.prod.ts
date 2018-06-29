@@ -15,5 +15,5 @@ export const environment: Configuration = {
     storage_bucket: 'dd-decaf-cfbf6.appspot.com',
     sender_id: '972933293195',
   },
-  trustedURLs: [],
+  trustedURLs: ['https://api.dd-decaf.eu/iam'],
 };
