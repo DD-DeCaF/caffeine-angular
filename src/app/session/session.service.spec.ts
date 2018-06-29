@@ -12,23 +12,94 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TestBed, inject } from '@angular/core/testing';
-
+import {TestBed, inject, getTestBed, async} from '@angular/core/testing';
 import { SessionService } from './session.service';
 import {AppModule} from '../app.module';
 import {APP_BASE_HREF} from '@angular/common';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from '../store/app.reducers';
+import {environment} from '../../environments/environment';
+
+const AUTHORIZATION_TOKEN = 'authorizationToken';
+
+class FirebaseCredentials {
+  constructor(
+    public uid: string,
+    public token: string,
+  ) {}
+}
+
+class UserCredentials {
+  constructor(
+    public email: string,
+    public password: string,
+  ) {}
+}
 
 describe('SessionService', () => {
+  let injector: TestBed;
+  let service: SessionService;
+  let httpMock: HttpTestingController;
+  const returnValues = {
+    authReturn: new Promise((resolve) => resolve()),
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        AppModule,
+        HttpClientTestingModule,
+        StoreModule.forRoot(reducers)],
       providers: [
+        SessionService,
         {provide: APP_BASE_HREF, useValue : '/' },
       ],
-      imports: [AppModule],
     });
+
+    injector = getTestBed();
+    service = injector.get(SessionService);
+    httpMock = injector.get(HttpTestingController);
   });
 
-  it('should be created', inject([SessionService], (service: SessionService) => {
+  it('should be created', () => {
+    injector = getTestBed();
+    service = injector.get(SessionService);
     expect(service).toBeTruthy();
+  });
+
+  it('should exist token after authenticate', async(async () => {
+    injector = getTestBed();
+    service = injector.get(SessionService);
+    httpMock = injector.get(HttpTestingController);
+    const mockResponse = {
+      jwt: 'sometoken',
+      refresh_token: {
+      val: 'string',
+      exp: 0,
+      },
+    };
+    const mockUser = {email: 'test@test.com', password: 'pass4test'};
+    const endpoint = `/authenticate/${mockUser instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
+    service.authenticate(mockUser).then(() => {
+      expect(localStorage.getItem(AUTHORIZATION_TOKEN)).toEqual('sometoken');
+    });
+    const req = httpMock.expectOne(`${environment.apis.iam}${endpoint}`);
+    req.flush(mockResponse);
   }));
+
+  it('should have a local endopoint', () => {
+    const mockUser = new UserCredentials('test@test.com', 'pass4test');
+    const endpoint = `/authenticate/${mockUser instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
+    expect(endpoint).toEqual('/authenticate/local');
+  });
+
+  it('should have a firebase endopoint', () => {
+    injector = getTestBed();
+    service = injector.get(SessionService);
+
+    const mockUser = new FirebaseCredentials('1111', 'sometoken');
+    const endpoint = `/authenticate/${mockUser instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
+    expect(endpoint).toEqual('/authenticate/firebase');
+  });
 });
+
