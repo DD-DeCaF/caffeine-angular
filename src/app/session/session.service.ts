@@ -25,7 +25,7 @@ import {AppState} from '../store/app.reducers';
 import {Logout, Login} from './store/session.actions';
 
 const REFRESH_TOKEN = 'refreshToken';
-const AUTHORIZATION_TOKEN = 'authorizationToken';
+export const AUTHORIZATION_TOKEN = 'authorizationToken';
 
 class UserCredentials {
   constructor(
