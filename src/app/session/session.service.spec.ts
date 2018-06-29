@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {TestBed, inject, getTestBed, async} from '@angular/core/testing';
-import { SessionService } from './session.service';
-import {AppModule} from '../app.module';
-import {APP_BASE_HREF} from '@angular/common';
+import { TestBed, getTestBed, async } from '@angular/core/testing';
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import {StoreModule} from '@ngrx/store';
-import {reducers} from '../store/app.reducers';
-import {environment} from '../../environments/environment';
+import { StoreModule } from '@ngrx/store';
 
-const AUTHORIZATION_TOKEN = 'authorizationToken';
+import { SessionService } from './session.service';
+import { AppModule } from '../app.module';
+import { reducers } from '../store/app.reducers';
+import { environment } from '../../environments/environment';
+import { AUTHORIZATION_TOKEN } from './session.service';
 
 class FirebaseCredentials {
   constructor(
@@ -41,9 +41,6 @@ describe('SessionService', () => {
   let injector: TestBed;
   let service: SessionService;
   let httpMock: HttpTestingController;
-  const returnValues = {
-    authReturn: new Promise((resolve) => resolve()),
-  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -67,19 +64,20 @@ describe('SessionService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should exist token after authenticate', async(async () => {
+  it('should save the auth token in local storage', async(async () => {
     injector = getTestBed();
     service = injector.get(SessionService);
     httpMock = injector.get(HttpTestingController);
+
     const mockResponse = {
       jwt: 'sometoken',
       refresh_token: {
-      val: 'string',
-      exp: 0,
+        val: 'string',
+        exp: 0,
       },
     };
     const mockUser = {email: 'test@test.com', password: 'pass4test'};
-    const endpoint = `/authenticate/${mockUser instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
+    const endpoint = '/authenticate/local';
     service.authenticate(mockUser).then(() => {
       expect(localStorage.getItem(AUTHORIZATION_TOKEN)).toEqual('sometoken');
     });
@@ -87,13 +85,13 @@ describe('SessionService', () => {
     req.flush(mockResponse);
   }));
 
-  it('should have a local endopoint', () => {
+  it('should call local auth endpoint for email based authentication', () => {
     const mockUser = new UserCredentials('test@test.com', 'pass4test');
     const endpoint = `/authenticate/${mockUser instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
     expect(endpoint).toEqual('/authenticate/local');
   });
 
-  it('should have a firebase endopoint', () => {
+  it('should call firebase auth endpoint for social authentication', () => {
     injector = getTestBed();
     service = injector.get(SessionService);
 
