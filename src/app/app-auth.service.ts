@@ -14,11 +14,12 @@
 
 import {Injectable} from '@angular/core';
 import {Location, PopStateEvent} from '@angular/common';
+import {environment} from '../environments/environment';
 
 @Injectable()
 export class AppAuthService {
   // isRequired = true;
-  public trustedURLs: Set<string> = new Set();
+  public trustedURLs: Array<string> = environment.trustedURLs;
   // location: any;
   public currentUrl: string = null;
 
@@ -38,11 +39,7 @@ export class AppAuthService {
   // }
 
   public isTrustedURL(url: string): boolean {
-    const currentURL = this.currentUrl;
-    const currentHostname = (new URL(currentURL)).hostname;
-
-    const urlObj = new URL(url, currentURL);
-    return urlObj.hostname === currentHostname || Array.from(this.trustedURLs)
-      .some((trustedURL) => urlObj.href.startsWith(trustedURL));
+    return Array.from(this.trustedURLs)
+      .some((trustedURL) => url.startsWith(trustedURL));
   }
 }
