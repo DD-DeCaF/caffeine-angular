@@ -21,17 +21,16 @@
             (click)="sidenav.open()">
       <mat-icon>menu</mat-icon>
     </button>
+    <span class="fill-remaining-space"></span>
 
-    <button class="topright-menu"
-            mat-icon-button
+    <button mat-button
             type="button"
             appOpenLoginDialog
             *ngIf="!(sessionState | async).authenticated">
       <mat-icon>lock</mat-icon>
       Log In
     </button>
-    <button class="topright-menu"
-            mat-icon-button
+    <button mat-button
             type="button"
             (click)="logout()"
             *ngIf="(sessionState | async).authenticated">
