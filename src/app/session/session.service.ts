@@ -23,9 +23,7 @@ import 'firebase/auth';
 import {environment} from '../../environments/environment';
 import {AppState} from '../store/app.reducers';
 import {Logout, Login} from './store/session.actions';
-
-const REFRESH_TOKEN = 'refreshToken';
-export const AUTHORIZATION_TOKEN = 'authorizationToken';
+import {AUTHORIZATION_TOKEN, REFRESH_TOKEN} from './consts';
 
 class UserCredentials {
   constructor(
@@ -64,6 +62,8 @@ firebase.initializeApp({
 
 @Injectable()
 export class SessionService {
+  private trustedURLs: Array<string> = environment.trustedURLs;
+
   public readonly GOOGLE: string = 'google';
   public readonly GITHUB: string = 'github';
   public readonly TWITTER: string = 'twitter';
@@ -155,5 +155,10 @@ export class SessionService {
     localStorage.removeItem(AUTHORIZATION_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
     this.store.dispatch(new Logout());
+  }
+
+  public isTrustedURL(url: string): boolean {
+    return Array.from(this.trustedURLs)
+      .some((trustedURL) => url.startsWith(trustedURL));
   }
 }

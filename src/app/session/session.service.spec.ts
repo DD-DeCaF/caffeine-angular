@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { TestBed, getTestBed, async } from '@angular/core/testing';
+import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { StoreModule } from '@ngrx/store';
@@ -21,7 +21,7 @@ import { SessionService } from './session.service';
 import { AppModule } from '../app.module';
 import { reducers } from '../store/app.reducers';
 import { environment } from '../../environments/environment';
-import { AUTHORIZATION_TOKEN } from './session.service';
+import { AUTHORIZATION_TOKEN } from './consts';
 
 class FirebaseCredentials {
   constructor(
@@ -58,6 +58,10 @@ describe('SessionService', () => {
     httpMock = injector.get(HttpTestingController);
   });
 
+  afterEach(inject([HttpTestingController], (backend: HttpTestingController) => {
+    backend.verify();
+  }));
+
   it('should be created', () => {
     injector = getTestBed();
     service = injector.get(SessionService);
@@ -76,12 +80,13 @@ describe('SessionService', () => {
         exp: 0,
       },
     };
+
     const mockUser = {email: 'test@test.com', password: 'pass4test'};
-    const endpoint = '/authenticate/local';
     service.authenticate(mockUser).then(() => {
       expect(localStorage.getItem(AUTHORIZATION_TOKEN)).toEqual('sometoken');
     });
-    const req = httpMock.expectOne(`${environment.apis.iam}${endpoint}`);
+
+    const req = httpMock.expectOne(`${environment.apis.iam}/authenticate/local`);
     req.flush(mockResponse);
   }));
 
@@ -98,6 +103,18 @@ describe('SessionService', () => {
     const mockUser = new FirebaseCredentials('1111', 'sometoken');
     const endpoint = `/authenticate/${mockUser instanceof FirebaseCredentials ? 'firebase' : 'local'}`;
     expect(endpoint).toEqual('/authenticate/firebase');
+  });
+
+  it('should trust API URL', () => {
+    expect(
+      service.isTrustedURL('https://api-staging.dd-decaf.eu/iam/'),
+    ).toEqual(true);
+  });
+
+  it('should trust sub urls from API', () => {
+    expect(
+      service.isTrustedURL('https://api-staging.dd-decaf.eu/iam/authenticate/firebase'),
+    ).toEqual(true);
   });
 });
 
