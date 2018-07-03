@@ -4,6 +4,7 @@ export const environment: Configuration = {
   production: true,
   apis: {
     iam: 'https://api.dd-decaf.eu/iam',
+    model: 'https://api.dd-decaf.eu/model-caffeine',
   },
   GATrackingID: 'UA-106144097-2',
   sentryDSN: 'https://4f2d0b394b5a4215806fc38ae2424502@sentry.io/1233163',
