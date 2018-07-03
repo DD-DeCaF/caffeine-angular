@@ -17,23 +17,19 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {SessionService} from './session.service';
+import {AUTHORIZATION_TOKEN} from './consts';
 
 @Injectable()
 export class SessionInterceptorService implements HttpInterceptor {
-  // @matyasfodor TODO try to get the dependencies directly in the constuctor
   constructor(private injector: Injector) {
   }
   // tslint:disable-next-line:no-any
   public intercept(req: HttpRequest<Request>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Removed the dependency, the browser API should be sufficient.
-    // const localStorage = this.injector.get(LocalStorageService);
-    // const appAuth = this.injector.get(AppAuthService);
-    const session = this.injector.get(SessionService);
+    const sessionService = this.injector.get(SessionService);
 
-    const sessionJWT = localStorage.getItem('sessionJWT');
-    // @matyasfodor TODO Add app auth service later!
-    if (sessionJWT) {
-      // if (sessionJWT && appAuthService.isTrustedURL(req.url)) {
+    const sessionJWT = localStorage.getItem(AUTHORIZATION_TOKEN);
+
+    if (sessionJWT && sessionService.isTrustedURL(req.url)) {
       req = req.clone({headers: req.headers.set('Authorization', `Bearer ${sessionJWT}`)});
     }
 
@@ -42,7 +38,7 @@ export class SessionInterceptorService implements HttpInterceptor {
         () => { /* no-empty */ },
         (response) => {
           if (response.status === 401) {
-            session.logout();
+            sessionService.logout();
           }
         },
       ));
