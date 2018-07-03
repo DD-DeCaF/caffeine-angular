@@ -4,7 +4,10 @@ export interface Configuration {
     iam: string;
   };
   GATrackingID?: string;
-  sentryDSN?: string;
+  sentry?: {
+    DSN: string,
+    release: string,
+  };
   firebase: {
     api_key: string;
     auth_domain: string;

@@ -9,7 +9,7 @@ export const environment: Configuration = {
     iam: 'https://api-staging.dd-decaf.eu/iam',
   },
   GATrackingID: null,
-  sentryDSN: null,
+  sentry: null,
   firebase: {
     api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
     auth_domain: 'dd-decaf-cfbf6.firebaseapp.com',
