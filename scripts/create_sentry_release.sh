@@ -27,16 +27,16 @@ fi
 if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "devel" ]; then
   curl --fail https://sentry.io/api/0/organizations/technical-university-of-denmark/releases/ \
     -X POST \
-    -H 'Authorization: Bearer ${AUTH_TOKEN}' \
+    -H 'Authorization: Bearer '${AUTH_TOKEN}'' \
     -H 'Content-Type: application/json' \
     -d '
     {
-      "version": "${TRAVIS_COMMIT}",
+      "version": "'"${TRAVIS_COMMIT}"'",
       "refs": [{
           "repository":"DD-DeCaF/caffeine",
-          "commit":"${TRAVIS_COMMIT}"
+          "commit":"'"${TRAVIS_COMMIT}"'"
       }],
-      "projects":["${PROJECT}"]
+      "projects":["'"${PROJECT}"'"]
   }
   '
 fi
