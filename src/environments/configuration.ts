@@ -4,7 +4,10 @@ export interface Configuration {
     iam: string;
     model: string;
   };
-  GATrackingID?: string;
+  GA?: {
+    trackingID: string;
+    eventLogging: boolean;
+  };
   sentry?: {
     DSN: string,
     release: string,

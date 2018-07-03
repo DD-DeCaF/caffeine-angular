@@ -6,7 +6,10 @@ export const environment: Configuration = {
     iam: 'https://api.dd-decaf.eu/iam',
     model: 'https://api.dd-decaf.eu/model-caffeine',
   },
-  GATrackingID: 'UA-106144097-2',
+  GA: {
+    trackingID: 'UA-106144097-2',
+    eventLogging: true,
+  },
   sentry: {
     DSN: 'https://4f2d0b394b5a4215806fc38ae2424502@sentry.io/1233163',
     release: 'SENTRY_PROJECT',
