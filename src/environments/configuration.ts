@@ -2,6 +2,7 @@ export interface Configuration {
   production: boolean;
   apis: {
     iam: string;
+    model: string;
   };
   GATrackingID?: string;
   sentryDSN?: string;
