@@ -2,7 +2,7 @@ sudo: required
 
 addons:
   chrome: stable
-  
+
 language: node_js
 
 node_js:
@@ -35,6 +35,7 @@ script:
   - node scripts/transpileMd.js src/app/app-welcome/app-welcome.content.md src/app/app-welcome/app-welcome.content.html
   - ng lint
   - ng test --watch false
+  - ./scripts/create_sentry_release.sh
   - ./scripts/verify_license_headers.sh
   - ./scripts/build.sh
 

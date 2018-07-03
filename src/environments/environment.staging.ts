@@ -6,7 +6,10 @@ export const environment: Configuration = {
     iam: 'https://api-staging.dd-decaf.eu/iam',
   },
   GATrackingID: 'UA-106144097-3',
-  sentryDSN: 'https://4ae40dd008994d91bc5632437fd5c395@sentry.io/1233153',
+  sentry: {
+    DSN: 'https://4ae40dd008994d91bc5632437fd5c395@sentry.io/1233153',
+    release: 'SENTRY_PROJECT',
+  },
   firebase: {
     api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
     auth_domain: 'dd-decaf-cfbf6.firebaseapp.com',

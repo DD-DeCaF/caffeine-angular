@@ -40,9 +40,9 @@ import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
 
-if (environment.sentryDSN) {
+if (environment.sentry) {
   Raven
-    .config(environment.sentryDSN)
+    .config(environment.sentry.DSN)
     .install();
 }
 
@@ -80,7 +80,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppAuthService,
     SessionService,
     FormBuilder,
-    ...(environment.sentryDSN ? [{ provide: ErrorHandler, useClass: RavenErrorHandler }] : []),
+    ...(environment.sentry ? [{ provide: ErrorHandler, useClass: RavenErrorHandler }] : []),
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginDialogComponent],
