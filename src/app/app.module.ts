@@ -29,7 +29,6 @@ import { AppWelcomeContentComponent } from './app-welcome/app-welcome.content';
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
 
-import {AppAuthService} from './app-auth.service';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
@@ -77,7 +76,6 @@ export class RavenErrorHandler implements ErrorHandler {
     ReactiveFormsModule,
   ],
   providers: [
-    AppAuthService,
     SessionService,
     FormBuilder,
     ...(environment.sentryDSN ? [{ provide: ErrorHandler, useClass: RavenErrorHandler }] : []),
