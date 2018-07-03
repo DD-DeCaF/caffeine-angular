@@ -9,7 +9,7 @@ export const environment: Configuration = {
     iam: 'https://api-staging.dd-decaf.eu/iam',
     model: 'https://api-staging.dd-decaf.eu/model-caffeine',
   },
-  GATrackingID: null,
+  GA: null,
   sentry: null,
   firebase: {
     api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',

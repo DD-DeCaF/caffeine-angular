@@ -25,8 +25,8 @@ export class AppComponent {
   public title = 'app';
 
   constructor(router: Router) {
-    if (environment.GATrackingID) {
-      ga('create', environment.GATrackingID, 'auto');
+    if (environment.GA) {
+      ga('create', environment.GA.trackingID, 'auto');
       router.events.subscribe((event: Event) => {
         if (event instanceof NavigationEnd) {
           ga('set', 'page', event.urlAfterRedirects);
