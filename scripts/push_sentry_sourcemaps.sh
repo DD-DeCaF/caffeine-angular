@@ -17,8 +17,13 @@
 set -xeu
 
 if [ "${TRAVIS_BRANCH}" = "master" ]; then
-  sed -i -e "s/SENTRY_PROJECT/${TRAVIS_COMMIT}/g" src/environments/environment.prod.ts
+  PROJECT='caffeine'
 elif [ "${TRAVIS_BRANCH}" = "devel" ]; then
-   sed -i -e "s/SENTRY_PROJECT/${TRAVIS_COMMIT}/g" src/environments/environment.staging.ts
+   PROJECT='caffeine-staging'
 fi
-
+if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "devel" ]; then
+  sentry-cli releases -o technical-university-of-denmark -p ${PROJECT} new ${TRAVIS_COMMIT}
+  sentry-cli releases -o technical-university-of-denmark -p ${PROJECT} files \
+    ${TRAVIS_COMMIT} upload-sourcemaps --url-prefix \
+    https://caffeine.dd-decaf.eu/ dist
+fi
