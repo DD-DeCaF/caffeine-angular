@@ -38,6 +38,7 @@ script:
   - ./scripts/create_sentry_release.sh
   - ./scripts/verify_license_headers.sh
   - ./scripts/build.sh
+  - ./scripts/push_sentry_sourcemaps.sh
 
 before_deploy:
   - ./scripts/install_gcloud.sh
