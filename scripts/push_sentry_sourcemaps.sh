@@ -26,4 +26,5 @@ if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "devel" ]; then
   sentry-cli releases -o technical-university-of-denmark -p ${PROJECT} files \
     ${TRAVIS_COMMIT} upload-sourcemaps --url-prefix \
     https://caffeine.dd-decaf.eu/ dist
+  rm  dist/*.js.map
 fi
