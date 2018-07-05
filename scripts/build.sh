@@ -23,4 +23,4 @@ elif [ "${TRAVIS_BRANCH}" = "devel" ]; then
   CONFIG="--configuration staging"
 fi
 
-ng build ${CONFIG}
+ng build --sourceMap=true ${CONFIG}
