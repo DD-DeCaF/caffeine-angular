@@ -14,10 +14,10 @@ export class OpenLoginDialogDirective {
   constructor(private dialog: MatDialog) {}
 
   public openDialog(): void {
-    logger.info(new logger.GAEvent({
+    logger.event({
       category: 'login',
       action: 'click',
-    }));
+    });
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
