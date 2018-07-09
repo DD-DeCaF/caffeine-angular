@@ -14,27 +14,11 @@
 
 import {environment} from '../environments/environment';
 
-class IGAEvent {
+class GAEvent {
   public category?: string;
   public action?: string;
   public label?: string;
   public value?: string;
-}
-
-export class GAEvent extends IGAEvent {
-  constructor(event: IGAEvent) {
-    super();
-    Object.assign(
-      this,
-      {
-        category: null,
-        action: null,
-        label: null,
-        value: null,
-      },
-      event,
-    );
-  }
 }
 
 // tslint:disable-next-line:no-any
@@ -55,27 +39,22 @@ export const debugC = (tag: string): (...args: string[]) => void =>
       debug(tag, ...args);
     };
 
-export function info(gaEvent: GAEvent): void;
-// tslint:disable-next-line:no-any
-export function info(...args: any[]): void {
-  if (!environment.production) {
-    console.log('Info:', ...args);
-  }
-  if (environment.GA) {
+export function event(gaEvent: GAEvent): void {
     // More info about GA:
     // https://developers.google.com/analytics/devguides/collection/analyticsjs/events
-    const [gaEvent, ...rest] = args;
-    if (rest.length === 1 && gaEvent instanceof GAEvent) {
+    if (environment.GA) {
       ga('send', 'event', gaEvent.category, gaEvent.action, gaEvent.label, gaEvent.value);
     }
-  }
+}
+
+// tslint:disable-next-line:no-any
+export function info(...args: any[]): void {
+  console.log('Info:', ...args);
 }
 
 // tslint:disable-next-line:no-any
 export const warning = (...args: any[]): void => {
-  if (!environment.production) {
-    console.warn(...args);
-  }
+  console.warn(...args);
 };
 
 /**
