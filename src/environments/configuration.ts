@@ -6,7 +6,6 @@ export interface Configuration {
   };
   GA?: {
     trackingID: string;
-    eventLogging: boolean;
   };
   sentry?: {
     DSN: string,
