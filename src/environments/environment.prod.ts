@@ -8,7 +8,6 @@ export const environment: Configuration = {
   },
   GA: {
     trackingID: 'UA-106144097-2',
-    eventLogging: true,
   },
   sentry: {
     DSN: 'https://4f2d0b394b5a4215806fc38ae2424502@sentry.io/1233163',
