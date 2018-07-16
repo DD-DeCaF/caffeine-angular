@@ -14,6 +14,11 @@
 
 import {Component} from '@angular/core';
 import {Router, NavigationEnd, Event} from '@angular/router';
+import {MatIconRegistry} from '@angular/material/icon';
+import {DomSanitizer} from '@angular/platform-browser';
+
+import MAP_ICON from '../assets/images/map_icon.svg';
+
 import {environment} from '../environments/environment';
 
 @Component({
@@ -24,7 +29,11 @@ import {environment} from '../environments/environment';
 export class AppComponent {
   public title = 'app';
 
-  constructor(router: Router) {
+  constructor(
+    router: Router,
+    matIconRegistry: MatIconRegistry,
+    domSanitizer: DomSanitizer,
+  ) {
     if (environment.GA) {
       ga('create', environment.GA.trackingID, 'auto');
       router.events.subscribe((event: Event) => {
@@ -34,5 +43,10 @@ export class AppComponent {
         }
       });
     }
+
+    matIconRegistry.addSvgIcon(
+      'interactive-map',
+      domSanitizer.bypassSecurityTrustResourceUrl(MAP_ICON),
+    );
   }
 }
