@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {LoginDialogComponent} from './login-dialog.component';
+import {AppLoginDialogComponent} from './app-login-dialog.component';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppMaterialModule} from '../app-material.module';
@@ -23,8 +23,8 @@ import {MatDialogRef} from '@angular/material';
 import {ActivatedRoute, Params} from '@angular/router';
 
 describe('Component: Login', () => {
-  let component: LoginDialogComponent;
-  let fixture: ComponentFixture<LoginDialogComponent>;
+  let component: AppLoginDialogComponent;
+  let fixture: ComponentFixture<AppLoginDialogComponent>;
 
   const returnValues = {
     authReturn: new Promise((resolve) => resolve()),
@@ -70,10 +70,10 @@ describe('Component: Login', () => {
           },
         },
       ],
-      declarations: [LoginDialogComponent],
+      declarations: [AppLoginDialogComponent],
 
     });
-    fixture = TestBed.createComponent(LoginDialogComponent);
+    fixture = TestBed.createComponent(AppLoginDialogComponent);
     component = fixture.componentInstance;
   }));
 
