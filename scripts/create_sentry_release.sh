@@ -19,6 +19,6 @@ set -xeu
 if [ "${TRAVIS_BRANCH}" = "master" ]; then
   sed -i -e "s/SENTRY_PROJECT/${TRAVIS_COMMIT}/g" src/environments/environment.prod.ts
 elif [ "${TRAVIS_BRANCH}" = "devel" ]; then
-   sed -i -e "s/SENTRY_PROJECT/${TRAVIS_COMMIT}/g" src/environments/environment.staging.ts
+  sed -i -e "s/SENTRY_PROJECT/${TRAVIS_COMMIT}/g" src/environments/environment.staging.ts
 fi
 
