@@ -20,21 +20,22 @@ import {NgModule, ErrorHandler} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {FormBuilder} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
-import { AppWelcomeContentComponent } from './app-welcome/app-welcome.content';
+import {AppWelcomeContentComponent} from './app-welcome/app-welcome.content';
+import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
+import {AppLoginDialogComponent} from './app-login-dialog/app-login-dialog.component';
+import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-map.component';
 
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
 
-import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
-import {LoginDialogComponent} from './login-dialog/login-dialog.component';
-import {FormBuilder} from '@angular/forms';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
@@ -59,7 +60,8 @@ export class RavenErrorHandler implements ErrorHandler {
     AppHomeComponent,
     AppWelcomeComponent,
     AppWelcomeContentComponent,
-    LoginDialogComponent,
+    AppLoginDialogComponent,
+    AppInteractiveMapComponent,
     OpenLoginDialogDirective,
   ],
   imports: [
@@ -81,6 +83,6 @@ export class RavenErrorHandler implements ErrorHandler {
     ...(environment.sentry ? [{ provide: ErrorHandler, useClass: RavenErrorHandler }] : []),
   ],
   bootstrap: [AppComponent],
-  entryComponents: [LoginDialogComponent],
+  entryComponents: [AppLoginDialogComponent],
 })
 export class AppModule { }

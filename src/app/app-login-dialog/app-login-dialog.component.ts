@@ -24,10 +24,10 @@ import {AppState} from '../store/app.reducers';
 
 @Component({
   selector: 'app-login-dialog',
-  templateUrl: './login-dialog.component.html',
-  styleUrls: ['./login-dialog.component.scss'],
+  templateUrl: './app-login-dialog.component.html',
+  styleUrls: ['./app-login-dialog.component.scss'],
 })
-export class LoginDialogComponent implements OnInit {
+export class AppLoginDialogComponent implements OnInit {
 
   public loginForm: FormGroup;
   public nextUrl: string;
@@ -40,7 +40,7 @@ export class LoginDialogComponent implements OnInit {
 
   constructor(
     public fb: FormBuilder,
-    public dialogRef: MatDialogRef<LoginDialogComponent>,
+    public dialogRef: MatDialogRef<AppLoginDialogComponent>,
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>) {
