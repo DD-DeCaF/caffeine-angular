@@ -15,12 +15,14 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <button mat-icon-button
-            type="button"
-            role="menuButton"
-            *ngIf="!sidenav.opened"
-            (click)="sidenav.open()">
+      type="button"
+      role="menuButton"
+      (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+    <h1>
+      Caffeine
+    </h1>
     <span class="fill-remaining-space"></span>
 
     <button mat-button

@@ -14,8 +14,10 @@
 
 import {NgModule} from '@angular/core';
 import {Route, RouterModule} from '@angular/router';
+
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
+import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-map.component';
 
 
 const appRoutes: Route[] = [
@@ -26,6 +28,10 @@ const appRoutes: Route[] = [
       {
         path: '',
         component: AppWelcomeComponent,
+      },
+      {
+        path: 'interactiveMap',
+        component: AppInteractiveMapComponent,
       },
     ],
   },
