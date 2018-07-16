@@ -19,7 +19,7 @@ set -xeu
 if [ "${TRAVIS_BRANCH}" = "master" ]; then
   PROJECT='caffeine'
 elif [ "${TRAVIS_BRANCH}" = "devel" ]; then
-   PROJECT='caffeine-staging'
+  PROJECT='caffeine-staging'
 fi
 if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "devel" ]; then
   sentry-cli releases -o technical-university-of-denmark -p ${PROJECT} new ${TRAVIS_COMMIT}
