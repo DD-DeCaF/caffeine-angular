@@ -12,40 +12,33 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<mat-sidenav-container fxFlexFill>
-  <mat-sidenav #sidenav
-               class="mat-elevation-z3"
-               mode="side"
-               opened="true">
+<div fxFlexFill fxLayout="column">
+  <app-toolbar [sidenav]="sidenav"></app-toolbar>
+  
+  <div class="container" fxFlexFill>
+    <mat-sidenav-container>
+      <mat-sidenav #sidenav
+                  class="mat-elevation-z3"
+                  mode="over">
+    
+        <mat-nav-list>
+          <mat-list-item routerLink="/">
+            <mat-icon mat-list-icon>home</mat-icon>
+            <p matLine>Home</p>
+          </mat-list-item>
+    
+          <mat-list-item routerLink="/interactiveMap">
+            <mat-icon mat-list-icon svgIcon="interactive-map"></mat-icon>
+            <p matLine>Interactive Map</p>
+          </mat-list-item>
+        </mat-nav-list>
+    
+      </mat-sidenav>
 
-    <mat-toolbar color="primary">
-      <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
-        <h1>
-          Caffeine
-        </h1>
-
-        <button type="button" mat-icon-button (click)="sidenav.close()">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-
-      </mat-toolbar-row>
-    </mat-toolbar>
-
-    <mat-nav-list>
-      <mat-list-item routerLink="/">
-        <mat-icon mat-list-icon>home</mat-icon>
-        <p matLine>Home</p>
-      </mat-list-item>
-    </mat-nav-list>
-
-  </mat-sidenav>
-
-  <div fxFlexFill fxLayout="column">
-    <app-toolbar [sidenav]="sidenav"></app-toolbar>
-
-    <div fxFlex class='content'>
-      <router-outlet>
-      </router-outlet>
-    </div>
+      <div fxFlex class="content">
+          <router-outlet>
+          </router-outlet>
+      </div>
+    </mat-sidenav-container>
   </div>
-</mat-sidenav-container>
+</div>

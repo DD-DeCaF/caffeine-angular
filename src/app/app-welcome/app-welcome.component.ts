@@ -16,7 +16,12 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-app-welcome',
-  template: `<div class="container"><app-app-welcome-content></app-app-welcome-content></div>`,
+  template: `
+  <div class="container">
+    <div class="content-wrapper">
+      <app-app-welcome-content></app-app-welcome-content>
+    </div>
+  </div>`,
   styleUrls: ['./app-welcome.component.scss'],
 })
 export class AppWelcomeComponent {
