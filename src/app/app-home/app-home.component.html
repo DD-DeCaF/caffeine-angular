@@ -22,13 +22,13 @@
                   mode="over">
     
         <mat-nav-list>
-          <mat-list-item routerLink="/">
+          <mat-list-item routerLink="/" [routerLinkActive]="['highlight']">
             <mat-icon mat-list-icon>home</mat-icon>
             <p matLine>Home</p>
           </mat-list-item>
-    
-          <mat-list-item routerLink="/interactiveMap">
-            <mat-icon mat-list-icon svgIcon="interactive-map"></mat-icon>
+
+          <mat-list-item routerLink="/interactiveMap" [routerLinkActive]="['highlight']">
+            <mat-icon mat-list-icon svgIcon="interactive-map" ></mat-icon>
             <p matLine>Interactive Map</p>
           </mat-list-item>
         </mat-nav-list>
