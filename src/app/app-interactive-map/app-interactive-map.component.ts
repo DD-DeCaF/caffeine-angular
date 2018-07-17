@@ -17,7 +17,7 @@ import {select} from 'd3-selection';
 import * as escher from '@dd-decaf/escher';
 
 import map from './test-map.json';
-import escerSettings from './escherSettings';
+import escherSettings from './escherSettings';
 
 @Component({
   selector: 'app-interactive-map',
@@ -36,7 +36,7 @@ export class AppInteractiveMapComponent implements AfterViewInit {
       null,
       null,
       element,
-      escerSettings,
+      escherSettings,
     );
   }
 }
