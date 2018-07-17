@@ -30,6 +30,7 @@ import {AppWelcomeContentComponent} from './app-welcome/app-welcome.content';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {AppLoginDialogComponent} from './app-login-dialog/app-login-dialog.component';
 import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-map.component';
+import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
@@ -63,6 +64,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppLoginDialogComponent,
     AppInteractiveMapComponent,
     OpenLoginDialogDirective,
+    AppNotFoundComponent,
   ],
   imports: [
     HttpClientModule,
