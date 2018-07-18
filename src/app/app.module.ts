@@ -42,7 +42,9 @@ import {environment} from '../environments/environment';
 
 if (environment.sentry) {
   Raven
-    .config(environment.sentry.DSN)
+    .config(environment.sentry.DSN, {
+      release: environment.sentry.release,
+    })
     .install();
 }
 
