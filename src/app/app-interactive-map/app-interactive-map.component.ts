@@ -32,7 +32,8 @@ export class AppInteractiveMapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const element = select(this.elRef.nativeElement.querySelector('.escher-builder'));
     escher.Builder(
-      <[escher.MetaData, escher.MapData]> JSON.parse(map),
+      // tslint:disable-next-line:no-any
+      <[escher.MetaData, escher.MapData]> (<any>map),
       null,
       null,
       element,
