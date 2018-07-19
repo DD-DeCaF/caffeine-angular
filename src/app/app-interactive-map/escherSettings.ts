@@ -1,3 +1,4 @@
+
 export default {
   menu: 'zoom',
   scroll_behavior: 'zoom',
@@ -17,5 +18,7 @@ export default {
   ],
   reaction_no_data_color: '#CBCBCB',
   reaction_no_data_size: 10,
+  tooltip: 'custom',
+  tooltip_callbacks: null,
   enable_editing: false,
 };

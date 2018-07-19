@@ -17,7 +17,7 @@ import d3 from 'd3';
 import * as escher from '@dd-decaf/escher';
 
 import map from './test-map.json';
-import escherSettings from './escherSettings';
+import escherSettingsConst from './escherSettings';
 
 @Component({
   selector: 'app-interactive-map',
@@ -30,6 +30,17 @@ export class AppInteractiveMapComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
+    const escherSettings = {
+      ...escherSettingsConst,
+      tooltip_callbacks: {
+        knockout: (args) => { this.handleKnockout(args); },
+        setAsObjective: (args) => { this.handleSetAsObjective(args); },
+        changeBounds: (args) => { this.handleChangeBounds(args); },
+        resetBounds: (args) => { this.handleResetBounds(args); },
+        objectiveDirection: (args) => { this.handleObjectiveDirection(args); },
+      },
+    };
+
     const element = d3.select(this.elRef.nativeElement.querySelector('.escher-builder'));
     escher.Builder(
       // tslint:disable-next-line:no-any
@@ -39,5 +50,25 @@ export class AppInteractiveMapComponent implements AfterViewInit {
       element,
       escherSettings,
     );
+  }
+
+  handleKnockout(args: string): void {
+    console.log('KNOCKOUT', args);
+  }
+
+  handleSetAsObjective(args: string): void {
+    console.log('SET AS OBJECTIVE', args);
+  }
+
+  handleChangeBounds(args: string): void {
+    console.log('CHANGE BOUNDS', args);
+  }
+
+  handleResetBounds(args: string): void {
+    console.log('RESET BOUNDS', args);
+  }
+
+  handleObjectiveDirection(args: string): void {
+    console.log('OBJECTIVE DIRECTION', args);
   }
 }
