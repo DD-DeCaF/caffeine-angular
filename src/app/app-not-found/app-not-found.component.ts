@@ -12,21 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-a {
-  color: white;
-  text-decoration: none;
+import {Component} from '@angular/core';
 
-  &:active,
-  &:hover,
-  &:focus {
-    color: black;
-  }
-}
+@Component({
+  selector: 'app-not-found',
+  templateUrl: './app-not-found.component.html',
+  styleUrls: ['./app-not-found.component.scss'],
+})
+export class AppNotFoundComponent {
 
-mat-sidenav {
-  width: 250px;
-}
-
-.highlight{
-  background: #F4F4F4;
 }

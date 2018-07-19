@@ -12,21 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-a {
-  color: white;
-  text-decoration: none;
-
-  &:active,
-  &:hover,
-  &:focus {
-    color: black;
-  }
+.not-found-title {
+  text-align: center;
+  height: 100%;
 }
 
-mat-sidenav {
-  width: 250px;
-}
-
-.highlight{
-  background: #F4F4F4;
+.content {
+  min-height: 100%;
 }
