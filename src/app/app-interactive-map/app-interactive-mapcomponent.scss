@@ -1,7 +1,26 @@
+mat-sidenav-container {
+  height: 100%;
+}
+
+mat-sidenav {
+  width: 250px;
+}
+
+/deep/.mat-tab, /deep/.mat-tab-label {
+  min-width: 50px !important;
+}
+
 .container {
   height: 100%;
 }
 
 .escher-builder {
   height: 100%;
+}
+
+.floating-menu {
+  z-index: 11;
+  position: absolute;
+  right: 20px;
+  top: 20px;
 }
