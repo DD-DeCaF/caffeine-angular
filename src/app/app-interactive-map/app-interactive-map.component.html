@@ -13,5 +13,41 @@
 <!--limitations under the License.-->
 
 <div class="container">
-  <div class="escher-builder"></div>
+    <mat-sidenav-container
+      hasBackdrop="false"
+    >
+      <mat-sidenav #sidenav
+        class="mat-elevation-z3"
+        mode="over"
+        opened
+        position="end"
+        #sidenav
+      >
+
+        <mat-tab-group mat-stretch-tabs>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon>build</mat-icon>
+            </ng-template>
+          Content 1
+          </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <mat-icon class="example-tab-icon">timeline</mat-icon>
+            </ng-template>
+            Content 2
+          </mat-tab>
+        </mat-tab-group>
+
+      </mat-sidenav>
+
+      <div class="escher-builder" (click)="sidenav.close()"></div>
+
+      <div class="floating-menu">
+        <button mat-mini-fab color="primary" (click)="sidenav.open()">
+          <mat-icon>apps</mat-icon>
+        </button>
+      </div>
+    </mat-sidenav-container>
 </div>
