@@ -12,29 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mat-sidenav-container {
-  height: 100%;
-}
+import {Component} from '@angular/core';
 
-mat-sidenav {
-  width: 250px;
-}
+@Component({
+  selector: 'app-build',
+  templateUrl: './app-build.component.html',
+  styleUrls: ['./app-build.component.scss'],
+})
+export class AppBuildComponent {
 
-/deep/.mat-tab, /deep/.mat-tab-label {
-  min-width: 50px !important;
-}
-
-.container {
-  height: 100%;
-}
-
-.escher-builder {
-  height: 100%;
-}
-
-.floating-menu {
-  z-index: 11;
-  position: absolute;
-  right: 20px;
-  top: 20px;
 }
