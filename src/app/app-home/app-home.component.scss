@@ -27,6 +27,14 @@ mat-sidenav {
   width: 250px;
 }
 
+mat-sidenav-container {
+  height: 100%;
+}
+
 .highlight{
   background: #F4F4F4;
+}
+
+.content {
+  overflow: scroll;
 }
