@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, AfterViewInit, ElementRef} from '@angular/core';
-import {select} from 'd3-selection';
+import d3 from 'd3';
 import * as escher from '@dd-decaf/escher';
 
 import map from './test-map.json';
@@ -30,7 +30,7 @@ export class AppInteractiveMapComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    const element = select(this.elRef.nativeElement.querySelector('.escher-builder'));
+    const element = d3.select(this.elRef.nativeElement.querySelector('.escher-builder'));
     escher.Builder(
       // tslint:disable-next-line:no-any
       <[escher.MetaData, escher.MapData]> (<any>map),
