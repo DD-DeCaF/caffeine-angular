@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {Component, HostBinding} from '@angular/core';
 import {Router, NavigationEnd, Event} from '@angular/router';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -27,6 +27,7 @@ import {environment} from '../environments/environment';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  @HostBinding('class') componentCssClass;
   public title = 'app';
 
   constructor(
@@ -43,10 +44,15 @@ export class AppComponent {
         }
       });
     }
-
+    if (!environment.production) {
+      this.setTheme('amber-theme');
+    }
     matIconRegistry.addSvgIcon(
       'interactive-map',
       domSanitizer.bypassSecurityTrustResourceUrl(MAP_ICON),
     );
+  }
+  setTheme(theme: string): void {
+    this.componentCssClass = theme;
   }
 }
