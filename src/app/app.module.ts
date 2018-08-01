@@ -36,6 +36,8 @@ import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
 
+import {CallbackPipe} from './callback.pipe';
+
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
@@ -59,6 +61,7 @@ export class RavenErrorHandler implements ErrorHandler {
 
 @NgModule({
   declarations: [
+    CallbackPipe,
     AppComponent,
     AppToolbarComponent,
     AppHomeComponent,
