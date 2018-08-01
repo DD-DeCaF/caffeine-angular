@@ -14,11 +14,54 @@
 
 import {Component} from '@angular/core';
 
+interface Card {
+  name: string;
+  selected: boolean;
+  method: string;
+  expanded: boolean;
+}
 @Component({
   selector: 'app-build',
   templateUrl: './app-build.component.html',
   styleUrls: ['./app-build.component.scss'],
 })
 export class AppBuildComponent {
+  public cards = [
+    {
+      name: 'foo',
+      selected: true,
+      method: 'Parsimonious FBA',
+      expanded: false,
+    },
+    {
+      name: 'bar',
+      selected: false,
+      method: 'Flux Balance Analysis (FBA)',
+      expanded: false,
+    },
+  ];
 
+  constructor() {
+    this.shouldShow = this.shouldShow.bind(this);
+  }
+
+  public delete(card: Card): void {
+    console.log(card);
+  }
+
+  public grow(card: Card): void {
+    card.expanded = true;
+  }
+
+  public shrink(card: Card): void {
+    card.expanded = false;
+  }
+
+  public shouldShow(card: Card): boolean {
+    return card.expanded || !this.isAnyExpanded;
+  }
+
+  public get isAnyExpanded(): boolean {
+    return this.cards.some((c) => c.expanded);
+  }
 }
