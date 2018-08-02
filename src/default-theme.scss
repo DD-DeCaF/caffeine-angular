@@ -13,6 +13,7 @@
 // limitations under the License.
 
 @import '~@angular/material/theming';
+@import 'app/app-interactive-map/components/app-build/app-build.component';
 // Plus imports for other components in your app.
 
 // Include the common styles for Angular Material. We include this here so that you only
@@ -36,7 +37,7 @@ $metabolica-app-theme: mat-light-theme($metabolica-app-primary, $metabolica-app-
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($metabolica-app-theme);
-
+@include app-build-component($metabolica-app-theme);
 
 // Amber theme
 $amber-primary: mat-palette($mat-amber);
@@ -44,5 +45,6 @@ $amber-primary: mat-palette($mat-amber);
 $amber-theme: mat-light-theme($amber-primary, $metabolica-app-accent, $metabolica-app-warn);
 
 .amber-theme {
-  @include angular-material-theme($amber-theme)
+  @include angular-material-theme($amber-theme);
+  @include app-build-component($amber-theme);
 }
