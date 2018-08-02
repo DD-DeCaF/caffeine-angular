@@ -11,6 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+@import '~@angular/material/theming';
+
 .container {
   position: relative;
   height: 100%;
@@ -29,20 +32,16 @@
   }
 
   .header {
-    background: gray;
     padding: 3px;
     color: white;
     display: flex;
     justify-content: space-between;
 
-    &.selected {
-      background: #617D8A;
-    }
-
     .left-section {
       margin: auto 0;
       display: flex;
     }
+
     h4 {
       margin: auto 5px;
     }
@@ -60,4 +59,14 @@
 .displayRow {
   display: flex;
   justify-content: space-between;
+}
+
+@mixin app-build-component($theme) {
+  .card .header {
+    background: gray;
+
+    &.selected {
+      background: mat-color(map-get($theme, primary));
+    }
+  }
 }
