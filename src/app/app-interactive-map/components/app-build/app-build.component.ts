@@ -12,7 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromInteractiveMap from '../../store/interactive-map.reducers';
+import {Observable} from 'rxjs';
+import {InteractiveMapState} from '../../store/interactive-map.reducers';
 
 interface Card {
   name: string;
@@ -25,7 +29,9 @@ interface Card {
   templateUrl: './app-build.component.html',
   styleUrls: ['./app-build.component.scss'],
 })
-export class AppBuildComponent {
+export class AppBuildComponent implements OnInit {
+  interactiveMapState: Observable<fromInteractiveMap.InteractiveMapState>;
+
   public cards = [
     {
       name: 'foo',
@@ -41,10 +47,13 @@ export class AppBuildComponent {
     },
   ];
 
-  constructor() {
+  constructor(private store: Store<fromInteractiveMap.InteractiveMapState>) {
     this.shouldShow = this.shouldShow.bind(this);
   }
 
+  ngOnInit(): void {
+    this.interactiveMapState = this.store.select('interactiveMap');
+  }
   public delete(card: Card): void {
     console.log(card);
   }

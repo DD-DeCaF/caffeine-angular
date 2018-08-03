@@ -40,7 +40,7 @@
         <button mat-icon-button [ngClass]="{'buttonHide': !card.expanded}" (click)="shrink(card)">
           <mat-icon>chevron_left</mat-icon>
         </button>
-        <h4>{{card.name}}</h4>
+        <h4>{{card.name}} {{(interactiveMapState | async).selectedCardId}}</h4>
       </div>
       <button mat-icon-button (click)="delete(card)"><mat-icon>close</mat-icon></button>
     </div>
