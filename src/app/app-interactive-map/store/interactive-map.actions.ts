@@ -18,12 +18,12 @@ export const NEXT_CARD = 'NEXT_CARD';
 export const SELECT_CARD = 'SELECT_CARD';
 
 export class SelectCard implements Action {
-  readonly type: string = SELECT_CARD;
+  readonly type = SELECT_CARD;
   constructor(public payload: string) {}
 }
 
 export class NextCard implements Action {
-  readonly type: string = NEXT_CARD;
+  readonly type = NEXT_CARD;
 }
 
-export type InteractiveMapActions = SelectCard;
+export type InteractiveMapActions = SelectCard | NextCard;
