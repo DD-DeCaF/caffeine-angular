@@ -27,7 +27,6 @@ export function sessionReducer(
   action: SessionActions.Sessionctions,
 ): SessionState {
   switch (action.type) {
-    // case (SessionActions.SIGNUP):
     case (SessionActions.LOGIN):
       return {
         ...state,

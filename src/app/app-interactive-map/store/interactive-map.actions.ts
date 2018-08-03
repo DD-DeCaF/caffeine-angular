@@ -14,16 +14,16 @@
 
 import {Action} from '@ngrx/store';
 
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
+export const NEXT_CARD = 'NEXT_CARD';
+export const SELECT_CARD = 'SELECT_CARD';
 
-
-export class Login implements Action {
-  public readonly type: string = LOGIN;
+export class SelectCard implements Action {
+  readonly type: string = SELECT_CARD;
+  constructor(public payload: string) {}
 }
 
-export class Logout implements Action {
-  public readonly type: string = LOGOUT;
+export class NextCard implements Action {
+  readonly type: string = NEXT_CARD;
 }
 
-export type Sessionctions = Login | Logout;
+export type InteractiveMapActions = SelectCard;
