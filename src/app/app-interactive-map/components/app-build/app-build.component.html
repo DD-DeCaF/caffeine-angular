@@ -35,7 +35,7 @@
   </div>
 
   <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async) | callback: shouldShow">
-    <div class="header" [ngClass]="{'selected': card.selected}">
+    <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
       <div class="left-section">
         <button mat-icon-button [ngClass]="{'buttonHide': !card.expanded}" (click)="shrink(card)">
           <mat-icon>chevron_left</mat-icon>
