@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import * as fromInteractiveMap from '../../store/interactive-map.reducers';
+import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 import {Observable} from 'rxjs';
-import {InteractiveMapState} from '../../store/interactive-map.reducers';
+import { AppState } from '../../../store/app.reducers';
 
 interface Card {
   name: string;
@@ -30,29 +31,15 @@ interface Card {
   styleUrls: ['./app-build.component.scss'],
 })
 export class AppBuildComponent implements OnInit {
-  interactiveMapState: Observable<fromInteractiveMap.InteractiveMapState>;
+  interactiveMapState: Observable<AppState>;
+  public cards: Observable<fromInteractiveMapSelectors.HydratedCard[]>;
 
-  public cards = [
-    {
-      name: 'foo',
-      selected: true,
-      method: 'Parsimonious FBA',
-      expanded: false,
-    },
-    {
-      name: 'bar',
-      selected: false,
-      method: 'Flux Balance Analysis (FBA)',
-      expanded: false,
-    },
-  ];
-
-  constructor(private store: Store<fromInteractiveMap.InteractiveMapState>) {
-    this.shouldShow = this.shouldShow.bind(this);
+  constructor(private store: Store<AppState>) {
+    // this.shouldShow = this.shouldShow.bind(this);
   }
 
   ngOnInit(): void {
-    this.interactiveMapState = this.store.select('interactiveMap');
+    this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
   }
   public delete(card: Card): void {
     console.log(card);
@@ -66,11 +53,11 @@ export class AppBuildComponent implements OnInit {
     card.expanded = false;
   }
 
-  public shouldShow(card: Card): boolean {
-    return card.expanded || !this.isAnyExpanded;
-  }
+  // public shouldShow(card: Card): boolean {
+  //   return card.expanded || !this.isAnyExpanded;
+  // }
 
-  public get isAnyExpanded(): boolean {
-    return this.cards.some((c) => c.expanded);
-  }
+  // public get isAnyExpanded(): boolean {
+  //   return this.cards.some((c) => c.expanded);
+  // }
 }
