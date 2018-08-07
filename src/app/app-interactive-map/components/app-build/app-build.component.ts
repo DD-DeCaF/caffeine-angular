@@ -14,9 +14,12 @@
 
 import {Component, OnInit} from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import {Observable} from 'rxjs';
+
+import {SelectCard} from '../../store/interactive-map.actions';
 import * as fromInteractiveMap from '../../store/interactive-map.reducers';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
-import {Observable} from 'rxjs';
+
 import { AppState } from '../../../store/app.reducers';
 
 interface Card {
@@ -41,6 +44,12 @@ export class AppBuildComponent implements OnInit {
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
   }
+
+  public select(card: fromInteractiveMapSelectors.HydratedCard): void {
+    console.log('select card', card);
+    this.store.dispatch(new SelectCard(card.id));
+  }
+
   public delete(card: Card): void {
     console.log(card);
   }
