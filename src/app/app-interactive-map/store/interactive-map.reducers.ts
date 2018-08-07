@@ -32,7 +32,7 @@ export interface InteractiveMapState {
 }
 
 const initialState: InteractiveMapState = {
-  selectedCardId: null,
+  selectedCardId: '0',
   allSpecies: {
     ECOLX: 'Escherichia coli',
     YEAST: 'Saccharomyces cerevisiae',
