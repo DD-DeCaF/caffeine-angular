@@ -13,11 +13,10 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import {Store, select} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
-import {SelectCard} from '../../store/interactive-map.actions';
-import * as fromInteractiveMap from '../../store/interactive-map.reducers';
+import {SelectCard, NextCard, PreviousCard, TogglePlay} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import { AppState } from '../../../store/app.reducers';
@@ -36,6 +35,9 @@ interface Card {
 export class AppBuildComponent implements OnInit {
   interactiveMapState: Observable<AppState>;
   public cards: Observable<fromInteractiveMapSelectors.HydratedCard[]>;
+  public playing: Observable<boolean>;
+
+  public expandedCard: fromInteractiveMapSelectors.HydratedCard = null;
 
   constructor(private store: Store<AppState>) {
     // this.shouldShow = this.shouldShow.bind(this);
@@ -43,6 +45,7 @@ export class AppBuildComponent implements OnInit {
 
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
+    this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
   }
 
   public select(card: fromInteractiveMapSelectors.HydratedCard): void {
@@ -50,23 +53,28 @@ export class AppBuildComponent implements OnInit {
     this.store.dispatch(new SelectCard(card.id));
   }
 
+  public next(): void {
+    this.store.dispatch(new NextCard());
+  }
+
+  public togglePlay(): void {
+    this.store.dispatch(new TogglePlay());
+  }
+
+  public previous(): void {
+    this.store.dispatch(new PreviousCard());
+  }
+
   public delete(card: Card): void {
     console.log(card);
   }
 
-  public grow(card: Card): void {
-    card.expanded = true;
+  public grow(card: fromInteractiveMapSelectors.HydratedCard): void {
+    this.store.dispatch(new SelectCard(card.id));
+    this.expandedCard = card;
   }
 
-  public shrink(card: Card): void {
-    card.expanded = false;
+  public shrink(): void {
+    this.expandedCard = null;
   }
-
-  // public shouldShow(card: Card): boolean {
-  //   return card.expanded || !this.isAnyExpanded;
-  // }
-
-  // public get isAnyExpanded(): boolean {
-  //   return this.cards.some((c) => c.expanded);
-  // }
 }

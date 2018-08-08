@@ -19,6 +19,7 @@ export interface Card {
 }
 
 export interface InteractiveMapState {
+  playing: boolean;
   selectedCardId: string;
   allSpecies: { [key: string]: string; };
   selectedSpecies: string;
@@ -32,6 +33,7 @@ export interface InteractiveMapState {
 }
 
 const initialState: InteractiveMapState = {
+  playing: false,
   selectedCardId: '0',
   allSpecies: {
     ECOLX: 'Escherichia coli',
@@ -68,6 +70,11 @@ export function interactiveMapReducer(
       return {
         ...state,
         selectedCardId: action.payload,
+      };
+    case fromInteractiveMapActions.TOGGLE_PLAY:
+      return {
+        ...state,
+        playing: !state.playing,
       };
     default:
       return state;
