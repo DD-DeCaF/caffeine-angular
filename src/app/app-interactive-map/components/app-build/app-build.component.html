@@ -12,21 +12,22 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 <div class="container">
-  <div [hidden]="isAnyExpanded">
+  <div [hidden]="expandedCard">
     <div fxLayout="row" fxLayoutAlign="space-around center">
         <button mat-icon-button>
           <mat-icon>add</mat-icon>
         </button>
 
-        <button mat-icon-button>
+        <button mat-icon-button (click)="previous()">
           <mat-icon>chevron_left</mat-icon>
         </button>
 
-        <button mat-icon-button>
-          <mat-icon>play_arrow</mat-icon>
+        <button mat-icon-button (click)="togglePlay()">
+          <mat-icon *ngIf="(playing | async)">pause</mat-icon>
+          <mat-icon *ngIf="!(playing | async)">play_arrow</mat-icon>
         </button>
 
-        <button mat-icon-button>
+        <button mat-icon-button (click)="next()">
           <mat-icon>chevron_right</mat-icon>
         </button>
       </div>
@@ -34,31 +35,60 @@
       <mat-divider></mat-divider>
   </div>
 
-  <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async) | callback: shouldShow">
-    <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
-      <div class="left-section">
-        <button mat-icon-button [ngClass]="{'buttonHide': !card.expanded}" (click)="shrink(card)">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-        <h4>{{card.name}}</h4>
+  <div *ngIf="expandedCard">
+    <div class="card expanded">
+        <div class="header selected">
+          <div class="left-section">
+            <button mat-icon-button (click)="shrink()">
+              <mat-icon>chevron_left</mat-icon>
+            </button>
+            <h4>{{expandedCard.name}}</h4>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-around center">
+          <button mat-icon-button (click)="grow(expandedCard)">
+            <mat-icon>info</mat-icon>
+          </button>
+
+          <button mat-icon-button (click)="grow(expandedCard)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+
+        <div class="content">
+          <div class="displayRow">
+            <label>Method:</label>
+            <label>{{expandedCard.method}}</label>
+          </div>
+        </div>
       </div>
-      <button mat-icon-button (click)="delete(card)"><mat-icon>close</mat-icon></button>
-    </div>
+  </div>
 
-    <div fxLayout="row" fxLayoutAlign="space-around center">
-      <button mat-icon-button (click)="grow(card)">
-        <mat-icon>info</mat-icon>
-      </button>
+  <div *ngIf="!expandedCard">
+    <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async) | callback: shouldShow">
+      <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
+        <div class="left-section">
+          <h4>{{card.name}}</h4>
+        </div>
+        <button mat-icon-button (click)="delete(card)"><mat-icon>close</mat-icon></button>
+      </div>
 
-      <button mat-icon-button (click)="grow(card)">
-        <mat-icon>edit</mat-icon>
-      </button>
-    </div>
+      <div fxLayout="row" fxLayoutAlign="space-around center">
+        <button mat-icon-button (click)="grow(card)">
+          <mat-icon>info</mat-icon>
+        </button>
 
-    <div class="content">
-      <div class="displayRow">
-        <label>Method:</label>
-        <label>{{card.method}}</label>
+        <button mat-icon-button (click)="grow(card)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+
+      <div class="content">
+        <div class="displayRow">
+          <label>Method:</label>
+          <label>{{card.method}}</label>
+        </div>
       </div>
     </div>
   </div>
