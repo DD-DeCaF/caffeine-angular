@@ -49,6 +49,9 @@ import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
 import { AppLegendComponent } from './app-interactive-map/components/app-legend/app-legend.component';
+import { AppReactionComponent } from './app-interactive-map/components/app-reaction/app-reaction.component';
+import { AppReactionPanelComponent } from './app-interactive-map/components/app-reaction-panel/app-reaction-panel.component';
+import { AppReactionPanelDetailComponent } from './app-interactive-map/components/app-reaction-panel-detail/app-reaction-panel-detail.component';
 
 if (environment.sentry) {
   Raven
@@ -79,6 +82,9 @@ export class RavenErrorHandler implements ErrorHandler {
     OpenLoginDialogDirective,
     AppNotFoundComponent,
     AppLegendComponent,
+    AppReactionComponent,
+    AppReactionPanelComponent,
+    AppReactionPanelDetailComponent,
   ],
   imports: [
     HttpClientModule,
