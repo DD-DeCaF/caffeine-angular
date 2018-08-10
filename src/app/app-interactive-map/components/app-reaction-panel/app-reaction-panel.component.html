@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-card-subtitle class="header-card">{{title}}</mat-card-subtitle>
+  <mat-card-content>
+    <form>
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="{{placeholder}}" aria-label="Number" matInput [formControl]="querySearch" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete"
+                          [displayWith]="displayFn"
+                          (optionSelected)='addItem($event.option.value)'>
+          <mat-option *ngFor="let reaction of reactions" [value]="reaction">
+            {{ reaction?.bigg_id }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <ng-content *ngIf="!template"></ng-content>
+      <!-- <app-reaction-panel-detail [itemsSelected]="itemsSelected" (itemRemoved)="removeItem($event)"></app-reaction-panel-detail>-->
+    </form>
+  </mat-card-content>
+</mat-card>
