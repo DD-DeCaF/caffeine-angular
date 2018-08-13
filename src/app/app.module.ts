@@ -48,9 +48,11 @@ import {SessionService} from './session/session.service';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
-import { AppReactionComponent } from './app-interactive-map/components/app-reaction/app-reaction.component';
-import { AppReactionPanelComponent } from './app-interactive-map/components/app-reaction-panel/app-reaction-panel.component';
-import { AppReactionPanelDetailComponent } from './app-interactive-map/components/app-reaction-panel-detail/app-reaction-panel-detail.component';
+import {AppReactionComponent} from './app-interactive-map/components/app-reaction/app-reaction.component';
+import {AppReactionPanelComponent} from './app-interactive-map/components/app-reaction-panel/app-reaction-panel.component';
+import {AppReactionPanelDetailComponent} from './app-interactive-map/components/app-reaction-panel-detail/app-reaction-panel-detail.component';
+import {AppReactionPanelObjectiveComponent} from './app-interactive-map/components/app-reaction-panel-objective/app-reaction-panel-objective.component';
+import {AppReactionPanelChangedComponent} from './app-interactive-map/components/app-reaction-panel-changed/app-reaction-panel-changed.component';
 
 if (environment.sentry) {
   Raven
@@ -83,6 +85,8 @@ export class RavenErrorHandler implements ErrorHandler {
     AppReactionComponent,
     AppReactionPanelComponent,
     AppReactionPanelDetailComponent,
+    AppReactionPanelObjectiveComponent,
+    AppReactionPanelChangedComponent,
   ],
   imports: [
     HttpClientModule,
@@ -101,9 +105,10 @@ export class RavenErrorHandler implements ErrorHandler {
   providers: [
     SessionService,
     FormBuilder,
-    ...(environment.sentry ? [{ provide: ErrorHandler, useClass: RavenErrorHandler }] : []),
+    ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],
   bootstrap: [AppComponent],
   entryComponents: [AppLoginDialogComponent],
 })
-export class AppModule { }
+export class AppModule {
+}
