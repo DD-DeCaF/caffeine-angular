@@ -1,25 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {Reaction, Reactions} from '../../../../types/custom_types';
 // import {debounceTime} from 'rxjs/operators';
-
-export interface Reaction {
-  bigg_id: string;
-  name: string;
-  model_bigg_id: string;
-  organism: string;
-}
 
 @Component({
   selector: 'app-reaction-panel',
   templateUrl: './app-reaction-panel.component.html',
   styleUrls: ['./app-reaction-panel.component.scss'],
 })
-export class AppReactionPanelComponent implements OnInit {
+export class AppReactionPanelComponent implements OnInit, OnChanges {
   @Input() public title: string;
+  @Input() public type: string;
   @Input() public placeholder: string;
-  public itemsSelected: Reaction[] = [];
-  public querySearch: FormControl = new FormControl();
+  @Input() public itemRemoved: Reaction;
+  @Input() public itemsSelected: Reactions;
+  @Output() public itemSelected: EventEmitter<Reactions> = new EventEmitter();
 
+  public querySearch: FormControl = new FormControl();
   public reactions: Reaction[] = [{'bigg_id': 'FK', 'name': 'Fucokinase', 'model_bigg_id': 'Universal', 'organism': ''},
       {'bigg_id': 'FT', 'name': 'Trans,trans,cis-geranylgeranyl diphosphate synthase', 'model_bigg_id': 'Universal', 'organism': ''},
       {'bigg_id': 'FCI', 'name': 'L-fucose isomerase', 'model_bigg_id': 'Universal', 'organism': ''},
@@ -53,12 +50,33 @@ export class AppReactionPanelComponent implements OnInit {
   }
 
   addItem(reaction: Reaction): void {
-    this.itemsSelected.push(reaction);
+    if (this.type !== 'objective') {
+      this.itemsSelected[this.type].push(reaction);
+    } else {
+      this.itemsSelected[this.type].reaction = reaction;
+      this.itemsSelected[this.type].direction = 'max';
+    }
     this.querySearch.reset();
-
+    this.itemSelected.emit(this.itemsSelected);
   }
 
-  removeItem(reactions: Reaction[]): void {
-    this.itemsSelected = reactions;
+  removeItem(reaction: Reaction): void {
+    if (this.type !== 'objective') {
+      this.itemsSelected[this.type] = this.itemsSelected[this.type].filter((item) => item !== reaction);
+    } else {
+      this.itemsSelected[this.type].reaction = {
+        bigg_id: null,
+        name: null,
+        model_bigg_id: null,
+        organism: null,
+      };
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const itemRemoved: SimpleChange = changes.itemRemoved;
+    if (itemRemoved) {
+      this.removeItem(itemRemoved.currentValue);
+    }
   }
 }
