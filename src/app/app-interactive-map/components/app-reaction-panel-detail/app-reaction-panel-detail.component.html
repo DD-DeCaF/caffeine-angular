@@ -1,6 +1,8 @@
 <mat-list>
   <mat-list-item *ngFor="let item of itemsSelected">
-    <span class="item-name">{{item.bigg_id}}</span><button mat-icon-button align="end" (click)="removeItem(item)">
-    <mat-icon>close</mat-icon></button>
+    <span class="item-name">{{item.bigg_id}}</span>
+    <button mat-icon-button align="end" (click)="removeItem(item)">
+      <mat-icon>close</mat-icon>
+    </button>
   </mat-list-item>
 </mat-list>
