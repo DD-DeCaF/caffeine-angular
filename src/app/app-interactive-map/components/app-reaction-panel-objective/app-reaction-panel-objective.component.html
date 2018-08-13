@@ -1,0 +1,15 @@
+<mat-list *ngIf="item.direction">
+  <span class="item-name">{{ item.reaction.bigg_id }}</span>
+  <mat-list-item>
+    <span >Min</span>
+    <mat-slide-toggle
+      class="mat-primary"
+      [checked]="item.direction === 'max'"
+      (change)="changeDirectionObjective()">
+    </mat-slide-toggle>
+    <span>Max</span>
+    <button mat-icon-button align="end" (click)="removeItem(item)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-list-item>
+</mat-list>
