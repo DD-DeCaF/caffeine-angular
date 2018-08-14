@@ -18,6 +18,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule, ErrorHandler} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
+import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormBuilder} from '@angular/forms';
@@ -29,8 +30,13 @@ import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
 import {AppWelcomeContentComponent} from './app-welcome/app-welcome.content';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {AppLoginDialogComponent} from './app-login-dialog/app-login-dialog.component';
+
+// Interactive map
 import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-map.component';
 import {AppBuildComponent} from './app-interactive-map/components/app-build/app-build.component';
+import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
+// end interactive map
+
 import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
@@ -91,6 +97,7 @@ export class RavenErrorHandler implements ErrorHandler {
     // SessionModule,
     AppMaterialModule,
     StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([InteractiveMapEffects]),
 
     FormsModule,
     ReactiveFormsModule,
