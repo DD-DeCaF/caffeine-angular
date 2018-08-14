@@ -16,10 +16,11 @@ import {Component, OnInit} from '@angular/core';
 import {Store, select} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
-import {SelectCard, NextCard, PreviousCard, TogglePlay} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, TogglePlay, AddCard} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import { AppState } from '../../../store/app.reducers';
+import { CardType } from '../../types';
 
 interface Card {
   name: string;
@@ -39,9 +40,7 @@ export class AppBuildComponent implements OnInit {
 
   public expandedCard: fromInteractiveMapSelectors.HydratedCard = null;
 
-  constructor(private store: Store<AppState>) {
-    // this.shouldShow = this.shouldShow.bind(this);
-  }
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
@@ -51,6 +50,14 @@ export class AppBuildComponent implements OnInit {
   public select(card: fromInteractiveMapSelectors.HydratedCard): void {
     console.log('select card', card);
     this.store.dispatch(new SelectCard(card.id));
+  }
+
+  public addWildtypeCard(): void {
+    this.store.dispatch(new AddCard(CardType.WildType));
+  }
+
+  public addDataDrivenCard(): void {
+    this.store.dispatch(new AddCard(CardType.DataDriven));
   }
 
   public next(): void {

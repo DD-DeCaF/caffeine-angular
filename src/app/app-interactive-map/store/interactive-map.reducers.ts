@@ -13,10 +13,17 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
+import {CardType} from '../types';
 
 export interface Card {
+  type: CardType;
   name: string;
 }
+
+const idGen = (() => {
+  let counter = 1;
+  return () => '' + counter++;
+})();
 
 export interface InteractiveMapState {
   playing: boolean;
@@ -53,10 +60,12 @@ const initialState: InteractiveMapState = {
       'Nucleotide and histidine biosynthesis', 'Nucleotide metabolism', 'tRNA charging'],
   },
   cards: {
-    ids: ['0', '1'],
+    ids: ['0'],
     cardsById: {
-      '0': {name: 'foo'},
-      '1': {name: 'bar'},
+      '0': {
+        name: 'foo',
+        type: CardType.WildType,
+      },
     },
   },
 };
@@ -75,6 +84,21 @@ export function interactiveMapReducer(
       return {
         ...state,
         playing: !state.playing,
+      };
+    case fromInteractiveMapActions.ADD_CARD:
+      const newId = idGen();
+      return {
+        ...state,
+        cards: {
+          ids: [...state.cards.ids, newId],
+          cardsById: {
+            ...state.cards.cardsById,
+            [newId]: {
+              name: action.payload === CardType.WildType ? 'WildType' : 'DataDriven',
+              type: action.payload,
+            },
+          },
+        },
       };
     default:
       return state;
