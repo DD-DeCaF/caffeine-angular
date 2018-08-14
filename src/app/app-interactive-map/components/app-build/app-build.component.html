@@ -14,26 +14,33 @@
 <div class="container">
   <div [hidden]="expandedCard">
     <div fxLayout="row" fxLayoutAlign="space-around center">
-        <button mat-icon-button>
+      <div>
+        <mat-menu #addMenu="matMenu">
+          <button mat-menu-item (click)="addWildtypeCard()">Wild type</button>
+          <button mat-menu-item (click)="addDataDrivenCard()">Data driven</button>
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="addMenu">
           <mat-icon>add</mat-icon>
-        </button>
-
-        <button mat-icon-button (click)="previous()">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-
-        <button mat-icon-button (click)="togglePlay()">
-          <mat-icon *ngIf="(playing | async)">pause</mat-icon>
-          <mat-icon *ngIf="!(playing | async)">play_arrow</mat-icon>
-        </button>
-
-        <button mat-icon-button (click)="next()">
-          <mat-icon>chevron_right</mat-icon>
         </button>
       </div>
 
-      <mat-divider></mat-divider>
+      <button mat-icon-button (click)="previous()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+
+      <button mat-icon-button (click)="togglePlay()">
+        <mat-icon *ngIf="(playing | async)">pause</mat-icon>
+        <mat-icon *ngIf="!(playing | async)">play_arrow</mat-icon>
+      </button>
+
+      <button mat-icon-button (click)="next()">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
   </div>
+
+  <mat-divider></mat-divider>
 
   <div *ngIf="expandedCard">
     <div class="card expanded">
