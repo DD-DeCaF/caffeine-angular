@@ -14,7 +14,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {CardType} from '../types';
+import {CardType, Reaction} from '../types';
 
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
@@ -26,6 +26,17 @@ export const LOADED = 'LOADED';
 
 export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
+
+export const ADD_REACTION = 'ADD_REACTION';
+export const REMOVE_REACTION = 'REMOVE_REACTION';
+export const SETOBJECTIVE_REACTION = 'SETOBJECTIVE_REACTION';
+export const SETBOUNDS_REACTION = 'SETBOUNDS_REACTION';
+
+export interface BoundsReaction {
+  id: string;
+  lowerBound: number;
+  upperBound: number;
+}
 
 export class SelectCard implements Action {
   readonly type = SELECT_CARD;
@@ -58,4 +69,24 @@ export class DeleteCard implements Action {
   constructor(public payload: string) {}
 }
 
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard;
+export class AddReaction implements Action {
+  readonly type = ADD_REACTION;
+  constructor(public payload: string) {}
+}
+
+export class RemoveReaction implements Action {
+  readonly type = REMOVE_REACTION;
+  constructor(public payload: string) {}
+}
+
+export class SetObjectiveReaction implements Action {
+  readonly type = SETOBJECTIVE_REACTION;
+  constructor(public payload: string) {}
+}
+
+export class SetReactionBounds implements Action {
+  readonly type = SETBOUNDS_REACTION;
+  constructor(public payload: BoundsReaction) {}
+}
+
+export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard | AddReaction | RemoveReaction | SetObjectiveReaction | SetReactionBounds;

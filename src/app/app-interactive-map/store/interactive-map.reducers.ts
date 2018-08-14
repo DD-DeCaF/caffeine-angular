@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {CardType} from '../types';
+import {CardType, Reaction} from '../types';
+import { stat } from 'fs';
 
 export interface Card {
   type: CardType;
@@ -37,6 +38,15 @@ export interface InteractiveMapState {
     ids: string[];
     cardsById: { [key: string]: Card; };
   };
+  addedReactions: string[];
+  removedReactions: string[];
+  objectiveReaction: string;
+  bounds: {
+    [reactionId: string]: {
+      lowerBound: number;
+      upperBound: number;
+    };
+  };
 }
 
 const initialState: InteractiveMapState = {
@@ -54,7 +64,7 @@ const initialState: InteractiveMapState = {
     e_coli_core: ['Core metabolism'],
     iJN746: ['Central metabolism'],
     iMM904: ['Amino acid metabolism', 'Central metabolism', 'Cofactor and vitamin biosynthesis', 'Combined', 'Lipid metabolism',
-             'Nucleotide metabolism'],
+      'Nucleotide metabolism'],
     iJO1366: ['Alternate carbon sources', 'Amino acid metabolism', 'Central metabolism', 'Cofactor biosynthesis', 'Combined',
       'Fatty acid beta-oxidation', 'Fatty acid biosynthesis (saturated)', 'Lipopolysaccharide (LPS) biosynthesis',
       'Nucleotide and histidine biosynthesis', 'Nucleotide metabolism', 'tRNA charging'],
@@ -68,6 +78,10 @@ const initialState: InteractiveMapState = {
       },
     },
   },
+  addedReactions: [],
+  removedReactions: [],
+  bounds: {},
+  objectiveReaction: '',
 };
 
 export function interactiveMapReducer(
@@ -91,6 +105,7 @@ export function interactiveMapReducer(
         ...state,
         selectedCardId: newId,
         cards: {
+          ...state.cards,
           ids: [...state.cards.ids, newId],
           cardsById: {
             ...state.cards.cardsById,
@@ -114,8 +129,34 @@ export function interactiveMapReducer(
         ...state,
         selectedCardId,
         cards: {
+          ...state.cards,
           ids,
           cardsById,
+        },
+      };
+    case fromInteractiveMapActions.ADD_REACTION:
+      return {
+        ...state,
+        addedReactions: [...state.addedReactions, action.payload],
+      };
+    case fromInteractiveMapActions.REMOVE_REACTION:
+      return {
+        ...state,
+        removedReactions: [...state.removedReactions, action.payload],
+      };
+    case fromInteractiveMapActions.SETOBJECTIVE_REACTION:
+      return {
+        ...state,
+        objectiveReaction: action.payload,
+      };
+    case fromInteractiveMapActions.SETBOUNDS_REACTION:
+      return {
+        ...state,
+        bounds: {
+          [action.payload.id]: {
+            lowerBound: action.payload.lowerBound,
+            upperBound: action.payload.upperBound,
+          },
         },
       };
     default:
