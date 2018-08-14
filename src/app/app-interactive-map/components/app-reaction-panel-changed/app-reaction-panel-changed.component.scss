@@ -15,23 +15,28 @@
 mat-list-item {
   display: block;
 }
+
 span {
   font-size: 11px;
 }
+
 .lower-bound-item {
   float: left;
   font-size: 12px;
 }
+
 .upper-bound-item {
   float: right;
   font-size: 12px;
 }
+
 .item-display {
   font-size: 12px;
   margin-left: 6px;
   margin-right: 6px;
   text-align: center !important;
 }
+
 .box-bounds {
   border:1px solid black;
   height: 110px;
@@ -39,19 +44,23 @@ span {
   margin-top: 5%;
   text-align: center;
 }
+
 .input-lower {
   float: left;
   width: 30px;
 }
+
 .input-upper {
   float: right;
   width: 30px;
 }
+
 .item-display-box {
   font-size:12px;
   width: 100px;
   text-align: center;
 }
+
 .button-apply {
   border-radius: 3px;
   background-color: #eee;
@@ -65,6 +74,7 @@ span {
   padding-right: 10px;
   float: right;
 }
+
 .button-reset {
   border-radius: 3px;
   background-color: #eee;
@@ -77,6 +87,7 @@ span {
   padding-right: 10px;
   float: right;
 }
+
 .mat-list .mat-list-item.left .mat-list-item-content{
   padding: 0 !important;
 }
