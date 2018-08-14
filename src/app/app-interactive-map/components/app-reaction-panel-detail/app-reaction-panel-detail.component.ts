@@ -13,7 +13,11 @@
 // limitations under the License.
 
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
-import {Reaction} from '../../../../types/custom_types';
+import {Store, select} from '@ngrx/store';
+import { AppState } from '../../../store/app.reducers';
+
+import {Reaction} from '../../types';
+import {RemoveReaction, SelectCard} from '../../store/interactive-map.actions';
 
 @Component({
   selector: 'app-reaction-panel-detail',
@@ -24,19 +28,15 @@ export class AppReactionPanelDetailComponent implements OnInit, OnChanges {
   @Input() public itemsSelected: Reaction[] = [];
   @Input() public type: string;
   @Output() itemRemoved: EventEmitter<Reaction> = new EventEmitter();
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
   }
 
   removeItem(reaction: Reaction): void {
-    this.itemsSelected = this.itemsSelected.filter((item) => item !== reaction);
-    this.itemRemoved.emit(reaction);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const itemsSelected: SimpleChange = changes.itemsSelected;
-    this.itemsSelected = itemsSelected.currentValue;
   }
 
 }
