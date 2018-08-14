@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
-import {Reaction} from '../../../../types/custom_types';
+import {Reaction} from '../../types';
 
 @Component({
   selector: 'app-reaction-panel-changed',
@@ -23,7 +23,6 @@ import {Reaction} from '../../../../types/custom_types';
 export class AppReactionPanelChangedComponent implements OnInit, OnChanges {
   @Input() public itemsSelected: Reaction[] = [];
   @Input() public type: string;
-  @Output() itemRemoved: EventEmitter<Reaction> = new EventEmitter();
   public clickedItem: string;
   public lowerbound: number;
   public upperbound: number;
@@ -33,9 +32,6 @@ export class AppReactionPanelChangedComponent implements OnInit, OnChanges {
   }
 
   removeItem(reaction: Reaction): void {
-    this.itemsSelected = this.itemsSelected.filter((item) => item !== reaction);
-    this.onResetBounds(reaction);
-    this.itemRemoved.emit(reaction);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

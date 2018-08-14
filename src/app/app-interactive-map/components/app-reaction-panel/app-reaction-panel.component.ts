@@ -13,10 +13,13 @@
 // limitations under the License.
 
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
+import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
-import {Reaction, Reactions} from '../../../../types/custom_types';
+import {Reaction, Reactions} from '../../types';
 // import {debounceTime} from 'rxjs/operators';
 
+import { AppState } from '../../../store/app.reducers';
+import {AddReaction, RemoveReaction, SetObjectiveReaction} from '../../store/interactive-map.actions';
 @Component({
   selector: 'app-reaction-panel',
   templateUrl: './app-reaction-panel.component.html',
@@ -26,9 +29,6 @@ export class AppReactionPanelComponent implements OnInit, OnChanges {
   @Input() public title: string;
   @Input() public type: string;
   @Input() public placeholder: string;
-  @Input() public itemRemoved: Reaction;
-  @Input() public itemsSelected: Reactions;
-  @Output() public itemSelected: EventEmitter<Reactions> = new EventEmitter();
 
   public querySearch: FormControl = new FormControl();
   public reactions: Reaction[] = [{'bigg_id': 'FK', 'name': 'Fucokinase', 'model_bigg_id': 'Universal', 'organism': ''},
@@ -45,7 +45,7 @@ export class AppReactionPanelComponent implements OnInit, OnChanges {
       {'bigg_id': 'FBP', 'name': 'Fructose-bisphosphatase', 'model_bigg_id': 'Universal', 'organism': ''}];
 
 
-  constructor() {
+  constructor(private store: Store<AppState>) {
     // Fake method to search when the value change.
     /*this.querySearch.valueChanges.pipe(debounceTime(500)).subscribe((data) => {
         this.fakeApiservice.searchReactionsByQuery(data).subscribe((response) => {
@@ -64,33 +64,19 @@ export class AppReactionPanelComponent implements OnInit, OnChanges {
   }
 
   addItem(reaction: Reaction): void {
-    if (this.type !== 'objective') {
-      this.itemsSelected[this.type].push(reaction);
-    } else {
-      this.itemsSelected[this.type].reaction = reaction;
-      this.itemsSelected[this.type].direction = 'max';
+    if (this.type === 'objective') {
+      console.log('objective', reaction);
+      this.store.dispatch(new SetObjectiveReaction(reaction.bigg_id));
+    } else if (this.type === 'added') {
+      console.log('added', reaction);
+      this.store.dispatch(new AddReaction(reaction.bigg_id));
+    } else if (this.type === 'removed') {
+      console.log('added', reaction);
+      this.store.dispatch(new RemoveReaction(reaction.bigg_id));
     }
     this.querySearch.reset();
-    this.itemSelected.emit(this.itemsSelected);
-  }
-
-  removeItem(reaction: Reaction): void {
-    if (this.type !== 'objective') {
-      this.itemsSelected[this.type] = this.itemsSelected[this.type].filter((item) => item !== reaction);
-    } else {
-      this.itemsSelected[this.type].reaction = {
-        bigg_id: null,
-        name: null,
-        model_bigg_id: null,
-        organism: null,
-      };
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const itemRemoved: SimpleChange = changes.itemRemoved;
-    if (itemRemoved) {
-      this.removeItem(itemRemoved.currentValue);
-    }
   }
 }
