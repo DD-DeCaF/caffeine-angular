@@ -14,6 +14,8 @@
 
 import {Action} from '@ngrx/store';
 
+import {CardType} from '../types';
+
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
 export const SELECT_CARD = 'SELECT_CARD';
@@ -21,6 +23,9 @@ export const SELECT_CARD = 'SELECT_CARD';
 export const TOGGLE_PLAY = 'TOGGLE_PLAY';
 
 export const LOADED = 'LOADED';
+
+export const ADD_CARD = 'ADD_CARD';
+
 export class SelectCard implements Action {
   readonly type = SELECT_CARD;
   constructor(public payload: string) {}
@@ -42,4 +47,9 @@ export class Loaded implements Action {
   readonly type = LOADED;
 }
 
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay;
+export class AddCard implements Action {
+  readonly type = ADD_CARD;
+  constructor(public payload: CardType) {}
+}
+
+export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard;
