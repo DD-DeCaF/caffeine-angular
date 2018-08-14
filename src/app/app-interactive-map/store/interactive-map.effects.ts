@@ -1,12 +1,13 @@
 // ./effects/auth.effects.ts
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Action , Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
-import { withLatestFrom, map, mapTo, delay, filter } from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter, mergeMap} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
-import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED } from './interactive-map.actions';
+import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED, ADD_REACTION, REMOVE_REACTION, SETBOUNDS_REACTION, SETOBJECTIVE_REACTION } from './interactive-map.actions';
 
 const ACTION_OFFSETS = {
   [NEXT_CARD]: 1,
@@ -63,5 +64,49 @@ export class InteractiveMapEffects {
     mapTo({type: NEXT_CARD}),
   );
 
-  constructor(private actions$: Actions, private store$: Store<AppState>) {}
+  @Effect()
+  addReaction: Observable<Action> = this.actions$.pipe(
+    ofType(ADD_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post('some/path', reaction)
+        .pipe(
+          map((data) => ({ type: ADD_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  @Effect()
+  removeReaction: Observable<Action> = this.actions$.pipe(
+    ofType(REMOVE_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post('some/path', reaction)
+        .pipe(
+          map((data) => ({ type: REMOVE_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  @Effect()
+  setObjectiveReaction: Observable<Action> = this.actions$.pipe(
+    ofType(SETOBJECTIVE_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post('some/path', reaction)
+        .pipe(
+          map((data) => ({ type: SETOBJECTIVE_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  @Effect()
+  setBoundsReaction: Observable<Action> = this.actions$.pipe(
+    ofType(SETBOUNDS_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post('some/path', reaction)
+        .pipe(
+          map((data) => ({ type: SETBOUNDS_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  constructor(private actions$: Actions, private store$: Store<AppState>, private http: HttpClient) {}
 }

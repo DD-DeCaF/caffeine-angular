@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import {Reaction, Reactions} from '../../../../types/custom_types';
+import {Reaction, Reactions} from '../../types';
 
 @Component({
   selector: 'app-reaction',

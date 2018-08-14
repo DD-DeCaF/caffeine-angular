@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Reaction} from '../../../../types/custom_types';
+import {Reaction} from '../../types';
 
 @Component({
   selector: 'app-reaction-panel-objective',
@@ -22,7 +22,6 @@ import {Reaction} from '../../../../types/custom_types';
 })
 export class AppReactionPanelObjectiveComponent implements OnInit {
   @Input() public item;
-  @Output() public itemRemoved: EventEmitter<Reaction> = new EventEmitter();
 
   constructor() { }
 
@@ -39,13 +38,5 @@ export class AppReactionPanelObjectiveComponent implements OnInit {
   }
 
   removeItem(reaction: Reaction): void {
-    this.item.reaction = {
-        bigg_id: null,
-        name: null,
-        model_bigg_id: null,
-        organism: null,
-    };
-    this.item.direction = null;
-    this.itemRemoved.emit(reaction);
   }
 }
