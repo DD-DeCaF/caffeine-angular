@@ -12,54 +12,62 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
-import {Reaction} from '../../types';
+import {Component} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.reducers';
+import {Subscription} from 'rxjs';
+import {BoundsReaction} from '../../types';
 
 @Component({
   selector: 'app-reaction-panel-changed',
   templateUrl: './app-reaction-panel-changed.component.html',
   styleUrls: ['./app-reaction-panel-changed.component.scss'],
 })
-export class AppReactionPanelChangedComponent implements OnInit, OnChanges {
-  @Input() public itemsSelected: Reaction[] = [];
-  @Input() public type: string;
+export class AppReactionPanelChangedComponent {
+  public reactions: {
+    [reactionId: string]: {
+      lowerBound: number,
+      upperBound: number,
+    },
+  };
   public clickedItem: string;
-  public lowerbound: number;
-  public upperbound: number;
-  constructor() { }
+  public lowerBound: number;
+  public upperBound: number;
+  private subscription: Subscription;
 
-  ngOnInit(): void {
+  constructor(private store: Store<AppState>) {
+    this.subscription = this.store.select('interactiveMap')
+      .subscribe(
+        (interactiveMap) => {
+          this.reactions = interactiveMap.cards.cardsById[interactiveMap.selectedCardId].bounds;
+        },
+      );
   }
 
-  removeItem(reaction: Reaction): void {
+  removeItem(): void {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const itemsSelected: SimpleChange = changes.itemsSelected;
-    this.itemsSelected = itemsSelected.currentValue;
+  clickedItemFunction(item: BoundsReaction): void {
+    this.clickedItem = item.reactionId;
+    this.lowerBound = item.lowerBound;
+    this.upperBound = item.upperBound;
   }
 
-  clickedItemFunction(item): void {
-    this.clickedItem = item.id;
-    this.lowerbound = item.lower_bound;
-    this.upperbound = item.upper_bound;
+  changedReactionDisplay(item: BoundsReaction): string {
+    return item.reactionId;
   }
 
-  changedReactionDisplay(item): string {
-    return item.id;
+  showItem(item: BoundsReaction, index: number): boolean {
+    return this.clickedItem === item.reactionId || (index === 0 && !this.clickedItem);
   }
 
-  showItem(item, index): boolean {
-    return this.clickedItem === item.id || (index === 0 && !this.clickedItem) || this.itemsSelected.length === 1;
-  }
-
-  onResetBounds(selectedReaction): void {
+ /* onResetBounds(selectedReaction): void {
    console.log('ON RESET');
   }
 
   onApplyBounds(selectedReaction): void {
     console.log('ON APPLY');
-  }
+  }*/
 
 
 }

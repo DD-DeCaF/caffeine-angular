@@ -38,7 +38,7 @@ span {
 }
 
 .box-bounds {
-  border:1px solid black;
+  border: 1px solid black;
   height: 110px;
   padding: 2%;
   margin-top: 5%;
@@ -56,18 +56,16 @@ span {
 }
 
 .item-display-box {
-  font-size:12px;
+  font-size: 12px;
   width: 100px;
   text-align: center;
 }
 
-.button-apply {
+.change-button {
   border-radius: 3px;
   background-color: #eee;
   border: 1px solid #ddd;
   margin-top: 8px;
-  margin-right: 20px;
-  margin-left: 0px;
   font-size: 14px;
   padding: 5px;
   padding-left: 10px;
@@ -75,17 +73,12 @@ span {
   float: right;
 }
 
+.button-apply {
+  margin-right: 20px;
+}
+
 .button-reset {
-  border-radius: 3px;
-  background-color: #eee;
-  border: 1px solid #ddd;
-  margin-top: 8px;
   margin-right: 0px;
-  font-size: 14px;
-  padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  float: right;
 }
 
 .mat-list .mat-list-item.left .mat-list-item-content{

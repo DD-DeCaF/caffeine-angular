@@ -12,31 +12,45 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Reaction} from '../../types';
+import {Component} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.reducers';
+import {Subscription} from 'rxjs';
+import {ObjectiveReaction} from '../../types';
+import {SetObjectiveReaction} from '../../store/interactive-map.actions';
 
 @Component({
   selector: 'app-reaction-panel-objective',
   templateUrl: './app-reaction-panel-objective.component.html',
   styleUrls: ['./app-reaction-panel-objective.component.scss'],
 })
-export class AppReactionPanelObjectiveComponent implements OnInit {
-  @Input() public item;
+export class AppReactionPanelObjectiveComponent {
+  public objectiveReaction: ObjectiveReaction;
+  private subscription: Subscription;
 
-  constructor() { }
-
-  ngOnInit(): void {
-
+  constructor(private store: Store<AppState>) {
+    this.subscription = this.store.select('interactiveMap')
+      .subscribe(
+        (interactiveMap) => {
+          this.objectiveReaction = interactiveMap.cards.cardsById[interactiveMap.selectedCardId].objectiveReaction;
+        },
+      );
   }
 
   changeDirectionObjective(): void {
-    if (this.item.direction === 'max') {
-      this.item.direction = 'min';
-    } else {
-      this.item.direction = 'max';
-    }
+    const direction = this.objectiveReaction.direction === 'max' ? 'min' : 'max';
+    this.store.dispatch(new SetObjectiveReaction({
+        cardId: this.objectiveReaction.cardId,
+        reactionId: this.objectiveReaction.reactionId,
+        operationTarget: this.objectiveReaction.operationTarget,
+        direction: direction}));
   }
 
-  removeItem(reaction: Reaction): void {
+  removeObjective(): void {
+    this.store.dispatch(new SetObjectiveReaction({
+      cardId: this.objectiveReaction.cardId,
+      reactionId: null,
+      operationTarget: this.objectiveReaction.operationTarget,
+      direction: null}));
   }
 }

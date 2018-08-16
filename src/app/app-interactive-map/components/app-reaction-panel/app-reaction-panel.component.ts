@@ -15,8 +15,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
-import {Reaction, Reactions} from '../../types';
-// import {debounceTime} from 'rxjs/operators';
+import {Reaction, OperationDirection} from '../../types';
 
 import { AppState } from '../../../store/app.reducers';
 import {OperationReaction, SetObjectiveReaction} from '../../store/interactive-map.actions';
@@ -66,13 +65,23 @@ export class AppReactionPanelComponent implements OnInit, OnChanges {
   addItem(reaction: Reaction): void {
     if (this.type === 'objective') {
       console.log('objective', reaction);
-      this.store.dispatch(new SetObjectiveReaction({cardId: '', reactionId: reaction.bigg_id, operationTarget: 'objectiveReaction'}));
+      this.store.dispatch(new SetObjectiveReaction({cardId: '', reactionId: reaction.bigg_id, direction: 'max'}));
     } else if (this.type === 'added') {
       console.log('added', reaction);
-      this.store.dispatch(new OperationReaction({cardId: '', reactionId: reaction.bigg_id, operationTarget: 'addedReactions'}));
+      this.store.dispatch(new OperationReaction({
+        cardId: '',
+        reactionId: reaction.bigg_id,
+        operationTarget: 'addedReactions',
+        direction: OperationDirection.Do,
+      }));
     } else if (this.type === 'removed') {
       console.log('added', reaction);
-      this.store.dispatch(new OperationReaction({cardId: '', reactionId: reaction.bigg_id, operationTarget: 'knockoutReactions'}));
+      this.store.dispatch(new OperationReaction({
+        cardId: '',
+        reactionId: reaction.bigg_id,
+        operationTarget: 'knockoutReactions',
+        direction: OperationDirection.Undo,
+      }));
     }
     this.querySearch.reset();
   }

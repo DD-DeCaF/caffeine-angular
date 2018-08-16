@@ -14,7 +14,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {CardType} from '../types';
+import {CardType, OperationPayload, BoundsReaction, ObjectiveReaction} from '../types';
 
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
@@ -33,25 +33,6 @@ export const KNOCKOUT_REACTION = 'KNOCKOUT_REACTION';
 export const SETOBJECTIVE_REACTION = 'SETOBJECTIVE_REACTION';
 export const SETBOUNDS_REACTION = 'SETBOUNDS_REACTION';
 
-export enum Direction {
-  DO,
-  UNDO,
-}
-export interface OperationPayload {
-  reactionId: string;
-  operationTarget: 'addedReactions' | 'knockoutReactions';
-  direction: Direction;
-}
-
-export interface ObjectivePayload {
-  reactionId: string;
-}
-
-export interface BoundsReaction {
-  reactionId: string;
-  lowerBound: number;
-  upperBound: number;
-}
 
 export class SelectCard implements Action {
   readonly type = SELECT_CARD;
@@ -91,7 +72,7 @@ export class OperationReaction implements Action {
 
 export class SetObjectiveReaction implements Action {
   readonly type = SETOBJECTIVE_REACTION;
-  constructor(public payload: ObjectivePayload) {}
+  constructor(public payload: ObjectiveReaction) {}
 }
 
 export class SetReactionBounds implements Action {
