@@ -40,7 +40,11 @@ $metabolica-app-theme: mat-light-theme($metabolica-app-primary, $metabolica-app-
 // that you are using.
 @include angular-material-theme($metabolica-app-theme);
 @include app-build-component($metabolica-app-theme);
+<<<<<<< HEAD
 @include app-reaction-panel-component($metabolica-app-theme)
+=======
+@include app-reaction-panel-component($metabolica-app-theme);
+>>>>>>> 5027a74163430191158a14baa21caab8e88a732f
 // Amber theme
 $amber-primary: mat-palette($mat-amber);
 
@@ -50,6 +54,4 @@ $amber-theme: mat-light-theme($amber-primary, $metabolica-app-accent, $metabolic
   @include angular-material-theme($amber-theme);
   @include app-build-component($amber-theme);
   @include app-reaction-panel-component($amber-theme)
-
-
 }

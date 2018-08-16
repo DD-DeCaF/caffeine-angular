@@ -80,7 +80,11 @@ export class AppReactionPanelComponent {
     if (['added', 'removed'].includes(this.type)) {
       this.store.dispatch(new OperationReaction({cardId: this.cardId, reactionId: reaction.bigg_id, operationTarget: typeToTarget[this.type]}));
     } else {
-      this.store.dispatch(new SetObjectiveReaction({cardId: this.cardId, reactionId: reaction.bigg_id, operationTarget: typeToTarget[this.type], direction: 'max'}));
+      this.store.dispatch(new SetObjectiveReaction({
+        cardId: this.cardId,
+        reactionId: reaction.bigg_id,
+        operationTarget: typeToTarget[this.type],
+        direction: 'max'}));
     }
     this.querySearch.reset();
   }

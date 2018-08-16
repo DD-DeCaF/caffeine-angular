@@ -68,6 +68,4 @@ export class AppReactionPanelChangedComponent {
   onApplyBounds(selectedReaction): void {
     console.log('ON APPLY');
   }*/
-
-
 }

@@ -16,18 +16,12 @@ import {Component, OnInit} from '@angular/core';
 import {Store, select} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
-import {SelectCard, NextCard, PreviousCard, TogglePlay, AddCard} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, TogglePlay, AddCard, DeleteCard} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import { AppState } from '../../../store/app.reducers';
 import { CardType } from '../../types';
 
-interface Card {
-  name: string;
-  selected: boolean;
-  method: string;
-  expanded: boolean;
-}
 @Component({
   selector: 'app-build',
   templateUrl: './app-build.component.html',
@@ -48,7 +42,6 @@ export class AppBuildComponent implements OnInit {
   }
 
   public select(card: fromInteractiveMapSelectors.HydratedCard): void {
-    console.log('select card', card);
     this.store.dispatch(new SelectCard(card.id));
   }
 
@@ -72,8 +65,8 @@ export class AppBuildComponent implements OnInit {
     this.store.dispatch(new PreviousCard());
   }
 
-  public delete(card: Card): void {
-    console.log(card);
+  public delete(card: fromInteractiveMapSelectors.HydratedCard): void {
+    this.store.dispatch(new DeleteCard(card.id));
   }
 
   public grow(card: fromInteractiveMapSelectors.HydratedCard): void {

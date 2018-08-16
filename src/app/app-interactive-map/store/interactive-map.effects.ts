@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, mergeMap} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
-import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED, KNOCKOUT_REACTION, SETBOUNDS_REACTION, SETOBJECTIVE_REACTION, OPERATION_REACTION } from './interactive-map.actions';
+import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED, KNOCKOUT_REACTION,
+  SETBOUNDS_REACTION, SETOBJECTIVE_REACTION, OPERATION_REACTION } from './interactive-map.actions';
 import {environment} from '../../../environments/environment';
 
 const ACTION_OFFSETS = {
