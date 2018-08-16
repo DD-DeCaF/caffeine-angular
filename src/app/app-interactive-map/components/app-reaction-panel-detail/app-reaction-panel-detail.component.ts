@@ -12,30 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
-import {Store, select} from '@ngrx/store';
-import { AppState } from '../../../store/app.reducers';
+import {Component, Input} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {Subscription} from 'rxjs';
 
-import {Reaction} from '../../types';
+import {AppState} from '../../../store/app.reducers';
 
 @Component({
   selector: 'app-reaction-panel-detail',
   templateUrl: './app-reaction-panel-detail.component.html',
-  styleUrls: ['./app-reaction-panel-detail.component.scss'],
 })
-export class AppReactionPanelDetailComponent implements OnInit, OnChanges {
-  @Input() public itemsSelected: Reaction[] = [];
+
+export class AppReactionPanelDetailComponent {
+  public reactions: string[] = [];
   @Input() public type: string;
-  @Output() itemRemoved: EventEmitter<Reaction> = new EventEmitter();
-  constructor(private store: Store<AppState>) { }
+  private subscription: Subscription;
 
-  ngOnInit(): void {
+  constructor(private store: Store<AppState>) {
+    this.subscription = this.store.select('interactiveMap')
+      .subscribe(
+        (interactiveMap) => {
+          this.reactions = interactiveMap.cards.cardsById[interactiveMap.selectedCardId].addedReactions;
+        },
+      );
   }
 
-  removeItem(reaction: Reaction): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+  removeItem(): void {}
 
 }

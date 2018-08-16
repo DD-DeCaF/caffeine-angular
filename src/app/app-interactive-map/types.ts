@@ -20,8 +20,18 @@ export interface Reactions {
   changed: Reaction[];
 }
 
-export interface ObjectiveReaction {
-  reaction: Reaction;
+export interface OperationPayload {
+  cardId: string;
+  reactionId: string;
+  operationTarget?: 'addedReactions' | 'knockoutReactions' | 'objectiveReaction' | 'changedReaction';
+}
+
+export interface BoundsReaction extends OperationPayload {
+  lowerBound: number;
+  upperBound: number;
+}
+
+export interface ObjectiveReaction extends OperationPayload {
   direction: string;
 }
 
@@ -30,7 +40,7 @@ export interface Card {
   name: string;
   addedReactions: string[];
   knockoutReactions: string[];
-  objectiveReaction: string;
+  objectiveReaction: ObjectiveReaction;
   bounds: {
     [reactionId: string]: {
       lowerBound: number;

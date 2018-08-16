@@ -12,24 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
-import {Reaction, Reactions} from '../../types';
+import {Subscription} from 'rxjs';
 // import {debounceTime} from 'rxjs/operators';
 
+import {Reaction} from '../../types';
 import { AppState } from '../../../store/app.reducers';
 import {OperationReaction, SetObjectiveReaction} from '../../store/interactive-map.actions';
+
 @Component({
   selector: 'app-reaction-panel',
   templateUrl: './app-reaction-panel.component.html',
   styleUrls: ['./app-reaction-panel.component.scss'],
 })
-export class AppReactionPanelComponent implements OnInit, OnChanges {
+export class AppReactionPanelComponent {
   @Input() public title: string;
   @Input() public type: string;
   @Input() public placeholder: string;
 
+  private subscription: Subscription;
+  private cardId = '0';
   public querySearch: FormControl = new FormControl();
   public reactions: Reaction[] = [{'bigg_id': 'FK', 'name': 'Fucokinase', 'model_bigg_id': 'Universal', 'organism': ''},
       {'bigg_id': 'FT', 'name': 'Trans,trans,cis-geranylgeranyl diphosphate synthase', 'model_bigg_id': 'Universal', 'organism': ''},
@@ -52,9 +56,12 @@ export class AppReactionPanelComponent implements OnInit, OnChanges {
           this.reactions = response;
         });
       });*/
-  }
-
-  ngOnInit(): void {
+    this.subscription = this.store.select('interactiveMap')
+      .subscribe(
+        (interactiveMap) => {
+          this.cardId = interactiveMap.selectedCardId;
+        },
+      );
   }
 
   displayFn(item: Reaction): string {
@@ -64,19 +71,17 @@ export class AppReactionPanelComponent implements OnInit, OnChanges {
   }
 
   addItem(reaction: Reaction): void {
-    if (this.type === 'objective') {
-      console.log('objective', reaction);
-      this.store.dispatch(new SetObjectiveReaction({cardId: '', reactionId: reaction.bigg_id, operationTarget: 'objectiveReaction'}));
-    } else if (this.type === 'added') {
-      console.log('added', reaction);
-      this.store.dispatch(new OperationReaction({cardId: '', reactionId: reaction.bigg_id, operationTarget: 'addedReactions'}));
-    } else if (this.type === 'removed') {
-      console.log('added', reaction);
-      this.store.dispatch(new OperationReaction({cardId: '', reactionId: reaction.bigg_id, operationTarget: 'knockoutReactions'}));
+    const typeToTarget = {
+      'objective': 'objectiveReaction',
+      'added': 'addedReactions',
+      'knockout': 'knockoutReactions',
+    };
+// Let's not add cardId, we can grab that in the effect!
+    if (['added', 'removed'].includes(this.type)) {
+      this.store.dispatch(new OperationReaction({cardId: this.cardId, reactionId: reaction.bigg_id, operationTarget: typeToTarget[this.type]}));
+    } else {
+      this.store.dispatch(new SetObjectiveReaction({cardId: this.cardId, reactionId: reaction.bigg_id, operationTarget: typeToTarget[this.type], direction: 'max'}));
     }
     this.querySearch.reset();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
   }
 }

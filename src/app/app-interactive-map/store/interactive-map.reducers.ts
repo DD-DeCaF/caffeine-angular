@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {Card, CardType} from '../types';
+import {Card, CardType, ObjectiveReaction} from '../types';
 
 
 const idGen = (() => {
@@ -64,7 +64,11 @@ const initialState: InteractiveMapState = {
         addedReactions: [],
         knockoutReactions: [],
         bounds: {},
-        objectiveReaction: '',
+        objectiveReaction: {
+          cardId: '0',
+          reactionId: '0',
+          direction: null,
+        },
       },
     },
   },
@@ -93,7 +97,11 @@ export function interactiveMapReducer(
         addedReactions: [],
         knockoutReactions: [],
         bounds: {},
-        objectiveReaction: '',
+        objectiveReaction: {
+          cardId: '0',
+          reactionId: '0',
+          direction: null,
+        },
       };
       return {
         ...state,
@@ -112,7 +120,7 @@ export function interactiveMapReducer(
       const card = state.cards.cardsById[cardId];
       const newCard: Card = {
         ...card,
-        [operationTarget]: [...card[operationTarget], reactionId],
+        // operationTarget: [...card[operationTarget], reactionId],
       };
       return {
         ...state,
@@ -126,11 +134,15 @@ export function interactiveMapReducer(
       };
     }
     case fromInteractiveMapActions.SETOBJECTIVE_REACTION: {
-      const {cardId, reactionId} = action.payload;
+      const {cardId, reactionId, direction} = action.payload;
       const card = state.cards.cardsById[cardId];
       const newCard: Card = {
         ...card,
-        objectiveReaction: reactionId,
+        objectiveReaction: {
+          cardId: cardId,
+          reactionId: reactionId,
+          direction: direction,
+        },
       };
       return {
         ...state,
