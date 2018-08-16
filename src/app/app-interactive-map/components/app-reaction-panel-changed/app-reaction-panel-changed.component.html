@@ -1,0 +1,46 @@
+<!--Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.-->
+
+<!--Licensed under the Apache License, Version 2.0 (the "License");-->
+<!--you may not use this file except in compliance with the License.-->
+<!--You may obtain a copy of the License at-->
+
+<!--http://www.apache.org/licenses/LICENSE-2.0-->
+
+<!--Unless required by applicable law or agreed to in writing, software-->
+<!--distributed under the License is distributed on an "AS IS" BASIS,-->
+<!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+<!--See the License for the specific language governing permissions and-->
+<!--limitations under the License.-->
+
+<mat-list>
+  <div *ngFor="let item of reactions; let index = index">
+    <mat-list-item (click)="clickedItemFunction({item: item})">
+      <span>-1000</span>
+      <span class="item-display">
+        	&#8804; <span>{{item.reactionId}}</span>
+          &#8804;
+      </span>
+      <span>1000</span>
+      <button mat-icon-button align="end" (click)="removeItem(item)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-list-item>
+    <div class="box-bounds" [hidden]="!showItem(item, index)">
+      <mat-list-item *ngIf="item">
+        <input class="input-lower" type="number" ([ngModel])="lowerBound"/>
+        <span class="item-display-box">
+          	&#8804; <span>{{item.reactionId}}</span> &#8804;
+        </span>
+        <input class="input-upper" type="number" ([ngModel])="upperBound"/>
+      </mat-list-item>
+      <mat-list-item *ngIf="item">
+        <button class="change-button button-apply" (click)="onApplyBounds({item: item})">
+          Apply
+        </button>
+        <button class="change-button button-reset" (click)="onResetBounds({item: item})">
+          Reset
+        </button>
+      </mat-list-item>
+    </div>
+  </div>
+</mat-list>

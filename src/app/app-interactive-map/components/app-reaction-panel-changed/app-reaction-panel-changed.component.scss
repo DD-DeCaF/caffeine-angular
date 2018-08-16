@@ -1,0 +1,86 @@
+// Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+mat-list-item {
+  display: block;
+}
+
+span {
+  font-size: 11px;
+}
+
+.lower-bound-item {
+  float: left;
+  font-size: 12px;
+}
+
+.upper-bound-item {
+  float: right;
+  font-size: 12px;
+}
+
+.item-display {
+  font-size: 12px;
+  margin-left: 6px;
+  margin-right: 6px;
+  text-align: center !important;
+}
+
+.box-bounds {
+  border: 1px solid black;
+  height: 110px;
+  padding: 2%;
+  margin-top: 5%;
+  text-align: center;
+}
+
+.input-lower {
+  float: left;
+  width: 30px;
+}
+
+.input-upper {
+  float: right;
+  width: 30px;
+}
+
+.item-display-box {
+  font-size: 12px;
+  width: 100px;
+  text-align: center;
+}
+
+.change-button {
+  border-radius: 3px;
+  background-color: #eee;
+  border: 1px solid #ddd;
+  margin-top: 8px;
+  font-size: 14px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  float: right;
+}
+
+.button-apply {
+  margin-right: 20px;
+}
+
+.button-reset {
+  margin-right: 0px;
+}
+
+.mat-list .mat-list-item.left .mat-list-item-content{
+  padding: 0 !important;
+}

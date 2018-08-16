@@ -27,6 +27,7 @@ import {
   MatListModule,
   MatMenuModule,
   MatSidenavModule,
+  MatSlideToggleModule,
   MatToolbarModule,
   MatTableModule,
   MatTabsModule,
@@ -43,11 +44,11 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
  */
 @NgModule({
   imports: [MatButtonModule, MatCheckboxModule, MatListModule, MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule,
-    MatCardModule, MatSidenavModule, MatMenuModule, MatAutocompleteModule, MatDialogModule, MatTableModule, MatTabsModule,
-    MatSortModule, MatPaginatorModule, MatTooltipModule, MatProgressBarModule, MatChipsModule, MatProgressSpinnerModule],
+    MatCardModule, MatSidenavModule, MatSlideToggleModule, MatMenuModule, MatAutocompleteModule, MatDialogModule, MatTableModule,
+    MatTabsModule, MatSortModule, MatPaginatorModule, MatTooltipModule, MatProgressBarModule, MatChipsModule, MatProgressSpinnerModule],
   exports: [MatButtonModule, MatCheckboxModule, MatListModule, MatToolbarModule, MatIconModule, MatFormFieldModule, MatInputModule,
-    MatCardModule, MatSidenavModule, MatMenuModule, MatAutocompleteModule, MatDialogModule, MatTableModule, MatTabsModule,
-    MatSortModule, MatPaginatorModule, MatTooltipModule, MatProgressBarModule, MatChipsModule, MatProgressSpinnerModule],
+    MatCardModule, MatSidenavModule, MatSlideToggleModule, MatMenuModule, MatAutocompleteModule, MatDialogModule, MatTableModule,
+    MatTabsModule, MatSortModule, MatPaginatorModule, MatTooltipModule, MatProgressBarModule, MatChipsModule, MatProgressSpinnerModule],
   providers: [MatIconRegistry],
 })
 export class AppMaterialModule {

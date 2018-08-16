@@ -1,0 +1,32 @@
+<!--Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.-->
+
+<!--Licensed under the Apache License, Version 2.0 (the "License");-->
+<!--you may not use this file except in compliance with the License.-->
+<!--You may obtain a copy of the License at-->
+
+<!--http://www.apache.org/licenses/LICENSE-2.0-->
+
+<!--Unless required by applicable law or agreed to in writing, software-->
+<!--distributed under the License is distributed on an "AS IS" BASIS,-->
+<!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+<!--See the License for the specific language governing permissions and-->
+<!--limitations under the License.-->
+
+<mat-card>
+  <mat-card-subtitle class="header-card">{{title}}</mat-card-subtitle>
+  <mat-card-content>
+    <form>
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="{{placeholder}}" aria-label="Number" matInput [formControl]="querySearch" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete"
+                          [displayWith]="displayFn"
+                          (optionSelected)='addItem($event.option.value)'>
+          <mat-option *ngFor="let reaction of reactions" [value]="reaction">
+            {{ reaction?.bigg_id }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <ng-content *ngIf="!template"></ng-content>
+    </form>
+  </mat-card-content>
+</mat-card>

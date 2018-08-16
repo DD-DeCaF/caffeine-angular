@@ -1,12 +1,15 @@
 // ./effects/auth.effects.ts
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Action , Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
-import { withLatestFrom, map, mapTo, delay, filter } from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter, mergeMap} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
-import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED } from './interactive-map.actions';
+import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED, KNOCKOUT_REACTION,
+  SETBOUNDS_REACTION, SETOBJECTIVE_REACTION, OPERATION_REACTION } from './interactive-map.actions';
+import {environment} from '../../../environments/environment';
 
 const ACTION_OFFSETS = {
   [NEXT_CARD]: 1,
@@ -40,7 +43,7 @@ export class InteractiveMapEffects {
   initPlay: Observable<Action> = this.actions$.pipe(
     ofType(TOGGLE_PLAY),
     withLatestFrom(this.store$),
-    filter(([, storeState]) => storeState.interactiveMap.playing),
+    filter(([action, storeState]) => storeState.interactiveMap.playing),
     mapTo({type: NEXT_CARD}),
   );
 
@@ -59,9 +62,53 @@ export class InteractiveMapEffects {
   stepNextIfPlaying: Observable<Action> = this.actions$.pipe(
     ofType(LOADED),
     withLatestFrom(this.store$),
-    filter(([, storeState]) => storeState.interactiveMap.playing),
+    filter(([action, storeState]) => storeState.interactiveMap.playing),
     mapTo({type: NEXT_CARD}),
   );
 
-  constructor(private actions$: Actions, private store$: Store<AppState>) {}
+  @Effect()
+  operationReaction: Observable<Action> = this.actions$.pipe(
+    ofType(OPERATION_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
+        .pipe(
+          map((data) => ({ type: OPERATION_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  @Effect()
+  knockoutReaction: Observable<Action> = this.actions$.pipe(
+    ofType(KNOCKOUT_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
+        .pipe(
+          map((data) => ({ type: KNOCKOUT_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  @Effect()
+  setObjectiveReaction: Observable<Action> = this.actions$.pipe(
+    ofType(SETOBJECTIVE_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
+        .pipe(
+          map((data) => ({ type: SETOBJECTIVE_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  @Effect()
+  setBoundsReaction: Observable<Action> = this.actions$.pipe(
+    ofType(SETBOUNDS_REACTION),
+    mergeMap((reaction) => {
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
+        .pipe(
+          map((data) => ({ type: SETBOUNDS_REACTION, payload: data })),
+        );
+    }),
+  );
+
+  constructor(private actions$: Actions, private store$: Store<AppState>, private http: HttpClient) {}
 }
