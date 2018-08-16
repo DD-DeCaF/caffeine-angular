@@ -22,12 +22,6 @@ import * as fromInteractiveMapSelectors from '../../store/interactive-map.select
 import { AppState } from '../../../store/app.reducers';
 import { CardType } from '../../types';
 
-interface Card {
-  name: string;
-  selected: boolean;
-  method: string;
-  expanded: boolean;
-}
 @Component({
   selector: 'app-build',
   templateUrl: './app-build.component.html',
