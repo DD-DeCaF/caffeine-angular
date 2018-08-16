@@ -14,7 +14,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {CardType, Reaction} from '../types';
+import {CardType, Card} from '../types';
 
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
@@ -27,13 +27,21 @@ export const LOADED = 'LOADED';
 export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
 
-export const ADD_REACTION = 'ADD_REACTION';
-export const REMOVE_REACTION = 'REMOVE_REACTION';
+export const OPERATION_REACTION = 'OPERATION_REACTION';
+export const REMOVE_ADDED_REACTION = 'REMOVE_ADDED_REACTION';
+export const KNOCKOUT_REACTION = 'KNOCKOUT_REACTION';
+export const REMOVE_KNOCKOUT_REACTION = 'REMOVE_KNOCKOUT_REACTION';
 export const SETOBJECTIVE_REACTION = 'SETOBJECTIVE_REACTION';
 export const SETBOUNDS_REACTION = 'SETBOUNDS_REACTION';
 
-export interface BoundsReaction {
-  id: string;
+
+export interface OperationPayload {
+  cardId: string;
+  reactionId: string;
+  operationTarget: string;
+}
+
+export interface BoundsReaction extends OperationPayload {
   lowerBound: number;
   upperBound: number;
 }
@@ -69,19 +77,14 @@ export class DeleteCard implements Action {
   constructor(public payload: string) {}
 }
 
-export class AddReaction implements Action {
-  readonly type = ADD_REACTION;
-  constructor(public payload: string) {}
-}
-
-export class RemoveReaction implements Action {
-  readonly type = REMOVE_REACTION;
-  constructor(public payload: string) {}
+export class OperationReaction implements Action {
+  readonly type = OPERATION_REACTION;
+  constructor(public payload: OperationPayload) {}
 }
 
 export class SetObjectiveReaction implements Action {
   readonly type = SETOBJECTIVE_REACTION;
-  constructor(public payload: string) {}
+  constructor(public payload: OperationPayload) {}
 }
 
 export class SetReactionBounds implements Action {
@@ -89,4 +92,7 @@ export class SetReactionBounds implements Action {
   constructor(public payload: BoundsReaction) {}
 }
 
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard | AddReaction | RemoveReaction | SetObjectiveReaction | SetReactionBounds;
+
+export type InteractiveMapActions =
+  SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard| OperationReaction |
+  SetObjectiveReaction | SetReactionBounds;
