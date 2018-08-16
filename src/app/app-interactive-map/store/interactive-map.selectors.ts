@@ -1,7 +1,7 @@
 import { createSelector } from '@ngrx/store';
 
 import { AppState } from '../../store/app.reducers';
-import { Card } from './interactive-map.reducers';
+import {Card} from '../types';
 
 export interface HydratedCard extends Card {
   selected: boolean;
