@@ -25,6 +25,7 @@ export const TOGGLE_PLAY = 'TOGGLE_PLAY';
 export const LOADED = 'LOADED';
 
 export const ADD_CARD = 'ADD_CARD';
+export const DELETE_CARD = 'DELETE_CARD';
 
 export class SelectCard implements Action {
   readonly type = SELECT_CARD;
@@ -52,4 +53,9 @@ export class AddCard implements Action {
   constructor(public payload: CardType) {}
 }
 
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard;
+export class DeleteCard implements Action {
+  readonly type = DELETE_CARD;
+  constructor(public payload: string) {}
+}
+
+export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard;

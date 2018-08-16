@@ -89,6 +89,7 @@ export function interactiveMapReducer(
       const newId = idGen();
       return {
         ...state,
+        selectedCardId: newId,
         cards: {
           ids: [...state.cards.ids, newId],
           cardsById: {
@@ -98,6 +99,23 @@ export function interactiveMapReducer(
               type: action.payload,
             },
           },
+        },
+      };
+    case fromInteractiveMapActions.DELETE_CARD:
+      if (state.cards.ids.length < 2) {
+        return state;
+      }
+      const ids = state.cards.ids.filter((id) => id !== action.payload);
+      const selectedCardId = action.payload === state.selectedCardId
+        ? ids[0]
+        : state.selectedCardId;
+      const {[action.payload]: card, ...cardsById} = state.cards.cardsById;
+      return {
+        ...state,
+        selectedCardId,
+        cards: {
+          ids,
+          cardsById,
         },
       };
     default:
