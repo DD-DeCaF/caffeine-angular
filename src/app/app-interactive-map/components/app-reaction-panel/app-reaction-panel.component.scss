@@ -18,9 +18,11 @@ mat-card {
   margin: 5%;
   box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
 }
+
 .item-name{
   width: 100%
 }
+
 @mixin app-reaction-panel-component($theme) {
   .header-card {
     color: mat-color(map-get($theme, primary));

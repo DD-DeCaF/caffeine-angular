@@ -34,9 +34,28 @@ export interface Reactions {
   changed: Reaction[];
 }
 
-export interface ObjectiveReaction {
-  reaction: Reaction;
-  direction: string;
+export interface OperationBase {
+  cardId: string;
+  reactionId: string;
+}
+
+export enum OperationDirection {
+  Do,
+  Undo,
+}
+
+export interface OperationPayload extends OperationBase {
+  operationTarget?: 'addedReactions' | 'knockoutReactions';
+  direction: OperationDirection;
+}
+
+export interface BoundsReaction extends OperationBase {
+  lowerBound: number;
+  upperBound: number;
+}
+
+export interface ObjectiveReaction extends OperationBase {
+  direction: 'min' | 'max';
 }
 
 export interface Card {
@@ -44,7 +63,7 @@ export interface Card {
   name: string;
   addedReactions: string[];
   knockoutReactions: string[];
-  objectiveReaction: string;
+  objectiveReaction: ObjectiveReaction;
   bounds: {
     [reactionId: string]: {
       lowerBound: number;
