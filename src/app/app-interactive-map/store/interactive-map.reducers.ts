@@ -13,12 +13,8 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {CardType, Reaction} from '../types';
+import {Card, CardType} from '../types';
 
-export interface Card {
-  type: CardType;
-  name: string;
-}
 
 const idGen = (() => {
   let counter = 1;
@@ -36,15 +32,6 @@ export interface InteractiveMapState {
   cards: {
     ids: string[];
     cardsById: { [key: string]: Card; };
-  };
-  addedReactions: string[];
-  removedReactions: string[];
-  objectiveReaction: string;
-  bounds: {
-    [reactionId: string]: {
-      lowerBound: number;
-      upperBound: number;
-    };
   };
 }
 
@@ -74,13 +61,13 @@ const initialState: InteractiveMapState = {
       '0': {
         name: 'foo',
         type: CardType.WildType,
+        addedReactions: [],
+        knockoutReactions: [],
+        bounds: {},
+        objectiveReaction: '',
       },
     },
   },
-  addedReactions: [],
-  removedReactions: [],
-  bounds: {},
-  objectiveReaction: '',
 };
 
 export function interactiveMapReducer(
@@ -98,46 +85,101 @@ export function interactiveMapReducer(
         ...state,
         playing: !state.playing,
       };
-    case fromInteractiveMapActions.ADD_CARD:
+    case fromInteractiveMapActions.ADD_CARD: {
       const newId = idGen();
+      const newCard: Card = {
+        name: action.payload === CardType.WildType ? 'WildType' : 'DataDriven',
+        type: action.payload,
+        addedReactions: [],
+        knockoutReactions: [],
+        bounds: {},
+        objectiveReaction: '',
+      };
       return {
         ...state,
         cards: {
+          ...state.cards,
           ids: [...state.cards.ids, newId],
           cardsById: {
             ...state.cards.cardsById,
-            [newId]: {
-              name: action.payload === CardType.WildType ? 'WildType' : 'DataDriven',
-              type: action.payload,
-            },
+            [newId]: newCard,
           },
         },
       };
-    case fromInteractiveMapActions.ADD_REACTION:
-      return {
-        ...state,
-        addedReactions: [...state.addedReactions, action.payload],
+    }
+    case fromInteractiveMapActions.OPERATION_REACTION: {
+      const {cardId, reactionId, operationTarget} = action.payload;
+      const card = state.cards.cardsById[cardId];
+      const newCard: Card = {
+        ...card,
+        //operationTarget: [...card.operationTarget, reactionId],
       };
-    case fromInteractiveMapActions.REMOVE_REACTION:
       return {
         ...state,
-        removedReactions: [...state.removedReactions, action.payload],
+        cards: {
+          ...state.cards,
+          cardsById: {
+            ...state.cards.cardsById,
+            [cardId]: newCard,
+          },
+        },
       };
-    case fromInteractiveMapActions.SETOBJECTIVE_REACTION:
-      return {
-        ...state,
-        objectiveReaction: action.payload,
+    }
+    case fromInteractiveMapActions.SETOBJECTIVE_REACTION: {
+      const {cardId, reactionId} = action.payload;
+      const card = state.cards.cardsById[cardId];
+      const newCard: Card = {
+        ...card,
+        objectiveReaction: reactionId,
       };
-    case fromInteractiveMapActions.SETBOUNDS_REACTION:
       return {
         ...state,
+        cards: {
+          ...state.cards,
+          cardsById: {
+            ...state.cards.cardsById,
+            [cardId]: newCard,
+          },
+        },
+      };
+    }
+    case fromInteractiveMapActions.SETBOUNDS_REACTION: {
+      const {cardId, reactionId, lowerBound, upperBound} = action.payload;
+      const card = state.cards.cardsById[cardId];
+      const newCard: Card = {
+        ...card,
         bounds: {
-          [action.payload.id]: {
-            lowerBound: action.payload.lowerBound,
-            upperBound: action.payload.upperBound,
+          [reactionId]: {
+            lowerBound: lowerBound,
+            upperBound: upperBound,
           },
         },
       };
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          cardsById: {
+            ...state.cards.cardsById,
+            [cardId]: newCard,
+          },
+        },
+      };
+    }
+    /*case fromInteractiveMapActions.REMOVE_ADDED_REACTION:
+      return {
+        ...state,
+        addedReactions: state.addedReactions.filter((reaction) => {
+          return reaction !== action.payload;
+        }),
+      };
+    case fromInteractiveMapActions.REMOVE_KNOCKOUT_REACTION:
+      return {
+        ...state,
+        knockoutReactions: state.knockoutReactions.filter((reaction) => {
+        return reaction !== action.payload;
+        }),
+      };*/
     default:
       return state;
   }

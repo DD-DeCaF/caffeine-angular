@@ -17,7 +17,6 @@ import {Store, select} from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 
 import {Reaction} from '../../types';
-import {RemoveReaction, SelectCard} from '../../store/interactive-map.actions';
 
 @Component({
   selector: 'app-reaction-panel-detail',

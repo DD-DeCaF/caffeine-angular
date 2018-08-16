@@ -7,7 +7,8 @@ import { Observable } from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, mergeMap} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
-import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED, ADD_REACTION, REMOVE_REACTION, SETBOUNDS_REACTION, SETOBJECTIVE_REACTION } from './interactive-map.actions';
+import { SELECT_CARD, NEXT_CARD, PREVIOUS_CARD, TOGGLE_PLAY, LOADED, KNOCKOUT_REACTION, SETBOUNDS_REACTION, SETOBJECTIVE_REACTION, OPERATION_REACTION } from './interactive-map.actions';
+import {environment} from '../../../environments/environment';
 
 const ACTION_OFFSETS = {
   [NEXT_CARD]: 1,
@@ -64,24 +65,24 @@ export class InteractiveMapEffects {
     mapTo({type: NEXT_CARD}),
   );
 
-  @Effect()
+ /* @Effect()
   addReaction: Observable<Action> = this.actions$.pipe(
     ofType(ADD_REACTION),
     mergeMap((reaction) => {
-      return this.http.post('some/path', reaction)
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
           map((data) => ({ type: ADD_REACTION, payload: data })),
         );
     }),
-  );
+  );*/
 
   @Effect()
-  removeReaction: Observable<Action> = this.actions$.pipe(
-    ofType(REMOVE_REACTION),
+  knockoutReaction: Observable<Action> = this.actions$.pipe(
+    ofType(KNOCKOUT_REACTION),
     mergeMap((reaction) => {
-      return this.http.post('some/path', reaction)
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
-          map((data) => ({ type: REMOVE_REACTION, payload: data })),
+          map((data) => ({ type: KNOCKOUT_REACTION, payload: data })),
         );
     }),
   );
@@ -90,7 +91,7 @@ export class InteractiveMapEffects {
   setObjectiveReaction: Observable<Action> = this.actions$.pipe(
     ofType(SETOBJECTIVE_REACTION),
     mergeMap((reaction) => {
-      return this.http.post('some/path', reaction)
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
           map((data) => ({ type: SETOBJECTIVE_REACTION, payload: data })),
         );
@@ -101,7 +102,7 @@ export class InteractiveMapEffects {
   setBoundsReaction: Observable<Action> = this.actions$.pipe(
     ofType(SETBOUNDS_REACTION),
     mergeMap((reaction) => {
-      return this.http.post('some/path', reaction)
+      return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
           map((data) => ({ type: SETBOUNDS_REACTION, payload: data })),
         );
