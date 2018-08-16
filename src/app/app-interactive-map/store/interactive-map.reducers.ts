@@ -13,12 +13,7 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-<<<<<<< HEAD
-import {CardType, Reaction} from '../types';
-import { stat } from 'fs';
-=======
 import {Card, CardType} from '../types';
->>>>>>> feat: WIP logic of reaction panel with store.
 
 
 const idGen = (() => {
@@ -112,8 +107,8 @@ export function interactiveMapReducer(
           },
         },
       };
-<<<<<<< HEAD
-    case fromInteractiveMapActions.DELETE_CARD:
+    }
+    case fromInteractiveMapActions.DELETE_CARD: {
       if (state.cards.ids.length < 2) {
         return state;
       }
@@ -131,23 +126,13 @@ export function interactiveMapReducer(
           cardsById,
         },
       };
-    case fromInteractiveMapActions.ADD_REACTION:
-      return {
-        ...state,
-        addedReactions: [...state.addedReactions, action.payload],
-=======
     }
     case fromInteractiveMapActions.OPERATION_REACTION: {
       const {cardId, reactionId, operationTarget} = action.payload;
       const card = state.cards.cardsById[cardId];
       const newCard: Card = {
         ...card,
-<<<<<<< HEAD
-        //operationTarget: [...card.operationTarget, reactionId],
->>>>>>> feat: WIP logic of reaction panel with store.
-=======
         [operationTarget]: [...card[operationTarget], reactionId],
->>>>>>> feat: WIP logic reaction panel
       };
       return {
         ...state,
