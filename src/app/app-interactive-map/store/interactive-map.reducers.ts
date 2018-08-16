@@ -128,11 +128,13 @@ export function interactiveMapReducer(
       };
     }
     case fromInteractiveMapActions.OPERATION_REACTION: {
-      const {cardId, reactionId, operationTarget} = action.payload;
+      const {cardId, reactionId, operationTarget, direction} = action.payload;
       const card = state.cards.cardsById[cardId];
       const newCard: Card = {
         ...card,
-        [operationTarget]: [...card[operationTarget], reactionId],
+        [operationTarget]: direction === fromInteractiveMapActions.Direction.DO
+          ? [...card[operationTarget], reactionId]
+          : card[operationTarget].filter((rId) => rId !== reactionId),
       };
       return {
         ...state,
