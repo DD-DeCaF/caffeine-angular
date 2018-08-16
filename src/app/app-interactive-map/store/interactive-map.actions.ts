@@ -27,9 +27,8 @@ export const LOADED = 'LOADED';
 export const ADD_CARD = 'ADD_CARD';
 
 export const OPERATION_REACTION = 'OPERATION_REACTION';
-export const REMOVE_ADDED_REACTION = 'REMOVE_ADDED_REACTION';
+export const UNDO_OPERATION_REACTION = 'UNDO_OPERATION_REACTION';
 export const KNOCKOUT_REACTION = 'KNOCKOUT_REACTION';
-export const REMOVE_KNOCKOUT_REACTION = 'REMOVE_KNOCKOUT_REACTION';
 export const SETOBJECTIVE_REACTION = 'SETOBJECTIVE_REACTION';
 export const SETBOUNDS_REACTION = 'SETBOUNDS_REACTION';
 
@@ -86,5 +85,10 @@ export class SetReactionBounds implements Action {
   constructor(public payload: BoundsReaction) {}
 }
 
+export class UndoOperationReaction implements Action {
+  readonly type = UNDO_OPERATION_REACTION;
+  constructor(public payload: OperationPayload) {}
+}
+
 export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | OperationReaction |
-  SetObjectiveReaction | SetReactionBounds;
+  UndoOperationReaction | SetObjectiveReaction | SetReactionBounds;

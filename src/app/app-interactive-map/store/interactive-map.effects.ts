@@ -65,16 +65,16 @@ export class InteractiveMapEffects {
     mapTo({type: NEXT_CARD}),
   );
 
- /* @Effect()
-  addReaction: Observable<Action> = this.actions$.pipe(
-    ofType(ADD_REACTION),
+  @Effect()
+  operationReaction: Observable<Action> = this.actions$.pipe(
+    ofType(OPERATION_REACTION),
     mergeMap((reaction) => {
       return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
-          map((data) => ({ type: ADD_REACTION, payload: data })),
+          map((data) => ({ type: OPERATION_REACTION, payload: data })),
         );
     }),
-  );*/
+  );
 
   @Effect()
   knockoutReaction: Observable<Action> = this.actions$.pipe(

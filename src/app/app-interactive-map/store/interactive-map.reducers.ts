@@ -112,7 +112,7 @@ export function interactiveMapReducer(
       const card = state.cards.cardsById[cardId];
       const newCard: Card = {
         ...card,
-        //operationTarget: [...card.operationTarget, reactionId],
+        [operationTarget]: [...card[operationTarget], reactionId],
       };
       return {
         ...state,
@@ -166,20 +166,21 @@ export function interactiveMapReducer(
         },
       };
     }
-    /*case fromInteractiveMapActions.REMOVE_ADDED_REACTION:
+   /* case fromInteractiveMapActions.UNDO_OPERATION_REACTION:
       return {
         ...state,
         addedReactions: state.addedReactions.filter((reaction) => {
           return reaction !== action.payload;
         }),
-      };
-    case fromInteractiveMapActions.REMOVE_KNOCKOUT_REACTION:
-      return {
-        ...state,
-        knockoutReactions: state.knockoutReactions.filter((reaction) => {
-        return reaction !== action.payload;
-        }),
       };*/
+    /*
+  case fromInteractiveMapActions.REMOVE_KNOCKOUT_REACTION:
+    return {
+      ...state,
+      knockoutReactions: state.knockoutReactions.filter((reaction) => {
+      return reaction !== action.payload;
+      }),
+    };*/
     default:
       return state;
   }
