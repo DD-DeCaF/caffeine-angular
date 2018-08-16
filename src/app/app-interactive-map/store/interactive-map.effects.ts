@@ -40,7 +40,7 @@ export class InteractiveMapEffects {
   initPlay: Observable<Action> = this.actions$.pipe(
     ofType(TOGGLE_PLAY),
     withLatestFrom(this.store$),
-    filter(([action, storeState]) => storeState.interactiveMap.playing),
+    filter(([, storeState]) => storeState.interactiveMap.playing),
     mapTo({type: NEXT_CARD}),
   );
 
@@ -59,7 +59,7 @@ export class InteractiveMapEffects {
   stepNextIfPlaying: Observable<Action> = this.actions$.pipe(
     ofType(LOADED),
     withLatestFrom(this.store$),
-    filter(([action, storeState]) => storeState.interactiveMap.playing),
+    filter(([, storeState]) => storeState.interactiveMap.playing),
     mapTo({type: NEXT_CARD}),
   );
 
