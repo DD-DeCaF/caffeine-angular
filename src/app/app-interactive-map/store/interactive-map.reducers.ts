@@ -35,7 +35,7 @@ export interface InteractiveMapState {
   };
 }
 
-const initialState: InteractiveMapState = {
+export const initialState: InteractiveMapState = {
   playing: false,
   selectedCardId: '0',
   allSpecies: {
@@ -92,7 +92,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.ADD_CARD: {
       const newId = idGen();
       const newCard: Card = {
-        name: action.payload === CardType.WildType ? 'WildType' : 'DataDriven',
+        name: action.payload === CardType.WildType ? 'Wild Type' : 'Data Driven',
         type: action.payload,
         addedReactions: [],
         knockoutReactions: [],
@@ -200,21 +200,6 @@ export function interactiveMapReducer(
         },
       };
     }
-   /* case fromInteractiveMapActions.UNDO_OPERATION_REACTION:
-      return {
-        ...state,
-        addedReactions: state.addedReactions.filter((reaction) => {
-          return reaction !== action.payload;
-        }),
-      };*/
-    /*
-  case fromInteractiveMapActions.REMOVE_KNOCKOUT_REACTION:
-    return {
-      ...state,
-      knockoutReactions: state.knockoutReactions.filter((reaction) => {
-      return reaction !== action.payload;
-      }),
-    };*/
     default:
       return state;
   }
