@@ -14,7 +14,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {CardType, OperationPayload, BoundsReaction, ObjectiveReaction} from '../types';
+import {CardType, OperationPayload, BoundsReaction, ObjectiveReactionPayload} from '../types';
 
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
@@ -72,7 +72,7 @@ export class OperationReaction implements Action {
 
 export class SetObjectiveReaction implements Action {
   readonly type = SETOBJECTIVE_REACTION;
-  constructor(public payload: ObjectiveReaction) {}
+  constructor(public payload: ObjectiveReactionPayload) {}
 }
 
 export class SetReactionBounds implements Action {

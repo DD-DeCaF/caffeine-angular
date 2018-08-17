@@ -65,7 +65,6 @@ export const initialState: InteractiveMapState = {
         knockoutReactions: [],
         bounds: {},
         objectiveReaction: {
-          cardId: '0',
           reactionId: '0',
           direction: null,
         },
@@ -98,7 +97,6 @@ export function interactiveMapReducer(
         knockoutReactions: [],
         bounds: {},
         objectiveReaction: {
-          cardId: '0',
           reactionId: '0',
           direction: null,
         },
@@ -161,7 +159,6 @@ export function interactiveMapReducer(
       const newCard: Card = {
         ...card,
         objectiveReaction: {
-          cardId: cardId,
           reactionId: reactionId,
           direction: direction,
         },
