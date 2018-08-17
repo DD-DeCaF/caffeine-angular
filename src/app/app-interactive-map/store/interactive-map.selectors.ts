@@ -35,3 +35,14 @@ export const getHydratedCards = createSelector(
       id: id,
     })),
 );
+
+export const getSelectedCard = createSelector(
+  (state: AppState) => state.interactiveMap.cards.cardsById,
+  (state: AppState) => state.interactiveMap.selectedCardId,
+  (cards: { [key: string]: Card; }, selectedID: string): HydratedCard =>
+    ({
+      ...cards[selectedID],
+      id: selectedID,
+      selected: true,
+    }),
+);
