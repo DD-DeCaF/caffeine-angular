@@ -14,21 +14,21 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppReactionPanelObjectiveComponent } from './app-reaction-panel-objective.component';
+import { AppChangedComponent } from './app-changed.component';
 
-describe('AppReactionPanelObjectiveComponent', () => {
-  let component: AppReactionPanelObjectiveComponent;
-  let fixture: ComponentFixture<AppReactionPanelObjectiveComponent>;
+describe('AppChangedComponent', () => {
+  let component: AppChangedComponent;
+  let fixture: ComponentFixture<AppChangedComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppReactionPanelObjectiveComponent ],
+      declarations: [ AppChangedComponent ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppReactionPanelObjectiveComponent);
+    fixture = TestBed.createComponent(AppChangedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

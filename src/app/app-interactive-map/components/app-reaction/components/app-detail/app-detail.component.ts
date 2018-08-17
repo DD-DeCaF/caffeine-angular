@@ -16,14 +16,17 @@ import {Component, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Subscription} from 'rxjs';
 
-import {AppState} from '../../../store/app.reducers';
+import {AppState} from '../../../../../store/app.reducers';
+import {OperationReaction} from '../../../../store/interactive-map.actions';
+import {OperationDirection} from '../../../../types';
+
 
 @Component({
-  selector: 'app-reaction-panel-detail',
-  templateUrl: './app-reaction-panel-detail.component.html',
+  selector: 'app-detail',
+  templateUrl: './app-detail.component.html',
 })
 
-export class AppReactionPanelDetailComponent {
+export class AppDetailComponent {
   public reactions: string[] = [];
   @Input() public type: string;
   private subscription: Subscription;
@@ -37,6 +40,16 @@ export class AppReactionPanelDetailComponent {
       );
   }
 
-  removeItem(): void {}
-
+  removeItem(reaction: string): void {
+    const typeToTarget = {
+      'added': 'addedReactions',
+      'knockout': 'knockoutReactions',
+    };
+    this.store.dispatch(new OperationReaction({
+      cardId: '',
+      reactionId: reaction,
+      operationTarget: typeToTarget[this.type],
+      direction: OperationDirection.Undo,
+    }));
+  }
 }

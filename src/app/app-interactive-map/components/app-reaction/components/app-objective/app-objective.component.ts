@@ -14,17 +14,18 @@
 
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../../store/app.reducers';
 import {Subscription} from 'rxjs';
-import {ObjectiveReaction} from '../../types';
-import {SetObjectiveReaction} from '../../store/interactive-map.actions';
+
+import {ObjectiveReaction} from '../../../../types';
+import {AppState} from '../../../../../store/app.reducers';
+import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
 
 @Component({
-  selector: 'app-reaction-panel-objective',
-  templateUrl: './app-reaction-panel-objective.component.html',
-  styleUrls: ['./app-reaction-panel-objective.component.scss'],
+  selector: 'app-objective',
+  templateUrl: './app-objective.component.html',
+  styleUrls: ['./app-objective.component.scss'],
 })
-export class AppReactionPanelObjectiveComponent {
+export class AppObjectiveComponent {
   public objectiveReaction: ObjectiveReaction;
   private subscription: Subscription;
 
@@ -42,7 +43,6 @@ export class AppReactionPanelObjectiveComponent {
     this.store.dispatch(new SetObjectiveReaction({
         cardId: this.objectiveReaction.cardId,
         reactionId: this.objectiveReaction.reactionId,
-        operationTarget: this.objectiveReaction.operationTarget,
         direction: direction}));
   }
 
@@ -50,7 +50,6 @@ export class AppReactionPanelObjectiveComponent {
     this.store.dispatch(new SetObjectiveReaction({
       cardId: this.objectiveReaction.cardId,
       reactionId: null,
-      operationTarget: this.objectiveReaction.operationTarget,
       direction: null}));
   }
 }
