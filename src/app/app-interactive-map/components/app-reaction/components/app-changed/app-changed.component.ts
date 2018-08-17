@@ -33,7 +33,7 @@ export class AppChangedComponent {
   public clickedItem: string;
   public lowerBound: number;
   public upperBound: number;
-  private subscription: Subscription;
+  protected subscription: Subscription;
 
   constructor(private store: Store<AppState>) {
     this.subscription = this.store.select('interactiveMap')
