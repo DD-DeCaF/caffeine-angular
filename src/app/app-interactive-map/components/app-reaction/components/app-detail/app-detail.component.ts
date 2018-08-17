@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Subscription} from 'rxjs';
 
@@ -26,29 +26,31 @@ import {OperationDirection} from '../../../../types';
   templateUrl: './app-detail.component.html',
 })
 
-export class AppDetailComponent {
+export class AppDetailComponent implements OnInit{
   public reactions: string[] = [];
   @Input() public type: string;
   protected subscription: Subscription;
+  protected typeToTarget = {
+    'added': 'addedReactions',
+    'knockout': 'knockoutReactions',
+  };
+  constructor(private store: Store<AppState>) {}
 
-  constructor(private store: Store<AppState>) {
+  ngOnInit(): void {
     this.subscription = this.store.select('interactiveMap')
       .subscribe(
         (interactiveMap) => {
-          this.reactions = interactiveMap.cards.cardsById[interactiveMap.selectedCardId].addedReactions;
+          this.reactions = interactiveMap.cards.cardsById[interactiveMap.selectedCardId][this.typeToTarget[this.type]];
         },
       );
   }
 
   removeItem(reaction: string): void {
-    const typeToTarget = {
-      'added': 'addedReactions',
-      'knockout': 'knockoutReactions',
-    };
+
     this.store.dispatch(new OperationReaction({
       cardId: '',
       reactionId: reaction,
-      operationTarget: typeToTarget[this.type],
+      operationTarget: this.typeToTarget[this.type],
       direction: OperationDirection.Undo,
     }));
   }
