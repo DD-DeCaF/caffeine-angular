@@ -14,16 +14,16 @@
 
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../../store/app.reducers';
 import {Subscription} from 'rxjs';
-import {BoundsReaction} from '../../types';
+import {AppState} from '../../../../../store/app.reducers';
+import {BoundsReaction} from '../../../../types';
 
 @Component({
-  selector: 'app-reaction-panel-changed',
-  templateUrl: './app-reaction-panel-changed.component.html',
-  styleUrls: ['./app-reaction-panel-changed.component.scss'],
+  selector: 'app-changed',
+  templateUrl: './app-changed.component.html',
+  styleUrls: ['./app-changed.component.scss'],
 })
-export class AppReactionPanelChangedComponent {
+export class AppChangedComponent {
   public reactions: {
     [reactionId: string]: {
       lowerBound: number,

@@ -51,10 +51,10 @@ import {environment} from '../environments/environment';
 
 import { AppLegendComponent } from './app-interactive-map/components/app-legend/app-legend.component';
 import {AppReactionComponent} from './app-interactive-map/components/app-reaction/app-reaction.component';
-import {AppReactionPanelComponent} from './app-interactive-map/components/app-reaction-panel/app-reaction-panel.component';
-import {AppReactionPanelDetailComponent} from './app-interactive-map/components/app-reaction-panel-detail/app-reaction-panel-detail.component';
-import {AppReactionPanelObjectiveComponent} from './app-interactive-map/components/app-reaction-panel-objective/app-reaction-panel-objective.component';
-import {AppReactionPanelChangedComponent} from './app-interactive-map/components/app-reaction-panel-changed/app-reaction-panel-changed.component';
+import {AppPanelComponent} from './app-interactive-map/components/app-reaction/components/app-panel/app-panel.component';
+import {AppDetailComponent} from './app-interactive-map/components/app-reaction/components/app-detail/app-detail.component';
+import {AppObjectiveComponent} from './app-interactive-map/components/app-reaction/components/app-objective/app-objective.component';
+import {AppChangedComponent} from './app-interactive-map/components/app-reaction/components/app-changed/app-changed.component';
 
 if (environment.sentry) {
   Raven
@@ -86,10 +86,10 @@ export class RavenErrorHandler implements ErrorHandler {
     AppNotFoundComponent,
     AppLegendComponent,
     AppReactionComponent,
-    AppReactionPanelComponent,
-    AppReactionPanelDetailComponent,
-    AppReactionPanelObjectiveComponent,
-    AppReactionPanelChangedComponent,
+    AppPanelComponent,
+    AppDetailComponent,
+    AppObjectiveComponent,
+    AppChangedComponent,
   ],
   imports: [
     HttpClientModule,

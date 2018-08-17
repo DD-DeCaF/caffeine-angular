@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
-import {Reaction, OperationDirection} from '../../types';
+import {AppState} from '../../../../../store/app.reducers';
+import {OperationDirection, Reaction} from '../../../../types';
+import {OperationReaction, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
 
-import { AppState } from '../../../store/app.reducers';
-import {OperationReaction, SetObjectiveReaction} from '../../store/interactive-map.actions';
 @Component({
-  selector: 'app-reaction-panel',
-  templateUrl: './app-reaction-panel.component.html',
-  styleUrls: ['./app-reaction-panel.component.scss'],
+  selector: 'app-panel',
+  templateUrl: './app-panel.component.html',
+  styleUrls: ['./app-panel.component.scss'],
 })
-export class AppReactionPanelComponent implements OnInit, OnChanges {
+export class AppPanelComponent {
   @Input() public title: string;
   @Input() public type: string;
   @Input() public placeholder: string;
@@ -53,39 +53,30 @@ export class AppReactionPanelComponent implements OnInit, OnChanges {
       });*/
   }
 
-  ngOnInit(): void {
-  }
-
   displayFn(item: Reaction): string {
     if (item) {
       return item.bigg_id;
     }
   }
-
   addItem(reaction: Reaction): void {
-    if (this.type === 'objective') {
-      console.log('objective', reaction);
-      this.store.dispatch(new SetObjectiveReaction({cardId: '', reactionId: reaction.bigg_id, direction: 'max'}));
-    } else if (this.type === 'added') {
-      console.log('added', reaction);
+    const typeToTarget = {
+      'added': 'addedReactions',
+      'knockout': 'knockoutReactions',
+    };
+    // Let's not add cardId, we can grab that in the effect!
+    if (['added', 'knockout'].includes(this.type)) {
       this.store.dispatch(new OperationReaction({
         cardId: '',
         reactionId: reaction.bigg_id,
-        operationTarget: 'addedReactions',
+        operationTarget: typeToTarget[this.type],
         direction: OperationDirection.Do,
       }));
-    } else if (this.type === 'removed') {
-      console.log('added', reaction);
-      this.store.dispatch(new OperationReaction({
+    } else {
+      this.store.dispatch(new SetObjectiveReaction({
         cardId: '',
         reactionId: reaction.bigg_id,
-        operationTarget: 'knockoutReactions',
-        direction: OperationDirection.Undo,
-      }));
+        direction: 'max'}));
     }
     this.querySearch.reset();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
   }
 }
