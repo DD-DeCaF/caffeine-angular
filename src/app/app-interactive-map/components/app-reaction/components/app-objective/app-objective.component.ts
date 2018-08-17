@@ -27,7 +27,7 @@ import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
 })
 export class AppObjectiveComponent {
   public objectiveReaction: ObjectiveReaction;
-  private subscription: Subscription;
+  protected subscription: Subscription;
 
   constructor(private store: Store<AppState>) {
     this.subscription = this.store.select('interactiveMap')

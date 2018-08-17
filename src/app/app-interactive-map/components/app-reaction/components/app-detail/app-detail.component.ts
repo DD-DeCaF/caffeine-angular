@@ -29,7 +29,7 @@ import {OperationDirection} from '../../../../types';
 export class AppDetailComponent {
   public reactions: string[] = [];
   @Input() public type: string;
-  private subscription: Subscription;
+  protected subscription: Subscription;
 
   constructor(private store: Store<AppState>) {
     this.subscription = this.store.select('interactiveMap')
