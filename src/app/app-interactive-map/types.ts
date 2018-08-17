@@ -34,7 +34,7 @@ export interface Reactions {
   changed: Reaction[];
 }
 
-export interface OperationBase {
+export interface OperationPayloadBase {
   cardId: string;
   reactionId: string;
 }
@@ -44,19 +44,22 @@ export enum OperationDirection {
   Undo,
 }
 
-export interface OperationPayload extends OperationBase {
+export interface OperationPayload extends OperationPayloadBase {
   operationTarget?: 'addedReactions' | 'knockoutReactions';
   direction: OperationDirection;
 }
 
-export interface BoundsReaction extends OperationBase {
+export interface BoundsReaction extends OperationPayloadBase {
   lowerBound: number;
   upperBound: number;
 }
 
-export interface ObjectiveReaction extends OperationBase {
+export interface ObjectiveReaction {
   direction: 'min' | 'max';
+  reactionId: string;
 }
+
+export interface ObjectiveReactionPayload extends OperationPayloadBase, ObjectiveReaction {}
 
 export interface Card {
   type: CardType;

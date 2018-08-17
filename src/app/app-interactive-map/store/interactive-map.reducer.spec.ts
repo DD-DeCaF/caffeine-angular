@@ -31,7 +31,6 @@ fdescribe('interactiveMapReducer', () => {
               knockoutReactions: [],
               bounds: {},
               objectiveReaction: {
-                cardId: '0',
                 reactionId: '0',
                 direction: null,
               },
