@@ -16,10 +16,19 @@ import * as fromInteractiveMapActions from './interactive-map.actions';
 import {Card, CardType, OperationDirection} from '../types';
 
 
-const idGen = (() => {
-  let counter = 1;
-  return () => '' + counter++;
-})();
+class IdGen {
+  counter = 1;
+
+  next(): string {
+    return '' + this.counter++;
+  }
+
+  reset(): void {
+    this.counter = 1;
+  }
+}
+
+export const idGen = new IdGen();
 
 export interface InteractiveMapState {
   playing: boolean;
@@ -89,7 +98,7 @@ export function interactiveMapReducer(
         playing: !state.playing,
       };
     case fromInteractiveMapActions.ADD_CARD: {
-      const newId = idGen();
+      const newId = idGen.next();
       const newCard: Card = {
         name: action.payload === CardType.WildType ? 'Wild Type' : 'Data Driven',
         type: action.payload,
@@ -133,59 +142,50 @@ export function interactiveMapReducer(
         },
       };
     }
-    case fromInteractiveMapActions.OPERATION_REACTION: {
-      const {cardId, reactionId, operationTarget, direction} = action.payload;
-      const card = state.cards.cardsById[cardId];
-      const newCard: Card = {
-        ...card,
-        [operationTarget]: direction === OperationDirection.Do
-          ? [...card[operationTarget], reactionId]
-          : card[operationTarget].filter((rId) => rId !== reactionId),
-      };
-      return {
-        ...state,
-        cards: {
-          ...state.cards,
-          cardsById: {
-            ...state.cards.cardsById,
-            [cardId]: newCard,
-          },
-        },
-      };
-    }
-    case fromInteractiveMapActions.SETOBJECTIVE_REACTION: {
-      const {cardId, reactionId, direction} = action.payload;
-      const card = state.cards.cardsById[cardId];
-      const newCard: Card = {
-        ...card,
-        objectiveReaction: {
-          reactionId: reactionId,
-          direction: direction,
-        },
-      };
-      return {
-        ...state,
-        cards: {
-          ...state.cards,
-          cardsById: {
-            ...state.cards.cardsById,
-            [cardId]: newCard,
-          },
-        },
-      };
-    }
-    case fromInteractiveMapActions.SETBOUNDS_REACTION: {
-      const {cardId, reactionId, lowerBound, upperBound} = action.payload;
-      const card = state.cards.cardsById[cardId];
-      const newCard: Card = {
-        ...card,
-        bounds: {
-          [reactionId]: {
-            lowerBound: lowerBound,
-            upperBound: upperBound,
-          },
-        },
-      };
+    case fromInteractiveMapActions.REACTION_OPERATION:
+    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION:
+    case fromInteractiveMapActions.SET_BOUNDS_REACTION: {
+      const {cardId} = action.payload;
+      const {[cardId]: card} = state.cards.cardsById;
+      let newCard: Card;
+      switch (action.type) {
+        case fromInteractiveMapActions.REACTION_OPERATION: {
+          const {reactionId, operationTarget, direction} = action.payload;
+          newCard = {
+            ...card,
+            [operationTarget]: direction === OperationDirection.Do
+              ? [...card[operationTarget], reactionId]
+              : card[operationTarget].filter((rId) => rId !== reactionId),
+          };
+          break;
+        }
+        case fromInteractiveMapActions.SET_OBJECTIVE_REACTION: {
+          const {reactionId, direction} = action.payload;
+          newCard = {
+            ...card,
+            objectiveReaction: {
+              reactionId,
+              direction,
+            },
+          };
+          break;
+        }
+        case fromInteractiveMapActions.SET_BOUNDS_REACTION: {
+          const {reactionId, lowerBound, upperBound} = action.payload;
+          newCard = {
+            ...card,
+            bounds: {
+              ...card.bounds,
+              [reactionId]: {
+                lowerBound,
+                upperBound,
+              },
+            },
+          };
+          break;
+        }
+        default:
+      }
       return {
         ...state,
         cards: {

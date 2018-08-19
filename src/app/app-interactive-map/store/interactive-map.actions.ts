@@ -27,11 +27,11 @@ export const LOADED = 'LOADED';
 export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
 
-export const OPERATION_REACTION = 'OPERATION_REACTION';
-export const UNDO_OPERATION_REACTION = 'UNDO_OPERATION_REACTION';
+export const REACTION_OPERATION = 'REACTION_OPERATION';
+export const UNDO_REACTION_OPERATION = 'UNDO_REACTION_OPERATION';
 export const KNOCKOUT_REACTION = 'KNOCKOUT_REACTION';
-export const SETOBJECTIVE_REACTION = 'SETOBJECTIVE_REACTION';
-export const SETBOUNDS_REACTION = 'SETBOUNDS_REACTION';
+export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
+export const SET_BOUNDS_REACTION = 'SET_BOUNDS_REACTION';
 
 
 export class SelectCard implements Action {
@@ -65,20 +65,20 @@ export class DeleteCard implements Action {
   constructor(public payload: string) {}
 }
 
-export class OperationReaction implements Action {
-  readonly type = OPERATION_REACTION;
+export class ReactionOperation implements Action {
+  readonly type = REACTION_OPERATION;
   constructor(public payload: OperationPayload) {}
 }
 
 export class SetObjectiveReaction implements Action {
-  readonly type = SETOBJECTIVE_REACTION;
+  readonly type = SET_OBJECTIVE_REACTION;
   constructor(public payload: ObjectiveReactionPayload) {}
 }
 
 export class SetReactionBounds implements Action {
-  readonly type = SETBOUNDS_REACTION;
+  readonly type = SET_BOUNDS_REACTION;
   constructor(public payload: BoundsReaction) {}
 }
 
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard | OperationReaction |
+export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard | ReactionOperation |
   SetObjectiveReaction | SetReactionBounds;

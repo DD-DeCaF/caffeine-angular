@@ -80,11 +80,11 @@ export class InteractiveMapEffects {
 
   @Effect()
   operationReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.OPERATION_REACTION),
+    ofType(fromActions.REACTION_OPERATION),
     mergeMap((reaction) => {
       return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
-          map((data) => ({ type: fromActions.OPERATION_REACTION, payload: data })),
+          map((data) => ({ type: fromActions.REACTION_OPERATION, payload: data })),
         );
     }),
   );
@@ -102,22 +102,22 @@ export class InteractiveMapEffects {
 
   @Effect()
   setObjectiveReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SETOBJECTIVE_REACTION),
+    ofType(fromActions.SET_OBJECTIVE_REACTION),
     mergeMap((reaction) => {
       return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
-          map((data) => ({ type: fromActions.SETOBJECTIVE_REACTION, payload: data })),
+          map((data) => ({ type: fromActions.SET_OBJECTIVE_REACTION, payload: data })),
         );
     }),
   );
 
   @Effect()
   setBoundsReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SETBOUNDS_REACTION),
+    ofType(fromActions.SET_BOUNDS_REACTION),
     mergeMap((reaction) => {
       return this.http.post(`${environment.apis.model}/something here`, reaction)
         .pipe(
-          map((data) => ({ type: fromActions.SETBOUNDS_REACTION, payload: data })),
+          map((data) => ({ type: fromActions.SET_BOUNDS_REACTION, payload: data })),
         );
     }),
   );
