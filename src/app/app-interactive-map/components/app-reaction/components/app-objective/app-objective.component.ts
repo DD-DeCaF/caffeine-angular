@@ -12,13 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import { MatSlideToggle, MatButton } from '@angular/material';
 
-import {ObjectiveReaction} from '../../../../types';
 import {AppState} from '../../../../../store/app.reducers';
 import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
 import {getSelectedCard, HydratedCard} from '../../../../store/interactive-map.selectors';

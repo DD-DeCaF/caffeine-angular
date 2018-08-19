@@ -17,7 +17,7 @@ import {Store} from '@ngrx/store';
 import {Subscription} from 'rxjs';
 
 import {AppState} from '../../../../../store/app.reducers';
-import {OperationReaction} from '../../../../store/interactive-map.actions';
+import {ReactionOperation} from '../../../../store/interactive-map.actions';
 import {OperationDirection} from '../../../../types';
 
 
@@ -26,13 +26,13 @@ import {OperationDirection} from '../../../../types';
   templateUrl: './app-detail.component.html',
 })
 
-export class AppDetailComponent implements OnInit{
+export class AppDetailComponent implements OnInit {
   public reactions: string[] = [];
   @Input() public type: string;
   protected subscription: Subscription;
   protected typeToTarget = {
-    'added': 'addedReactions',
-    'knockout': 'knockoutReactions',
+    added: 'addedReactions',
+    knockout: 'knockoutReactions',
   };
   constructor(private store: Store<AppState>) {}
 
@@ -47,7 +47,7 @@ export class AppDetailComponent implements OnInit{
 
   removeItem(reaction: string): void {
 
-    this.store.dispatch(new OperationReaction({
+    this.store.dispatch(new ReactionOperation({
       cardId: '',
       reactionId: reaction,
       operationTarget: this.typeToTarget[this.type],

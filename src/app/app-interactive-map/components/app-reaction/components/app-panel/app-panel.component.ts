@@ -17,7 +17,7 @@ import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
 import {AppState} from '../../../../../store/app.reducers';
 import {OperationDirection, Reaction} from '../../../../types';
-import {OperationReaction, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
+import {ReactionOperation, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
 
 @Component({
   selector: 'app-panel',
@@ -65,7 +65,7 @@ export class AppPanelComponent {
     };
     // Let's not add cardId, we can grab that in the effect!
     if (['added', 'knockout'].includes(this.type)) {
-      this.store.dispatch(new OperationReaction({
+      this.store.dispatch(new ReactionOperation({
         cardId: '',
         reactionId: reaction.bigg_id,
         operationTarget: typeToTarget[this.type],
