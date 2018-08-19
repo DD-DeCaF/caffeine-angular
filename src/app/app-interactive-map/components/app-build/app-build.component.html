@@ -45,31 +45,37 @@
 
   <div *ngIf="expandedCard">
     <div class="card expanded">
-        <div class="header selected">
-          <div class="left-section">
-            <button mat-icon-button (click)="shrink()">
-              <mat-icon>chevron_left</mat-icon>
-            </button>
-            <h4>{{expandedCard.name}}</h4>
-          </div>
+      <div class="header selected">
+        <div class="left-section">
+          <button mat-icon-button (click)="shrink()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <h4>{{expandedCard.name}}</h4>
         </div>
+      </div>
 
-        <div fxLayout="row" fxLayoutAlign="space-around center">
-          <button mat-icon-button (click)="grow(expandedCard)">
+      <mat-tab-group mat-stretch-tabs [selectedIndex]="tabIndex">
+        <mat-tab>
+          <ng-template mat-tab-label>
             <mat-icon>info</mat-icon>
-          </button>
+          </ng-template>
 
-          <button mat-icon-button (click)="grow(expandedCard)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-
-        <div class="content">
-          <div class="displayRow">
-            <label>Method:</label>
-            <label>{{expandedCard.method}}</label>
+          <div class="content">
+            <div class="displayRow">
+              <label>Method:</label>
+              <label>{{expandedCard.method}}</label>
+            </div>
           </div>
-        </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon>edit</mat-icon>
+          </ng-template>
+
+          <app-reaction></app-reaction>
+        </mat-tab>
+      </mat-tab-group>
       </div>
   </div>
 
@@ -83,11 +89,11 @@
       </div>
 
       <div fxLayout="row" fxLayoutAlign="space-around center">
-        <button mat-icon-button (click)="grow(card)">
+        <button mat-icon-button (click)="grow(card, 0)">
           <mat-icon>info</mat-icon>
         </button>
 
-        <button mat-icon-button (click)="grow(card)">
+        <button mat-icon-button (click)="grow(card, 1)">
           <mat-icon>edit</mat-icon>
         </button>
       </div>

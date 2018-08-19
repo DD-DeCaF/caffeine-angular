@@ -33,6 +33,7 @@ export class AppBuildComponent implements OnInit {
   public playing: Observable<boolean>;
 
   public expandedCard: fromInteractiveMapSelectors.HydratedCard = null;
+  public tabIndex: number = null;
 
   constructor(private store: Store<AppState>) {}
 
@@ -69,9 +70,10 @@ export class AppBuildComponent implements OnInit {
     this.store.dispatch(new DeleteCard(card.id));
   }
 
-  public grow(card: fromInteractiveMapSelectors.HydratedCard): void {
+  public grow(card: fromInteractiveMapSelectors.HydratedCard, tabIndex: number): void {
     this.store.dispatch(new SelectCard(card.id));
     this.expandedCard = card;
+    this.tabIndex = tabIndex;
   }
 
   public shrink(): void {
