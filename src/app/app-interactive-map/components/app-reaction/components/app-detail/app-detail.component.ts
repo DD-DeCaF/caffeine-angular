@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {Subscription} from 'rxjs';
+import {Component, Input, OnInit, EventEmitter} from '@angular/core';
+import {Store, select} from '@ngrx/store';
+import {Observable, fromEvent} from 'rxjs';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
 import {OperationDirection} from '../../../../types';
-
+import {HydratedCard, getSelectedCard} from '../../../../store/interactive-map.selectors';
 
 @Component({
   selector: 'app-detail',
@@ -27,31 +27,32 @@ import {OperationDirection} from '../../../../types';
 })
 
 export class AppDetailComponent implements OnInit {
-  public reactions: string[] = [];
   @Input() public type: string;
-  protected subscription: Subscription;
+  public card: Observable<HydratedCard>;
+  private removeEmitter = new EventEmitter<string>();
+
   protected typeToTarget = {
     added: 'addedReactions',
     knockout: 'knockoutReactions',
   };
+
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.subscription = this.store.select('interactiveMap')
-      .subscribe(
-        (interactiveMap) => {
-          this.reactions = interactiveMap.cards.cardsById[interactiveMap.selectedCardId][this.typeToTarget[this.type]];
-        },
-      );
+    this.card = this.store.pipe(
+      select(getSelectedCard));
+
+    this.removeEmitter
+      .subscribe((reactionId) => {
+        this.store.dispatch(new ReactionOperation({
+          reactionId,
+          direction: OperationDirection.Undo,
+          operationTarget: this.typeToTarget[this.type],
+        }));
+      });
   }
 
-  removeItem(reaction: string): void {
-
-    this.store.dispatch(new ReactionOperation({
-      cardId: '',
-      reactionId: reaction,
-      operationTarget: this.typeToTarget[this.type],
-      direction: OperationDirection.Undo,
-    }));
+  remove(item: string): void {
+    this.removeEmitter.emit(item);
   }
 }

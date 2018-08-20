@@ -53,36 +53,32 @@ fdescribe('interactiveMapReducer', () => {
   it('should add new reaction', () => {
     const state = interactiveMapReducer(
       undefined,
-      new fromActions.ReactionOperation({
-        cardId: '0',
+      new fromActions.ReactionOperationApply({
         reactionId: 'asd',
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
-      }),
+      }, '0'),
     );
     expect(state.cards.cardsById['0'].addedReactions).toEqual(['asd']);
   });
 
   it('should remove the added reaction', () => {
     const actions = [
-      new fromActions.ReactionOperation({
-        cardId: '0',
+      new fromActions.ReactionOperationApply({
         reactionId: 'asd',
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
-      }),
-      new fromActions.ReactionOperation({
-        cardId: '0',
+      }, '0'),
+      new fromActions.ReactionOperationApply({
         reactionId: 'foobar',
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
-      }),
-      new fromActions.ReactionOperation({
-        cardId: '0',
+      }, '0'),
+      new fromActions.ReactionOperationApply({
         reactionId: 'asd',
         direction: types.OperationDirection.Undo,
         operationTarget: 'addedReactions',
-      }),
+      }, '0'),
     ];
     const state = actions.reduce(
       (prevState: InteractiveMapState, action) => interactiveMapReducer(prevState, action),
@@ -94,11 +90,10 @@ fdescribe('interactiveMapReducer', () => {
   it('should set the objective reaction', () => {
     const state = interactiveMapReducer(
       undefined,
-      new fromActions.SetObjectiveReaction({
-        cardId: '0',
+      new fromActions.SetObjectiveReactionApply({
         reactionId: 'asd',
         direction: 'min',
-      }),
+      }, '0'),
     );
     expect(state.cards.cardsById['0'].objectiveReaction).toEqual({
       reactionId: 'asd',
@@ -109,12 +104,11 @@ fdescribe('interactiveMapReducer', () => {
   it('should set the bounds of a reaction', () => {
     const state = interactiveMapReducer(
       undefined,
-      new fromActions.SetReactionBounds({
-        cardId: '0',
+      new fromActions.SetReactionBoundsApply({
         reactionId: 'asd',
         lowerBound: -100,
         upperBound: 120,
-      }),
+      }, '0'),
     );
     expect(state.cards.cardsById['0'].bounds).toEqual({
       asd: {

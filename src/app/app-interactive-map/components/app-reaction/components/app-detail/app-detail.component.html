@@ -13,9 +13,9 @@
 <!--limitations under the License.-->
 
 <mat-list>
-  <mat-list-item *ngFor="let item of reactions">
+  <mat-list-item *ngFor="let item of (card | async)[typeToTarget[type]]">
     <span class="item-name">{{item}}</span>
-    <button mat-icon-button align="end" (click)="removeItem(item)">
+    <button mat-icon-button align="end" (click)="remove(item)">
       <mat-icon>close</mat-icon>
     </button>
   </mat-list-item>

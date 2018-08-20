@@ -24,24 +24,16 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+import {CallbackPipe} from './callback.pipe';
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
 import {AppWelcomeContentComponent} from './app-welcome/app-welcome.content';
 import {AppToolbarComponent} from './app-toolbar/app-toolbar.component';
 import {AppLoginDialogComponent} from './app-login-dialog/app-login-dialog.component';
-
-// Interactive map
-import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-map.component';
-import {AppBuildComponent} from './app-interactive-map/components/app-build/app-build.component';
-import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
-// end interactive map
-
 import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
-
-import {CallbackPipe} from './callback.pipe';
 
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
@@ -49,12 +41,11 @@ import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
 
-import { AppLegendComponent } from './app-interactive-map/components/app-legend/app-legend.component';
-import {AppReactionComponent} from './app-interactive-map/components/app-reaction/app-reaction.component';
-import {AppPanelComponent} from './app-interactive-map/components/app-reaction/components/app-panel/app-panel.component';
-import {AppDetailComponent} from './app-interactive-map/components/app-reaction/components/app-detail/app-detail.component';
-import {AppObjectiveComponent} from './app-interactive-map/components/app-reaction/components/app-objective/app-objective.component';
-import {AppChangedComponent} from './app-interactive-map/components/app-reaction/components/app-changed/app-changed.component';
+
+// Interactive map
+import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
+import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
+// end interactive map
 
 if (environment.sentry) {
   Raven
@@ -80,30 +71,28 @@ export class RavenErrorHandler implements ErrorHandler {
     AppWelcomeComponent,
     AppWelcomeContentComponent,
     AppLoginDialogComponent,
-    AppInteractiveMapComponent,
-    AppBuildComponent,
     OpenLoginDialogDirective,
     AppNotFoundComponent,
-    AppLegendComponent,
-    AppReactionComponent,
-    AppPanelComponent,
-    AppDetailComponent,
-    AppObjectiveComponent,
-    AppChangedComponent,
   ],
   imports: [
+    // Angular modules
+    FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FlexLayoutModule,
-    // SessionModule,
+
+    // third party
     AppMaterialModule,
+
+    // Own modules
+    AppInteractiveMapModule,
+
+    // NgRX imports
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([InteractiveMapEffects]),
-
-    FormsModule,
-    ReactiveFormsModule,
   ],
   providers: [
     SessionService,

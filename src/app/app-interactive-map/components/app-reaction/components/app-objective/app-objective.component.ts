@@ -45,20 +45,17 @@ export class AppObjectiveComponent implements OnInit, AfterViewInit {
       withLatestFrom(this.card),
     ).subscribe(([{checked}, card]) => {
       this.store.dispatch(new SetObjectiveReaction({
-        cardId: card.id,
         reactionId: card.objectiveReaction.reactionId,
         direction: checked ? 'max' : 'min',
       }));
     });
 
-    fromEvent(this.remove._elementRef.nativeElement, 'click').pipe(
-      withLatestFrom(this.card),
-    ).subscribe(([{}, card]) => {
-      this.store.dispatch(new SetObjectiveReaction({
-        cardId: card.id,
-        reactionId: null,
-        direction: null,
-      }));
-    });
+    fromEvent(this.remove._elementRef.nativeElement, 'click')
+      .subscribe(() => {
+        this.store.dispatch(new SetObjectiveReaction({
+          reactionId: null,
+          direction: null,
+        }));
+      });
   }
 }

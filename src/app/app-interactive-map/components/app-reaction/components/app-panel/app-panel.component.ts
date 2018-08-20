@@ -54,28 +54,31 @@ export class AppPanelComponent {
   }
 
   displayFn(item: Reaction): string {
-    if (item) {
-      return item.bigg_id;
-    }
+    return item && item.bigg_id;
   }
+
   addItem(reaction: Reaction): void {
-    const typeToTarget = {
+    const typeToTarget: {[k: string]: 'addedReactions' | 'knockoutReactions'} = {
       'added': 'addedReactions',
       'knockout': 'knockoutReactions',
     };
     // Let's not add cardId, we can grab that in the effect!
-    if (['added', 'knockout'].includes(this.type)) {
-      this.store.dispatch(new ReactionOperation({
-        cardId: '',
-        reactionId: reaction.bigg_id,
-        operationTarget: typeToTarget[this.type],
-        direction: OperationDirection.Do,
-      }));
-    } else {
-      this.store.dispatch(new SetObjectiveReaction({
-        cardId: '',
-        reactionId: reaction.bigg_id,
-        direction: 'max'}));
+    switch (this.type) {
+      case 'added':
+      case 'knockout': {
+        this.store.dispatch(new ReactionOperation({
+          reactionId: reaction.bigg_id,
+          operationTarget: typeToTarget[this.type],
+          direction: OperationDirection.Do,
+        }));
+        break;
+      }
+      default: {
+        this.store.dispatch(new SetObjectiveReaction({
+          reactionId: reaction.bigg_id,
+          direction: 'max',
+        }));
+      }
     }
     this.querySearch.reset();
   }
