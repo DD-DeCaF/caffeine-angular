@@ -1,0 +1,72 @@
+<!--Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.-->
+
+<!--Licensed under the Apache License, Version 2.0 (the "License");-->
+<!--you may not use this file except in compliance with the License.-->
+<!--You may obtain a copy of the License at-->
+
+<!--http://www.apache.org/licenses/LICENSE-2.0-->
+
+<!--Unless required by applicable law or agreed to in writing, software-->
+<!--distributed under the License is distributed on an "AS IS" BASIS,-->
+<!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+<!--See the License for the specific language governing permissions and-->
+<!--limitations under the License.-->
+
+<div class="legend" [ngClass]="expanded ? 'legend-expanded' : 'legend-shrinked'" fxLayout="column">
+  <mat-toolbar class="mat-primary legend-toolbar">
+    <div class="mat-toolbar-tools">
+      <h5 fxFlex>Legend</h5>
+      <span class="fill-remaining-space"></span>
+      <button (click)="toggle()" class="expand-button" fxFlexAlign="right">
+        <mat-icon fontIcon="expand_more" *ngIf="expanded">expand_more</mat-icon>
+        <mat-icon fontIcon="expand_less" *ngIf="!expanded">expand_less</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <div [hidden]="!expanded">
+    <div [ngStyle]="{'background-color': background}"
+         matTooltip="The simulated growth rate for the current model"
+         matTooltipPosition="right">
+      <span class="growth">
+      Growth rate: {{ getPredictedGrowth() }} <i>h<sup>-1</sup></i>
+      </span>
+    </div>
+    <mat-divider></mat-divider>
+    <mat-list>
+      <mat-list-item>
+        <div fxLayout="column" style="width: 100%">
+          <span class="md-body-1">Flux</span>
+          <div class="grad"></div>
+          <div fxLayout="row">
+            <span class="md-caption">min</span>
+            <span class="md-caption right-span">max</span>
+          </div>
+        </div>
+      </mat-list-item>
+      <mat-list-item>
+        <div fxLayout="row">
+          <img src="../../../../assets/images/no_flux_legend.svg" alt="" class="color">
+          <span class="md-caption legend-text" fxLayoutAlign="center center">
+            No flux
+          </span>
+        </div>
+      </mat-list-item>
+      <mat-list-item>
+        <div fxLayout="row">
+          <div class="color error"></div>
+          <span class="md-caption legend-text" fxLayoutAlign="center center">
+            Not in the model
+          </span>
+        </div>
+      </mat-list-item>
+      <mat-list-item>
+        <div fxLayout="row">
+          <div class="color glow"></div>
+          <span class="md-caption legend-text" fxLayoutAlign="center center">
+            Measured flux
+          </span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>
