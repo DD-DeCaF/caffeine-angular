@@ -48,6 +48,7 @@ import {SessionService} from './session/session.service';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
+import { AppLegendComponent } from './app-interactive-map/components/app-legend/app-legend.component';
 
 if (environment.sentry) {
   Raven
@@ -77,6 +78,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppBuildComponent,
     OpenLoginDialogDirective,
     AppNotFoundComponent,
+    AppLegendComponent,
   ],
   imports: [
     HttpClientModule,
