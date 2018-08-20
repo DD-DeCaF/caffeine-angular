@@ -142,14 +142,14 @@ export function interactiveMapReducer(
         },
       };
     }
-    case fromInteractiveMapActions.REACTION_OPERATION:
-    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION:
-    case fromInteractiveMapActions.SET_BOUNDS_REACTION: {
-      const {cardId} = action.payload;
+    case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
+    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY:
+    case fromInteractiveMapActions.SET_BOUNDS_REACTION_APPLY: {
+      const {cardId} = action;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
       switch (action.type) {
-        case fromInteractiveMapActions.REACTION_OPERATION: {
+        case fromInteractiveMapActions.REACTION_OPERATION_APPLY: {
           const {reactionId, operationTarget, direction} = action.payload;
           newCard = {
             ...card,
@@ -159,7 +159,7 @@ export function interactiveMapReducer(
           };
           break;
         }
-        case fromInteractiveMapActions.SET_OBJECTIVE_REACTION: {
+        case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
           const {reactionId, direction} = action.payload;
           newCard = {
             ...card,
@@ -170,7 +170,7 @@ export function interactiveMapReducer(
           };
           break;
         }
-        case fromInteractiveMapActions.SET_BOUNDS_REACTION: {
+        case fromInteractiveMapActions.SET_BOUNDS_REACTION_APPLY: {
           const {reactionId, lowerBound, upperBound} = action.payload;
           newCard = {
             ...card,

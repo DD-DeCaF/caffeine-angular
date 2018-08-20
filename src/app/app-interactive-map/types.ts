@@ -35,7 +35,6 @@ export interface Reactions {
 }
 
 export interface OperationPayloadBase {
-  cardId: string;
   reactionId: string;
 }
 

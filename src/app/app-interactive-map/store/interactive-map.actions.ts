@@ -28,10 +28,11 @@ export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
 
 export const REACTION_OPERATION = 'REACTION_OPERATION';
-export const UNDO_REACTION_OPERATION = 'UNDO_REACTION_OPERATION';
-export const KNOCKOUT_REACTION = 'KNOCKOUT_REACTION';
+export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
+export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 export const SET_BOUNDS_REACTION = 'SET_BOUNDS_REACTION';
+export const SET_BOUNDS_REACTION_APPLY = 'SET_BOUNDS_REACTION_APPLY';
 
 
 export class SelectCard implements Action {
@@ -69,10 +70,19 @@ export class ReactionOperation implements Action {
   readonly type = REACTION_OPERATION;
   constructor(public payload: OperationPayload) {}
 }
+export class ReactionOperationApply implements Action {
+  readonly type = REACTION_OPERATION_APPLY;
+  constructor(public payload: OperationPayload, public cardId: string) {}
+}
 
 export class SetObjectiveReaction implements Action {
   readonly type = SET_OBJECTIVE_REACTION;
   constructor(public payload: ObjectiveReactionPayload) {}
+}
+
+export class SetObjectiveReactionApply implements Action {
+  readonly type = SET_OBJECTIVE_REACTION_APPLY;
+  constructor(public payload: ObjectiveReactionPayload, public cardId: string) {}
 }
 
 export class SetReactionBounds implements Action {
@@ -80,5 +90,11 @@ export class SetReactionBounds implements Action {
   constructor(public payload: BoundsReaction) {}
 }
 
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard | ReactionOperation |
-  SetObjectiveReaction | SetReactionBounds;
+export class SetReactionBoundsApply implements Action {
+  readonly type = SET_BOUNDS_REACTION_APPLY;
+  constructor(public payload: BoundsReaction, public cardId: string) {}
+}
+
+export type OperationActions = SetReactionBounds | SetObjectiveReaction | ReactionOperation;
+export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard |
+  ReactionOperationApply | SetObjectiveReactionApply | SetReactionBoundsApply;

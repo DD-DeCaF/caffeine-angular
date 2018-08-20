@@ -80,46 +80,20 @@ export class InteractiveMapEffects {
 
   @Effect()
   operationReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.REACTION_OPERATION),
-    mergeMap((reaction) => {
-      return this.http.post(`${environment.apis.model}/something here`, reaction)
-        .pipe(
-          map((data) => ({ type: fromActions.REACTION_OPERATION, payload: data })),
-        );
-    }),
-  );
-
-  @Effect()
-  knockoutReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.KNOCKOUT_REACTION),
-    mergeMap((reaction) => {
-      return this.http.post(`${environment.apis.model}/something here`, reaction)
-        .pipe(
-          map((data) => ({ type: fromActions.KNOCKOUT_REACTION, payload: data })),
-        );
-    }),
-  );
-
-  @Effect()
-  setObjectiveReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_OBJECTIVE_REACTION),
-    mergeMap((reaction) => {
-      return this.http.post(`${environment.apis.model}/something here`, reaction)
-        .pipe(
-          map((data) => ({ type: fromActions.SET_OBJECTIVE_REACTION, payload: data })),
-        );
-    }),
-  );
-
-  @Effect()
-  setBoundsReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_BOUNDS_REACTION),
-    mergeMap((reaction) => {
-      return this.http.post(`${environment.apis.model}/something here`, reaction)
-        .pipe(
-          map((data) => ({ type: fromActions.SET_BOUNDS_REACTION, payload: data })),
-        );
-    }),
+    ofType(fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_BOUNDS_REACTION),
+    // httpRequest here
+    // mergeMap((reaction) => {
+    //   return this.http.post(`${environment.apis.model}/something here`, reaction);
+    // }),
+    delay(500),
+    withLatestFrom(this.store$),
+    map(([action, store]: [fromActions.OperationActions, AppState]) =>
+      ({action, cardId: store.interactiveMap.selectedCardId})),
+    map(({action, cardId}) => ({
+      type: `${action.type}_APPLY`,
+      payload: action.payload,
+      cardId,
+    })),
   );
 
   constructor(private actions$: Actions, private store$: Store<AppState>, private http: HttpClient) {}

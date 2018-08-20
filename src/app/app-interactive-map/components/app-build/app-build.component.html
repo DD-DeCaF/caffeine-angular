@@ -60,12 +60,7 @@
             <mat-icon>info</mat-icon>
           </ng-template>
 
-          <div class="content">
-            <div class="displayRow">
-              <label>Method:</label>
-              <label>{{expandedCard.method}}</label>
-            </div>
-          </div>
+          <app-card-info></app-card-info>
         </mat-tab>
 
         <mat-tab>
@@ -80,7 +75,7 @@
   </div>
 
   <div *ngIf="!expandedCard">
-    <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async) | callback: shouldShow">
+    <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async)">
       <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
         <div class="left-section">
           <h4>{{card.name}}</h4>
