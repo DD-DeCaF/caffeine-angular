@@ -15,7 +15,6 @@
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {Card, CardType, OperationDirection, Bound, OperationTarget} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
-import {Primitve} from '../../types';
 
 
 class IdGen {
@@ -96,14 +95,14 @@ const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key
   bounds: appendOrUpdate(boundEquality),
 };
 
-const primitiveFilter = (a: Primitve) => (b: Primitve) => a !== b;
+const stringFilter = (a: string) => (b: string) => a !== b;
 const filter = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item: T) => array.filter(predicate(item));
 
 type OperationFunction<T> = (array: T[], item: T) => T[];
 
 const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
-  addedReactions: filter<string>(primitiveFilter),
-  knockoutReactions: filter<string>(primitiveFilter),
+  addedReactions: filter<string>(stringFilter),
+  knockoutReactions: filter<string>(stringFilter),
   bounds: filter((a: Bound) => (b: Bound) => a.reactionId !== b.reactionId),
 };
 
