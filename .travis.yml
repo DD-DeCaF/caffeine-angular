@@ -36,7 +36,7 @@ script:
   - ng lint
   - ng test --watch false
   - ./scripts/create_sentry_release.sh
-  - ./scripts/verify_license_headers.sh
+  - ./scripts/verify_license_headers.sh src
   - ./scripts/build.sh
   - ./scripts/push_sentry_sourcemaps.sh
 
