@@ -81,3 +81,81 @@ export interface Card {
     upperBound: number,
   }[];
 }
+
+// Cobrapy json-serialization structures
+declare namespace CobraPy {
+  // A cobrapy model
+  export interface Model {
+    id: string;
+    compartments: {
+      [compartment: string]: string;
+    };
+    genes: {
+      id: string;
+      name: string;
+    };
+    reactions: Reaction[];
+    metabolites: Metabolite[];
+  }
+
+  // A cobrapy reaction (as serialized by `cobra.io.dict.reaction_to_dict`)
+  export interface Reaction {
+    id: string;
+    name: string;
+    metabolites: {
+      [id: string]: number;
+    };
+    lower_bound: number;
+    upper_bound: number;
+    // The gene_reaction_rule is a boolean representation of the gene
+    // requirements for this reaction to be active as described in
+    // Schellenberger et al 2011 Nature Protocols 6(9):1290-307.
+    // http://dx.doi.org/doi:10.1038/nprot.2011.308
+    gene_reaction_rule: string;
+  }
+
+  // A cobrapy metabolite (as serialized by `cobra.io.dict.metabolite_to_dict`)
+  export interface Metabolite {
+    id: string;
+    name: string;
+    compartment: string;
+    formula: string;
+    annotation: {
+      [database: string]: string | string[];
+    };
+  }
+}
+
+// DD-DeCaF platform internal structures
+declare namespace DeCaF {
+  // The solution returned from a model simulation request
+  export interface Solution {
+    growth_rate: number;
+    flux_distribution: {
+      [reaction_id: string]: number;
+    };
+  }
+
+  // Operation that can be applied to a model
+  export interface Operation {
+    operation: 'add' | 'modify' | 'remove';
+    type: 'gene' | 'reaction';
+    id: string;
+      data?: CobraPy.Reaction; // included if operation is "add" or "modify"
+    }
+  }
+
+// Experimental conditions
+declare namespace ExperimentalConditions {
+  // A medium compound
+  export interface Medium {
+    id: string; // e.g. "chebi:12345"
+  }
+
+  // A measurement object, used to make modifications to model based on experimental data
+  export interface Measurement {
+    id: string; // metabolite id (<database>:<id>, f.e. chebi:12345)
+    type: 'compound' | 'reaction' | 'growth-rate' | 'protein';
+    measurements: number[];
+  }
+}
