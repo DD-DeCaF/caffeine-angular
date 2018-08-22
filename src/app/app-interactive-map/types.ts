@@ -97,20 +97,20 @@ declare namespace Cobra {
       id: string;
       name: string;
       notes?: {
-        [k: string]: any;
+        [k: string]: any; // tslint:disable-line
       };
       annotation?: {
-        [k: string]: any;
+        [k: string]: any; // tslint:disable-line
       };
     }[];
     compartments?: {
       [k: string]: string;
     };
     notes?: {
-      [k: string]: any;
+      [k: string]: any; // tslint:disable-line
     };
     annotation?: {
-      [k: string]: any;
+      [k: string]: any; // tslint:disable-line
     };
   }
 
@@ -132,10 +132,10 @@ declare namespace Cobra {
     variable_kind?: string;
     subsystem?: string;
     notes?: {
-      [k: string]: any;
+      [k: string]: any; // tslint:disable-line
     };
     annotation?: {
-      [k: string]: any;
+      [k: string]: any; // tslint:disable-line
     };
   }
 
@@ -149,15 +149,16 @@ declare namespace Cobra {
     _bound?: number;
     _constraint_sense?: string;
     notes?: {
-      [k: string]: any;
+      [k: string]: any; // tslint:disable-line
     };
     annotation?: {
-      [k: string]: any;
+      [k: string]: any; // tslint:disable-line
     };
   }
 }
 
 // DD-DeCaF platform internal structures
+// tslint:disable-next-line
 declare namespace DeCaF {
   // The solution returned from a model simulation request
   export interface Solution {
@@ -177,6 +178,7 @@ declare namespace DeCaF {
   }
 
 // Experimental conditions
+// tslint:disable-next-line
 declare namespace ExperimentalConditions {
   // A medium compound
   export interface Medium {
