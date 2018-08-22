@@ -55,7 +55,7 @@ export class AppPanelComponent {
       added: 'addedReactions',
       knockout: 'knockoutReactions',
     };
-    // Let's not add cardId, we can grab that in the effect!
+
     switch (this.type) {
       case 'added':
       case 'knockout': {
