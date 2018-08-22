@@ -172,7 +172,7 @@ declare namespace DeCaF {
     operation: 'add' | 'modify' | 'remove';
     type: 'gene' | 'reaction';
     id: string;
-      data?: Cobra.Reaction; // included if operation is "add" or "modify"
+      data?: Cobra.Reaction; // included if operation is 'add' or 'modify'
     }
   }
 
@@ -180,7 +180,7 @@ declare namespace DeCaF {
 declare namespace ExperimentalConditions {
   // A medium compound
   export interface Medium {
-    id: string; // e.g. "chebi:12345"
+    id: string; // e.g. 'chebi:12345'
   }
 
   // A measurement object, used to make modifications to model based on experimental data
