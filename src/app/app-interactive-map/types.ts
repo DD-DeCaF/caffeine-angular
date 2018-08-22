@@ -82,46 +82,77 @@ export interface Card {
   }[];
 }
 
-// Cobrapy json-serialization structures
-declare namespace CobraPy {
-  // A cobrapy model
+// Cobrapy object structures as defined by the JSON schema:
+// https://github.com/opencobra/cobrapy/blob/devel/cobra/io/json.py#L138
+declare namespace Cobra {
+  // A cobrapy model structure as serialized by `cobra.io.model_to_dict`
   export interface Model {
     id: string;
-    compartments: {
-      [compartment: string]: string;
-    };
+    name?: string;
+    description?: string;
+    version?: number;
+    reactions: Reaction[];
+    metabolites: Metabolite[];
     genes: {
       id: string;
       name: string;
+      notes?: {
+        [k: string]: any;
+      };
+      annotation?: {
+        [k: string]: any;
+      };
+    }[];
+    compartments?: {
+      [k: string]: string;
     };
-    reactions: Reaction[];
-    metabolites: Metabolite[];
+    notes?: {
+      [k: string]: any;
+    };
+    annotation?: {
+      [k: string]: any;
+    };
   }
 
-  // A cobrapy reaction (as serialized by `cobra.io.dict.reaction_to_dict`)
+  // A cobrapy reaction as serialized by `cobra.io.dict.reaction_to_dict`
   export interface Reaction {
     id: string;
     name: string;
     metabolites: {
-      [id: string]: number;
+      [k: string]: number;
     };
-    lower_bound: number;
-    upper_bound: number;
     // The gene_reaction_rule is a boolean representation of the gene
     // requirements for this reaction to be active as described in
     // Schellenberger et al 2011 Nature Protocols 6(9):1290-307.
     // http://dx.doi.org/doi:10.1038/nprot.2011.308
     gene_reaction_rule: string;
+    lower_bound: number;
+    upper_bound: number;
+    objective_coefficient?: number;
+    variable_kind?: string;
+    subsystem?: string;
+    notes?: {
+      [k: string]: any;
+    };
+    annotation?: {
+      [k: string]: any;
+    };
   }
 
-  // A cobrapy metabolite (as serialized by `cobra.io.dict.metabolite_to_dict`)
+  // A cobrapy metabolite as serialized by `cobra.io.dict.metabolite_to_dict`
   export interface Metabolite {
     id: string;
     name: string;
     compartment: string;
-    formula: string;
-    annotation: {
-      [database: string]: string | string[];
+    charge?: number;
+    formula?: string;
+    _bound?: number;
+    _constraint_sense?: string;
+    notes?: {
+      [k: string]: any;
+    };
+    annotation?: {
+      [k: string]: any;
     };
   }
 }
@@ -141,7 +172,7 @@ declare namespace DeCaF {
     operation: 'add' | 'modify' | 'remove';
     type: 'gene' | 'reaction';
     id: string;
-      data?: CobraPy.Reaction; // included if operation is "add" or "modify"
+      data?: Cobra.Reaction; // included if operation is "add" or "modify"
     }
   }
 
