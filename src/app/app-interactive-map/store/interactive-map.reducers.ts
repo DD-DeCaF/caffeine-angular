@@ -13,7 +13,9 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {Card, CardType, OperationDirection} from '../types';
+import {Card, CardType, OperationDirection, Bound, OperationTarget} from '../types';
+import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
+import {Primitve} from '../../types';
 
 
 class IdGen {
@@ -72,7 +74,7 @@ export const initialState: InteractiveMapState = {
         type: CardType.WildType,
         addedReactions: [],
         knockoutReactions: [],
-        bounds: {},
+        bounds: [],
         objectiveReaction: {
           reactionId: '0',
           direction: null,
@@ -80,6 +82,34 @@ export const initialState: InteractiveMapState = {
       },
     },
   },
+};
+
+
+export const appendUnique = (array, item) => array.includes(item) ? array : [...array, item];
+
+export const boundEquality = (item: Bound) => (arrayItem: Bound) =>
+  arrayItem.reactionId === item.reactionId;
+
+const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
+  addedReactions: appendOrUpdateStringList,
+  knockoutReactions: appendOrUpdateStringList,
+  bounds: appendOrUpdate(boundEquality),
+};
+
+const primitiveFilter = (a: Primitve) => (b: Primitve) => a !== b;
+const filter = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item: T) => array.filter(predicate(item));
+
+type OperationFunction<T> = (array: T[], item: T) => T[];
+
+const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
+  addedReactions: filter<string>(primitiveFilter),
+  knockoutReactions: filter<string>(primitiveFilter),
+  bounds: filter((a: Bound) => (b: Bound) => a.reactionId !== b.reactionId),
+};
+
+const operations: {[key in OperationDirection]: {[tKey in OperationTarget]: OperationFunction<Card[tKey][0]>}} = {
+  [OperationDirection.Do]: doOperations,
+  [OperationDirection.Undo]: undoOperations,
 };
 
 export function interactiveMapReducer(
@@ -104,7 +134,7 @@ export function interactiveMapReducer(
         type: action.payload,
         addedReactions: [],
         knockoutReactions: [],
-        bounds: {},
+        bounds: [],
         objectiveReaction: {
           reactionId: '0',
           direction: null,
@@ -143,19 +173,20 @@ export function interactiveMapReducer(
       };
     }
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
-    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY:
-    case fromInteractiveMapActions.SET_BOUNDS_REACTION_APPLY: {
+    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
       const {cardId} = action;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
       switch (action.type) {
         case fromInteractiveMapActions.REACTION_OPERATION_APPLY: {
-          const {reactionId, operationTarget, direction} = action.payload;
+          const {item, operationTarget, direction} = action.payload;
+          const operationFunction = operations[direction][operationTarget];
+          const value = card[operationTarget];
+          // @ts-ignore
+          const result = operationFunction(value, item);
           newCard = {
             ...card,
-            [operationTarget]: direction === OperationDirection.Do
-              ? [...card[operationTarget], reactionId]
-              : card[operationTarget].filter((rId) => rId !== reactionId),
+            [operationTarget]: result,
           };
           break;
         }
@@ -166,20 +197,6 @@ export function interactiveMapReducer(
             objectiveReaction: {
               reactionId,
               direction,
-            },
-          };
-          break;
-        }
-        case fromInteractiveMapActions.SET_BOUNDS_REACTION_APPLY: {
-          const {reactionId, lowerBound, upperBound} = action.payload;
-          newCard = {
-            ...card,
-            bounds: {
-              ...card.bounds,
-              [reactionId]: {
-                lowerBound,
-                upperBound,
-              },
             },
           };
           break;

@@ -13,7 +13,14 @@
 // limitations under the License.
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
 
+import { reducers } from '../../../store/app.reducers';
+import { AppMaterialModule } from '../../../app-material.module';
+
+import {ReactionModule} from './app-reaction.module';
 import { AppReactionComponent } from './app-reaction.component';
 
 describe('AppReactionComponent', () => {
@@ -22,7 +29,15 @@ describe('AppReactionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppReactionComponent ],
+      imports: [
+        AppMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        StoreModule.forRoot(reducers),
+
+        ReactionModule,
+      ],
     })
     .compileComponents();
   }));

@@ -34,31 +34,40 @@ export interface Reactions {
   changed: Reaction[];
 }
 
-export interface OperationPayloadBase {
+export interface Bound {
   reactionId: string;
-}
-
-export enum OperationDirection {
-  Do,
-  Undo,
-}
-
-export interface OperationPayload extends OperationPayloadBase {
-  operationTarget?: 'addedReactions' | 'knockoutReactions';
-  direction: OperationDirection;
-}
-
-export interface BoundsReaction extends OperationPayloadBase {
   lowerBound: number;
   upperBound: number;
 }
 
-export interface ObjectiveReaction {
+export enum OperationDirection {
+  Do = 'DO',
+  Undo = 'UNDO',
+}
+
+export type SimpleOperationTarget = 'addedReactions' | 'knockoutReactions';
+export type BoundOperationTarget = 'bounds';
+
+export type OperationTarget = SimpleOperationTarget| BoundOperationTarget;
+
+export interface SimpleOperationPayload {
+  item: string;
+  operationTarget: OperationTarget;
+  direction: OperationDirection;
+}
+
+export interface BoundOperationPayload {
+  item: Bound;
+  operationTarget: BoundOperationTarget;
+  direction: OperationDirection;
+}
+export type OperationPayload = SimpleOperationPayload | BoundOperationPayload;
+export interface ObjectiveReactionPayload {
   direction: 'min' | 'max';
   reactionId: string;
 }
 
-export interface ObjectiveReactionPayload extends OperationPayloadBase, ObjectiveReaction {}
+export type ObjectiveReaction = ObjectiveReactionPayload;
 
 export interface Card {
   type: CardType;
@@ -67,9 +76,8 @@ export interface Card {
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;
   bounds: {
-    [reactionId: string]: {
-      lowerBound: number;
-      upperBound: number;
-    };
-  };
+    reactionId: string,
+    lowerBound: number,
+    upperBound: number,
+  }[];
 }

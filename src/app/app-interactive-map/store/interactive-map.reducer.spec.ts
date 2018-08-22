@@ -3,7 +3,7 @@ import {interactiveMapReducer, initialState, InteractiveMapState, idGen} from '.
 
 import * as types from '../types';
 
-fdescribe('interactiveMapReducer', () => {
+describe('interactiveMapReducer', () => {
   beforeEach(() => {
     idGen.reset();
   });
@@ -33,7 +33,7 @@ fdescribe('interactiveMapReducer', () => {
               name: 'Wild Type',
               addedReactions: [],
               knockoutReactions: [],
-              bounds: {},
+              bounds: [],
               objectiveReaction: {
                 reactionId: '0',
                 direction: null,
@@ -54,7 +54,7 @@ fdescribe('interactiveMapReducer', () => {
     const state = interactiveMapReducer(
       undefined,
       new fromActions.ReactionOperationApply({
-        reactionId: 'asd',
+        item: 'asd',
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
       }, '0'),
@@ -65,17 +65,17 @@ fdescribe('interactiveMapReducer', () => {
   it('should remove the added reaction', () => {
     const actions = [
       new fromActions.ReactionOperationApply({
-        reactionId: 'asd',
+        item: 'asd',
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
       }, '0'),
       new fromActions.ReactionOperationApply({
-        reactionId: 'foobar',
+        item: 'foobar',
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
       }, '0'),
       new fromActions.ReactionOperationApply({
-        reactionId: 'asd',
+        item: 'asd',
         direction: types.OperationDirection.Undo,
         operationTarget: 'addedReactions',
       }, '0'),
@@ -98,23 +98,6 @@ fdescribe('interactiveMapReducer', () => {
     expect(state.cards.cardsById['0'].objectiveReaction).toEqual({
       reactionId: 'asd',
       direction: 'min',
-    });
-  });
-
-  it('should set the bounds of a reaction', () => {
-    const state = interactiveMapReducer(
-      undefined,
-      new fromActions.SetReactionBoundsApply({
-        reactionId: 'asd',
-        lowerBound: -100,
-        upperBound: 120,
-      }, '0'),
-    );
-    expect(state.cards.cardsById['0'].bounds).toEqual({
-      asd: {
-        lowerBound: -100,
-        upperBound: 120,
-      },
     });
   });
 });

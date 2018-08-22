@@ -13,22 +13,35 @@
 // limitations under the License.
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
 
-import { AppChangedComponent } from './app-changed.component';
+import { reducers } from '../../../../../store/app.reducers';
+import { AppMaterialModule } from '../../../../../app-material.module';
+
+import { AppBoundsComponent } from './app-bounds.component';
 
 describe('AppChangedComponent', () => {
-  let component: AppChangedComponent;
-  let fixture: ComponentFixture<AppChangedComponent>;
+  let component: AppBoundsComponent;
+  let fixture: ComponentFixture<AppBoundsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppChangedComponent ],
+      imports: [
+        AppMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        StoreModule.forRoot(reducers),
+      ],
+      declarations: [ AppBoundsComponent ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppChangedComponent);
+    fixture = TestBed.createComponent(AppBoundsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
