@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../../../app-material.module';
 
 import { AppReactionComponent } from './app-reaction.component';
-import { AppChangedComponent } from './components/app-changed/app-changed.component';
+import { AppBoundsComponent } from './components/app-bounds/app-bounds.component';
 import { AppDetailComponent } from './components/app-detail/app-detail.component';
 import { AppObjectiveComponent } from './components/app-objective/app-objective.component';
 import { AppPanelComponent } from './components/app-panel/app-panel.component';
@@ -13,7 +13,7 @@ import { AppPanelComponent } from './components/app-panel/app-panel.component';
 @NgModule({
   declarations: [
     AppReactionComponent,
-    AppChangedComponent,
+    AppBoundsComponent,
     AppDetailComponent,
     AppObjectiveComponent,
     AppPanelComponent,

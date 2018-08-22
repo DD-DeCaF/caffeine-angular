@@ -13,6 +13,12 @@
 // limitations under the License.
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
+
+import { reducers } from '../../../../../store/app.reducers';
+import { AppMaterialModule } from '../../../../../app-material.module';
 
 import { AppObjectiveComponent } from './app-objective.component';
 
@@ -22,6 +28,13 @@ describe('AppObjectiveComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        AppMaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        StoreModule.forRoot(reducers),
+      ],
       declarations: [ AppObjectiveComponent ],
     })
     .compileComponents();

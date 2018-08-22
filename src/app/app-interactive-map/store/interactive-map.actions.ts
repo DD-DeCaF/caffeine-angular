@@ -14,7 +14,7 @@
 
 import {Action} from '@ngrx/store';
 
-import {CardType, OperationPayload, BoundsReaction, ObjectiveReactionPayload} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload} from '../types';
 
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
@@ -85,16 +85,6 @@ export class SetObjectiveReactionApply implements Action {
   constructor(public payload: ObjectiveReactionPayload, public cardId: string) {}
 }
 
-export class SetReactionBounds implements Action {
-  readonly type = SET_BOUNDS_REACTION;
-  constructor(public payload: BoundsReaction) {}
-}
-
-export class SetReactionBoundsApply implements Action {
-  readonly type = SET_BOUNDS_REACTION_APPLY;
-  constructor(public payload: BoundsReaction, public cardId: string) {}
-}
-
-export type OperationActions = SetReactionBounds | SetObjectiveReaction | ReactionOperation;
+export type OperationActions = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard |
-  ReactionOperationApply | SetObjectiveReactionApply | SetReactionBoundsApply;
+  ReactionOperationApply | SetObjectiveReactionApply;

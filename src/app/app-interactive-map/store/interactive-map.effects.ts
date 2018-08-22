@@ -13,15 +13,14 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+// import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, mergeMap} from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
-import {environment} from '../../../environments/environment';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
@@ -96,5 +95,7 @@ export class InteractiveMapEffects {
     })),
   );
 
-  constructor(private actions$: Actions, private store$: Store<AppState>, private http: HttpClient) {}
+  constructor(private actions$: Actions, private store$: Store<AppState>,
+    // private http: HttpClient,
+  ) {}
 }

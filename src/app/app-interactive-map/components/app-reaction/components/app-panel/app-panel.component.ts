@@ -44,14 +44,7 @@ export class AppPanelComponent {
       {'bigg_id': 'FBP', 'name': 'Fructose-bisphosphatase', 'model_bigg_id': 'Universal', 'organism': ''}];
 
 
-  constructor(private store: Store<AppState>) {
-    // Fake method to search when the value change.
-    /*this.querySearch.valueChanges.pipe(debounceTime(500)).subscribe((data) => {
-        this.fakeApiservice.searchReactionsByQuery(data).subscribe((response) => {
-          this.reactions = response;
-        });
-      });*/
-  }
+  constructor(private store: Store<AppState>) {}
 
   displayFn(item: Reaction): string {
     return item && item.bigg_id;
@@ -59,16 +52,28 @@ export class AppPanelComponent {
 
   addItem(reaction: Reaction): void {
     const typeToTarget: {[k: string]: 'addedReactions' | 'knockoutReactions'} = {
-      'added': 'addedReactions',
-      'knockout': 'knockoutReactions',
+      added: 'addedReactions',
+      knockout: 'knockoutReactions',
     };
     // Let's not add cardId, we can grab that in the effect!
     switch (this.type) {
       case 'added':
       case 'knockout': {
         this.store.dispatch(new ReactionOperation({
-          reactionId: reaction.bigg_id,
+          item: reaction.bigg_id,
           operationTarget: typeToTarget[this.type],
+          direction: OperationDirection.Do,
+        }));
+        break;
+      }
+      case 'bounds': {
+        this.store.dispatch(new ReactionOperation({
+          item: {
+            reactionId: reaction.bigg_id,
+            lowerBound: null,
+            upperBound: null,
+          },
+          operationTarget: 'bounds',
           direction: OperationDirection.Do,
         }));
         break;

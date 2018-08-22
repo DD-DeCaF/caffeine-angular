@@ -14,7 +14,7 @@
 
 import {Component, Input, OnInit, EventEmitter} from '@angular/core';
 import {Store, select} from '@ngrx/store';
-import {Observable, fromEvent} from 'rxjs';
+import {Observable} from 'rxjs';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
@@ -31,7 +31,7 @@ export class AppDetailComponent implements OnInit {
   public card: Observable<HydratedCard>;
   private removeEmitter = new EventEmitter<string>();
 
-  protected typeToTarget = {
+  public typeToTarget = {
     added: 'addedReactions',
     knockout: 'knockoutReactions',
   };
@@ -45,7 +45,7 @@ export class AppDetailComponent implements OnInit {
     this.removeEmitter
       .subscribe((reactionId) => {
         this.store.dispatch(new ReactionOperation({
-          reactionId,
+          item: reactionId,
           direction: OperationDirection.Undo,
           operationTarget: this.typeToTarget[this.type],
         }));
