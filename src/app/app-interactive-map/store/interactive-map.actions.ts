@@ -13,8 +13,17 @@
 // limitations under the License.
 
 import {Action} from '@ngrx/store';
+import {PathwayMap} from '@dd-decaf/escher';
 
 import {CardType, OperationPayload, ObjectiveReactionPayload} from '../types';
+
+export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
+export const SET_MODELS = 'SET_MODELS';
+export const SET_MODEL = 'SET_MODEL';
+export const SET_MAPS = 'SET_MAPS';
+export const SET_MAP = 'SET_MAP';
+export const LOAD_MAP = 'LOAD_MAP';
+export const MAP_LOADED = 'MAP_LOADED';
 
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
@@ -34,6 +43,40 @@ export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 export const SET_BOUNDS_REACTION = 'SET_BOUNDS_REACTION';
 export const SET_BOUNDS_REACTION_APPLY = 'SET_BOUNDS_REACTION_APPLY';
 
+export class SetSelectedSpecies implements Action {
+  readonly type = SET_SELECTED_SPECIES;
+  constructor(public payload: string) {}
+}
+
+export class SetModels implements Action {
+  readonly type = SET_MODELS;
+  constructor(public payload: string[]) {}
+}
+
+export class SetModel implements Action {
+  readonly type = SET_MODEL;
+  constructor(public payload: string) {}
+}
+
+export class SetMaps implements Action {
+  readonly type = SET_MAPS;
+  constructor(public payload: string[]) {}
+}
+
+export class SetMap implements Action {
+  readonly type = SET_MAP;
+  constructor(public payload: string) {}
+}
+
+export class LoadMap implements Action {
+  readonly type = LOAD_MAP;
+  constructor(public payload: string) {}
+}
+
+export class MapLoaded implements Action {
+  readonly type = MAP_LOADED;
+  constructor(public payload: PathwayMap) {}
+}
 
 export class SelectCard implements Action {
   readonly type = SELECT_CARD;
@@ -87,5 +130,6 @@ export class SetObjectiveReactionApply implements Action {
 }
 
 export type OperationActions = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard |
+export type InteractiveMapActions = SetSelectedSpecies | SetModels | SetMaps | MapLoaded |
+  SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard |
   ReactionOperationApply | SetObjectiveReactionApply;

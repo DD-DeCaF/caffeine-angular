@@ -1,4 +1,3 @@
-
 // Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");

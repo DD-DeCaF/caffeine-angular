@@ -13,6 +13,8 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
+import {PathwayMap} from '@dd-decaf/escher';
+
 import {Card, CardType, OperationDirection, Bound, OperationTarget} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 
@@ -34,11 +36,13 @@ export const idGen = new IdGen();
 export interface InteractiveMapState {
   playing: boolean;
   selectedCardId: string;
-  allSpecies: { [key: string]: string; };
+  allSpecies: {id: string, name: string}[];
   selectedSpecies: string;
   models: string[];
   selectedModel: string;
-  maps: { [key: string]: string[]; };
+  maps: string[];
+  selectedMap: string;
+  mapData: PathwayMap;
   cards: {
     ids: string[];
     cardsById: { [key: string]: Card; };
@@ -48,23 +52,17 @@ export interface InteractiveMapState {
 export const initialState: InteractiveMapState = {
   playing: false,
   selectedCardId: '0',
-  allSpecies: {
-    ECOLX: 'Escherichia coli',
-    YEAST: 'Saccharomyces cerevisiae',
-    PSEPU: 'Pseudomonas putida',
-  },
-  selectedSpecies: 'ECOLX',
-  models: ['iJO1366', 'e_coli_core'],
-  selectedModel: 'iJO1366',
-  maps: {
-    e_coli_core: ['Core metabolism'],
-    iJN746: ['Central metabolism'],
-    iMM904: ['Amino acid metabolism', 'Central metabolism', 'Cofactor and vitamin biosynthesis', 'Combined', 'Lipid metabolism',
-      'Nucleotide metabolism'],
-    iJO1366: ['Alternate carbon sources', 'Amino acid metabolism', 'Central metabolism', 'Cofactor biosynthesis', 'Combined',
-      'Fatty acid beta-oxidation', 'Fatty acid biosynthesis (saturated)', 'Lipopolysaccharide (LPS) biosynthesis',
-      'Nucleotide and histidine biosynthesis', 'Nucleotide metabolism', 'tRNA charging'],
-  },
+  allSpecies: [
+    {id: 'ECOLX', name: 'Escherichia coli'},
+    {id: 'YEAST', name: 'Saccharomyces cerevisiae'},
+    {id: 'PSEPU', name: 'Pseudomonas putida'},
+  ],
+  selectedSpecies: null,
+  models: null,
+  selectedModel: null,
+  maps: null,
+  selectedMap: null,
+  mapData: null,
   cards: {
     ids: ['0'],
     cardsById: {
@@ -116,6 +114,28 @@ export function interactiveMapReducer(
   action: fromInteractiveMapActions.InteractiveMapActions,
 ): InteractiveMapState {
   switch (action.type) {
+    case fromInteractiveMapActions.SET_SELECTED_SPECIES:
+      return {
+        ...state,
+        selectedSpecies: action.payload,
+      };
+    case fromInteractiveMapActions.SET_MODELS:
+      return {
+        ...state,
+        models: action.payload,
+        selectedModel: action.payload[0],
+      };
+    case fromInteractiveMapActions.SET_MAPS:
+      return {
+        ...state,
+        maps: action.payload,
+        selectedMap: action.payload[0],
+      };
+    case fromInteractiveMapActions.MAP_LOADED:
+      return {
+        ...state,
+        mapData: action.payload,
+      };
     case fromInteractiveMapActions.SELECT_CARD:
       return {
         ...state,
