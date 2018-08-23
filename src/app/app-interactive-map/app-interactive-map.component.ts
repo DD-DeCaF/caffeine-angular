@@ -12,22 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef} from '@angular/core';
-import d3 from 'd3';
+import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import map from './test-map.json';
 import escherSettingsConst from './escherSettings';
+import {AppState} from '../store/app.reducers';
+import {SetSelectedSpecies} from './store/interactive-map.actions';
 
 @Component({
   selector: 'app-interactive-map',
   templateUrl: './app-interactive-map.component.html',
   styleUrls: ['./app-interactive-mapcomponent.scss'],
 })
-export class AppInteractiveMapComponent implements AfterViewInit {
+export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
+  private builder: escher.BuilderObject;
+
+  public map: Observable<escher.PathwayMap>;
+
   constructor(
     private elRef: ElementRef,
+    private store: Store<AppState>,
   ) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(new SetSelectedSpecies('ECOLX'));
+    this.map = this.store.select((store) => store.interactiveMap.mapData);
+
+    this.map
+      .pipe(filter((mapData) => mapData !== null))
+      .subscribe((mapData) => {
+        this.builder.load_map(mapData);
+      });
+  }
 
   ngAfterViewInit(): void {
     const escherSettings = {
@@ -41,10 +61,9 @@ export class AppInteractiveMapComponent implements AfterViewInit {
       },
     };
 
-    const element = d3.select(this.elRef.nativeElement.querySelector('.escher-builder'));
-    escher.Builder(
-      // tslint:disable-next-line:no-any
-      <[escher.MetaData, escher.MapData]> (<any>map),
+    const element = select(this.elRef.nativeElement.querySelector('.escher-builder'));
+    this.builder = escher.Builder(
+      null,
       null,
       null,
       element,
