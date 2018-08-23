@@ -19,12 +19,12 @@
      flex>
 
   <mat-dialog-content>
-    <mat-card align="end">
-      <i class="material-icons close-modal" (click)="close()">
-        close
-      </i>
-    </mat-card>
     <mat-card fxLayout="column" style="min-width: 650px" layout-padding fxFlexAlign="center center" *ngIf="!(sessionState | async).authenticated">
+      <div class="dialog-header">
+        <i class="material-icons close-modal" (click)="close()">
+          close
+        </i>
+      </div>
       <div  fxFlex="100" *ngIf="uiStatus == 'loading'" >
         <mat-progress-spinner class="loginSpinner" mode="indeterminate" [diameter]="40"></mat-progress-spinner>
       </div>
