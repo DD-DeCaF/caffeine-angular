@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import { MatButton } from '@angular/material';
 import {Store, select} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {Observable, fromEvent} from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
-import {SelectCard, NextCard, PreviousCard, TogglePlay, AddCard, DeleteCard} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import { AppState } from '../../../store/app.reducers';
@@ -27,7 +29,9 @@ import { CardType } from '../../types';
   templateUrl: './app-build.component.html',
   styleUrls: ['./app-build.component.scss'],
 })
-export class AppBuildComponent implements OnInit {
+export class AppBuildComponent implements OnInit, AfterViewInit {
+  @ViewChild('play') playButton: MatButton;
+
   interactiveMapState: Observable<AppState>;
   public cards: Observable<fromInteractiveMapSelectors.HydratedCard[]>;
   public playing: Observable<boolean>;
@@ -40,6 +44,14 @@ export class AppBuildComponent implements OnInit {
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
+  }
+
+  ngAfterViewInit(): void {
+    fromEvent(this.playButton._elementRef.nativeElement, 'click').pipe(
+      withLatestFrom(this.playing),
+    ).subscribe(([, playing]) => {
+      this.store.dispatch(new SetPlayState(!playing));
+    });
   }
 
   public select(card: fromInteractiveMapSelectors.HydratedCard): void {
@@ -58,10 +70,6 @@ export class AppBuildComponent implements OnInit {
     this.store.dispatch(new NextCard());
   }
 
-  public togglePlay(): void {
-    this.store.dispatch(new TogglePlay());
-  }
-
   public previous(): void {
     this.store.dispatch(new PreviousCard());
   }
@@ -71,6 +79,7 @@ export class AppBuildComponent implements OnInit {
   }
 
   public grow(card: fromInteractiveMapSelectors.HydratedCard, tabIndex: number): void {
+    this.store.dispatch(new SetPlayState(false));
     this.store.dispatch(new SelectCard(card.id));
     this.expandedCard = card;
     this.tabIndex = tabIndex;

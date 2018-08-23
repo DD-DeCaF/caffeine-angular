@@ -20,7 +20,7 @@ export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
 export const SELECT_CARD = 'SELECT_CARD';
 
-export const TOGGLE_PLAY = 'TOGGLE_PLAY';
+export const SET_PLAY_STATE = 'SET_PLAY_STATE';
 
 export const LOADED = 'LOADED';
 
@@ -48,8 +48,9 @@ export class PreviousCard implements Action {
   readonly type = PREVIOUS_CARD;
 }
 
-export class TogglePlay implements Action {
-  readonly type = TOGGLE_PLAY;
+export class SetPlayState implements Action {
+  readonly type = SET_PLAY_STATE;
+  constructor(public payload: boolean) {}
 }
 
 export class Loaded implements Action {
@@ -86,5 +87,5 @@ export class SetObjectiveReactionApply implements Action {
 }
 
 export type OperationActions = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | TogglePlay | AddCard | DeleteCard |
+export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard |
   ReactionOperationApply | SetObjectiveReactionApply;
