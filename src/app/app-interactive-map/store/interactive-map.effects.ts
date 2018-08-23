@@ -52,7 +52,7 @@ export class InteractiveMapEffects {
   // Switch to the next card if play was paused
   @Effect()
   initPlay: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.TOGGLE_PLAY),
+    ofType(fromActions.SET_PLAY_STATE),
     withLatestFrom(this.store$),
     filter(([, storeState]) => storeState.interactiveMap.playing),
     mapTo({type: fromActions.NEXT_CARD}),

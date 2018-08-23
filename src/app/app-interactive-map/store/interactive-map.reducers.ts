@@ -121,10 +121,10 @@ export function interactiveMapReducer(
         ...state,
         selectedCardId: action.payload,
       };
-    case fromInteractiveMapActions.TOGGLE_PLAY:
+    case fromInteractiveMapActions.SET_PLAY_STATE:
       return {
         ...state,
-        playing: !state.playing,
+        playing: action.payload,
       };
     case fromInteractiveMapActions.ADD_CARD: {
       const newId = idGen.next();

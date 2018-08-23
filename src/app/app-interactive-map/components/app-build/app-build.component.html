@@ -30,7 +30,7 @@
         <mat-icon>chevron_left</mat-icon>
       </button>
 
-      <button mat-icon-button (click)="togglePlay()">
+      <button mat-icon-button #play>
         <mat-icon *ngIf="(playing | async)">pause</mat-icon>
         <mat-icon *ngIf="!(playing | async)">play_arrow</mat-icon>
       </button>
