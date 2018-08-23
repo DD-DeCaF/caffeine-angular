@@ -21,6 +21,11 @@
   z-index: 0;
 }
 
+.dialog-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .social-logo {
   width: 30px;
   height: 30px;
