@@ -40,7 +40,7 @@ describe('AppReactionComponent', () => {
         ReactionModule,
       ],
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
