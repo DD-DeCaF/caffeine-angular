@@ -21,6 +21,7 @@ import { reducers } from '../../../../../store/app.reducers';
 import { AppMaterialModule } from '../../../../../app-material.module';
 
 import { AppPanelComponent } from './app-panel.component';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppPanelComponent', () => {
   let component: AppPanelComponent;
@@ -33,6 +34,7 @@ describe('AppPanelComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
+        HttpClientModule,
         StoreModule.forRoot(reducers),
       ],
       declarations: [ AppPanelComponent ],

@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
 import {AppState} from '../../../../../store/app.reducers';
-import {OperationDirection, Reaction} from '../../../../types';
+import {BiggSearch, OperationDirection, Reaction} from '../../../../types';
 import {ReactionOperation, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
+import {BiggSearchService} from './services/bigg-search.service';
 
 @Component({
   selector: 'app-panel',
@@ -28,23 +29,15 @@ export class AppPanelComponent {
   @Input() public title: string;
   @Input() public type: string;
   @Input() public placeholder: string;
+  @ViewChild('queryInput') queryInput: ElementRef;
 
   public querySearch: FormControl = new FormControl();
-  public reactions: Reaction[] = [{'bigg_id': 'FK', 'name': 'Fucokinase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FT', 'name': 'Trans,trans,cis-geranylgeranyl diphosphate synthase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FCI', 'name': 'L-fucose isomerase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FHL', 'name': 'Formate-hydrogen lyase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FUM', 'name': 'Fumarase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FDH', 'name': 'Formate dehydrogenase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FRD', 'name': 'FRD', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FQR', 'name': 'Cyclic Electron Flow', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FTR', 'name': 'Ferredoxin thioredoxin reductase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FBA', 'name': 'Fructose-bisphosphate aldolase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'F4D', 'name': 'F4D', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FBP', 'name': 'Fructose-bisphosphatase', 'model_bigg_id': 'Universal', 'organism': ''}];
+  public reactions: Reaction[] = [];
 
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private biggSearchService: BiggSearchService) {}
 
   displayFn(item: Reaction): string {
     return item && item.bigg_id;
@@ -85,6 +78,15 @@ export class AppPanelComponent {
         }));
       }
     }
-    this.querySearch.reset();
+    this.reactions = [];
+    this.querySearch.reset('');
+  }
+
+  queryChange(query: string): void {
+    if (query.length > 2) {
+      this.biggSearchService.search(query).subscribe((data: BiggSearch) => {
+        this.reactions = data.results;
+      });
+    }
   }
 }

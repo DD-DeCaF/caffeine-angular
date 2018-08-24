@@ -17,6 +17,7 @@ export interface Configuration {
   apis: {
     iam: string;
     model: string;
+    bigg: string;
   };
   GA?: {
     trackingID: string;

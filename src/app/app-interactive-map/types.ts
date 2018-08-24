@@ -192,3 +192,8 @@ declare namespace ExperimentalConditions {
     measurements: number[];
   }
 }
+
+export interface BiggSearch {
+  results: Reaction[];
+  results_count: number;
+}

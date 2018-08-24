@@ -19,6 +19,7 @@ export const environment: Configuration = {
   apis: {
     iam: 'https://api.dd-decaf.eu/iam',
     model: 'https://api.dd-decaf.eu/model-caffeine',
+    bigg: 'https://api.dd-decaf.eu/bigg',
   },
   GA: {
     trackingID: 'UA-106144097-2',

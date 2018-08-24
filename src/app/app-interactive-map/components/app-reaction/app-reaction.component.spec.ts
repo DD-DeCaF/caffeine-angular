@@ -22,6 +22,7 @@ import { AppMaterialModule } from '../../../app-material.module';
 
 import {ReactionModule} from './app-reaction.module';
 import { AppReactionComponent } from './app-reaction.component';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppReactionComponent', () => {
   let component: AppReactionComponent;
@@ -35,6 +36,7 @@ describe('AppReactionComponent', () => {
         ReactiveFormsModule,
         BrowserAnimationsModule,
         StoreModule.forRoot(reducers),
+        HttpClientModule,
 
         ReactionModule,
       ],

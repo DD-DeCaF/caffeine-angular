@@ -17,7 +17,7 @@
   <mat-card-content>
     <form>
       <mat-form-field class="example-full-width">
-        <input type="text" placeholder="{{placeholder}}" aria-label="Number" matInput [formControl]="querySearch" [matAutocomplete]="auto">
+        <input type="text" placeholder="{{placeholder}}" aria-label="Number" (ngModelChange)="queryChange($event)" matInput [formControl]="querySearch" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete"
                           [displayWith]="displayFn"
                           (optionSelected)='addItem($event.option.value)'>
