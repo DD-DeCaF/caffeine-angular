@@ -45,6 +45,7 @@ describe('interactiveMapReducer', () => {
             '1': {
               type: types.CardType.WildType,
               name: 'Wild Type',
+              model: null,
               addedReactions: [],
               knockoutReactions: [],
               bounds: [],

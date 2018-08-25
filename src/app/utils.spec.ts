@@ -12,7 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { appendOrUpdate, appendOrUpdateStringList } from './utils';
+import {appendOrUpdate, appendOrUpdateStringList} from './utils';
+import {notNull} from './utils';
+
+describe('notNull', () => {
+  it('should be true for no null items', () => {
+    expect(notNull(undefined)).toBeTruthy();
+    expect(notNull(NaN)).toBeTruthy();
+    expect(notNull(0)).toBeTruthy();
+    expect(notNull(1)).toBeTruthy();
+    expect(notNull('')).toBeTruthy();
+    expect(notNull('sdf')).toBeTruthy();
+    expect(notNull([])).toBeTruthy();
+    expect(notNull({})).toBeTruthy();
+  });
+
+  it('should be false for null', () => {
+    expect(notNull(null)).toBeFalsy();
+  });
+});
 
 describe('appendOrUpdate', () => {
   interface Foo {
