@@ -17,18 +17,24 @@ import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap} from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap, concatMapTo} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import { Cobra } from '../types';
+import { Cobra, CardType, MapItem } from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
   [fromActions.PREVIOUS_CARD]: -1,
 };
+const preferredMaps = [
+  'iJO1366.Central metabolism',
+];
+
+const preferredMap = (mapItems: MapItem[]): MapItem =>
+  mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
 
 @Injectable()
 export class InteractiveMapEffects {
@@ -67,13 +73,21 @@ export class InteractiveMapEffects {
   @Effect()
   setMaps: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
-    switchMap((action: fromActions.SetModel) => {
-      return this.http.get(`${environment.apis.map}/model?model=${action.payload}`);
-    }),
-    concatMap((payload: {name: string, map: string}[]) => ([
+    switchMap((action: fromActions.SetModel) =>
+      this.http.get(`${environment.apis.map}/model?model=${action.payload}`)),
+    concatMap((payload: MapItem[]) => ([
       new fromActions.SetMaps(payload),
-      new fromActions.SetMap(payload[0]),
+      new fromActions.SetMap(preferredMap(payload)),
     ])),
+  );
+
+  @Effect()
+  resetCards: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.MODEL_FETCHED),
+    concatMapTo([
+      new fromActions.ResetCards(),
+      new fromActions.AddCard(CardType.WildType),
+    ]),
   );
 
   @Effect()
@@ -117,15 +131,6 @@ export class InteractiveMapEffects {
     mapTo(new fromActions.NextCard()),
   );
 
-  // This is a fake effect until we implement this in the builder
-  // All it does it triggers a loaded action when a new card is selected
-  @Effect()
-  escherLoaded: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SELECT_CARD),
-    delay(2000),
-    mapTo(new fromActions.Loaded()),
-  );
-
   // If the card is loaded and playing is enabled, switch to the new one.
   // Perhaps a little delay should be introduced
   @Effect()
@@ -133,6 +138,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.LOADED),
     withLatestFrom(this.store$),
     filter(([, storeState]) => storeState.interactiveMap.playing),
+    delay(2000),
     mapTo(new fromActions.NextCard()),
   );
 

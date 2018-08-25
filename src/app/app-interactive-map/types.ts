@@ -83,6 +83,17 @@ export interface Card {
   }[];
 }
 
+export interface HydratedCard extends Card {
+  selected: boolean;
+  id: string;
+}
+
+// Used in the map selector
+export interface MapItem {
+  name: string;
+  map: string;
+}
+
 // Cobrapy object structures as defined by the JSON schema:
 // https://github.com/opencobra/cobrapy/blob/devel/cobra/io/json.py#L138
 export declare namespace Cobra {

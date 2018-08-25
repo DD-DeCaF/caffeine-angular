@@ -15,11 +15,12 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, withLatestFrom} from 'rxjs/operators';
 
 import { AppState } from '../../../store/app.reducers';
 import { MatSelect, MatSelectChange } from '@angular/material';
 import { SetSelectedSpecies, SetModel, SetMap } from '../../store/interactive-map.actions';
+import { MapItem } from '../../types';
 
 @Component({
   selector: 'app-global-settings',
@@ -38,7 +39,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
   public models: Observable<string[]>;
 
   public selectedMap: Observable<string>;
-  public maps: Observable<{name: string, map: string}[]>;
+  public maps: Observable<MapItem[]>;
 
   constructor(private store: Store<AppState>) {}
 
@@ -65,8 +66,14 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
       });
 
     this.mapSelector.selectionChange
-      .subscribe((change: MatSelectChange) => {
-        this.store.dispatch(new SetMap(change.value));
+      .pipe(
+        map((change: MatSelectChange): string => change.value),
+        withLatestFrom(this.maps),
+        map(([selectedName, maps]: [string, MapItem[]]): MapItem =>
+          maps.find(({name}) => name === selectedName)),
+      )
+      .subscribe((mapItem: MapItem) => {
+        this.store.dispatch(new SetMap(mapItem));
       });
   }
 }
