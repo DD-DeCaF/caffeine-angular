@@ -15,7 +15,7 @@
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra} from '../types';
+import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 
 
@@ -41,7 +41,7 @@ export interface InteractiveMapState {
   models: string[];
   selectedModel: string;
   modelData: Cobra.Model;
-  maps: {name: string, map: string}[];
+  maps: MapItem[];
   selectedMap: string;
   mapData: PathwayMap;
   cards: {
@@ -49,6 +49,16 @@ export interface InteractiveMapState {
     cardsById: { [key: string]: Card; };
   };
 }
+
+const emptyCard = {
+  name: 'foo',
+  type: CardType.WildType,
+  model: null,
+  addedReactions: [],
+  knockoutReactions: [],
+  bounds: [],
+  objectiveReaction: null,
+};
 
 export const initialState: InteractiveMapState = {
   playing: false,
@@ -66,21 +76,8 @@ export const initialState: InteractiveMapState = {
   selectedMap: null,
   mapData: null,
   cards: {
-    ids: ['0'],
-    cardsById: {
-      '0': {
-        name: 'foo',
-        type: CardType.WildType,
-        model: null,
-        addedReactions: [],
-        knockoutReactions: [],
-        bounds: [],
-        objectiveReaction: {
-          reactionId: '0',
-          direction: null,
-        },
-      },
-    },
+    ids: [],
+    cardsById: {},
   },
 };
 
@@ -145,6 +142,15 @@ export function interactiveMapReducer(
         mapData: action.payload.mapData,
         selectedMap: action.payload.mapName,
       };
+    case fromInteractiveMapActions.RESET_CARDS:
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          ids: [],
+          cardsById: {},
+        },
+      };
     case fromInteractiveMapActions.SELECT_CARD:
       return {
         ...state,
@@ -157,18 +163,21 @@ export function interactiveMapReducer(
       };
     case fromInteractiveMapActions.ADD_CARD: {
       const newId = idGen.next();
-      const newCard: Card = {
-        name: action.payload === CardType.WildType ? 'Wild Type' : 'Data Driven',
-        type: action.payload,
-        model: null,
-        addedReactions: [],
-        knockoutReactions: [],
-        bounds: [],
-        objectiveReaction: {
-          reactionId: '0',
-          direction: null,
-        },
-      };
+      const type = action.payload;
+      let name: string;
+      let model: Cobra.Model;
+      switch (type) {
+        case CardType.WildType: {
+          name = 'Wild Type';
+          model = state.modelData;
+          break;
+        }
+        case CardType.DataDriven: {
+          name = 'Data Driven';
+          break;
+        }
+        default:
+      }
       return {
         ...state,
         selectedCardId: newId,
@@ -177,7 +186,12 @@ export function interactiveMapReducer(
           ids: [...state.cards.ids, newId],
           cardsById: {
             ...state.cards.cardsById,
-            [newId]: newCard,
+            [newId]: {
+              ...emptyCard,
+              type,
+              name,
+              model,
+            },
           },
         },
       };

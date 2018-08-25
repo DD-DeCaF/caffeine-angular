@@ -17,7 +17,8 @@ import {Store, select} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
 import {AppState} from '../../../store/app.reducers';
-import {getSelectedCard, HydratedCard} from '../../store/interactive-map.selectors';
+import {getSelectedCard} from '../../store/interactive-map.selectors';
+import { HydratedCard } from '../../types';
 
 @Component({
   selector: 'app-card-info',

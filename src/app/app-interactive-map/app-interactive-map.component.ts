@@ -22,8 +22,9 @@ import * as escher from '@dd-decaf/escher';
 import {Cobra} from './types';
 import escherSettingsConst from './escherSettings';
 import {AppState} from '../store/app.reducers';
-import {SetSelectedSpecies} from './store/interactive-map.actions';
+import * as fromActions from './store/interactive-map.actions';
 import { notNull } from '../utils';
+import { getSelectedCard } from './store/interactive-map.selectors';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   private builderSubject = new Subject<escher.BuilderObject>();
   public map: Observable<escher.PathwayMap>;
   public model: Observable<Cobra.Model>;
+  public loading = true;
 
   readonly escherSettings = {
     ...escherSettingsConst,
@@ -52,25 +54,29 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new SetSelectedSpecies('ECOLX'));
+    this.store.dispatch(new fromActions.SetSelectedSpecies('ECOLX'));
 
-    const element = this.builderSubject.asObservable();
+    const builderObservable = this.builderSubject.asObservable();
     this.store
       .select((store) => store.interactiveMap.mapData)
       .pipe(
         filter(notNull),
-        withLatestFrom(element),
-      ).subscribe(([map, elem]) => {
-        elem.load_map(map);
+        withLatestFrom(builderObservable),
+      ).subscribe(([map, builder]) => {
+        this.loading = true;
+        builder.load_map(map);
+        this.loading = false;
       });
 
     this.store
-      .select((store) => store.interactiveMap.modelData)
+      .select(getSelectedCard)
       .pipe(
-        filter(notNull),
-        withLatestFrom(element),
-      ).subscribe(([model, elem]) => {
-        elem.load_model(model);
+        withLatestFrom(builderObservable),
+      ).subscribe(([card, builder]) => {
+        this.loading = true;
+        builder.load_model(card.model);
+        this.store.dispatch(new fromActions.Loaded());
+        this.loading = false;
       });
   }
 
