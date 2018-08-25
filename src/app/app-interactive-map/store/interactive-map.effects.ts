@@ -22,6 +22,8 @@ import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
+import { Cobra } from '../types';
+import { PathwayMap } from '@dd-decaf/escher';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
@@ -40,24 +42,53 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
-  setModel: Observable<Action> = this.actions$.pipe(
+  selectFirstModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODELS),
+    map((action: fromActions.SetModels) =>
+      new fromActions.SetModel(action.payload[0])),
+  );
+
+  @Effect()
+  fetchModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetModel) => {
-      return this.http.get(`${environment.apis.map}/model?model=${action.payload[0]}`);
+      return this.http
+        .get(`${environment.apis.model}/models/${action.payload}`)
+        .pipe(
+          map((response: Cobra.Model) => ({
+            response,
+            modelId: action.payload,
+          })),
+        );
     }),
-    concatMap((payload: string[]) => ([
+    map(({response, modelId}) => new fromActions.ModelFetched({model: response, modelId})),
+  );
+
+  @Effect()
+  setMaps: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL),
+    switchMap((action: fromActions.SetModel) => {
+      return this.http.get(`${environment.apis.map}/model?model=${action.payload}`);
+    }),
+    concatMap((payload: {name: string, map: string}[]) => ([
       new fromActions.SetMaps(payload),
-      new fromActions.LoadMap(payload[0]),
+      new fromActions.SetMap(payload[0]),
     ])),
   );
 
   @Effect()
-  loadMap: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOAD_MAP),
-    switchMap((action: fromActions.LoadMap) => {
-      return this.http.get(`${environment.apis.map}/map?map=${action.payload}`);
+  fetchMap: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MAP),
+    switchMap((action: fromActions.SetMap) => {
+      return this
+        .http.get(`${environment.apis.map}/map?map=${action.payload.map}`)
+        .pipe(map((response: PathwayMap) => ({
+          mapData: response,
+          mapName: action.payload.name,
+        })),
+      );
     }),
-    map((payload: string) => new fromActions.MapLoaded(JSON.parse(payload))),
+    map(({mapData, mapName}) => new fromActions.MapFetched({mapData, mapName})),
   );
 
   // Steps to the previous or the next card depending on the action

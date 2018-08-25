@@ -46,6 +46,7 @@ declare module '@dd-decaf/escher' {
   export type PathwayMap = [MetaData, MapData];
   export interface BuilderObject {
       load_map(map_data: PathwayMap): void;
+      load_model(model: any): void;
       set_gene_data(gene_data: GeneDataArray): void;
       renderSearchBar(hide?: boolean, searchItem?: string): void;
   }

@@ -14,14 +14,17 @@
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
-import {filter} from 'rxjs/operators';
+import {Observable, of, Subject} from 'rxjs';
+import {filter, withLatestFrom, combineLatest} from 'rxjs/operators';
 import {select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
+import {Cobra} from './types';
 import escherSettingsConst from './escherSettings';
 import {AppState} from '../store/app.reducers';
 import {SetSelectedSpecies} from './store/interactive-map.actions';
+import { notNull } from '../utils';
+
 
 @Component({
   selector: 'app-interactive-map',
@@ -29,10 +32,20 @@ import {SetSelectedSpecies} from './store/interactive-map.actions';
   styleUrls: ['./app-interactive-mapcomponent.scss'],
 })
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
-  private builder: escher.BuilderObject;
-
+  private builderSubject = new Subject<escher.BuilderObject>();
   public map: Observable<escher.PathwayMap>;
+  public model: Observable<Cobra.Model>;
 
+  readonly escherSettings = {
+    ...escherSettingsConst,
+    tooltip_callbacks: {
+      knockout: (args) => { this.handleKnockout(args); },
+      setAsObjective: (args) => { this.handleSetAsObjective(args); },
+      changeBounds: (args) => { this.handleChangeBounds(args); },
+      resetBounds: (args) => { this.handleResetBounds(args); },
+      objectiveDirection: (args) => { this.handleObjectiveDirection(args); },
+    },
+  };
   constructor(
     private elRef: ElementRef,
     private store: Store<AppState>,
@@ -40,34 +53,37 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store.dispatch(new SetSelectedSpecies('ECOLX'));
-    this.map = this.store.select((store) => store.interactiveMap.mapData);
 
-    this.map
-      .pipe(filter((mapData) => mapData !== null))
-      .subscribe((mapData) => {
-        this.builder.load_map(mapData);
+    const element = this.builderSubject.asObservable();
+    this.store
+      .select((store) => store.interactiveMap.mapData)
+      .pipe(
+        filter(notNull),
+        withLatestFrom(element),
+      ).subscribe(([map, elem]) => {
+        elem.load_map(map);
+      });
+
+    this.store
+      .select((store) => store.interactiveMap.modelData)
+      .pipe(
+        filter(notNull),
+        withLatestFrom(element),
+      ).subscribe(([model, elem]) => {
+        elem.load_model(model);
       });
   }
 
   ngAfterViewInit(): void {
-    const escherSettings = {
-      ...escherSettingsConst,
-      tooltip_callbacks: {
-        knockout: (args) => { this.handleKnockout(args); },
-        setAsObjective: (args) => { this.handleSetAsObjective(args); },
-        changeBounds: (args) => { this.handleChangeBounds(args); },
-        resetBounds: (args) => { this.handleResetBounds(args); },
-        objectiveDirection: (args) => { this.handleObjectiveDirection(args); },
-      },
-    };
-
     const element = select(this.elRef.nativeElement.querySelector('.escher-builder'));
-    this.builder = escher.Builder(
-      null,
-      null,
-      null,
-      element,
-      escherSettings,
+    this.builderSubject.next(
+      escher.Builder(
+        null,
+        null,
+        null,
+        element,
+        this.escherSettings,
+      ),
     );
   }
 

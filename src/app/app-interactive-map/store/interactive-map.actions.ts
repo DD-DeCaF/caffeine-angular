@@ -15,15 +15,16 @@
 import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra} from '../types';
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
+export const FETCH_MODEL = 'FETCH_MODEL';
+export const MODEL_FETCHED = 'MODEL_FETCHED';
 export const SET_MAPS = 'SET_MAPS';
 export const SET_MAP = 'SET_MAP';
-export const LOAD_MAP = 'LOAD_MAP';
-export const MAP_LOADED = 'MAP_LOADED';
+export const MAP_FETCHED = 'MAP_FETCHED';
 
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
@@ -58,24 +59,24 @@ export class SetModel implements Action {
   constructor(public payload: string) {}
 }
 
+export class ModelFetched implements Action {
+  readonly type = MODEL_FETCHED;
+  constructor(public payload: {model: Cobra.Model, modelId: string}) {}
+}
+
 export class SetMaps implements Action {
   readonly type = SET_MAPS;
-  constructor(public payload: string[]) {}
+  constructor(public payload: {name: string, map: string}[]) {}
 }
 
 export class SetMap implements Action {
   readonly type = SET_MAP;
-  constructor(public payload: string) {}
+  constructor(public payload: {name: string, map: string}) {}
 }
 
-export class LoadMap implements Action {
-  readonly type = LOAD_MAP;
-  constructor(public payload: string) {}
-}
-
-export class MapLoaded implements Action {
-  readonly type = MAP_LOADED;
-  constructor(public payload: PathwayMap) {}
+export class MapFetched implements Action {
+  readonly type = MAP_FETCHED;
+  constructor(public payload: {mapData: PathwayMap, mapName: string}) {}
 }
 
 export class SelectCard implements Action {
@@ -130,6 +131,6 @@ export class SetObjectiveReactionApply implements Action {
 }
 
 export type OperationActions = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = SetSelectedSpecies | SetModels | SetMaps | MapLoaded |
+export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
   SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard |
   ReactionOperationApply | SetObjectiveReactionApply;

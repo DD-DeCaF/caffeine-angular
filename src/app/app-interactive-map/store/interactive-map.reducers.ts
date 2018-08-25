@@ -15,7 +15,7 @@
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, Bound, OperationTarget} from '../types';
+import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 
 
@@ -40,7 +40,8 @@ export interface InteractiveMapState {
   selectedSpecies: string;
   models: string[];
   selectedModel: string;
-  maps: string[];
+  modelData: Cobra.Model;
+  maps: {name: string, map: string}[];
   selectedMap: string;
   mapData: PathwayMap;
   cards: {
@@ -60,6 +61,7 @@ export const initialState: InteractiveMapState = {
   selectedSpecies: null,
   models: null,
   selectedModel: null,
+  modelData: null,
   maps: null,
   selectedMap: null,
   mapData: null,
@@ -69,6 +71,7 @@ export const initialState: InteractiveMapState = {
       '0': {
         name: 'foo',
         type: CardType.WildType,
+        model: null,
         addedReactions: [],
         knockoutReactions: [],
         bounds: [],
@@ -113,6 +116,7 @@ export function interactiveMapReducer(
   state: InteractiveMapState = initialState,
   action: fromInteractiveMapActions.InteractiveMapActions,
 ): InteractiveMapState {
+  console.log('Action:', action);
   switch (action.type) {
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
@@ -123,18 +127,23 @@ export function interactiveMapReducer(
       return {
         ...state,
         models: action.payload,
-        selectedModel: action.payload[0],
+      };
+    case fromInteractiveMapActions.MODEL_FETCHED:
+      return {
+        ...state,
+        selectedModel: action.payload.modelId,
+        modelData: action.payload.model,
       };
     case fromInteractiveMapActions.SET_MAPS:
       return {
         ...state,
         maps: action.payload,
-        selectedMap: action.payload[0],
       };
-    case fromInteractiveMapActions.MAP_LOADED:
+    case fromInteractiveMapActions.MAP_FETCHED:
       return {
         ...state,
-        mapData: action.payload,
+        mapData: action.payload.mapData,
+        selectedMap: action.payload.mapName,
       };
     case fromInteractiveMapActions.SELECT_CARD:
       return {
@@ -151,6 +160,7 @@ export function interactiveMapReducer(
       const newCard: Card = {
         name: action.payload === CardType.WildType ? 'Wild Type' : 'Data Driven',
         type: action.payload,
+        model: null,
         addedReactions: [],
         knockoutReactions: [],
         bounds: [],

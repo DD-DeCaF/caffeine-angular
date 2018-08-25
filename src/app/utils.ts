@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+export const notNull = (data) => data !== null;
+
 export const appendOrUpdate = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item: T) => {
   const oldIndex = array.findIndex(predicate(item));
   const index = oldIndex > -1 ? oldIndex : array.length;
