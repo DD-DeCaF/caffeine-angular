@@ -16,6 +16,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../../../environments/environment.prod';
+import {AddedReaction, BiggSearch, Reaction} from '../../../../../types';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +26,34 @@ export class BiggSearchService {
 
   constructor(private http: HttpClient) {}
 
-  search(query: string): Observable<Object> {
+  search(query: string): Observable<Reaction[]> {
     const apiURL = `${environment.apis.bigg}/search?query=${query}&search_type=reactions`;
-    return this.http.get(apiURL);
+    return this.http.get(apiURL).pipe(map((data: BiggSearch) => data.results));
+  }
+
+  getDetails(item: Reaction): Observable<AddedReaction> {
+    const apiURL = `${environment.apis.bigg}/${item.model_bigg_id.toLowerCase()}/reactions/${item.bigg_id}`;
+    return this.http.get(apiURL).pipe(map((reaction: AddedReaction) => this.processReaction(reaction)));
+  }
+
+  processReaction(reaction: AddedReaction): AddedReaction {
+    let metanetx_id: string;
+    try {
+      metanetx_id = reaction.database_links['MetaNetX (MNX) Equation'][0].id;
+    } catch (e) {
+      metanetx_id = '';
+    }
+    const metabolites = Object.assign({}, ...reaction.metabolites.map((m) => {
+      return {
+        [`${m.bigg_id}_${m.compartment_bigg_id}`]: m.stoichiometry,
+      };
+    }));
+    return {
+      ...reaction,
+      reaction_string: <string> reaction.reaction_string.replace('&#8652;', '<=>'),
+      metabolites,
+      metanetx_id,
+    };
+
   }
 }
