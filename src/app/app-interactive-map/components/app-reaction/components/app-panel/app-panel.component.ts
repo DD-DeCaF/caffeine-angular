@@ -16,9 +16,11 @@ import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
 import {AppState} from '../../../../../store/app.reducers';
-import {BiggSearch, OperationDirection, Reaction} from '../../../../types';
+import {AddedReaction, OperationDirection, Reaction} from '../../../../types';
 import {ReactionOperation, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
 import {BiggSearchService} from './services/bigg-search.service';
+import {Observable} from 'rxjs';
+
 
 @Component({
   selector: 'app-panel',
@@ -32,61 +34,61 @@ export class AppPanelComponent {
   @ViewChild('queryInput') queryInput: ElementRef;
 
   public querySearch: FormControl = new FormControl();
-  public reactions: Reaction[] = [];
-
+  public reactions: Observable<Reaction[]>;
 
   constructor(
     private store: Store<AppState>,
-    private biggSearchService: BiggSearchService) {}
+    private biggSearchService: BiggSearchService) {
+  }
 
   displayFn(item: Reaction): string {
     return item && item.bigg_id;
   }
 
-  addItem(reaction: Reaction): void {
-    const typeToTarget: {[k: string]: 'addedReactions' | 'knockoutReactions'} = {
-      added: 'addedReactions',
-      knockout: 'knockoutReactions',
-    };
+  addItem(reaction: AddedReaction): void {
+    this.biggSearchService.getDetails(reaction).subscribe((detailedReaction: Reaction) => {
+      const typeToTarget: { [k: string]: 'addedReactions' | 'knockoutReactions' } = {
+        added: 'addedReactions',
+        knockout: 'knockoutReactions',
+      };
 
-    switch (this.type) {
-      case 'added':
-      case 'knockout': {
-        this.store.dispatch(new ReactionOperation({
-          item: reaction.bigg_id,
-          operationTarget: typeToTarget[this.type],
-          direction: OperationDirection.Do,
-        }));
-        break;
+      switch (this.type) {
+        case 'added':
+        case 'knockout': {
+          console.log('FBA', detailedReaction);
+          this.store.dispatch(new ReactionOperation({
+            item: detailedReaction.bigg_id,
+            operationTarget: typeToTarget[this.type],
+            direction: OperationDirection.Do,
+          }));
+          break;
+        }
+        case 'bounds': {
+          this.store.dispatch(new ReactionOperation({
+            item: {
+              reactionId: detailedReaction.bigg_id,
+              lowerBound: null,
+              upperBound: null,
+            },
+            operationTarget: 'bounds',
+            direction: OperationDirection.Do,
+          }));
+          break;
+        }
+        default: {
+          this.store.dispatch(new SetObjectiveReaction({
+            reactionId: detailedReaction.bigg_id,
+            direction: 'max',
+          }));
+        }
       }
-      case 'bounds': {
-        this.store.dispatch(new ReactionOperation({
-          item: {
-            reactionId: reaction.bigg_id,
-            lowerBound: null,
-            upperBound: null,
-          },
-          operationTarget: 'bounds',
-          direction: OperationDirection.Do,
-        }));
-        break;
-      }
-      default: {
-        this.store.dispatch(new SetObjectiveReaction({
-          reactionId: reaction.bigg_id,
-          direction: 'max',
-        }));
-      }
-    }
-    this.reactions = [];
-    this.querySearch.reset('');
+      this.querySearch.reset('');
+    });
   }
 
   queryChange(query: string): void {
     if (query.length > 2) {
-      this.biggSearchService.search(query).subscribe((data: BiggSearch) => {
-        this.reactions = data.results;
-      });
+      this.reactions = this.biggSearchService.search(query);
     }
   }
 }

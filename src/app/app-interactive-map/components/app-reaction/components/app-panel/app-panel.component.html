@@ -21,8 +21,8 @@
         <mat-autocomplete #auto="matAutocomplete"
                           [displayWith]="displayFn"
                           (optionSelected)='addItem($event.option.value)'>
-          <mat-option *ngFor="let reaction of reactions" [value]="reaction">
-            {{ reaction?.bigg_id }}
+          <mat-option *ngFor="let reaction of (reactions | async)" [value]="reaction">
+            {{reaction.bigg_id}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
