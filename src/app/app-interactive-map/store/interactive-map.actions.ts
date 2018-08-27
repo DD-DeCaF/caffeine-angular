@@ -37,7 +37,10 @@ export const LOADED = 'LOADED';
 
 export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
+export const RENAME_CARD = 'RENAME_CARD';
 
+export const SET_METHOD_APPLY = 'SET_METHOD_APPLY';
+export const SET_METHOD = 'SET_METHOD';
 export const REACTION_OPERATION = 'REACTION_OPERATION';
 export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
@@ -116,6 +119,21 @@ export class DeleteCard implements Action {
   constructor(public payload: string) {}
 }
 
+export class RenameCard implements Action {
+  readonly type = RENAME_CARD;
+  constructor(public payload: string) {}
+}
+
+export class SetMethod implements Action {
+  readonly type = SET_METHOD;
+  constructor(public payload: string) {}
+}
+
+export class SetMethodApply implements Action {
+  readonly type = SET_METHOD_APPLY;
+  constructor(public payload: string, public cardId: string) {}
+}
+
 export class ReactionOperation implements Action {
   readonly type = REACTION_OPERATION;
   constructor(public payload: OperationPayload) {}
@@ -137,5 +155,5 @@ export class SetObjectiveReactionApply implements Action {
 
 export type OperationActions = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
-  ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard |
-  ReactionOperationApply | SetObjectiveReactionApply;
+  ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
+  SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;

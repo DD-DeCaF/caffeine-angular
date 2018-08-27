@@ -12,11 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { HydratedCard } from '../../types';
+import { AppState } from '../../../store/app.reducers';
+import { getSelectedCard } from '../../store/interactive-map.selectors';
 
 @Component({
   selector: 'app-reaction',
   templateUrl: './app-reaction.component.html',
 })
-export class AppReactionComponent {
+export class AppReactionComponent implements OnInit {
+  public card: Observable<HydratedCard>;
+
+  constructor(public store: Store<AppState>) {}
+
+  ngOnInit(): void {
+    this.card = this.store.pipe(select(getSelectedCard));
+  }
 }
