@@ -20,7 +20,7 @@ import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 
 
 class IdGen {
-  counter = 1;
+  counter = 0;
 
   next(): string {
     return '' + this.counter++;
@@ -54,6 +54,7 @@ const emptyCard = {
   name: 'foo',
   type: CardType.WildType,
   model: null,
+  method: 'fba',
   addedReactions: [],
   knockoutReactions: [],
   bounds: [],
@@ -215,12 +216,34 @@ export function interactiveMapReducer(
         },
       };
     }
+    case fromInteractiveMapActions.RENAME_CARD:
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          cardsById: {
+            ...state.cards.cardsById,
+            [state.selectedCardId]: {
+              ...state.cards.cardsById[state.selectedCardId],
+              name: action.payload,
+            },
+          },
+        },
+      };
+    case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
       const {cardId} = action;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
       switch (action.type) {
+        case fromInteractiveMapActions.SET_METHOD_APPLY: {
+          newCard = {
+            ...card,
+            method: action.payload,
+          };
+          break;
+        }
         case fromInteractiveMapActions.REACTION_OPERATION_APPLY: {
           const {item, operationTarget, direction} = action.payload;
           const operationFunction = operations[direction][operationTarget];

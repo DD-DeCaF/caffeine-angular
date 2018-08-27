@@ -12,7 +12,27 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<app-panel [placeholder]="'Enter the reaction you want to add'" [title]="'Added reactions:'" [type]="'added'"><app-detail [type]="'added'"></app-detail></app-panel>
-<app-panel [placeholder]="'Enter the reaction you want to remove'" [title]="'Removed reactions:'"  [type]="'knockout'"><app-detail [type]="'knockout'"></app-detail></app-panel>
-<app-panel [placeholder]="'Enter the reaction to set as objective'" [title]="'Objective:'" [type]="'objective'"><app-objective></app-objective></app-panel>
-<app-panel [placeholder]="'Enter the reaction you want to change'" [title]="'Changed reactions:'" [type]="'bounds'"><app-bounds></app-bounds></app-panel>
+<app-panel
+  [placeholder]="'Enter the reaction you want to add'"
+  [title]="'Added reactions:'"
+  [type]="'added'">
+  <app-detail [type]="'added'"></app-detail>
+</app-panel>
+<app-panel
+  [placeholder]="'Enter the reaction you want to remove'"
+  [title]="'Removed reactions:'"
+  [type]="'knockout'">
+  <app-detail [type]="'knockout'"></app-detail>
+</app-panel>
+<app-panel
+  [placeholder]="'Enter the reaction to set as objective'"
+  [title]="'Objective:'"
+  [type]="'objective'">
+  <app-objective *ngIf="(card | async).objectiveReaction"></app-objective>
+</app-panel>
+<app-panel
+  [placeholder]="'Enter the reaction you want to change'"
+  [title]="'Changed reactions:'"
+  [type]="'bounds'">
+  <app-bounds></app-bounds>
+</app-panel>

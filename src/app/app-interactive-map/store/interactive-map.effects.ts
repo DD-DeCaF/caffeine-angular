@@ -144,7 +144,7 @@ export class InteractiveMapEffects {
 
   @Effect()
   operationReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_BOUNDS_REACTION),
+    ofType(fromActions.SET_METHOD, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_BOUNDS_REACTION),
     // httpRequest here
     // mergeMap((reaction) => {
     //   return this.http.post(`${environment.apis.model}/something here`, reaction);

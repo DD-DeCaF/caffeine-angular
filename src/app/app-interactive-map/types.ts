@@ -73,6 +73,7 @@ export interface Card {
   type: CardType;
   name: string;
   model: Cobra.Model;
+  method: string;
   addedReactions: string[];
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;
@@ -92,6 +93,11 @@ export interface HydratedCard extends Card {
 export interface MapItem {
   name: string;
   map: string;
+}
+
+export interface Method {
+  id: string;
+  name: string;
 }
 
 // Cobrapy object structures as defined by the JSON schema:
