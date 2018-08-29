@@ -71,6 +71,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     this.store
       .select(getSelectedCard)
       .pipe(
+        filter(notNull),
         withLatestFrom(builderObservable),
       ).subscribe(([card, builder]) => {
         this.loading = true;
