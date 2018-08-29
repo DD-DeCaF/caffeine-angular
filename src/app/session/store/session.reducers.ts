@@ -18,7 +18,7 @@ export interface SessionState {
   authenticated: boolean;
 }
 
-const initialState: SessionState = {
+export const initialState: SessionState = {
   authenticated: false,
 };
 

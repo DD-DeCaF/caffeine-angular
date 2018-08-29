@@ -22,6 +22,7 @@ import { AppMaterialModule } from '../../../app-material.module';
 
 import {ReactionModule} from './app-reaction.module';
 import { AppReactionComponent } from './app-reaction.component';
+import {initialState} from './mock-initial-state';
 
 describe('AppReactionComponent', () => {
   let component: AppReactionComponent;
@@ -34,7 +35,7 @@ describe('AppReactionComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers, {initialState}),
 
         ReactionModule,
       ],

@@ -17,6 +17,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 
 import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
+import { debug } from '../../logger';
 
 
 class IdGen {
@@ -27,7 +28,7 @@ class IdGen {
   }
 
   reset(): void {
-    this.counter = 1;
+    this.counter = 0;
   }
 }
 
@@ -50,7 +51,7 @@ export interface InteractiveMapState {
   };
 }
 
-const emptyCard = {
+export const emptyCard = {
   name: 'foo',
   type: CardType.WildType,
   model: null,
@@ -114,7 +115,7 @@ export function interactiveMapReducer(
   state: InteractiveMapState = initialState,
   action: fromInteractiveMapActions.InteractiveMapActions,
 ): InteractiveMapState {
-  console.log('Action:', action);
+  debug('Action:', action);
   switch (action.type) {
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {

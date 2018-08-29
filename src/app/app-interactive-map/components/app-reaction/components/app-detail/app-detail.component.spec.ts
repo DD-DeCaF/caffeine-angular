@@ -21,6 +21,7 @@ import { reducers } from '../../../../../store/app.reducers';
 import { AppMaterialModule } from '../../../../../app-material.module';
 
 import { AppDetailComponent } from './app-detail.component';
+import { initialState } from '../../mock-initial-state';
 
 describe('AppDetailComponent', () => {
   let component: AppDetailComponent;
@@ -33,7 +34,7 @@ describe('AppDetailComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers, {initialState}),
       ],
       declarations: [ AppDetailComponent ],
     })
