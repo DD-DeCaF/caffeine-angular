@@ -16,7 +16,7 @@ import {Component, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
 import {AppState} from '../../../../../store/app.reducers';
-import {AddedReaction, OperationDirection, Reaction} from '../../../../types';
+import {OperationDirection, Reaction} from '../../../../types';
 import {ReactionOperation, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
 import {BiggSearchService} from './services/bigg-search.service';
 import {Observable} from 'rxjs';
@@ -44,49 +44,61 @@ export class AppPanelComponent {
     return item && item.bigg_id;
   }
 
-  addItem(reaction: AddedReaction): void {
-    this.biggSearchService.getDetails(reaction).subscribe((detailedReaction: Reaction) => {
-      const typeToTarget: { [k: string]: 'addedReactions' | 'knockoutReactions' } = {
-        added: 'addedReactions',
-        knockout: 'knockoutReactions',
-      };
+  addItem(reaction: Reaction): void {
+    const typeToTarget: { [k: string]: 'addedReactions' | 'knockoutReactions' } = {
+      added: 'addedReactions',
+      knockout: 'knockoutReactions',
+    };
 
-      switch (this.type) {
-        case 'added':
-        case 'knockout': {
+    switch (this.type) {
+      case 'added':
+        this.biggSearchService.getDetails(reaction).subscribe((detailedReaction: Reaction) => {
           this.store.dispatch(new ReactionOperation({
             item: detailedReaction.bigg_id,
             operationTarget: typeToTarget[this.type],
             direction: OperationDirection.Do,
           }));
-          break;
-        }
-        case 'bounds': {
-          this.store.dispatch(new ReactionOperation({
-            item: {
-              reactionId: detailedReaction.bigg_id,
-              lowerBound: null,
-              upperBound: null,
-            },
-            operationTarget: 'bounds',
-            direction: OperationDirection.Do,
-          }));
-          break;
-        }
-        default: {
-          this.store.dispatch(new SetObjectiveReaction({
-            reactionId: detailedReaction.bigg_id,
-            direction: 'max',
-          }));
-        }
+        });
+        break;
+      case 'knockout': {
+        this.store.dispatch(new ReactionOperation({
+          item: reaction.bigg_id,
+          operationTarget: typeToTarget[this.type],
+          direction: OperationDirection.Do,
+        }));
+        break;
       }
-      this.querySearch.reset('');
-    });
+      case 'bounds': {
+        this.store.dispatch(new ReactionOperation({
+          item: {
+            reactionId: reaction.bigg_id,
+            lowerBound: null,
+            upperBound: null,
+          },
+          operationTarget: 'bounds',
+          direction: OperationDirection.Do,
+        }));
+        break;
+      }
+      default: {
+        this.store.dispatch(new SetObjectiveReaction({
+          reactionId: reaction.bigg_id,
+          direction: 'max',
+        }));
+      }
+    }
+    this.querySearch.reset('');
+
   }
 
   queryChange(query: string): void {
     if (query.length > 2) {
-      this.reactions = this.biggSearchService.search(query);
+      if (this.type === 'added') {
+        this.reactions = this.biggSearchService.search(query);
+      } else {
+        this.reactions = this.biggSearchService.search(query);
+        // this.reactions = ; ready to get the reactions from the map when we merge.
+      }
     }
   }
 }

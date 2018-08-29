@@ -12,34 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {Store, select} from '@ngrx/store';
+import {Component, ViewChild, AfterViewInit, Input} from '@angular/core';
+import {Store} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import { MatSlideToggle, MatButton } from '@angular/material';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
+<<<<<<< HEAD
 import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 import { HydratedCard } from '../../../../types';
+=======
+import {HydratedCard} from '../../../../store/interactive-map.selectors';
+>>>>>>> feat: added input card inside components.
 
 @Component({
   selector: 'app-objective',
   templateUrl: './app-objective.component.html',
   styleUrls: ['./app-objective.component.scss'],
 })
-export class AppObjectiveComponent implements OnInit, AfterViewInit {
+export class AppObjectiveComponent implements AfterViewInit {
   @ViewChild('toggle') toggle: MatSlideToggle;
   @ViewChild('remove') remove: MatButton;
 
-  public card: Observable<HydratedCard>;
+  @Input() public card: Observable<HydratedCard>;
 
   constructor(private store: Store<AppState>) {}
-
-  ngOnInit(): void {
-    this.card = this.store.pipe(
-      select(getSelectedCard));
-  }
 
   ngAfterViewInit(): void {
     this.toggle.change.pipe(
