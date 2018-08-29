@@ -16,7 +16,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { BiggSearchService } from './bigg-search.service';
 import {AppMaterialModule} from '../../../../../../app-material.module';
-import {BiggSearch} from '../../../../../types';
+import {Reaction} from '../../../../../types';
 import {HttpClientModule} from '@angular/common/http';
 
 describe('BiggSearchService', () => {
@@ -55,15 +55,15 @@ describe('BiggSearchService', () => {
         'organism': '',
       },
     ];
-    service.search('aetc').subscribe((data: BiggSearch) => {
-      expect(data.results).toEqual(results);
+    service.search('aetc').subscribe((data: Reaction[]) => {
+      expect(data).toEqual(results);
     });
   }));
 
   it('should be an empty array', inject([BiggSearchService], (service: BiggSearchService) => {
     const results = [];
-    service.search('xxxxx').subscribe((data: BiggSearch) => {
-      expect(data.results).toEqual(results);
+    service.search('xxxxx').subscribe((data: Reaction[]) => {
+      expect(data).toEqual(results);
     });
   }));
 });

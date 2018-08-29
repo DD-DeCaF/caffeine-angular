@@ -54,7 +54,6 @@ export class AppPanelComponent {
       switch (this.type) {
         case 'added':
         case 'knockout': {
-          console.log('FBA', detailedReaction);
           this.store.dispatch(new ReactionOperation({
             item: detailedReaction.bigg_id,
             operationTarget: typeToTarget[this.type],
