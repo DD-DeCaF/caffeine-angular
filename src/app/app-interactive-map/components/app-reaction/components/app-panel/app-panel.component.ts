@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {FormControl} from '@angular/forms';
 import {AppState} from '../../../../../store/app.reducers';
@@ -31,7 +31,6 @@ export class AppPanelComponent {
   @Input() public title: string;
   @Input() public type: string;
   @Input() public placeholder: string;
-  @ViewChild('queryInput') queryInput: ElementRef;
 
   public querySearch: FormControl = new FormControl();
   public reactions: Observable<Reaction[]>;
