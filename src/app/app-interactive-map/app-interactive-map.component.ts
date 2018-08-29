@@ -14,8 +14,8 @@
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {Observable, of, Subject} from 'rxjs';
-import {filter, withLatestFrom, combineLatest} from 'rxjs/operators';
+import {Observable, Subject} from 'rxjs';
+import {filter, withLatestFrom} from 'rxjs/operators';
 import {select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 

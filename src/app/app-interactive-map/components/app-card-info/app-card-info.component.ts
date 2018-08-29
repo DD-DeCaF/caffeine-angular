@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import { MatSelect, MatSelectChange, MatInput } from '@angular/material';
+import { MatSelect, MatSelectChange } from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
