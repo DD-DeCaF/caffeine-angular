@@ -21,8 +21,9 @@ import { reducers } from '../../../../../store/app.reducers';
 import { AppMaterialModule } from '../../../../../app-material.module';
 
 import { AppBoundsComponent } from './app-bounds.component';
+import { initialState } from '../../mock-initial-state';
 
-describe('AppChangedComponent', () => {
+describe('AppBoundsComponent', () => {
   let component: AppBoundsComponent;
   let fixture: ComponentFixture<AppBoundsComponent>;
 
@@ -33,7 +34,7 @@ describe('AppChangedComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers, {initialState}),
       ],
       declarations: [ AppBoundsComponent ],
     })

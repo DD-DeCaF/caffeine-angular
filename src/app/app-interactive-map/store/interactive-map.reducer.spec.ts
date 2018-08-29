@@ -37,12 +37,11 @@ describe('interactiveMapReducer', () => {
     expect(interactiveMapReducer(undefined, new fromActions.AddCard(types.CardType.WildType)))
       .toEqual({
         ...initialState,
-        selectedCardId: '1',
+        selectedCardId: '0',
         cards: {
-          ids: ['0', '1'],
+          ids: ['0'],
           cardsById: {
-            ...initialState.cards.cardsById,
-            '1': {
+            '0': {
               type: types.CardType.WildType,
               name: 'Wild Type',
               model: null,
@@ -50,10 +49,7 @@ describe('interactiveMapReducer', () => {
               addedReactions: [],
               knockoutReactions: [],
               bounds: [],
-              objectiveReaction: {
-                reactionId: '0',
-                direction: null,
-              },
+              objectiveReaction: null,
             },
           },
         },
@@ -61,25 +57,28 @@ describe('interactiveMapReducer', () => {
   });
 
   it('should delete card', () => {
-    const state = interactiveMapReducer(undefined, new fromActions.AddCard(types.CardType.WildType));
-    const newState = interactiveMapReducer(state, new fromActions.DeleteCard('0'));
-    expect(Array.from(Object.keys(newState.cards.cardsById))).toEqual(['1']);
+    const state1 = interactiveMapReducer(undefined, new fromActions.AddCard(types.CardType.WildType));
+    const state2 = interactiveMapReducer(state1, new fromActions.AddCard(types.CardType.WildType));
+    const state3 = interactiveMapReducer(state2, new fromActions.DeleteCard('0'));
+    expect(Array.from(Object.keys(state3.cards.cardsById))).toEqual(['1']);
   });
 
   it('should add new reaction', () => {
-    const state = interactiveMapReducer(
-      undefined,
+    const state1 = interactiveMapReducer(undefined, new fromActions.AddCard(types.CardType.WildType));
+    const state2 = interactiveMapReducer(
+      state1,
       new fromActions.ReactionOperationApply({
         item: 'asd',
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
       }, '0'),
     );
-    expect(state.cards.cardsById['0'].addedReactions).toEqual(['asd']);
+    expect(state2.cards.cardsById['0'].addedReactions).toEqual(['asd']);
   });
 
   it('should remove the added reaction', () => {
     const actions = [
+      new fromActions.AddCard(types.CardType.WildType),
       new fromActions.ReactionOperationApply({
         item: 'asd',
         direction: types.OperationDirection.Do,
