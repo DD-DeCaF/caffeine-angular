@@ -62,8 +62,9 @@ export interface BoundOperationPayload {
   direction: OperationDirection;
 }
 export type OperationPayload = SimpleOperationPayload | BoundOperationPayload;
+export type ObjectiveDirection = 'min' | 'max';
 export interface ObjectiveReactionPayload {
-  direction: 'min' | 'max';
+  direction: ObjectiveDirection;
   reactionId: string;
 }
 
@@ -95,8 +96,17 @@ export interface MapItem {
   map: string;
 }
 
+// export enum Methods {
+//   FBA = 'fba',
+//   PFBA = 'pfba',
+//   FVA = 'fva',
+//   PFBA_FVA = 'pfba-fva',
+// }
+
+export type Methods = 'fba' | 'pfba' | 'fva' | 'pfba-fva';
+
 export interface Method {
-  id: string;
+  id: Methods;
   name: string;
 }
 
@@ -173,6 +183,21 @@ export declare namespace Cobra {
       [k: string]: any; // tslint:disable-line
     };
   }
+}
+
+// This is the serialized type for the backend. Should be renamed/put in a separate file.
+export interface Operation {
+  operation: 'knockout' | 'add' | 'modify';
+  type: 'reaction';
+  id: string;
+  data?: {};
+}
+
+export interface SimulateRequest {
+  method: Methods;
+  objective?: string;
+  objective_direction: ObjectiveDirection;
+  operations: Operation[];
 }
 
 // DD-DeCaF platform internal structures
