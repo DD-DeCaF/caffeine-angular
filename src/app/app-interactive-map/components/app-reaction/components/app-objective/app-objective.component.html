@@ -17,9 +17,10 @@
   <mat-list-item>
     <span >Min</span>
     <mat-slide-toggle
+      #toggle
       class="mat-primary"
-      [checked]="(card | async).objectiveReaction.direction === 'max'"
-      #toggle>
+      [checked]="(card | async)?.objectiveReaction.direction === 'max'"
+      >
     </mat-slide-toggle>
     <span>Max</span>
     <button mat-icon-button align="end" #remove>

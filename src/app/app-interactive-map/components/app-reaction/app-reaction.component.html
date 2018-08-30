@@ -26,6 +26,7 @@
   [title]="'Removed reactions:'"
   [type]="'knockout'">
   <app-detail
+    *ngIf="(card | async)"
     [type]="'knockout'"
     [card]="card">
   </app-detail>

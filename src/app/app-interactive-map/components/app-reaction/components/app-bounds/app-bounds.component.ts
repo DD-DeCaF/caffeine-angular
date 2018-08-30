@@ -17,7 +17,6 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 import {Bound, OperationDirection, HydratedCard} from '../../../../types';
 
 @Component({

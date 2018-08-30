@@ -19,7 +19,6 @@ import {Observable} from 'rxjs';
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
 import {OperationDirection, HydratedCard} from '../../../../types';
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 
 @Component({
   selector: 'app-detail',
