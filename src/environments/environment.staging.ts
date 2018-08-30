@@ -21,6 +21,7 @@ export const environment: Configuration = {
     model: 'https://api-staging.dd-decaf.eu/mcaffeine',
     map: 'https://api-staging.dd-decaf.eu/maps',
     bigg: 'https://api.dd-decaf.eu/bigg',
+    warehouse: 'https://api-staging.dd-decaf.eu/warehouse/',
   },
   GA: {
     trackingID: 'UA-106144097-3',

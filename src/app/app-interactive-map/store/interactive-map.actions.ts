@@ -17,6 +17,8 @@ import {PathwayMap} from '@dd-decaf/escher';
 
 import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem} from '../types';
 
+export const FETCH_SPECIES = 'FETCH_SPECIES';
+export const SET_SPECIES = 'SET_SPECIES';
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
@@ -47,6 +49,15 @@ export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 export const SET_BOUNDS_REACTION = 'SET_BOUNDS_REACTION';
 export const SET_BOUNDS_REACTION_APPLY = 'SET_BOUNDS_REACTION_APPLY';
+
+export class FetchSpecies implements Action {
+  readonly type = FETCH_SPECIES;
+}
+
+export class SetSpecies implements Action {
+  readonly type = SET_SPECIES;
+  constructor(public payload: {project_id: string, id: string, name: string, created: string, updated: string}[]) {}
+}
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -154,6 +165,6 @@ export class SetObjectiveReactionApply implements Action {
 }
 
 export type OperationActions = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
+export type InteractiveMapActions = FetchSpecies | SetSpecies | SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
   ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
   SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;

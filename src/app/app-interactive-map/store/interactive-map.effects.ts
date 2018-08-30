@@ -17,13 +17,14 @@ import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap, concatMapTo} from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap, concatMapTo, tap} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
 import { Cobra, CardType, MapItem } from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
+import {SET_SELECTED_SPECIES, SetSelectedSpecies} from './interactive-map.actions';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
@@ -38,6 +39,18 @@ const preferredMap = (mapItems: MapItem[]): MapItem =>
 
 @Injectable()
 export class InteractiveMapEffects {
+  @Effect()
+  fetchSpecies: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_SPECIES),
+    switchMap((action: fromActions.FetchSpecies) => {
+      return this.http.get(`${environment.apis.warehouse}/organisms`);
+    }),
+    map((payload: {project_id: string, id: string, name: string, created: string, updated: string}[]) => new fromActions.SetSpecies(payload)),
+  );
+  @Effect()
+  setSpecies: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_SPECIES),
+    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(action.payload[0].id)));
   @Effect()
   selectedSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SELECTED_SPECIES),

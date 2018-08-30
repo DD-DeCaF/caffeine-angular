@@ -25,6 +25,7 @@ import {AppState} from '../store/app.reducers';
 import * as fromActions from './store/interactive-map.actions';
 import { notNull } from '../utils';
 import { getSelectedCard } from './store/interactive-map.selectors';
+import {FetchSpecies} from './store/interactive-map.actions';
 
 
 @Component({
@@ -54,7 +55,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new fromActions.SetSelectedSpecies('ECOLX'));
+    this.store.dispatch(new FetchSpecies());
 
     const builderObservable = this.builderSubject.asObservable();
     this.store

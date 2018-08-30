@@ -19,6 +19,7 @@ export interface Configuration {
     model: string;
     map: string;
     bigg: string;
+    warehouse: string;
   };
   GA?: {
     trackingID: string;

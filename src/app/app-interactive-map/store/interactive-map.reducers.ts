@@ -37,7 +37,7 @@ export const idGen = new IdGen();
 export interface InteractiveMapState {
   playing: boolean;
   selectedCardId: string;
-  allSpecies: {id: string, name: string}[];
+  allSpecies: {project_id: string, id: string, name: string, created: string, updated: string}[];
   selectedSpecies: string;
   models: string[];
   selectedModel: string;
@@ -66,9 +66,7 @@ export const initialState: InteractiveMapState = {
   playing: false,
   selectedCardId: '0',
   allSpecies: [
-    {id: 'ECOLX', name: 'Escherichia coli'},
-    {id: 'YEAST', name: 'Saccharomyces cerevisiae'},
-    {id: 'PSEPU', name: 'Pseudomonas putida'},
+    {project_id: null, id: null, name: null, created: null, updated: null},
   ],
   selectedSpecies: null,
   models: null,
@@ -117,6 +115,11 @@ export function interactiveMapReducer(
 ): InteractiveMapState {
   debug('Action:', action);
   switch (action.type) {
+    case fromInteractiveMapActions.SET_SPECIES:
+      return {
+        ...state,
+        allSpecies: action.payload,
+      };
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
         ...state,
