@@ -14,6 +14,7 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -24,6 +25,7 @@ import { ReactionModule } from './components/app-reaction/app-reaction.module';
 import { AppBuildComponent } from './components/app-build/app-build.component';
 import { AppCardInfoComponent } from './components/app-card-info/app-card-info.component';
 import { AppLegendComponent } from './components/app-legend/app-legend.component';
+import { AppGlobalSettingsComponent } from './components/app-global-settings/app-global-settings.component';
 
 
 @NgModule({
@@ -32,8 +34,10 @@ import { AppLegendComponent } from './components/app-legend/app-legend.component
     AppBuildComponent,
     AppCardInfoComponent,
     AppLegendComponent,
+    AppGlobalSettingsComponent,
   ],
   imports: [
+    BrowserModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,

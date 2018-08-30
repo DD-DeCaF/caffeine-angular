@@ -12,43 +12,84 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef} from '@angular/core';
-import d3 from 'd3';
+import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
+import {Store} from '@ngrx/store';
+import {Observable, Subject} from 'rxjs';
+import {filter, withLatestFrom} from 'rxjs/operators';
+import {select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import map from './test-map.json';
+import {Cobra} from './types';
 import escherSettingsConst from './escherSettings';
+import {AppState} from '../store/app.reducers';
+import * as fromActions from './store/interactive-map.actions';
+import { notNull } from '../utils';
+import { getSelectedCard } from './store/interactive-map.selectors';
+
 
 @Component({
   selector: 'app-interactive-map',
   templateUrl: './app-interactive-map.component.html',
   styleUrls: ['./app-interactive-mapcomponent.scss'],
 })
-export class AppInteractiveMapComponent implements AfterViewInit {
+export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
+  private builderSubject = new Subject<escher.BuilderObject>();
+  public map: Observable<escher.PathwayMap>;
+  public model: Observable<Cobra.Model>;
+  public loading = true;
+
+  readonly escherSettings = {
+    ...escherSettingsConst,
+    tooltip_callbacks: {
+      knockout: (args) => { this.handleKnockout(args); },
+      setAsObjective: (args) => { this.handleSetAsObjective(args); },
+      changeBounds: (args) => { this.handleChangeBounds(args); },
+      resetBounds: (args) => { this.handleResetBounds(args); },
+      objectiveDirection: (args) => { this.handleObjectiveDirection(args); },
+    },
+  };
   constructor(
     private elRef: ElementRef,
+    private store: Store<AppState>,
   ) {}
 
-  ngAfterViewInit(): void {
-    const escherSettings = {
-      ...escherSettingsConst,
-      tooltip_callbacks: {
-        knockout: (args) => { this.handleKnockout(args); },
-        setAsObjective: (args) => { this.handleSetAsObjective(args); },
-        changeBounds: (args) => { this.handleChangeBounds(args); },
-        resetBounds: (args) => { this.handleResetBounds(args); },
-        objectiveDirection: (args) => { this.handleObjectiveDirection(args); },
-      },
-    };
+  ngOnInit(): void {
+    this.store.dispatch(new fromActions.SetSelectedSpecies('ECOLX'));
 
-    const element = d3.select(this.elRef.nativeElement.querySelector('.escher-builder'));
-    escher.Builder(
-      // tslint:disable-next-line:no-any
-      <[escher.MetaData, escher.MapData]> (<any>map),
-      null,
-      null,
-      element,
-      escherSettings,
+    const builderObservable = this.builderSubject.asObservable();
+    this.store
+      .select((store) => store.interactiveMap.mapData)
+      .pipe(
+        filter(notNull),
+        withLatestFrom(builderObservable),
+      ).subscribe(([map, builder]) => {
+        this.loading = true;
+        builder.load_map(map);
+        this.loading = false;
+      });
+
+    this.store
+      .select(getSelectedCard)
+      .pipe(
+        withLatestFrom(builderObservable),
+      ).subscribe(([card, builder]) => {
+        this.loading = true;
+        builder.load_model(card.model);
+        this.store.dispatch(new fromActions.Loaded());
+        this.loading = false;
+      });
+  }
+
+  ngAfterViewInit(): void {
+    const element = select(this.elRef.nativeElement.querySelector('.escher-builder'));
+    this.builderSubject.next(
+      escher.Builder(
+        null,
+        null,
+        null,
+        element,
+        this.escherSettings,
+      ),
     );
   }
 

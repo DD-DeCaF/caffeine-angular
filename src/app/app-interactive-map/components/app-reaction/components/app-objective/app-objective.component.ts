@@ -20,7 +20,7 @@ import { MatSlideToggle, MatButton } from '@angular/material';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
-import {HydratedCard} from '../../../../store/interactive-map.selectors';
+import { HydratedCard } from '../../../../types';
 
 @Component({
   selector: 'app-objective',

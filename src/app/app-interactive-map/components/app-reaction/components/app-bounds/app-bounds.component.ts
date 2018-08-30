@@ -17,8 +17,8 @@ import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
-import {HydratedCard} from '../../../../store/interactive-map.selectors';
-import {Bound, OperationDirection} from '../../../../types';
+import {getSelectedCard} from '../../../../store/interactive-map.selectors';
+import {Bound, OperationDirection, HydratedCard} from '../../../../types';
 
 @Component({
   selector: 'app-bounds',

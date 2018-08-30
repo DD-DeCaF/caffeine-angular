@@ -21,6 +21,8 @@ import { reducers } from '../../../../../store/app.reducers';
 import { AppMaterialModule } from '../../../../../app-material.module';
 
 import { AppDetailComponent } from './app-detail.component';
+import { initialState } from '../../mock-initial-state';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppDetailComponent', () => {
   let component: AppDetailComponent;
@@ -33,7 +35,8 @@ describe('AppDetailComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers, {initialState}),
+        HttpClientModule,
       ],
       declarations: [ AppDetailComponent ],
     })

@@ -13,22 +13,98 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter} from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap, concatMapTo} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
+import { environment } from '../../../environments/environment.staging';
+import { Cobra, CardType, MapItem } from '../types';
+import { PathwayMap } from '@dd-decaf/escher';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
   [fromActions.PREVIOUS_CARD]: -1,
 };
+const preferredMaps = [
+  'iJO1366.Central metabolism',
+];
+
+const preferredMap = (mapItems: MapItem[]): MapItem =>
+  mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
 
 @Injectable()
 export class InteractiveMapEffects {
+  @Effect()
+  selectedSpecies: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_SELECTED_SPECIES),
+    switchMap((action: fromActions.SetSelectedSpecies) => {
+      return this.http.get(`${environment.apis.model}/species/${action.payload}`);
+    }),
+    map((payload: string[]) => new fromActions.SetModels(payload)),
+  );
+
+  @Effect()
+  selectFirstModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODELS),
+    map((action: fromActions.SetModels) =>
+      new fromActions.SetModel(action.payload[0])),
+  );
+
+  @Effect()
+  fetchModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL),
+    switchMap((action: fromActions.SetModel) => {
+      return this.http
+        .get(`${environment.apis.model}/models/${action.payload}`)
+        .pipe(
+          map((response: Cobra.Model) => ({
+            response,
+            modelId: action.payload,
+          })),
+        );
+    }),
+    map(({response, modelId}) => new fromActions.ModelFetched({model: response, modelId})),
+  );
+
+  @Effect()
+  setMaps: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL),
+    switchMap((action: fromActions.SetModel) =>
+      this.http.get(`${environment.apis.map}/model?model=${action.payload}`)),
+    concatMap((payload: MapItem[]) => ([
+      new fromActions.SetMaps(payload),
+      new fromActions.SetMap(preferredMap(payload)),
+    ])),
+  );
+
+  @Effect()
+  resetCards: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.MODEL_FETCHED),
+    concatMapTo([
+      new fromActions.ResetCards(),
+      new fromActions.AddCard(CardType.WildType),
+    ]),
+  );
+
+  @Effect()
+  fetchMap: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MAP),
+    switchMap((action: fromActions.SetMap) => {
+      return this
+        .http.get(`${environment.apis.map}/map?map=${action.payload.map}`)
+        .pipe(map((response: PathwayMap) => ({
+          mapData: response,
+          mapName: action.payload.name,
+        })),
+      );
+    }),
+    map(({mapData, mapName}) => new fromActions.MapFetched({mapData, mapName})),
+  );
+
   // Steps to the previous or the next card depending on the action
   // handles overflow / underflow
   @Effect()
@@ -36,16 +112,13 @@ export class InteractiveMapEffects {
     ofType(fromActions.NEXT_CARD, fromActions.PREVIOUS_CARD),
     withLatestFrom(this.store$),
     map(([action, storeState]) => {
-      const interactiveMap = storeState.interactiveMap;
-      const length = interactiveMap.cards.ids.length;
-      const index = interactiveMap.cards.ids
-        .findIndex((id) => interactiveMap.selectedCardId === id);
+      const {interactiveMap} = storeState;
+      const {ids} = interactiveMap.cards;
+      const {length} = ids;
+      const index = ids.findIndex((id) => interactiveMap.selectedCardId === id);
 
       const newIndex = (length + index + ACTION_OFFSETS[action.type]) % length;
-      return {
-        type: fromActions.SELECT_CARD,
-        payload: interactiveMap.cards.ids[newIndex],
-      };
+      return new fromActions.SelectCard(ids[newIndex]);
     }),
   );
 
@@ -55,16 +128,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.SET_PLAY_STATE),
     withLatestFrom(this.store$),
     filter(([, storeState]) => storeState.interactiveMap.playing),
-    mapTo({type: fromActions.NEXT_CARD}),
-  );
-
-  // This is a fake effect until we implement this in the builder
-  // All it does it triggers a loaded action when a new card is selected
-  @Effect()
-  escherLoaded: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SELECT_CARD),
-    delay(2000),
-    mapTo({type: fromActions.LOADED}),
+    mapTo(new fromActions.NextCard()),
   );
 
   // If the card is loaded and playing is enabled, switch to the new one.
@@ -74,12 +138,13 @@ export class InteractiveMapEffects {
     ofType(fromActions.LOADED),
     withLatestFrom(this.store$),
     filter(([, storeState]) => storeState.interactiveMap.playing),
-    mapTo({type: fromActions.NEXT_CARD}),
+    delay(2000),
+    mapTo(new fromActions.NextCard()),
   );
 
   @Effect()
   operationReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_BOUNDS_REACTION),
+    ofType(fromActions.SET_METHOD, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_BOUNDS_REACTION),
     // httpRequest here
     // mergeMap((reaction) => {
     //   return this.http.post(`${environment.apis.model}/something here`, reaction);
@@ -95,7 +160,9 @@ export class InteractiveMapEffects {
     })),
   );
 
-  constructor(private actions$: Actions, private store$: Store<AppState>,
-    // private http: HttpClient,
+  constructor(
+    private actions$: Actions,
+    private store$: Store<AppState>,
+    private http: HttpClient,
   ) {}
 }

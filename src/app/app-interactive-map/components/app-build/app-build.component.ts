@@ -22,7 +22,7 @@ import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard} f
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import { AppState } from '../../../store/app.reducers';
-import { CardType } from '../../types';
+import { CardType, HydratedCard } from '../../types';
 
 @Component({
   selector: 'app-build',
@@ -33,10 +33,10 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   @ViewChild('play') playButton: MatButton;
 
   interactiveMapState: Observable<AppState>;
-  public cards: Observable<fromInteractiveMapSelectors.HydratedCard[]>;
+  public cards: Observable<HydratedCard[]>;
   public playing: Observable<boolean>;
 
-  public expandedCard: fromInteractiveMapSelectors.HydratedCard = null;
+  public expandedCard: HydratedCard = null;
   public tabIndex: number = null;
 
   constructor(private store: Store<AppState>) {}
@@ -54,7 +54,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public select(card: fromInteractiveMapSelectors.HydratedCard): void {
+  public select(card: HydratedCard): void {
     this.store.dispatch(new SelectCard(card.id));
   }
 
@@ -74,11 +74,11 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new PreviousCard());
   }
 
-  public delete(card: fromInteractiveMapSelectors.HydratedCard): void {
+  public delete(card: HydratedCard): void {
     this.store.dispatch(new DeleteCard(card.id));
   }
 
-  public grow(card: fromInteractiveMapSelectors.HydratedCard, tabIndex: number): void {
+  public grow(card: HydratedCard, tabIndex: number): void {
     this.store.dispatch(new SetPlayState(false));
     this.store.dispatch(new SelectCard(card.id));
     this.expandedCard = card;

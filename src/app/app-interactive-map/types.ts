@@ -72,6 +72,8 @@ export type ObjectiveReaction = ObjectiveReactionPayload;
 export interface Card {
   type: CardType;
   name: string;
+  model: Cobra.Model;
+  method: string;
   addedReactions: string[];
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;
@@ -82,9 +84,25 @@ export interface Card {
   }[];
 }
 
+export interface HydratedCard extends Card {
+  selected: boolean;
+  id: string;
+}
+
+// Used in the map selector
+export interface MapItem {
+  name: string;
+  map: string;
+}
+
+export interface Method {
+  id: string;
+  name: string;
+}
+
 // Cobrapy object structures as defined by the JSON schema:
 // https://github.com/opencobra/cobrapy/blob/devel/cobra/io/json.py#L138
-declare namespace Cobra {
+export declare namespace Cobra {
   // A cobrapy model structure as serialized by `cobra.io.model_to_dict`
   export interface Model {
     id: string;
@@ -159,7 +177,7 @@ declare namespace Cobra {
 
 // DD-DeCaF platform internal structures
 // tslint:disable-next-line
-declare namespace DeCaF {
+export declare namespace DeCaF {
   // The solution returned from a model simulation request
   export interface Solution {
     growth_rate: number;

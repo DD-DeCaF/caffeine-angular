@@ -13,9 +13,20 @@
 // limitations under the License.
 
 import {Action} from '@ngrx/store';
+import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem} from '../types';
 
+export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
+export const SET_MODELS = 'SET_MODELS';
+export const SET_MODEL = 'SET_MODEL';
+export const FETCH_MODEL = 'FETCH_MODEL';
+export const MODEL_FETCHED = 'MODEL_FETCHED';
+export const SET_MAPS = 'SET_MAPS';
+export const SET_MAP = 'SET_MAP';
+export const MAP_FETCHED = 'MAP_FETCHED';
+
+export const RESET_CARDS = 'RESET_CARDS';
 export const NEXT_CARD = 'NEXT_CARD';
 export const PREVIOUS_CARD = 'PREVIOUS_CARD';
 export const SELECT_CARD = 'SELECT_CARD';
@@ -26,7 +37,10 @@ export const LOADED = 'LOADED';
 
 export const ADD_CARD = 'ADD_CARD';
 export const DELETE_CARD = 'DELETE_CARD';
+export const RENAME_CARD = 'RENAME_CARD';
 
+export const SET_METHOD_APPLY = 'SET_METHOD_APPLY';
+export const SET_METHOD = 'SET_METHOD';
 export const REACTION_OPERATION = 'REACTION_OPERATION';
 export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
@@ -34,6 +48,44 @@ export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 export const SET_BOUNDS_REACTION = 'SET_BOUNDS_REACTION';
 export const SET_BOUNDS_REACTION_APPLY = 'SET_BOUNDS_REACTION_APPLY';
 
+export class SetSelectedSpecies implements Action {
+  readonly type = SET_SELECTED_SPECIES;
+  constructor(public payload: string) {}
+}
+
+export class SetModels implements Action {
+  readonly type = SET_MODELS;
+  constructor(public payload: string[]) {}
+}
+
+export class SetModel implements Action {
+  readonly type = SET_MODEL;
+  constructor(public payload: string) {}
+}
+
+export class ModelFetched implements Action {
+  readonly type = MODEL_FETCHED;
+  constructor(public payload: {model: Cobra.Model, modelId: string}) {}
+}
+
+export class SetMaps implements Action {
+  readonly type = SET_MAPS;
+  constructor(public payload: MapItem[]) {}
+}
+
+export class SetMap implements Action {
+  readonly type = SET_MAP;
+  constructor(public payload: MapItem) {}
+}
+
+export class MapFetched implements Action {
+  readonly type = MAP_FETCHED;
+  constructor(public payload: {mapData: PathwayMap, mapName: string}) {}
+}
+
+export class ResetCards implements Action {
+  readonly type = RESET_CARDS;
+}
 
 export class SelectCard implements Action {
   readonly type = SELECT_CARD;
@@ -67,6 +119,21 @@ export class DeleteCard implements Action {
   constructor(public payload: string) {}
 }
 
+export class RenameCard implements Action {
+  readonly type = RENAME_CARD;
+  constructor(public payload: string) {}
+}
+
+export class SetMethod implements Action {
+  readonly type = SET_METHOD;
+  constructor(public payload: string) {}
+}
+
+export class SetMethodApply implements Action {
+  readonly type = SET_METHOD_APPLY;
+  constructor(public payload: string, public cardId: string) {}
+}
+
 export class ReactionOperation implements Action {
   readonly type = REACTION_OPERATION;
   constructor(public payload: OperationPayload) {}
@@ -87,5 +154,6 @@ export class SetObjectiveReactionApply implements Action {
 }
 
 export type OperationActions = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard |
-  ReactionOperationApply | SetObjectiveReactionApply;
+export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
+  ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
+  SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;

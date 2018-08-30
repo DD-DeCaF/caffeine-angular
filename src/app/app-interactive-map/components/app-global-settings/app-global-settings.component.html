@@ -14,20 +14,20 @@
 
 <div class="container">
   <mat-form-field>
-    <input
-      matInput
-      placeholder="Name"
-      (blur)="nameBlur()"
-      (keyup.enter)="onKeyEnter()"
-      [value]="(card | async).name"
-      #name />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-select placeholder="Method" [value]="(card | async).method" #method>
-      <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
+    <mat-select placeholder="Species" [value]="selectedSpecies | async" #species>
+      <mat-option [value]="species.id" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 
-  <!-- data driven -->
+  <mat-form-field>
+    <mat-select placeholder="Model" [value]="selectedModel | async" #model>
+      <mat-option [value]="model" *ngFor="let model of (models | async)">{{model}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Map" [value]="selectedMap | async" #map>
+      <mat-option [value]="map.name" *ngFor="let map of (maps | async)">{{map.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>

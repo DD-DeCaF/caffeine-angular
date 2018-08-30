@@ -21,6 +21,8 @@ import { reducers } from '../../../../../store/app.reducers';
 import { AppMaterialModule } from '../../../../../app-material.module';
 
 import { AppObjectiveComponent } from './app-objective.component';
+import { initialState } from '../../mock-initial-state';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppObjectiveComponent', () => {
   let component: AppObjectiveComponent;
@@ -33,7 +35,8 @@ describe('AppObjectiveComponent', () => {
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers, {initialState}),
+        HttpClientModule,
       ],
       declarations: [ AppObjectiveComponent ],
     })

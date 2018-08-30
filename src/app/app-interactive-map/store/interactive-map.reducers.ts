@@ -13,19 +13,22 @@
 // limitations under the License.
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {Card, CardType, OperationDirection, Bound, OperationTarget} from '../types';
+import {PathwayMap} from '@dd-decaf/escher';
+
+import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
+import { debug } from '../../logger';
 
 
 class IdGen {
-  counter = 1;
+  counter = 0;
 
   next(): string {
     return '' + this.counter++;
   }
 
   reset(): void {
-    this.counter = 1;
+    this.counter = 0;
   }
 }
 
@@ -34,52 +37,49 @@ export const idGen = new IdGen();
 export interface InteractiveMapState {
   playing: boolean;
   selectedCardId: string;
-  allSpecies: { [key: string]: string; };
+  allSpecies: {id: string, name: string}[];
   selectedSpecies: string;
   models: string[];
   selectedModel: string;
-  maps: { [key: string]: string[]; };
+  modelData: Cobra.Model;
+  maps: MapItem[];
+  selectedMap: string;
+  mapData: PathwayMap;
   cards: {
     ids: string[];
     cardsById: { [key: string]: Card; };
   };
 }
 
+export const emptyCard = {
+  name: 'foo',
+  type: CardType.WildType,
+  model: null,
+  method: 'fba',
+  addedReactions: [],
+  knockoutReactions: [],
+  bounds: [],
+  objectiveReaction: null,
+};
+
 export const initialState: InteractiveMapState = {
   playing: false,
   selectedCardId: '0',
-  allSpecies: {
-    ECOLX: 'Escherichia coli',
-    YEAST: 'Saccharomyces cerevisiae',
-    PSEPU: 'Pseudomonas putida',
-  },
-  selectedSpecies: 'ECOLX',
-  models: ['iJO1366', 'e_coli_core'],
-  selectedModel: 'iJO1366',
-  maps: {
-    e_coli_core: ['Core metabolism'],
-    iJN746: ['Central metabolism'],
-    iMM904: ['Amino acid metabolism', 'Central metabolism', 'Cofactor and vitamin biosynthesis', 'Combined', 'Lipid metabolism',
-      'Nucleotide metabolism'],
-    iJO1366: ['Alternate carbon sources', 'Amino acid metabolism', 'Central metabolism', 'Cofactor biosynthesis', 'Combined',
-      'Fatty acid beta-oxidation', 'Fatty acid biosynthesis (saturated)', 'Lipopolysaccharide (LPS) biosynthesis',
-      'Nucleotide and histidine biosynthesis', 'Nucleotide metabolism', 'tRNA charging'],
-  },
+  allSpecies: [
+    {id: 'ECOLX', name: 'Escherichia coli'},
+    {id: 'YEAST', name: 'Saccharomyces cerevisiae'},
+    {id: 'PSEPU', name: 'Pseudomonas putida'},
+  ],
+  selectedSpecies: null,
+  models: null,
+  selectedModel: null,
+  modelData: null,
+  maps: null,
+  selectedMap: null,
+  mapData: null,
   cards: {
-    ids: ['0'],
-    cardsById: {
-      '0': {
-        name: 'foo',
-        type: CardType.WildType,
-        addedReactions: [],
-        knockoutReactions: [],
-        bounds: [],
-        objectiveReaction: {
-          reactionId: '0',
-          direction: null,
-        },
-      },
-    },
+    ids: [],
+    cardsById: {},
   },
 };
 
@@ -115,7 +115,44 @@ export function interactiveMapReducer(
   state: InteractiveMapState = initialState,
   action: fromInteractiveMapActions.InteractiveMapActions,
 ): InteractiveMapState {
+  debug('Action:', action);
   switch (action.type) {
+    case fromInteractiveMapActions.SET_SELECTED_SPECIES:
+      return {
+        ...state,
+        selectedSpecies: action.payload,
+      };
+    case fromInteractiveMapActions.SET_MODELS:
+      return {
+        ...state,
+        models: action.payload,
+      };
+    case fromInteractiveMapActions.MODEL_FETCHED:
+      return {
+        ...state,
+        selectedModel: action.payload.modelId,
+        modelData: action.payload.model,
+      };
+    case fromInteractiveMapActions.SET_MAPS:
+      return {
+        ...state,
+        maps: action.payload,
+      };
+    case fromInteractiveMapActions.MAP_FETCHED:
+      return {
+        ...state,
+        mapData: action.payload.mapData,
+        selectedMap: action.payload.mapName,
+      };
+    case fromInteractiveMapActions.RESET_CARDS:
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          ids: [],
+          cardsById: {},
+        },
+      };
     case fromInteractiveMapActions.SELECT_CARD:
       return {
         ...state,
@@ -128,17 +165,21 @@ export function interactiveMapReducer(
       };
     case fromInteractiveMapActions.ADD_CARD: {
       const newId = idGen.next();
-      const newCard: Card = {
-        name: action.payload === CardType.WildType ? 'Wild Type' : 'Data Driven',
-        type: action.payload,
-        addedReactions: [],
-        knockoutReactions: [],
-        bounds: [],
-        objectiveReaction: {
-          reactionId: '0',
-          direction: null,
-        },
-      };
+      const type = action.payload;
+      let name: string;
+      let model: Cobra.Model;
+      switch (type) {
+        case CardType.WildType: {
+          name = 'Wild Type';
+          model = state.modelData;
+          break;
+        }
+        case CardType.DataDriven: {
+          name = 'Data Driven';
+          break;
+        }
+        default:
+      }
       return {
         ...state,
         selectedCardId: newId,
@@ -147,7 +188,12 @@ export function interactiveMapReducer(
           ids: [...state.cards.ids, newId],
           cardsById: {
             ...state.cards.cardsById,
-            [newId]: newCard,
+            [newId]: {
+              ...emptyCard,
+              type,
+              name,
+              model,
+            },
           },
         },
       };
@@ -171,12 +217,34 @@ export function interactiveMapReducer(
         },
       };
     }
+    case fromInteractiveMapActions.RENAME_CARD:
+      return {
+        ...state,
+        cards: {
+          ...state.cards,
+          cardsById: {
+            ...state.cards.cardsById,
+            [state.selectedCardId]: {
+              ...state.cards.cardsById[state.selectedCardId],
+              name: action.payload,
+            },
+          },
+        },
+      };
+    case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
       const {cardId} = action;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
       switch (action.type) {
+        case fromInteractiveMapActions.SET_METHOD_APPLY: {
+          newCard = {
+            ...card,
+            method: action.payload,
+          };
+          break;
+        }
         case fromInteractiveMapActions.REACTION_OPERATION_APPLY: {
           const {item, operationTarget, direction} = action.payload;
           const operationFunction = operations[direction][operationTarget];
