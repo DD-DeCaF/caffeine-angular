@@ -18,6 +18,9 @@ import {FormControl} from '@angular/forms';
 import {AppState} from '../../../../../store/app.reducers';
 import {OperationDirection, Reaction} from '../../../../types';
 import {ReactionOperation, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
+import {BiggSearchService} from './services/bigg-search.service';
+import {Observable} from 'rxjs';
+
 
 @Component({
   selector: 'app-panel',
@@ -30,34 +33,33 @@ export class AppPanelComponent {
   @Input() public placeholder: string;
 
   public querySearch: FormControl = new FormControl();
-  public reactions: Reaction[] = [{'bigg_id': 'FK', 'name': 'Fucokinase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FT', 'name': 'Trans,trans,cis-geranylgeranyl diphosphate synthase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FCI', 'name': 'L-fucose isomerase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FHL', 'name': 'Formate-hydrogen lyase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FUM', 'name': 'Fumarase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FDH', 'name': 'Formate dehydrogenase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FRD', 'name': 'FRD', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FQR', 'name': 'Cyclic Electron Flow', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FTR', 'name': 'Ferredoxin thioredoxin reductase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FBA', 'name': 'Fructose-bisphosphate aldolase', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'F4D', 'name': 'F4D', 'model_bigg_id': 'Universal', 'organism': ''},
-      {'bigg_id': 'FBP', 'name': 'Fructose-bisphosphatase', 'model_bigg_id': 'Universal', 'organism': ''}];
+  public reactions: Observable<Reaction[]>;
 
-
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private biggSearchService: BiggSearchService) {
+  }
 
   displayFn(item: Reaction): string {
     return item && item.bigg_id;
   }
 
   addItem(reaction: Reaction): void {
-    const typeToTarget: {[k: string]: 'addedReactions' | 'knockoutReactions'} = {
+    const typeToTarget: { [k: string]: 'addedReactions' | 'knockoutReactions' } = {
       added: 'addedReactions',
       knockout: 'knockoutReactions',
     };
 
     switch (this.type) {
       case 'added':
+        this.biggSearchService.getDetails(reaction).subscribe((detailedReaction: Reaction) => {
+          this.store.dispatch(new ReactionOperation({
+            item: detailedReaction.bigg_id,
+            operationTarget: typeToTarget[this.type],
+            direction: OperationDirection.Do,
+          }));
+        });
+        break;
       case 'knockout': {
         this.store.dispatch(new ReactionOperation({
           item: reaction.bigg_id,
@@ -85,6 +87,18 @@ export class AppPanelComponent {
         }));
       }
     }
-    this.querySearch.reset();
+    this.querySearch.reset('');
+
+  }
+
+  queryChange(query: string): void {
+    if (query.length > 2) {
+      if (this.type === 'added') {
+        this.reactions = this.biggSearchService.search(query);
+      } else {
+        this.reactions = this.biggSearchService.search(query);
+        // this.reactions = ; ready to get the reactions from the map when we merge.
+      }
+    }
   }
 }

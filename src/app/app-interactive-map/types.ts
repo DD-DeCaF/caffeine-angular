@@ -210,3 +210,23 @@ declare namespace ExperimentalConditions {
     measurements: number[];
   }
 }
+
+export interface BiggSearch {
+  results: Reaction[];
+  results_count: number;
+}
+
+export interface BiggReaction {
+  model_bigg_id: string;
+  bigg_id: string;
+  name: string;
+  organism: string;
+}
+
+export interface AddedReaction extends BiggReaction {
+  metanetx_id: string;
+  reaction_string: string;
+  // tslint:disable-next-line
+  metabolites: any;
+  database_links: {};
+}

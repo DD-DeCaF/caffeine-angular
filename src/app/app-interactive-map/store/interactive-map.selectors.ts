@@ -12,9 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {createSelector} from '@ngrx/store';
+import {createSelector, createSelectorFactory, defaultMemoize} from '@ngrx/store';
 import {AppState} from '../../store/app.reducers';
 import {Card, HydratedCard} from '../types';
+
+const isEqualOrNull = (a: any, b: any): boolean => // tslint:disable-line
+  a === b || b === null;
+
+const createSelectorNotNull = createSelectorFactory((projectionFn) =>
+  defaultMemoize(projectionFn, isEqualOrNull));
 
 export const getCardIds = (state: AppState) => state.interactiveMap.cards.ids;
 
@@ -30,7 +36,7 @@ export const getHydratedCards = createSelector(
     })),
 );
 
-export const getSelectedCard = createSelector(
+export const getSelectedCard = createSelectorNotNull(
   (state: AppState) => state.interactiveMap.cards.cardsById,
   (state: AppState) => state.interactiveMap.selectedCardId,
   (cards: { [key: string]: Card; }, selectedID: string): HydratedCard =>

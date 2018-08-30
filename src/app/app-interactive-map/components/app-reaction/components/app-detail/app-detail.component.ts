@@ -13,13 +13,12 @@
 // limitations under the License.
 
 import {Component, Input, OnInit, EventEmitter} from '@angular/core';
-import {Store, select} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
 import {OperationDirection, HydratedCard} from '../../../../types';
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 
 @Component({
   selector: 'app-detail',
@@ -28,7 +27,8 @@ import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 
 export class AppDetailComponent implements OnInit {
   @Input() public type: string;
-  public card: Observable<HydratedCard>;
+  @Input() public card: Observable<HydratedCard>;
+
   private removeEmitter = new EventEmitter<string>();
 
   public typeToTarget = {
@@ -39,9 +39,6 @@ export class AppDetailComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.card = this.store.pipe(
-      select(getSelectedCard));
-
     this.removeEmitter
       .subscribe((reactionId) => {
         this.store.dispatch(new ReactionOperation({

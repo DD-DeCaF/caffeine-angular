@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, ElementRef} from '@angular/core';
-import {Store, select} from '@ngrx/store';
+import {Component, ViewChild, ElementRef, Input} from '@angular/core';
+import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
+
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 import {Bound, OperationDirection, HydratedCard} from '../../../../types';
 
 @Component({
@@ -28,14 +28,11 @@ import {Bound, OperationDirection, HydratedCard} from '../../../../types';
 export class AppBoundsComponent {
   @ViewChild('lowerBound') lowerBound: ElementRef;
   @ViewChild('upperBound') upperBound: ElementRef;
+  @Input() public card: Observable<HydratedCard>;
 
-  public card: Observable<HydratedCard>;
   public selectedItem: Bound = null;
 
-  constructor(private store: Store<AppState>) {
-    this.card = this.store.pipe(
-      select(getSelectedCard));
-  }
+  constructor(private store: Store<AppState>) {}
 
   removeItem(item: Bound): void {
     this.store.dispatch(new ReactionOperation({

@@ -21,7 +21,8 @@ export const environment: Configuration = {
   production: false,
   apis: {
     iam: 'https://api-staging.dd-decaf.eu/iam',
-    model: 'https://api-staging.dd-decaf.eu/model-caffeine',
+    model: 'https://api.dd-decaf.eu/mcaffeine',
+    bigg: 'https://api.dd-decaf.eu/bigg',
     map: 'https://api-staging.dd-decaf.eu/maps',
   },
   GA: null,

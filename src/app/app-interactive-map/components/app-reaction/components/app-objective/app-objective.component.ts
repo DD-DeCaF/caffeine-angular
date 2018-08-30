@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {Store, select} from '@ngrx/store';
+import {Component, ViewChild, AfterViewInit, Input} from '@angular/core';
+import {Store} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 import { MatSlideToggle, MatButton } from '@angular/material';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 import { HydratedCard } from '../../../../types';
 
 @Component({
@@ -28,35 +27,32 @@ import { HydratedCard } from '../../../../types';
   templateUrl: './app-objective.component.html',
   styleUrls: ['./app-objective.component.scss'],
 })
-export class AppObjectiveComponent implements OnInit, AfterViewInit {
+export class AppObjectiveComponent implements AfterViewInit {
   @ViewChild('toggle') toggle: MatSlideToggle;
   @ViewChild('remove') remove: MatButton;
 
-  public card: Observable<HydratedCard>;
+  @Input() public card: Observable<HydratedCard>;
 
   constructor(private store: Store<AppState>) {}
 
-  ngOnInit(): void {
-    this.card = this.store.pipe(
-      select(getSelectedCard));
-  }
-
   ngAfterViewInit(): void {
-    this.toggle.change.pipe(
-      withLatestFrom(this.card),
-    ).subscribe(([{checked}, card]) => {
-      this.store.dispatch(new SetObjectiveReaction({
-        reactionId: card.objectiveReaction.reactionId,
-        direction: checked ? 'max' : 'min',
-      }));
-    });
-
-    fromEvent(this.remove._elementRef.nativeElement, 'click')
-      .subscribe(() => {
+    if (this.card) {
+      this.toggle.change.pipe(
+        withLatestFrom(this.card),
+      ).subscribe(([{checked}, card]) => {
         this.store.dispatch(new SetObjectiveReaction({
-          reactionId: null,
-          direction: null,
+          reactionId: card.objectiveReaction.reactionId,
+          direction: checked ? 'max' : 'min',
         }));
       });
+
+      fromEvent(this.remove._elementRef.nativeElement, 'click')
+        .subscribe(() => {
+          this.store.dispatch(new SetObjectiveReaction({
+            reactionId: null,
+            direction: null,
+          }));
+        });
+    }
   }
 }

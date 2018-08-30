@@ -20,6 +20,7 @@ export const environment: Configuration = {
     iam: 'https://api-staging.dd-decaf.eu/iam',
     model: 'https://api-staging.dd-decaf.eu/mcaffeine',
     map: 'https://api-staging.dd-decaf.eu/maps',
+    bigg: 'https://api.dd-decaf.eu/bigg',
   },
   GA: {
     trackingID: 'UA-106144097-3',

@@ -13,13 +13,14 @@
 <!--limitations under the License.-->
 
 <mat-list>
-  <span class="item-name">{{ (card | async).objectiveReaction.reactionId}}</span>
+  <span class="item-name">{{ (card | async)?.objectiveReaction.reactionId}}</span>
   <mat-list-item>
     <span >Min</span>
     <mat-slide-toggle
+      #toggle
       class="mat-primary"
-      [checked]="(card | async).objectiveReaction.direction === 'max'"
-      #toggle>
+      [checked]="(card | async)?.objectiveReaction.direction === 'max'"
+      >
     </mat-slide-toggle>
     <span>Max</span>
     <button mat-icon-button align="end" #remove>
