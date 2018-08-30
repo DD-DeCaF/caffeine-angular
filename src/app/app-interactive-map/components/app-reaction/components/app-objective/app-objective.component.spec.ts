@@ -22,6 +22,7 @@ import { AppMaterialModule } from '../../../../../app-material.module';
 
 import { AppObjectiveComponent } from './app-objective.component';
 import { initialState } from '../../mock-initial-state';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppObjectiveComponent', () => {
   let component: AppObjectiveComponent;
@@ -35,6 +36,7 @@ describe('AppObjectiveComponent', () => {
         ReactiveFormsModule,
         BrowserAnimationsModule,
         StoreModule.forRoot(reducers, {initialState}),
+        HttpClientModule,
       ],
       declarations: [ AppObjectiveComponent ],
     })

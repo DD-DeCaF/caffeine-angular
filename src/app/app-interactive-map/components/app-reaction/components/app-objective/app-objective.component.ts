@@ -20,12 +20,7 @@ import { MatSlideToggle, MatButton } from '@angular/material';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
-<<<<<<< HEAD
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 import { HydratedCard } from '../../../../types';
-=======
-import {HydratedCard} from '../../../../store/interactive-map.selectors';
->>>>>>> feat: added input card inside components.
 
 @Component({
   selector: 'app-objective',

@@ -15,15 +15,10 @@
 import {Component, ViewChild, ElementRef, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
+
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
-<<<<<<< HEAD
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
 import {Bound, OperationDirection, HydratedCard} from '../../../../types';
-=======
-import {HydratedCard} from '../../../../store/interactive-map.selectors';
-import {Bound, OperationDirection} from '../../../../types';
->>>>>>> feat: added input card inside components.
 
 @Component({
   selector: 'app-bounds',

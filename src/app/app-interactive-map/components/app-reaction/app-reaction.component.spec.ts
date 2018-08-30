@@ -23,6 +23,7 @@ import { AppMaterialModule } from '../../../app-material.module';
 import {ReactionModule} from './app-reaction.module';
 import { AppReactionComponent } from './app-reaction.component';
 import {initialState} from './mock-initial-state';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('AppReactionComponent', () => {
   let component: AppReactionComponent;
@@ -37,6 +38,7 @@ describe('AppReactionComponent', () => {
         BrowserAnimationsModule,
         StoreModule.forRoot(reducers, {initialState}),
 
+        HttpClientModule,
         ReactionModule,
       ],
     })

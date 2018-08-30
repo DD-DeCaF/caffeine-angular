@@ -18,13 +18,7 @@ import {Observable} from 'rxjs';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {ReactionOperation} from '../../../../store/interactive-map.actions';
-<<<<<<< HEAD
 import {OperationDirection, HydratedCard} from '../../../../types';
-import {getSelectedCard} from '../../../../store/interactive-map.selectors';
-=======
-import {OperationDirection} from '../../../../types';
-import {HydratedCard} from '../../../../store/interactive-map.selectors';
->>>>>>> feat: added input card inside components.
 
 @Component({
   selector: 'app-detail',
