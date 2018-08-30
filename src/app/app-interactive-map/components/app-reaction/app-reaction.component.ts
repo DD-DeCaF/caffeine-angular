@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {filter} from 'rxjs/operators';
 
