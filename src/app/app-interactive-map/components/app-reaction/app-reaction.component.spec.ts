@@ -37,7 +37,6 @@ describe('AppReactionComponent', () => {
         ReactiveFormsModule,
         BrowserAnimationsModule,
         StoreModule.forRoot(reducers, {initialState}),
-
         HttpClientModule,
         ReactionModule,
       ],

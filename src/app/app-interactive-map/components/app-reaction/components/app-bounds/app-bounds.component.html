@@ -13,7 +13,7 @@
 <!--limitations under the License.-->
 
 <mat-list>
-  <div *ngFor="let item of (card | async).bounds; let index = index">
+  <div *ngFor="let item of (card | async)?.bounds; let index = index">
     <mat-list-item (click)="select(item)">
       <span>{{ item.lowerBound }}</span>
       <span class="item-display">
