@@ -41,11 +41,11 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   readonly escherSettings = {
     ...escherSettingsConst,
     tooltip_callbacks: {
-      knockout: (args) => { this.handleKnockout(args); },
-      setAsObjective: (args) => { this.handleSetAsObjective(args); },
-      changeBounds: (args) => { this.handleChangeBounds(args); },
-      resetBounds: (args) => { this.handleResetBounds(args); },
-      objectiveDirection: (args) => { this.handleObjectiveDirection(args); },
+      knockout: this.handleKnockout,
+      setAsObjective: this.handleSetAsObjective,
+      changeBounds: this.handleChangeBounds,
+      resetBounds: this.handleResetBounds,
+      objectiveDirection: this.handleObjectiveDirection,
     },
   };
   constructor(
