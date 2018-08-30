@@ -36,21 +36,23 @@ export class AppObjectiveComponent implements AfterViewInit {
   constructor(private store: Store<AppState>) {}
 
   ngAfterViewInit(): void {
-    this.toggle.change.pipe(
-      withLatestFrom(this.card),
-    ).subscribe(([{checked}, card]) => {
-      this.store.dispatch(new SetObjectiveReaction({
-        reactionId: card.objectiveReaction.reactionId,
-        direction: checked ? 'max' : 'min',
-      }));
-    });
-
-    fromEvent(this.remove._elementRef.nativeElement, 'click')
-      .subscribe(() => {
+    if (this.card) {
+      this.toggle.change.pipe(
+        withLatestFrom(this.card),
+      ).subscribe(([{checked}, card]) => {
         this.store.dispatch(new SetObjectiveReaction({
-          reactionId: null,
-          direction: null,
+          reactionId: card.objectiveReaction.reactionId,
+          direction: checked ? 'max' : 'min',
         }));
       });
+
+      fromEvent(this.remove._elementRef.nativeElement, 'click')
+        .subscribe(() => {
+          this.store.dispatch(new SetObjectiveReaction({
+            reactionId: null,
+            direction: null,
+          }));
+        });
+    }
   }
 }

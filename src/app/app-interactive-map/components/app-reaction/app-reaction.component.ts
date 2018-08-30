@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
+<<<<<<< HEAD
 
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -24,6 +25,16 @@ import {getSelectedCard, HydratedCard} from '../../store/interactive-map.selecto
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {Observable} from 'rxjs';
+=======
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {notNull} from '../../../utils';
+
+import {HydratedCard} from '../../types';
+import {AppState} from '../../../store/app.reducers';
+import {getSelectedCard} from '../../store/interactive-map.selectors';
+>>>>>>> feat: Merge global-settings into list-reactions-from-bigg
 
 @Component({
   selector: 'app-reaction',
@@ -37,7 +48,14 @@ export class AppReactionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+<<<<<<< HEAD
     this.card = this.store.pipe(select(getSelectedCard));
 
+=======
+    this.card = this.store
+      .select(getSelectedCard)
+      .pipe(
+        filter(notNull));
+>>>>>>> feat: Merge global-settings into list-reactions-from-bigg
   }
 }
