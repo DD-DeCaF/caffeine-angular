@@ -190,6 +190,17 @@ export declare namespace DeCaF {
     id: string;
     data?: Cobra.Reaction; // included if operation is 'add' or 'modify'
   }
+
+  export interface Model {
+    created: string;
+    updated?: string;
+    id: number;
+    name: string;
+    model_serialized: Cobra.Model;
+    organism_id: string;
+    project_id?: number;
+    default_biomass_reaction: string;
+  }
 }
 
 export interface SimulateRequest {
