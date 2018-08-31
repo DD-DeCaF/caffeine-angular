@@ -22,7 +22,7 @@ import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Reaction } from '../types';
+import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Bound } from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
 
@@ -184,6 +184,17 @@ export class InteractiveMapEffects {
         data: null,
       }));
 
+      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: Bound): DeCaF.Operation => ({
+        operation: 'modify',
+        type: 'reaction',
+        id: reaction.id,
+        data: {
+          ...reaction,
+          lower_bound: lowerBound,
+          upper_bound: upperBound,
+        },
+      }));
+
       const payload: SimulateRequest = {
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
@@ -191,7 +202,7 @@ export class InteractiveMapEffects {
         operations: [
           ...addedReactions,
           ...knockouts,
-          // ...bounds,
+          ...bounds,
         ],
       };
       return this.http.post(`${environment.apis.model}/models/${store.interactiveMap.selectedModel}/simulate`, payload)
@@ -200,19 +211,10 @@ export class InteractiveMapEffects {
           solution,
         })));
     }),
-    map(({action, solution}) => {
-      // tslint:disable-next-line:no-any
-      // const {flux_distribution, growth_rate} = (<any>data);
-      action.solution = solution;
-      return action;
-    }),
-
-
-    // map((action) => {
-    //   // @ts-ignore
-    //   const newAction = new fromActions.operationToApply[action.type](action.payload);
-    //   return newAction;
-    // }),
+    map(({action, solution}) => ({
+        ...action,
+        solution,
+    })),
   );
 
   constructor(

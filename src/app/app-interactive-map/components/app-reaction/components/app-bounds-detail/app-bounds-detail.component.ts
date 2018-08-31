@@ -32,7 +32,7 @@ export class AppBoundsDetailComponent {
   public selectedId: string = null;
 
   removeItem(item: Bound): void {
-    if (this.selectedId === item.reactionId) {
+    if (this.selectedId === item.reaction.id) {
       this.selectedId = null;
     }
     this.remove.emit(item);
@@ -61,10 +61,10 @@ export class AppBoundsDetailComponent {
   }
 
   select(bound: Bound): void {
-    this.selectedId = bound.reactionId;
+    this.selectedId = bound.reaction.id;
   }
 
   showItem(bound: Bound): boolean {
-    return this.selectedId === bound.reactionId;
+    return this.selectedId === bound.reaction.id;
   }
 }

@@ -25,7 +25,7 @@ export interface Reaction {
 }
 
 export interface Bound {
-  reactionId: string;
+  reaction: Cobra.Reaction;
   lowerBound: number;
   upperBound: number;
 }
@@ -76,11 +76,7 @@ export interface Card {
   addedReactions: AddedReaction[];
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;
-  bounds: {
-    reactionId: string,
-    lowerBound: number,
-    upperBound: number,
-  }[];
+  bounds: Bound[];
 }
 
 export interface HydratedCard extends Card {
@@ -93,13 +89,6 @@ export interface MapItem {
   name: string;
   map: string;
 }
-
-// export enum Methods {
-//   FBA = 'fba',
-//   PFBA = 'pfba',
-//   FVA = 'fva',
-//   PFBA_FVA = 'pfba-fva',
-// }
 
 export type Methods = 'fba' | 'pfba' | 'fva' | 'pfba-fva';
 

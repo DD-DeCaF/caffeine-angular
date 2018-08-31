@@ -93,7 +93,7 @@ export const addedReactionEquality = (item: AddedReaction) => (arrayItem: AddedR
   arrayItem.bigg_id === item.bigg_id;
 
 export const boundEquality = (item: Bound) => (arrayItem: Bound) =>
-  arrayItem.reactionId === item.reactionId;
+  arrayItem.reaction.id === item.reaction.id;
 
 const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
   addedReactions: appendOrUpdate(addedReactionEquality),
@@ -109,7 +109,7 @@ type OperationFunction<T> = (array: T[], item: T) => T[];
 const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
   addedReactions: filter((a: AddedReaction) => (b: AddedReaction) => a.bigg_id !== b.bigg_id),
   knockoutReactions: filter<string>(stringFilter),
-  bounds: filter((a: Bound) => (b: Bound) => a.reactionId !== b.reactionId),
+  bounds: filter((a: Bound) => (b: Bound) => a.reaction.id !== b.reaction.id),
 };
 
 const operations: {[key in OperationDirection]: {[tKey in OperationTarget]: OperationFunction<Card[tKey][0]>}} = {
