@@ -20,12 +20,12 @@ import { StoreModule } from '@ngrx/store';
 import { reducers } from '../../../../../store/app.reducers';
 import { AppMaterialModule } from '../../../../../app-material.module';
 
-import { AppBoundsComponent } from './app-bounds.component';
+import { AppBoundsDetailComponent } from './app-bounds-detail.component';
 import { initialState } from '../../mock-initial-state';
 
-describe('AppBoundsComponent', () => {
-  let component: AppBoundsComponent;
-  let fixture: ComponentFixture<AppBoundsComponent>;
+describe('AppBoundsDetailComponent', () => {
+  let component: AppBoundsDetailComponent;
+  let fixture: ComponentFixture<AppBoundsDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,13 +36,13 @@ describe('AppBoundsComponent', () => {
         BrowserAnimationsModule,
         StoreModule.forRoot(reducers, {initialState}),
       ],
-      declarations: [ AppBoundsComponent ],
+      declarations: [ AppBoundsDetailComponent ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppBoundsComponent);
+    fixture = TestBed.createComponent(AppBoundsDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

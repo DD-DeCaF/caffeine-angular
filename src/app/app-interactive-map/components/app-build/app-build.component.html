@@ -98,6 +98,10 @@
           <label>Method:</label>
           <label>{{card.method}}</label>
         </div>
+        <div class="displayRow" *ngIf="card.growthRate !== null">
+            <label>Growth rate:</label>
+            <label>{{card.growthRate}}</label>
+          </div>
       </div>
     </div>
   </div>

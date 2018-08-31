@@ -22,8 +22,9 @@ import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import { Cobra, CardType, MapItem } from '../types';
+import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Reaction } from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
+import { interactiveMapReducer } from './interactive-map.reducers';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
@@ -35,6 +36,22 @@ const preferredMaps = [
 
 const preferredMap = (mapItems: MapItem[]): MapItem =>
   mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
+
+const addedReactionToReaction = ({
+  bigg_id,
+  metanetx_id,
+  reaction_string,
+  database_links,
+  model_bigg_id,
+  organism,
+  ...rest}: AddedReaction,
+  bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: null, upperBound: null}): Cobra.Reaction => ({
+  ...rest,
+  id: bigg_id,
+  gene_reaction_rule: reaction_string,
+  lower_bound: bounds.lowerBound,
+  upper_bound: bounds.upperBound,
+});
 
 @Injectable()
 export class InteractiveMapEffects {
@@ -144,20 +161,58 @@ export class InteractiveMapEffects {
 
   @Effect()
   operationReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_METHOD, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_BOUNDS_REACTION),
-    // httpRequest here
-    // mergeMap((reaction) => {
-    //   return this.http.post(`${environment.apis.model}/something here`, reaction);
-    // }),
-    delay(500),
+    ofType(fromActions.SET_METHOD, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION),
     withLatestFrom(this.store$),
-    map(([action, store]: [fromActions.OperationActions, AppState]) =>
-      ({action, cardId: store.interactiveMap.selectedCardId})),
-    map(({action, cardId}) => ({
-      type: `${action.type}_APPLY`,
-      payload: action.payload,
-      cardId,
-    })),
+    switchMap(([action, store]: [fromActions.OperationAction, AppState]) => {
+      // Ugly hack not to implement the reduction twice.
+      // @ts-ignore
+      const newAction = new fromActions.operationToApply[action.type](action.payload);
+      const IMStore = interactiveMapReducer(store.interactiveMap, newAction);
+      const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
+
+      const addedReactions = selectedCard.addedReactions.map((reaction: AddedReaction): DeCaF.Operation => ({
+        operation: 'add',
+        type: 'reaction',
+        id: reaction.bigg_id,
+        data: addedReactionToReaction(reaction),
+      }));
+
+      const knockouts = selectedCard.knockoutReactions.map((reactionId: string): DeCaF.Operation => ({
+        operation: 'remove',
+        type: 'reaction',
+        id: reactionId,
+        data: null,
+      }));
+
+      const payload: SimulateRequest = {
+        method: selectedCard.method,
+        objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
+        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        operations: [
+          ...addedReactions,
+          ...knockouts,
+          // ...bounds,
+        ],
+      };
+      return this.http.post(`${environment.apis.model}/models/${store.interactiveMap.selectedModel}/simulate`, payload)
+        .pipe(map((solution: DeCaF.Solution) => ({
+          action: newAction,
+          solution,
+        })));
+    }),
+    map(({action, solution}) => {
+      // tslint:disable-next-line:no-any
+      // const {flux_distribution, growth_rate} = (<any>data);
+      action.solution = solution;
+      return action;
+    }),
+
+
+    // map((action) => {
+    //   // @ts-ignore
+    //   const newAction = new fromActions.operationToApply[action.type](action.payload);
+    //   return newAction;
+    // }),
   );
 
   constructor(
