@@ -15,6 +15,7 @@
 <app-panel
   placeholder="Enter the reaction you want to change"
   title="Changed reactions:"
+  [display]="display"
   [queryHits]="(reactions$ | async)"
   #panel
   >

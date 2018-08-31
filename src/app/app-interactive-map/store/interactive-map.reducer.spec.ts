@@ -23,7 +23,6 @@ const addedReaction: types.AddedReaction = {
   organism: '',
   metanetx_id: null,
   reaction_string: null,
-  // tslint:disable-next-line
   metabolites: {},
   database_links: {},
   model_bigg_id: '',

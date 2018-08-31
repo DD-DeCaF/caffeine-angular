@@ -33,8 +33,8 @@ export class AppBoundsComponent implements AfterViewInit {
 
   @Input() card: HydratedCard;
 
-  public reactions$: Observable<string[]>;
-  public reactionsSubject = new Subject<string[]>();
+  public reactions$: Observable<Cobra.Reaction[]>;
+  public reactionsSubject = new Subject<Cobra.Reaction[]>();
 
   constructor(
     public store: Store<AppState>,
@@ -48,18 +48,17 @@ export class AppBoundsComponent implements AfterViewInit {
         const queryString = query.toLocaleLowerCase();
         const results = this.card.model.reactions
           .filter((reaction: Cobra.Reaction) =>
-            reaction.id.toLowerCase().includes(queryString))
-          .map((reaction) => reaction.id);
+            reaction.id.toLowerCase().includes(queryString));
         this.reactionsSubject.next(results);
       });
 
     this.panel.select
-      .subscribe((reactionId: string) => {
+      .subscribe((reaction: Cobra.Reaction) => {
         this.store.dispatch(new ReactionOperation({
           item: {
-            reactionId,
-            lowerBound: null,
-            upperBound: null,
+            reaction,
+            lowerBound: reaction.lower_bound,
+            upperBound: reaction.upper_bound,
           },
           operationTarget: 'bounds',
           direction: OperationDirection.Do,
@@ -81,5 +80,9 @@ export class AppBoundsComponent implements AfterViewInit {
           direction: OperationDirection.Do,
         }));
     });
+  }
+
+  display(reaction: Cobra.Reaction): string {
+    return reaction.id;
   }
 }
