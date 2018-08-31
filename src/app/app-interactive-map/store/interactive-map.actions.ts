@@ -15,7 +15,7 @@
 import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods} from '../types';
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODELS = 'SET_MODELS';
@@ -45,8 +45,6 @@ export const REACTION_OPERATION = 'REACTION_OPERATION';
 export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
-export const SET_BOUNDS_REACTION = 'SET_BOUNDS_REACTION';
-export const SET_BOUNDS_REACTION_APPLY = 'SET_BOUNDS_REACTION_APPLY';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -126,12 +124,12 @@ export class RenameCard implements Action {
 
 export class SetMethod implements Action {
   readonly type = SET_METHOD;
-  constructor(public payload: string) {}
+  constructor(public payload: Methods) {}
 }
 
 export class SetMethodApply implements Action {
   readonly type = SET_METHOD_APPLY;
-  constructor(public payload: string, public cardId: string) {}
+  constructor(public payload: Methods) {}
 }
 
 export class ReactionOperation implements Action {
@@ -140,7 +138,7 @@ export class ReactionOperation implements Action {
 }
 export class ReactionOperationApply implements Action {
   readonly type = REACTION_OPERATION_APPLY;
-  constructor(public payload: OperationPayload, public cardId: string) {}
+  constructor(public payload: OperationPayload) {}
 }
 
 export class SetObjectiveReaction implements Action {
@@ -150,10 +148,16 @@ export class SetObjectiveReaction implements Action {
 
 export class SetObjectiveReactionApply implements Action {
   readonly type = SET_OBJECTIVE_REACTION_APPLY;
-  constructor(public payload: ObjectiveReactionPayload, public cardId: string) {}
+  constructor(public payload: ObjectiveReactionPayload) {}
 }
 
-export type OperationActions = SetObjectiveReaction | ReactionOperation;
+export const operationToApply = {
+  [REACTION_OPERATION]: ReactionOperationApply,
+  [SET_METHOD]: SetMethodApply,
+  [SET_OBJECTIVE_REACTION]: SetObjectiveReactionApply,
+};
+
+export type OperationAction = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
   ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
   SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;

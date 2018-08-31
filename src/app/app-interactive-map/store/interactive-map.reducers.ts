@@ -15,7 +15,7 @@
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem} from '../types';
+import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import { debug } from '../../logger';
 
@@ -51,11 +51,13 @@ export interface InteractiveMapState {
   };
 }
 
-export const emptyCard = {
+export const emptyCard: Card = {
   name: 'foo',
   type: CardType.WildType,
   model: null,
+  flux: null,
   method: 'fba',
+  growthRate: null,
   addedReactions: [],
   knockoutReactions: [],
   bounds: [],
@@ -86,11 +88,15 @@ export const initialState: InteractiveMapState = {
 
 export const appendUnique = (array, item) => array.includes(item) ? array : [...array, item];
 
+// TODO Here we have definition for equality and non-equaliyty check. These should be merged.
+export const addedReactionEquality = (item: AddedReaction) => (arrayItem: AddedReaction) =>
+  arrayItem.bigg_id === item.bigg_id;
+
 export const boundEquality = (item: Bound) => (arrayItem: Bound) =>
   arrayItem.reactionId === item.reactionId;
 
 const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
-  addedReactions: appendOrUpdateStringList,
+  addedReactions: appendOrUpdate(addedReactionEquality),
   knockoutReactions: appendOrUpdateStringList,
   bounds: appendOrUpdate(boundEquality),
 };
@@ -101,7 +107,7 @@ const filter = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item:
 type OperationFunction<T> = (array: T[], item: T) => T[];
 
 const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
-  addedReactions: filter<string>(stringFilter),
+  addedReactions: filter((a: AddedReaction) => (b: AddedReaction) => a.bigg_id !== b.bigg_id),
   knockoutReactions: filter<string>(stringFilter),
   bounds: filter((a: Bound) => (b: Bound) => a.reactionId !== b.reactionId),
 };
@@ -217,6 +223,7 @@ export function interactiveMapReducer(
         },
       };
     }
+    // TODO perhaps merge with the ones below
     case fromInteractiveMapActions.RENAME_CARD:
       return {
         ...state,
@@ -234,7 +241,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
-      const {cardId} = action;
+      const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
       switch (action.type) {
@@ -270,6 +277,14 @@ export function interactiveMapReducer(
         }
         default:
       }
+      /* tslint:disable */
+      // @ts-ignore
+      const solution = <DeCaF.Solution>action.solution;
+      if (solution) {
+        newCard.flux = solution.flux_distribution;
+        newCard.growthRate = solution.growth_rate;
+      }
+      /* tslint:enable */
       return {
         ...state,
         cards: {

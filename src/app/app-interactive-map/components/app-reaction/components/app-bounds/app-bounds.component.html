@@ -12,35 +12,15 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<mat-list>
-  <div *ngFor="let item of (card | async)?.bounds; let index = index">
-    <mat-list-item (click)="select(item)">
-      <span>{{ item.lowerBound }}</span>
-      <span class="item-display">
-        	&#8804; <span>{{ item.reactionId }}</span>
-          &#8804;
-      </span>
-      <span>{{ item.upperBound }}</span>
-      <button mat-icon-button align="end" (click)="removeItem(item)">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-list-item>
-    <div class="box-bounds" [hidden]="!showItem(item, index)">
-      <mat-list-item>
-        <input class="input-lower" type="number" #lowerBound/>
-        <span class="item-display-box">
-          &nbsp;&#8804;<span>&nbsp;{{item.reactionId}}&nbsp;</span>&#8804;&nbsp;
-        </span>
-        <input class="input-upper" type="number" #upperBound/>
-      </mat-list-item>
-      <mat-list-item>
-        <button class="change-button button-apply" (click)="apply(item, lowerBound.value, upperBound.value)">
-          Apply
-        </button>
-        <button class="change-button button-reset" (click)="reset(item)">
-          Reset
-        </button>
-      </mat-list-item>
-    </div>
-  </div>
-</mat-list>
+<app-panel
+  placeholder="Enter the reaction you want to change"
+  title="Changed reactions:"
+  [queryHits]="(reactions$ | async)"
+  #panel
+  >
+  <app-bounds-detail
+    [bounds]="card.bounds"
+    #detail
+    >
+  </app-bounds-detail>
+</app-panel>

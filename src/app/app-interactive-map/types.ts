@@ -24,16 +24,6 @@ export interface Reaction {
   organism: string;
 }
 
-export interface Reactions {
-  added: Reaction[];
-  removed: Reaction[];
-  objective: {
-    reaction: Reaction,
-    direction: string,
-  };
-  changed: Reaction[];
-}
-
 export interface Bound {
   reactionId: string;
   lowerBound: number;
@@ -50,8 +40,14 @@ export type BoundOperationTarget = 'bounds';
 
 export type OperationTarget = SimpleOperationTarget| BoundOperationTarget;
 
-export interface SimpleOperationPayload {
+export interface KnockoutOperationPayload {
   item: string;
+  operationTarget: OperationTarget;
+  direction: OperationDirection;
+}
+
+export interface AddedReactionPayload {
+  item: AddedReaction;
   operationTarget: OperationTarget;
   direction: OperationDirection;
 }
@@ -61,7 +57,7 @@ export interface BoundOperationPayload {
   operationTarget: BoundOperationTarget;
   direction: OperationDirection;
 }
-export type OperationPayload = SimpleOperationPayload | BoundOperationPayload;
+export type OperationPayload = KnockoutOperationPayload | AddedReactionPayload | BoundOperationPayload;
 export type ObjectiveDirection = 'min' | 'max';
 export interface ObjectiveReactionPayload {
   direction: ObjectiveDirection;
@@ -74,8 +70,10 @@ export interface Card {
   type: CardType;
   name: string;
   model: Cobra.Model;
-  method: string;
-  addedReactions: string[];
+  flux: {[key: string]: string | number; };
+  method: Methods;
+  growthRate: number;
+  addedReactions: AddedReaction[];
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;
   bounds: {
@@ -185,21 +183,6 @@ export declare namespace Cobra {
   }
 }
 
-// This is the serialized type for the backend. Should be renamed/put in a separate file.
-export interface Operation {
-  operation: 'knockout' | 'add' | 'modify';
-  type: 'reaction';
-  id: string;
-  data?: {};
-}
-
-export interface SimulateRequest {
-  method: Methods;
-  objective?: string;
-  objective_direction: ObjectiveDirection;
-  operations: Operation[];
-}
-
 // DD-DeCaF platform internal structures
 // tslint:disable-next-line
 export declare namespace DeCaF {
@@ -216,9 +199,16 @@ export declare namespace DeCaF {
     operation: 'add' | 'modify' | 'remove';
     type: 'gene' | 'reaction';
     id: string;
-      data?: Cobra.Reaction; // included if operation is 'add' or 'modify'
-    }
+    data?: Cobra.Reaction; // included if operation is 'add' or 'modify'
   }
+}
+
+export interface SimulateRequest {
+  method: Methods;
+  objective?: string;
+  objective_direction: ObjectiveDirection;
+  operations: DeCaF.Operation[];
+}
 
 // Experimental conditions
 // tslint:disable-next-line
@@ -249,6 +239,7 @@ export interface BiggReaction {
 }
 
 export interface AddedReaction extends BiggReaction {
+  bigg_id: string;
   metanetx_id: string;
   reaction_string: string;
   // tslint:disable-next-line

@@ -12,70 +12,74 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, ElementRef, Input} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import { Component, ViewChild, Input, AfterViewInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import {AppState} from '../../../../../store/app.reducers';
-import {ReactionOperation} from '../../../../store/interactive-map.actions';
-import {Bound, OperationDirection, HydratedCard} from '../../../../types';
+import { AppState } from '../../../../../store/app.reducers';
+import { ReactionOperation } from '../../../../store/interactive-map.actions';
+import { HydratedCard, Cobra, Bound, OperationDirection } from '../../../../types';
+
+import { AppBoundsDetailComponent } from '../app-bounds-detail/app-bounds-detail.component';
+import { AppPanelComponent } from '../app-panel/app-panel.component';
 
 @Component({
   selector: 'app-bounds',
   templateUrl: './app-bounds.component.html',
-  styleUrls: ['./app-bounds.component.scss'],
 })
-export class AppBoundsComponent {
-  @ViewChild('lowerBound') lowerBound: ElementRef;
-  @ViewChild('upperBound') upperBound: ElementRef;
-  @Input() public card: Observable<HydratedCard>;
+export class AppBoundsComponent implements AfterViewInit {
+  @ViewChild('panel') panel: AppPanelComponent;
+  @ViewChild('detail') detail: AppBoundsDetailComponent;
 
-  public selectedItem: Bound = null;
+  @Input() card: HydratedCard;
 
-  constructor(private store: Store<AppState>) {}
+  public reactions$: Observable<string[]>;
+  public reactionsSubject = new Subject<string[]>();
 
-  removeItem(item: Bound): void {
-    this.store.dispatch(new ReactionOperation({
-      item,
-      operationTarget: 'bounds',
-      direction: OperationDirection.Undo,
-    }));
-    this.selectedItem = null;
+  constructor(
+    public store: Store<AppState>,
+  ) {
+    this.reactions$ = this.reactionsSubject.asObservable();
   }
 
-  select(item: Bound): void {
-    this.selectedItem = item;
-    this.lowerBound.nativeElement.value = item.lowerBound;
-    this.upperBound.nativeElement.value = item.upperBound;
-  }
+  ngAfterViewInit(): void {
+    this.panel.query
+      .subscribe((query: string) => {
+        const queryString = query.toLocaleLowerCase();
+        const results = this.card.model.reactions
+          .filter((reaction: Cobra.Reaction) =>
+            reaction.id.toLowerCase().includes(queryString))
+          .map((reaction) => reaction.id);
+        this.reactionsSubject.next(results);
+      });
 
-  apply(item: Bound, lowerBound: number, upperBound: number): void {
-    this.store.dispatch(new ReactionOperation({
-      item: {
-        ...item,
-        lowerBound,
-        upperBound,
-      },
-      operationTarget: 'bounds',
-      direction: OperationDirection.Do,
-    }));
-    this.selectedItem = null;
-  }
+    this.panel.select
+      .subscribe((reactionId: string) => {
+        this.store.dispatch(new ReactionOperation({
+          item: {
+            reactionId,
+            lowerBound: null,
+            upperBound: null,
+          },
+          operationTarget: 'bounds',
+          direction: OperationDirection.Do,
+        }));
+    });
 
-  reset(item: Bound): void {
-    this.store.dispatch(new ReactionOperation({
-      item: {
-        ...item,
-        lowerBound: null,
-        upperBound: null,
-      },
-      operationTarget: 'bounds',
-      direction: OperationDirection.Do,
-    }));
-  }
+    this.detail.remove.subscribe((item: Bound) => {
+      this.store.dispatch(new ReactionOperation({
+        item: item,
+        operationTarget: 'bounds',
+        direction: OperationDirection.Undo,
+      }));
+    });
 
-  showItem(item: Bound): boolean {
-    return this.selectedItem && this.selectedItem.reactionId === item.reactionId;
+    this.detail.update.subscribe((item: string) => {
+      this.store.dispatch(new ReactionOperation({
+          item,
+          operationTarget: 'bounds',
+          direction: OperationDirection.Do,
+        }));
+    });
   }
-
 }

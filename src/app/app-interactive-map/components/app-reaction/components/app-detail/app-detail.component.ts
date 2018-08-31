@@ -12,44 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, OnInit, EventEmitter} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
-
-import {AppState} from '../../../../../store/app.reducers';
-import {ReactionOperation} from '../../../../store/interactive-map.actions';
-import {OperationDirection, HydratedCard} from '../../../../types';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './app-detail.component.html',
 })
 
-export class AppDetailComponent implements OnInit {
-  @Input() public type: string;
-  @Input() public card: Observable<HydratedCard>;
+export class AppDetailComponent {
+  // tslint:disable-next-line:no-any
+  @Input() public items: any[] = [];
+  // tslint:disable-next-line:no-any
+  @Input() public display: (item: any) => string;
+  @Output() public remove = new EventEmitter<string>();
 
-  private removeEmitter = new EventEmitter<string>();
-
-  public typeToTarget = {
-    added: 'addedReactions',
-    knockout: 'knockoutReactions',
-  };
-
-  constructor(private store: Store<AppState>) {}
-
-  ngOnInit(): void {
-    this.removeEmitter
-      .subscribe((reactionId) => {
-        this.store.dispatch(new ReactionOperation({
-          item: reactionId,
-          direction: OperationDirection.Undo,
-          operationTarget: this.typeToTarget[this.type],
-        }));
-      });
+  // tslint:disable-next-line:no-any
+  displayFn(item: any): string {
+    if (this.display) {
+      return this.display(item);
+    } else {
+      return item;
+    }
   }
 
-  remove(item: string): void {
-    this.removeEmitter.emit(item);
+  removeItem(item: string): void {
+    this.remove.emit(item);
   }
 }

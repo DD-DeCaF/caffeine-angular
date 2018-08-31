@@ -68,14 +68,21 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.loading = false;
       });
 
-    this.store
+    const selectedCard = this.store
       .select(getSelectedCard)
       .pipe(
         filter(notNull),
+      );
+
+    // Detect changes in model only..
+    selectedCard.pipe(
         withLatestFrom(builderObservable),
       ).subscribe(([card, builder]) => {
         this.loading = true;
         builder.load_model(card.model);
+        if (card.flux) {
+          builder.set_reaction_data(card.flux);
+        }
         this.store.dispatch(new fromActions.Loaded());
         this.loading = false;
       });

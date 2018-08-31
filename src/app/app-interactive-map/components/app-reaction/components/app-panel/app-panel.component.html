@@ -17,12 +17,19 @@
   <mat-card-content>
     <form>
       <mat-form-field class="example-full-width">
-        <input type="text" placeholder="{{placeholder}}" aria-label="Number" (ngModelChange)="queryChange($event)" matInput [formControl]="querySearch" [matAutocomplete]="auto">
+        <input
+          matInput
+          type="text"
+          placeholder="{{placeholder}}"
+          aria-label="Number"
+          (ngModelChange)="queryChange($event)"
+          [formControl]="querySearch"
+          [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete"
                           [displayWith]="displayFn"
                           (optionSelected)='addItem($event.option.value)'>
-          <mat-option *ngFor="let reaction of (reactions | async)" [value]="reaction">
-            {{reaction.bigg_id}}
+          <mat-option *ngFor="let reaction of queryHits" [value]="reaction">
+            {{displayFn(reaction)}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>

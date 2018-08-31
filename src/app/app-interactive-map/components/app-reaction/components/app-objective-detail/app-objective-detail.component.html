@@ -12,11 +12,17 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<mat-list>
-  <mat-list-item *ngFor="let item of items">
-    <span>{{displayFn(item)}}</span>
-    <button mat-icon-button align="end" (click)="removeItem(item)">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
+<div *ngIf="objectiveReaction">
+  <span class="item-name">{{ objectiveReaction.reactionId}}</span>
+  <span>Min</span>
+  <mat-slide-toggle
+    class="mat-primary"
+    [checked]="objectiveReaction.direction === 'max'"
+    (change)="toggleChange($event)"
+    >
+  </mat-slide-toggle>
+  <span>Max</span>
+  <button mat-icon-button align="end" (click)="removeObjective()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

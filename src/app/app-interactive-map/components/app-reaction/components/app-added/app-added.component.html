@@ -12,11 +12,17 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<mat-list>
-  <mat-list-item *ngFor="let item of items">
-    <span>{{displayFn(item)}}</span>
-    <button mat-icon-button align="end" (click)="removeItem(item)">
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
+<app-panel
+  placeholder="Enter the reaction you want to add"
+  title="Added reactions:"
+  [display]="display"
+  [queryHits]="(reactions$ | async)"
+  #panel
+  >
+  <app-detail
+    [items]="card.addedReactions"
+    [display]="display"
+    #detail
+    >
+  </app-detail>
+</app-panel>

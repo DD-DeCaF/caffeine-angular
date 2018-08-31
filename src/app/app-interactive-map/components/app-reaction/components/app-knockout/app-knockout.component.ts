@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, AfterViewInit, Input} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {Observable, Subject} from 'rxjs';
+import {Component, AfterViewInit, ViewChild, Input} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
-import {AppState} from '../../../../../store/app.reducers';
-import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
-import { HydratedCard, Cobra } from '../../../../types';
 import { AppPanelComponent } from '../app-panel/app-panel.component';
-import { AppObjectiveDetailComponent } from '../app-objective-detail/app-objective-detail.component';
+import { HydratedCard, OperationDirection, Cobra } from '../../../../types';
+import { AppDetailComponent } from '../app-detail/app-detail.component';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../../store/app.reducers';
+import { ReactionOperation } from '../../../../store/interactive-map.actions';
 
 @Component({
-  selector: 'app-objective',
-  templateUrl: './app-objective.component.html',
+  selector: 'app-knockout',
+  templateUrl: './app-knockout.component.html',
 })
-export class AppObjectiveComponent implements AfterViewInit {
+export class AppKnockoutComponent implements AfterViewInit {
   @ViewChild('panel') panel: AppPanelComponent;
-  @ViewChild('detail') detail: AppObjectiveDetailComponent;
+  @ViewChild('detail') detail: AppDetailComponent;
 
   @Input() card: HydratedCard;
 
@@ -53,26 +53,20 @@ export class AppObjectiveComponent implements AfterViewInit {
       });
 
     this.panel.select
-      .subscribe((reactionId: string) => {
-        this.store.dispatch(new SetObjectiveReaction({
-          reactionId,
-          direction: 'max',
-        }));
-      });
-
-    this.detail.remove.subscribe(() => {
-      this.store.dispatch(new SetObjectiveReaction({
-        reactionId: null,
-        direction: null,
+    .subscribe((reaction: string) => {
+      this.store.dispatch(new ReactionOperation({
+        item: reaction,
+        operationTarget: 'knockoutReactions',
+        direction: OperationDirection.Do,
       }));
     });
 
-    this.detail.changeDirection
-      .subscribe((direction: 'max' | 'min') => {
-        this.store.dispatch(new SetObjectiveReaction({
-          reactionId: this.card.objectiveReaction.reactionId,
-          direction,
-        }));
-      });
+    this.detail.remove.subscribe((item: string) => {
+      this.store.dispatch(new ReactionOperation({
+        item: item,
+        operationTarget: 'knockoutReactions',
+        direction: OperationDirection.Undo,
+      }));
+    });
   }
 }

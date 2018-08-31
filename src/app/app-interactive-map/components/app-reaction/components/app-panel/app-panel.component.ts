@@ -12,15 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input} from '@angular/core';
-import {Store} from '@ngrx/store';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import {AppState} from '../../../../../store/app.reducers';
-import {OperationDirection, Reaction} from '../../../../types';
-import {ReactionOperation, SetObjectiveReaction} from '../../../../store/interactive-map.actions';
-import {BiggSearchService} from './services/bigg-search.service';
-import {Observable} from 'rxjs';
-
+import { Reaction } from '../../../../types';
 
 @Component({
   selector: 'app-panel',
@@ -29,76 +23,31 @@ import {Observable} from 'rxjs';
 })
 export class AppPanelComponent {
   @Input() public title: string;
-  @Input() public type: string;
   @Input() public placeholder: string;
 
+  // tslint:disable-next-line:no-any
+  @Input() public display: (item: any) => string;
+  // tslint:disable-next-line:no-any
+  @Input() public queryHits: any[] = [];
+  @Output() public query = new EventEmitter<string>();
+  // tslint:disable-next-line:no-any
+  @Output() public select = new EventEmitter<any>();
+
   public querySearch: FormControl = new FormControl();
-  public reactions: Observable<Reaction[]>;
 
-  constructor(
-    private store: Store<AppState>,
-    private biggSearchService: BiggSearchService) {
-  }
-
-  displayFn(item: Reaction): string {
-    return item && item.bigg_id;
+  // tslint:disable-next-line:no-any
+  displayFn(item: any): string {
+    return this.display ? this.display(item) : item;
   }
 
   addItem(reaction: Reaction): void {
-    const typeToTarget: { [k: string]: 'addedReactions' | 'knockoutReactions' } = {
-      added: 'addedReactions',
-      knockout: 'knockoutReactions',
-    };
-
-    switch (this.type) {
-      case 'added':
-        this.biggSearchService.getDetails(reaction).subscribe((detailedReaction: Reaction) => {
-          this.store.dispatch(new ReactionOperation({
-            item: detailedReaction.bigg_id,
-            operationTarget: typeToTarget[this.type],
-            direction: OperationDirection.Do,
-          }));
-        });
-        break;
-      case 'knockout': {
-        this.store.dispatch(new ReactionOperation({
-          item: reaction.bigg_id,
-          operationTarget: typeToTarget[this.type],
-          direction: OperationDirection.Do,
-        }));
-        break;
-      }
-      case 'bounds': {
-        this.store.dispatch(new ReactionOperation({
-          item: {
-            reactionId: reaction.bigg_id,
-            lowerBound: null,
-            upperBound: null,
-          },
-          operationTarget: 'bounds',
-          direction: OperationDirection.Do,
-        }));
-        break;
-      }
-      default: {
-        this.store.dispatch(new SetObjectiveReaction({
-          reactionId: reaction.bigg_id,
-          direction: 'max',
-        }));
-      }
-    }
+    this.select.emit(reaction);
     this.querySearch.reset('');
-
   }
 
   queryChange(query: string): void {
     if (query.length > 2) {
-      if (this.type === 'added') {
-        this.reactions = this.biggSearchService.search(query);
-      } else {
-        this.reactions = this.biggSearchService.search(query);
-        // this.reactions = ; ready to get the reactions from the map when we merge.
-      }
+      this.query.emit(query);
     }
   }
 }
