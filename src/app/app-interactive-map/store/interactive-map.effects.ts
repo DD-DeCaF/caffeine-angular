@@ -22,7 +22,7 @@ import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import { Cobra, CardType, MapItem } from '../types';
+import {Cobra, CardType, MapItem, Specie} from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 import {SetSelectedSpecies} from './interactive-map.actions';
 
@@ -37,20 +37,27 @@ const preferredMaps = [
 const preferredMap = (mapItems: MapItem[]): MapItem =>
   mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
 
+const preferredSpecies = [
+  'Escherichia coli',
+];
+
+const preferredSpecie = (species: Specie[]): Specie =>
+  species.find((speciesItem) => preferredSpecies.includes(speciesItem.name)) || species[0];
+
 @Injectable()
 export class InteractiveMapEffects {
   @Effect()
   fetchSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES),
-    switchMap(() => {
-      return this.http.get(`${environment.apis.warehouse}/organisms`);
-    }),
-    map((payload: {project_id: string, id: string, name: string, created: string, updated: string}[]) => new fromActions.SetSpecies(payload)),
+    () => this.http.get(`${environment.apis.warehouse}/organisms`),
+    map((payload: Specie[]) => new fromActions.SetSpecies(payload)),
   );
+
   @Effect()
   setSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SPECIES),
-    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(action.payload[0].id)));
+    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(preferredSpecie(action.payload).id)));
+
   @Effect()
   selectedSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SELECTED_SPECIES),

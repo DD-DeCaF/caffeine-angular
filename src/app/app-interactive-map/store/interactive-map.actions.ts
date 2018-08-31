@@ -15,7 +15,7 @@
 import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Specie} from '../types';
 
 export const FETCH_SPECIES = 'FETCH_SPECIES';
 export const SET_SPECIES = 'SET_SPECIES';
@@ -56,7 +56,7 @@ export class FetchSpecies implements Action {
 
 export class SetSpecies implements Action {
   readonly type = SET_SPECIES;
-  constructor(public payload: {project_id: string, id: string, name: string, created: string, updated: string}[]) {}
+  constructor(public payload: Specie[]) {}
 }
 
 export class SetSelectedSpecies implements Action {
