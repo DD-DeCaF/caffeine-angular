@@ -120,11 +120,13 @@ export function interactiveMapReducer(
         ...state,
         allSpecies: action.payload,
       };
+    /* tslint:disable */
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
         ...state,
         selectedSpecies: action.payload,
       };
+    /* tslint:enable */
     case fromInteractiveMapActions.SET_MODELS:
       return {
         ...state,
