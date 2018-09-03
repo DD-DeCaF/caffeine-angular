@@ -16,7 +16,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap, concatMapTo} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
@@ -25,13 +25,16 @@ import { environment } from '../../../environments/environment.staging';
 import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Bound } from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
+import { SimulationService } from '../services/simulation.service';
+import { MapService } from '../services/map.service';
+import { ModelService } from '../services/model.service';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
   [fromActions.PREVIOUS_CARD]: -1,
 };
 const preferredMaps = [
-  'iJO1366.Central metabolism',
+  'Central metabolism',
 ];
 
 const preferredMap = (mapItems: MapItem[]): MapItem =>
@@ -75,26 +78,34 @@ export class InteractiveMapEffects {
   fetchModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetModel) => {
-      return this.http
-        .get(`${environment.apis.model}/models/${action.payload}`)
-        .pipe(
-          map((response: Cobra.Model) => ({
-            response,
-            modelId: action.payload,
-          })),
-        );
+      const payload: SimulateRequest = {
+        method: 'fba',
+        objective: null,
+        objective_direction: null,
+        operations: [],
+      };
+      return forkJoin(
+        this.modelService.loadModel(action.payload),
+        this.simulationSerivce.simulate(action.payload, payload),
+      ).pipe(
+        map(([model, solution]) => ({
+          model,
+          solution,
+          modelId: action.payload,
+        })),
+      );
     }),
-    map(({response, modelId}) => new fromActions.ModelFetched({model: response, modelId})),
+    map((payload) => new fromActions.ModelFetched(payload)),
   );
 
   @Effect()
   setMaps: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetModel) =>
-      this.http.get(`${environment.apis.map}/model?model=${action.payload}`)),
-    concatMap((payload: MapItem[]) => ([
-      new fromActions.SetMaps(payload),
-      new fromActions.SetMap(preferredMap(payload)),
+      this.mapService.loadMaps(action.payload)),
+    concatMap((maps: MapItem[]) => ([
+      new fromActions.SetMaps(maps),
+      new fromActions.SetMap(preferredMap(maps)),
     ])),
   );
 
@@ -155,7 +166,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.LOADED),
     withLatestFrom(this.store$),
     filter(([, storeState]) => storeState.interactiveMap.playing),
-    delay(2000),
+    delay(700),
     mapTo(new fromActions.NextCard()),
   );
 
@@ -221,5 +232,8 @@ export class InteractiveMapEffects {
     private actions$: Actions,
     private store$: Store<AppState>,
     private http: HttpClient,
+    private mapService: MapService,
+    private simulationSerivce: SimulationService,
+    private modelService: ModelService,
   ) {}
 }

@@ -53,12 +53,11 @@ describe('interactiveMapReducer', () => {
           ids: ['0'],
           cardsById: {
             '0': {
-              type: types.CardType.WildType,
               name: 'Wild Type',
+              type: types.CardType.WildType,
               model: null,
+              solution: null,
               method: 'fba',
-              flux: null,
-              growthRate: null,
               addedReactions: [],
               knockoutReactions: [],
               bounds: [],

@@ -23,3 +23,15 @@ export const appendOrUpdate = <T>(predicate: (a: T) => (b: T) => boolean) => (ar
 };
 
 export const appendOrUpdateStringList = appendOrUpdate<string>((a) => (b) => a === b);
+
+// tslint:disable:no-any
+export const objectFilter = (
+    predicate: (key: string, value: any) => boolean,
+  ) => (obj: {[key: string]: any}) =>
+    Object.assign(
+      {},
+      ...Object.entries(obj)
+        .filter(([key, value]) => predicate(key, value))
+        .map(([key, value]) => ({[key]: value})),
+    );
+// tslint:enable:no-any

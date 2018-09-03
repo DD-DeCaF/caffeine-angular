@@ -43,3 +43,579 @@ a {
 button,html,input,select,textarea {
   font-family: Roboto,Helvetica Neue,sans-serif
 }
+
+//// Escher
+/* The top level container for an Escher Builder */
+.escher-container {
+  background-color: #F3F3F3;
+  text-align: center;
+  position: relative;
+}
+
+/* Applied to the body when Escher fills the screen. This stops browser from
+showing scroll-end animations. */
+html.fill-screen {
+  height: 100%;
+  width: 100%;
+}
+body.fill-screen {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+/* Applied to top level container (generally .escher-container) when Escher
+fills the screen. These make sure Escher completely fills the screen, even after
+resizes. */
+.fill-screen-div {
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+/* Temporarily applied when entering full screen. */
+.full-screen-on {
+  height: 100% !important;
+  width: 100% !important;
+  overflow: hidden;
+}
+
+/* The zoom container classes. */
+.escher-zoom-container, .escher-3d-transform-container, svg.escher-svg {
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden;
+}
+
+/* Status */
+.escher-container #status {
+  position:absolute;
+  bottom:10px;
+  left: 20px;
+  color: red;
+  background-color: white;
+  font-size: 16px
+}
+/* Menus */
+.escher-container #menu {
+  display: block;
+  margin: 5px auto 0 auto;
+  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 0px;
+}
+.escher-container .help-button {
+  float: right;
+  padding: 0 5px;
+  font-size: 12px;
+  background-color: rgb(245, 245, 245);
+}
+.escher-container .dropdown-menu {
+  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 0px;
+  margin: 0;
+  text-align: left;
+}
+.escher-container .dropdown-menu>li>a {
+  font-size: 15px;
+}
+.escher-container .dropdown-menu>.escher-disabled>a {
+  color: #E0E0E0;
+  pointer-events: none;
+}
+.escher-container .dropdown {
+  background-color: rgba(255, 255, 255, 0.95);
+}
+@media (max-width: 550px) {
+  .escher-container .dropdown-button {
+    padding: 5px 9px;
+  }
+}
+@media (min-width: 550px) {
+  .escher-container .dropdown-button {
+    font-size: 18px;
+  }
+  .escher-container .help-button {
+    font-size: 16px;
+  }
+}
+/* Search */
+.escher-container .search-menu-container {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  margin: 0;
+  text-align: center;
+  pointer-events: none;
+}
+.escher-container .search-menu-container-inline {
+  width: 320px;
+  display: inline-block;
+  text-align: left;
+  pointer-events: auto;
+}
+@media (min-width: 550px) {
+  .escher-container .search-menu-container-inline {
+    width: 410px;
+  }
+}
+.escher-container .search-container {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 3px;
+  border: 1px solid #DDD;
+  margin: 2px 0 0 0;
+
+  .btn-default {
+    background-color: #444646;
+    color: white;
+    font-weight: bold;
+    border-color: black;
+  }
+
+  .btn {
+    border-radius: 3px;
+
+    &.close-button {
+      margin-left: auto;
+    }
+  }
+
+  .btn-group {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+
+    .btn {
+      border-radius: 0;
+
+      &:first-child {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+    }
+  }
+
+  .glyphicon-chevron-left:before {
+    content: "<";
+  }
+
+  .glyphicon-chevron-right:before {
+    content: ">";
+  }
+
+  .glyphicon-remove:before {
+    content: 'x';
+  }
+}
+.escher-container .search-bar {
+  border: 1px solid #DDD;
+  margin-right: 4px;
+  width: 114px;
+  height: 29px;
+  border-radius: 3px;
+}
+.escher-container .search-counter {
+  display: inline-block;
+  padding: 0 8px;
+}
+/* Settings */
+.escher-container .settings-box-background {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 5% 0 5% 0;
+  text-align: center;
+}
+.escher-container .settings-box-container {
+  display: inline-block;
+  position: relative;
+  width: 90%;
+  max-width: 520px;
+  height: 100%;
+  z-index: 10;
+}
+.escher-container .settings-button {
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  z-index: 10;
+}
+.escher-container .settings-button-close {
+  right: 60px;
+}
+.escher-container .settings-box {
+  display: inline-block;
+  max-height: 100%;
+  width: 100%;
+  /* max-width: 520px; */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px;
+  margin: 0;
+  border: 1px solid #DDD;
+  text-align: left;
+}
+.escher-container .settings-section-heading-large {
+  font-size: 17px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+.escher-container .settings-section-heading {
+  font-weight: bold;
+  margin-top: 15px;
+}
+.escher-container .settings-table {
+  width: 100%;
+}
+.escher-container .settings-table td {
+  padding: 3px 5px;
+}
+.escher-container td.options-label {
+  width: 88px;
+}
+.escher-container td.options-label-wide {
+  width: 192px;
+}
+.escher-container .settings-number {
+  text-align: center;
+  color: #AAA;
+  font-style: italic;
+}
+.escher-container .input-cell {
+  width: 23%;
+  /* padding: 3px 5px; */
+  font-size: 13px;
+}
+.escher-container .scale-bar-input {
+  width: 100%;
+  text-align: left;
+}
+.escher-container .no-data-input {
+  width: 23%;
+  margin: 0 4px 0 4px;
+}
+.escher-container label.option-group {
+  margin: 0 10px 0 0;
+}
+.escher-container label.option-group span {
+  margin: 0 0 0 4px;
+}
+.escher-container label.full-line {
+  width: 100%;
+}
+.escher-container label {
+  font-weight: inherit;
+}
+.escher-container .settings-tip {
+  font-style: italic;
+}
+/* Live scale */
+.escher-container .scale-editor {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  font-size: 12px;
+}
+.escher-container .scale-editor .centered {
+  position: absolute;
+  width: 440px;
+  left: 35px;
+  top: 0px;
+}
+.escher-container .scale-editor .data-not-loaded {
+  position: absolute;
+  z-index: 5;
+  left: 60px;
+  top: 25px;
+  text-align: center;
+  width: 400px;
+  font-size: 15px;
+  color: #B19EC0;
+}
+.escher-container .scale-editor .add {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 20px;
+  cursor: pointer;
+}
+.escher-container .scale-editor .trash-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 420px;
+  height: 20px;
+}
+.escher-container .scale-editor .trash {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  cursor: pointer;
+}
+.escher-container .scale-editor .scale-svg {
+  position: absolute;
+  width: 440px;
+  height: 80px;
+  top: 20px;
+  left: 0px;
+}
+.escher-container .scale-editor .input-container {
+  position: absolute;
+  top: 56px;
+  left: 0px;
+  width: 420px;
+}
+.escher-container .scale-editor .input-container input {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+.escher-container .scale-editor input[disabled] {
+  background-color: #F1ECFA;
+}
+.escher-container .scale-editor .row-label {
+  position: absolute;
+  left: 0px;
+}
+.escher-container .scale-editor .input-set {
+  position: absolute;
+  top: 0px;
+  box-shadow: 0px 2px 14px rgb(197, 197, 197);
+}
+.escher-container .scale-editor .input-set.selected-set {
+  z-index: 5;
+}
+.escher-container .scale-editor .domain-type-picker {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 14px;
+  background-color: rgb(232, 232, 232);
+}
+.escher-container .scale-editor .picker rect {
+  color: black;
+  opacity: 0.4;
+}
+.escher-container .scale-editor .no-data {
+  position: absolute;
+  left: 0px;
+  width: 100%;
+}
+.escher-container .scale-editor .no-data-heading {
+  font-weight: bold;
+}
+.escher-container .scale-editor .no-data .input-group {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.escher-container .scale-editor .no-data .input-group span,
+.escher-container .scale-editor .no-data .input-group input {
+  position: absolute;
+  top: 17px;
+}
+/* For Search */
+.escher-container .close-button {
+  margin-left: 4px;
+  float: right;
+}
+/* Button panel */
+.escher-container ul#button-panel {
+  position: absolute;
+  left: 4px;
+  top: 5%;
+  /* top: 81px; //max */
+  /* top: 20px; //min */
+  pointer-events: none;
+  padding-left: 0;
+}
+.escher-container ul#button-panel li {
+  pointer-events: auto;
+  list-style: none;
+}
+.escher-container .input-close-button {
+  position: absolute;
+  right: 0px;
+  width: 18px;
+  bottom: 0px;
+  padding: 0px;
+  border-width: 0px;
+  margin: 0px;
+  background: none;
+  font-size: 16px;
+  font-weight: normal;
+}
+.escher-container .simple-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #2E2F2F;
+  background-image: linear-gradient(#4F5151, #474949 6%, #3F4141);
+  color: #FFF;
+  background-color: #474949;
+  border-color: #474949;
+  padding: 6px 0 9px 0;
+  font-size: 17px;
+  line-height: 1.42857143;
+  border-radius: 4px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  margin: 3px 0 0 0;
+}
+/* Reaction input */
+.escher-container #rxn-input {
+  z-index: 10;
+}
+.escher-container .input-close-button:hover {
+  color: #ff3333;
+  font-weight: bold;
+}
+.escher-container .light {
+  color: #8b8b8b;
+  font-weight: normal;
+}
+/* text edit input */
+.escher-container #text-edit-input input {
+  width: 500px;
+  border: 1px solid #cccccc;
+  font-size: 22px;
+}
+/* quick jump menu */
+.escher-container #quick-jump-menu {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 300px;
+}
+@media (max-width: 550px) {
+  .escher-container #quick-jump-menu {
+      display: none;
+  }
+}
+
+/* Radio buttons without Bootstrap */
+#button-panel {
+
+    label,
+    button {
+        display: table;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .simple-button {
+        &:before {
+            font-family: 'Material Icons';
+            content: '\E863';
+            color: #FFF;
+            font-size: 28px;
+        }
+
+        input,
+        span {
+            display: none;
+        }
+    }
+
+    #zoom-mode-button {
+        &:before {
+            content: '\E89F';
+        }
+    }
+
+    #brush-mode-button {
+        &:before {
+            content: '\E913';
+        }
+    }
+
+    #build-mode-button {
+        &:before {
+            content: '\E869';
+        }
+    }
+
+    #rotate-mode-button {
+        &:before {
+            content: '\E863';
+        }
+    }
+
+    #text-mode-button {
+        &:before {
+            content: '\E165';
+        }
+    }
+
+    #search-button {
+      &:before {
+        content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' style='width:24px;height:24px' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFFFFF' d='M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z' /%3E%3C/svg%3E");
+      }
+    }
+
+    #zoom-in-button {
+        &:before {
+          content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' style='width:24px;height:24px' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFFFFF' d='M17,13H13V17H11V13H7V11H11V7H13V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z' /%3E%3C/svg%3E");
+        }
+    }
+
+    #zoom-out-button {
+        &:before {
+            content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' style='width:24px;height:24px' viewBox='0 0 24 24'%3E%3Cpath fill='%23FFFFFF' d='M17,13H7V11H17M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z' /%3E%3C/svg%3E");
+        }
+    }
+
+    #extend-button {
+        &:before {
+            content: '\E56B';
+        }
+    }
+
+    #arrow-left-button {
+        &:before {
+            content: '\E5C4';
+        }
+    }
+
+    #arrow-right-button {
+        &:before {
+            content: '\E5C8';
+        }
+    }
+
+    #arrow-up-button {
+        &:before {
+            content: '\E5D8';
+        }
+    }
+
+    #arrow-down-button {
+        &:before {
+            content: '\E5DB';
+        }
+    }
+
+    .btn-group-vertical {
+        margin: 10px 0;
+        text-align: middle;
+    }
+}

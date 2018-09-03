@@ -42,6 +42,7 @@ export interface InteractiveMapState {
   models: string[];
   selectedModel: string;
   modelData: Cobra.Model;
+  defaultSolution: DeCaF.Solution;
   maps: MapItem[];
   selectedMap: string;
   mapData: PathwayMap;
@@ -55,9 +56,8 @@ export const emptyCard: Card = {
   name: 'foo',
   type: CardType.WildType,
   model: null,
-  flux: null,
+  solution: null,
   method: 'fba',
-  growthRate: null,
   addedReactions: [],
   knockoutReactions: [],
   bounds: [],
@@ -76,6 +76,7 @@ export const initialState: InteractiveMapState = {
   models: null,
   selectedModel: null,
   modelData: null,
+  defaultSolution: null,
   maps: null,
   selectedMap: null,
   mapData: null,
@@ -138,6 +139,7 @@ export function interactiveMapReducer(
         ...state,
         selectedModel: action.payload.modelId,
         modelData: action.payload.model,
+        defaultSolution: action.payload.solution,
       };
     case fromInteractiveMapActions.SET_MAPS:
       return {
@@ -174,10 +176,12 @@ export function interactiveMapReducer(
       const type = action.payload;
       let name: string;
       let model: Cobra.Model;
+      let solution: DeCaF.Solution;
       switch (type) {
         case CardType.WildType: {
           name = 'Wild Type';
           model = state.modelData;
+          solution = state.defaultSolution;
           break;
         }
         case CardType.DataDriven: {
@@ -199,6 +203,7 @@ export function interactiveMapReducer(
               type,
               name,
               model,
+              solution,
             },
           },
         },
@@ -281,8 +286,7 @@ export function interactiveMapReducer(
       // @ts-ignore
       const solution = <DeCaF.Solution>action.solution;
       if (solution) {
-        newCard.flux = solution.flux_distribution;
-        newCard.growthRate = solution.growth_rate;
+        newCard.solution = solution;
       }
       /* tslint:enable */
       return {

@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {appendOrUpdate, appendOrUpdateStringList} from './utils';
-import {notNull} from './utils';
+import {appendOrUpdate, appendOrUpdateStringList, notNull, objectFilter} from './utils';
 
 describe('notNull', () => {
   it('should be true for no null items', () => {
@@ -86,5 +85,37 @@ describe('appendOrUpdatePrimitive', () => {
   it('should not update if array already contains item', () => {
     expect(appendOrUpdateStringList(array, 'foo'))
       .toEqual(['foo', 'bar']);
+  });
+});
+
+describe('objectFilter', () => {
+  let object;
+  const truePredicate = (key, value) => true;
+  const falsePredicate = (key, value) => false;
+
+  beforeEach(() => {
+    object = {foo: 0, bar: 3, baz: 6, foobar: 7};
+  });
+
+  it('should work with empty object', () => {
+    expect(objectFilter(truePredicate)({})).toEqual({});
+  });
+
+  it('should return a copy for always true predicate', () => {
+    expect(objectFilter(truePredicate)(object)).toEqual(object);
+  });
+
+  it('should return an empty object for always false predicate', () => {
+    expect(objectFilter(falsePredicate)(object)).toEqual({});
+  });
+
+  it('should return odd values', () => {
+    expect(objectFilter((key, value) => value % 2 === 0)(object))
+      .toEqual({foo: 0, baz: 6});
+  });
+
+  it('should filter out zero values', () => {
+    expect(objectFilter((key, value) => value > 0)(object))
+      .toEqual({bar: 3, baz: 6, foobar: 7});
   });
 });
