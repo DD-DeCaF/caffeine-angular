@@ -49,7 +49,9 @@ export class InteractiveMapEffects {
   @Effect()
   fetchSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES),
-    () => this.http.get(`${environment.apis.warehouse}/organisms`),
+    switchMap((action: fromActions.FetchSpecies) => {
+      return this.http.get(`${environment.apis.warehouse}/organisms`);
+    }),
     map((payload: Specie[]) => new fromActions.SetSpecies(payload)),
   );
 
