@@ -19,18 +19,19 @@ import {filter, withLatestFrom} from 'rxjs/operators';
 import {select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import {Cobra} from './types';
+import {Cobra, Card} from './types';
 import escherSettingsConst from './escherSettings';
 import {AppState} from '../store/app.reducers';
 import * as fromActions from './store/interactive-map.actions';
-import { notNull } from '../utils';
+import { notNull, objectFilter } from '../utils';
 import { getSelectedCard } from './store/interactive-map.selectors';
 
+const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
 @Component({
   selector: 'app-interactive-map',
   templateUrl: './app-interactive-map.component.html',
-  styleUrls: ['./app-interactive-mapcomponent.scss'],
+  styleUrls: ['./app-interactive-map.component.scss'],
 })
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   private builderSubject = new Subject<escher.BuilderObject>();
@@ -77,12 +78,10 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     // Detect changes in model only..
     selectedCard.pipe(
         withLatestFrom(builderObservable),
-      ).subscribe(([card, builder]) => {
+      ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
         this.loading = true;
         builder.load_model(card.model);
-        if (card.flux) {
-          builder.set_reaction_data(card.flux);
-        }
+        builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
         this.store.dispatch(new fromActions.Loaded());
         this.loading = false;
       });

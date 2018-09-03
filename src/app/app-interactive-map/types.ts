@@ -70,9 +70,8 @@ export interface Card {
   type: CardType;
   name: string;
   model: Cobra.Model;
-  flux: {[key: string]: string | number; };
+  solution: DeCaF.Solution;
   method: Methods;
-  growthRate: number;
   addedReactions: AddedReaction[];
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;

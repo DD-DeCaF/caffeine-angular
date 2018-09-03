@@ -15,7 +15,7 @@
 import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods, DeCaF} from '../types';
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODELS = 'SET_MODELS';
@@ -63,7 +63,12 @@ export class SetModel implements Action {
 
 export class ModelFetched implements Action {
   readonly type = MODEL_FETCHED;
-  constructor(public payload: {model: Cobra.Model, modelId: string}) {}
+  constructor(
+    public payload: {
+      model: Cobra.Model,
+      modelId: string,
+      solution: DeCaF.Solution,
+    }) {}
 }
 
 export class SetMaps implements Action {

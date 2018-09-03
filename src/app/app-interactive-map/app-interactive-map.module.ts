@@ -26,6 +26,9 @@ import { AppBuildComponent } from './components/app-build/app-build.component';
 import { AppCardInfoComponent } from './components/app-card-info/app-card-info.component';
 import { AppLegendComponent } from './components/app-legend/app-legend.component';
 import { AppGlobalSettingsComponent } from './components/app-global-settings/app-global-settings.component';
+import { SimulationService } from './services/simulation.service';
+import { MapService } from './services/map.service';
+import { ModelService } from './services/model.service';
 
 
 @NgModule({
@@ -46,6 +49,11 @@ import { AppGlobalSettingsComponent } from './components/app-global-settings/app
     AppMaterialModule,
 
     ReactionModule,
+  ],
+  providers: [
+    SimulationService,
+    MapService,
+    ModelService,
   ],
   exports: [
     AppInteractiveMapComponent,
