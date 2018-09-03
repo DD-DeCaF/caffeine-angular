@@ -20,7 +20,7 @@ import {map, withLatestFrom} from 'rxjs/operators';
 import { AppState } from '../../../store/app.reducers';
 import { MatSelect, MatSelectChange } from '@angular/material';
 import {SetSelectedSpecies, SetModel, SetMap} from '../../store/interactive-map.actions';
-import {MapItem, Specie} from '../../types';
+import {MapItem, Species} from '../../types';
 
 @Component({
   selector: 'app-global-settings',
@@ -33,7 +33,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
   @ViewChild('map') mapSelector: MatSelect;
 
   public selectedSpecies: Observable<string>;
-  public allSpecies: Observable<Specie[]>;
+  public allSpecies: Observable<Species[]>;
 
   public selectedModel: Observable<string>;
   public models: Observable<string[]>;

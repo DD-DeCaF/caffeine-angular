@@ -231,7 +231,7 @@ export interface AddedReaction extends BiggReaction {
   database_links: {};
 }
 
-export interface Specie {
+export interface Species {
   project_id: string;
   id: string;
   name: string;

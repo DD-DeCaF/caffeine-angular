@@ -15,7 +15,7 @@
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, Specie} from '../types';
+import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, Species} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import { debug } from '../../logger';
 
@@ -37,7 +37,7 @@ export const idGen = new IdGen();
 export interface InteractiveMapState {
   playing: boolean;
   selectedCardId: string;
-  allSpecies: Specie[];
+  allSpecies: Species[];
   selectedSpecies: string;
   models: string[];
   selectedModel: string;

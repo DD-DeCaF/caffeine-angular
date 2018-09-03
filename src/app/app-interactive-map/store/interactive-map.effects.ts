@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -22,7 +22,7 @@ import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import {Cobra, CardType, MapItem, Specie} from '../types';
+import {Cobra, CardType, MapItem, Species} from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 import {SetSelectedSpecies} from './interactive-map.actions';
 
@@ -30,19 +30,18 @@ const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
   [fromActions.PREVIOUS_CARD]: -1,
 };
+
 const preferredMaps = [
   'iJO1366.Central metabolism',
 ];
-
-const preferredMap = (mapItems: MapItem[]): MapItem =>
-  mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
 
 const preferredSpecies = [
   'Escherichia coli',
 ];
 
-const preferredSpecie = (species: Specie[]): Specie =>
-  species.find((speciesItem) => preferredSpecies.includes(speciesItem.name)) || species[0];
+// tslint:disable-next-line
+const preferredItem = (items: any[], prefered: string[], key: string): any =>
+  items.find((item) => prefered.includes(item[key])) || items[0];
 
 @Injectable()
 export class InteractiveMapEffects {
@@ -52,13 +51,13 @@ export class InteractiveMapEffects {
     switchMap((action: fromActions.FetchSpecies) => {
       return this.http.get(`${environment.apis.warehouse}/organisms`);
     }),
-    map((payload: Specie[]) => new fromActions.SetSpecies(payload)),
+    map((payload: Species[]) => new fromActions.SetSpecies(payload)),
   );
 
   @Effect()
   setSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SPECIES),
-    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(preferredSpecie(action.payload).id)));
+    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(preferredItem(action.payload, preferredSpecies, 'name').id)));
 
   @Effect()
   selectedSpecies: Observable<Action> = this.actions$.pipe(
@@ -99,7 +98,7 @@ export class InteractiveMapEffects {
       this.http.get(`${environment.apis.map}/model?model=${action.payload}`)),
     concatMap((payload: MapItem[]) => ([
       new fromActions.SetMaps(payload),
-      new fromActions.SetMap(preferredMap(payload)),
+      new fromActions.SetMap(preferredItem(payload, preferredMaps, 'name')),
     ])),
   );
 
