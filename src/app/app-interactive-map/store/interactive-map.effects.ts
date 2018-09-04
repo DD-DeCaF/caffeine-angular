@@ -37,8 +37,16 @@ const preferredMaps = [
   'Central metabolism',
 ];
 
-const preferredMap = (mapItems: MapItem[]): MapItem =>
-  mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
+// const preferredMap = (mapItems: MapItem[]): MapItem =>
+//   mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
+
+const preferredSelector = <T>(
+    predicate: (item: T) => boolean,
+  ) => (items: T[]): T =>
+  items.find(predicate) || items[0];
+
+const preferredMap = preferredSelector((mapItem: MapItem) =>
+  preferredMaps.includes(mapItem.name));
 
 const addedReactionToReaction = ({
   bigg_id,
@@ -48,12 +56,13 @@ const addedReactionToReaction = ({
   model_bigg_id,
   organism,
   ...rest}: AddedReaction,
-  bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: null, upperBound: null}): Cobra.Reaction => ({
-  ...rest,
-  id: bigg_id,
-  gene_reaction_rule: reaction_string,
-  lower_bound: bounds.lowerBound,
-  upper_bound: bounds.upperBound,
+  bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: null, upperBound: null}): Cobra.Reaction =>
+  ({
+    ...rest,
+    id: bigg_id,
+    gene_reaction_rule: reaction_string,
+    lower_bound: bounds.lowerBound,
+    upper_bound: bounds.upperBound,
 });
 
 @Injectable()
