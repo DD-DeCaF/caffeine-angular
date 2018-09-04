@@ -14,10 +14,10 @@
 
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import {filter} from 'rxjs/operators';
 
-import { HydratedCard, AddedReaction, Reaction } from '../../types';
+import { HydratedCard} from '../../types';
 import { AppState } from '../../../store/app.reducers';
 import { getSelectedCard } from '../../store/interactive-map.selectors';
 import {notNull} from '../../../utils';
@@ -32,19 +32,11 @@ export class AppReactionComponent implements OnInit {
 
   public card: Observable<HydratedCard>;
 
-  public addedReactions$: Observable<Reaction[]>;
-  public addedReactionsSubject = new Subject<Reaction[]>();
-
-  public knockoutReactions$: Observable<AddedReaction[]>;
-  public boundReactions$: Observable<AddedReaction[]>;
-  public objectiveReactions$: Observable<AddedReaction[]>;
-
   constructor(
     public store: Store<AppState>,
   ) {}
 
   ngOnInit(): void {
-    this.addedReactions$ = this.addedReactionsSubject.asObservable();
     this.card = this.store
       .select(getSelectedCard)
       .pipe(
