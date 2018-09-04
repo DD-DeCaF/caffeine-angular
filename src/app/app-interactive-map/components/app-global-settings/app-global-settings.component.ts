@@ -33,7 +33,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
   @ViewChild('model') modelSelector: MatSelect;
   @ViewChild('map') mapSelector: MatSelect;
 
-  public selectedSpecies: Observable<string>;
+  public selectedSpecies: Observable<Species>;
   public allSpecies: Observable<Species[]>;
 
   public selectedModel: Observable<string>;

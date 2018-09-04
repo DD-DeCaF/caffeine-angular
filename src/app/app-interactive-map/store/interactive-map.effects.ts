@@ -69,6 +69,16 @@ const addedReactionToReaction = ({
     upper_bound: bounds.upperBound,
 });
 
+// Temporary fix because https://github.com/DD-DeCaF/model/blob/caffeine/src/model/app.py#L51
+// doesn't supprt name / species ID yet
+const speciesNameToOrgID = {
+  'Cricetulus griseus': 'CRIGR',
+  'Escherichia coli': 'ECOLX',
+  'Corynebacterium glutamicum': 'CORGT',
+  'Saccharomyces cerevisiae': 'YEAST',
+  'Pseudomonas putida': 'PSEPU',
+};
+
 @Injectable()
 export class InteractiveMapEffects {
   @Effect()
@@ -83,13 +93,13 @@ export class InteractiveMapEffects {
   @Effect()
   setSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SPECIES),
-    map((action: fromActions.SetSpecies) => new fromActions.SetSelectedSpecies(preferredSpecies(action.payload).id)));
+    map((action: fromActions.SetSpecies) => new fromActions.SetSelectedSpecies(preferredSpecies(action.payload))));
 
   @Effect()
   selectedSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SELECTED_SPECIES),
     switchMap((action: fromActions.SetSelectedSpecies) => {
-      return this.http.get(`${environment.apis.model}/species/${action.payload}`);
+      return this.http.get(`${environment.apis.model}/species/${speciesNameToOrgID[action.payload.name]}`);
     }),
     map((payload: string[]) => new fromActions.SetModels(payload)),
   );
@@ -139,8 +149,8 @@ export class InteractiveMapEffects {
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
       const {maps} = storeState.interactiveMap;
-      const predicate = ((mapItem: MapItem) =>
-        mapItem.model === model && mapItem.name === preferredMapsByModel[model]);
+      const predicate = (mapItem: MapItem) =>
+        mapItem.model === model && mapItem.name === preferredMapsByModel[model];
       return new fromActions.SetMap(preferredSelector(predicate)(maps));
     }),
   );

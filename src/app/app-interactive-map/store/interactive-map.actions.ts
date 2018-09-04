@@ -62,7 +62,7 @@ export class SetSpecies implements Action {
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
-  constructor(public payload: string) {}
+  constructor(public payload: Species) {}
 }
 
 export class SetModels implements Action {
