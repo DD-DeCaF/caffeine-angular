@@ -25,6 +25,7 @@ import { environment } from '../../../environments/environment.staging';
 import {Cobra, CardType, MapItem, Species} from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 import {SetSelectedSpecies} from './interactive-map.actions';
+import {preferredSelector} from '../../utils';
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
@@ -35,13 +36,16 @@ const preferredMaps = [
   'iJO1366.Central metabolism',
 ];
 
-const preferredSpecies = [
+const preferredSpeciesList = [
   'Escherichia coli',
 ];
 
-// tslint:disable-next-line
-const preferredItem = (items: any[], prefered: string[], key: string): any =>
-  items.find((item) => prefered.includes(item[key])) || items[0];
+const preferredMap = preferredSelector((mapItem: MapItem) =>
+  preferredMaps.includes(mapItem.name));
+
+const preferredSpecies = preferredSelector((species: Species) =>
+  preferredSpeciesList.includes(species.name));
+
 
 @Injectable()
 export class InteractiveMapEffects {
@@ -57,7 +61,7 @@ export class InteractiveMapEffects {
   @Effect()
   setSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SPECIES),
-    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(preferredItem(action.payload, preferredSpecies, 'name').id)));
+    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(preferredSpecies(action.payload).id)));
 
   @Effect()
   selectedSpecies: Observable<Action> = this.actions$.pipe(
@@ -98,7 +102,7 @@ export class InteractiveMapEffects {
       this.http.get(`${environment.apis.map}/model?model=${action.payload}`)),
     concatMap((payload: MapItem[]) => ([
       new fromActions.SetMaps(payload),
-      new fromActions.SetMap(preferredItem(payload, preferredMaps, 'name')),
+      new fromActions.SetMap(preferredMap(payload)),
     ])),
   );
 

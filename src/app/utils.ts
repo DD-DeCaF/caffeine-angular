@@ -23,3 +23,8 @@ export const appendOrUpdate = <T>(predicate: (a: T) => (b: T) => boolean) => (ar
 };
 
 export const appendOrUpdateStringList = appendOrUpdate<string>((a) => (b) => a === b);
+
+export const preferredSelector = <T>(
+  predicate: (item: T) => boolean,
+) => (items: T[]): T =>
+  items.find(predicate) || items[0];
