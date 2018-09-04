@@ -44,7 +44,6 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
     modelIds: string[],
     mapsByModelId: {[key: string]: types.MapItem[] },
   }>;
-  public JSON = JSON;
 
   constructor(private store: Store<AppState>) {}
 
