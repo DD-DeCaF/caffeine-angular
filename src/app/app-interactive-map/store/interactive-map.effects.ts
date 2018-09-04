@@ -135,12 +135,21 @@ export class InteractiveMapEffects {
   @Effect()
   setMaps: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
-    switchMap((action: fromActions.SetModel) =>
-      this.mapService.loadMaps(action.payload)),
-    concatMap((maps: MapItem[]) => ([
-      new fromActions.SetMaps(maps),
-      new fromActions.SetMap(preferredMap(maps)),
-    ])),
+    withLatestFrom(this.store$),
+    map(([action, storeState]: [fromActions.SetModel, AppState]) => {
+      const {maps} = storeState.interactiveMap;
+      const mapItem = maps
+        .find((item: MapItem) => item.model === action.payload) && maps[0];
+      return new fromActions.SetMap(mapItem);
+    }),
+  );
+
+  @Effect()
+  fetchMaps: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_MAPS),
+    switchMap(() =>
+      this.mapService.loadMaps()),
+    map((maps: MapItem[]) => new fromActions.SetMaps(maps)),
   );
 
   @Effect()

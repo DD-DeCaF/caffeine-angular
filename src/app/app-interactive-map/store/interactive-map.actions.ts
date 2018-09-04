@@ -25,6 +25,8 @@ export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
 export const FETCH_MODEL = 'FETCH_MODEL';
 export const MODEL_FETCHED = 'MODEL_FETCHED';
+
+export const FETCH_MAPS = 'FETCH_MAPS';
 export const SET_MAPS = 'SET_MAPS';
 export const SET_MAP = 'SET_MAP';
 export const MAP_FETCHED = 'MAP_FETCHED';
@@ -81,6 +83,10 @@ export class ModelFetched implements Action {
       modelId: string,
       solution: DeCaF.Solution,
     }) {}
+}
+
+export class FetchMaps implements Action {
+  readonly type = FETCH_MAPS;
 }
 
 export class SetMaps implements Action {

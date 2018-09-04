@@ -25,10 +25,7 @@ export class MapService {
     private http: HttpClient,
   ) {}
 
-  loadMaps(model?: string): Observable<MapItem[]> {
-    const url = model ?
-      `${environment.apis.map}/model?model=${model}` :
-      `${environment.apis.map}/list`;
-    return this.http.get<MapItem[]>(url);
+  loadMaps(): Observable<MapItem[]> {
+    return this.http.get<MapItem[]>(`${environment.apis.map}/list`);
   }
 }
