@@ -38,7 +38,7 @@ export interface InteractiveMapState {
   playing: boolean;
   selectedCardId: string;
   allSpecies: Species[];
-  selectedSpecies: string;
+  selectedSpecies: Species;
   models: string[];
   selectedModel: string;
   modelData: Cobra.Model;

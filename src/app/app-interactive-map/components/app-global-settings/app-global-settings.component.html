@@ -15,7 +15,7 @@
 <div class="container">
   <mat-form-field>
     <mat-select placeholder="Species" [value]="selectedSpecies | async" #species>
-      <mat-option [value]="species.id" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
+      <mat-option [value]="species" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 
