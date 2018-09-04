@@ -21,6 +21,7 @@ import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-
 import {JobsComponent} from './jobs/jobs.component';
 import {JobComponent} from './jobs/job.component';
 import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
+import {AppDesignToolComponent} from './app-design-tool/app-design-tool.component';
 
 
 const appRoutes: Route[] = [
@@ -31,6 +32,10 @@ const appRoutes: Route[] = [
       {
         path: '',
         component: AppWelcomeComponent,
+      },
+      {
+        path: 'pathways',
+        component: AppDesignToolComponent,
       },
       {
         path: 'interactiveMap',

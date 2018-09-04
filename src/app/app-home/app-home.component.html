@@ -14,7 +14,7 @@
 
 <div fxFlexFill fxLayout="column">
   <app-toolbar [sidenav]="sidenav"></app-toolbar>
-  
+
   <mat-sidenav-container>
     <mat-sidenav #sidenav
                 class="mat-elevation-z3"
@@ -26,6 +26,11 @@
           <p matLine>Home</p>
         </mat-list-item>
 
+        <mat-list-item (click)="sidenav.toggle()" routerLink="/pathways" [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon svgIcon="design" ></mat-icon>
+          <p matLine>Design</p>
+        </mat-list-item>
+
         <mat-list-item (click)="sidenav.toggle()" routerLink="/interactiveMap" [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon svgIcon="interactive-map" ></mat-icon>
           <p matLine>Interactive Map</p>
@@ -35,6 +40,7 @@
           <mat-icon mat-list-icon svgIcon="hourglass-full"></mat-icon>
           <p matLine>Jobs</p>
         </mat-list-item>
+
       </mat-nav-list>
 
     </mat-sidenav>

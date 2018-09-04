@@ -19,6 +19,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 
 import MAP_ICON from '../assets/images/map_icon.svg';
 import HOURGLASS_FULL from '../assets/images/hourglass_full.svg';
+import EDIT_ICON from '../assets/images/edit.svg';
 
 import {environment} from '../environments/environment';
 
@@ -55,6 +56,10 @@ export class AppComponent {
     matIconRegistry.addSvgIcon(
       'hourglass-full',
       domSanitizer.bypassSecurityTrustResourceUrl(HOURGLASS_FULL),
+    );
+    matIconRegistry.addSvgIcon(
+      'design',
+      domSanitizer.bypassSecurityTrustResourceUrl(EDIT_ICON),
     );
   }
   setTheme(theme: string): void {
