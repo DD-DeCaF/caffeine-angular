@@ -24,14 +24,6 @@
     </div>
   </mat-toolbar>
   <div [hidden]="!expanded">
-    <div [ngStyle]="{'background-color': background}"
-         matTooltip="The simulated growth rate for the current model"
-         matTooltipPosition="right">
-      <span class="growth">
-      Growth rate: {{ getPredictedGrowth() }} <i>h<sup>-1</sup></i>
-      </span>
-    </div>
-    <mat-divider></mat-divider>
     <mat-list>
       <mat-list-item>
         <div fxLayout="column" style="width: 100%">

@@ -14,9 +14,6 @@
 
 import { Component } from '@angular/core';
 
-const defaultColor = 'white';
-const warningColor = '#FEEFB3';
-
 @Component({
   selector: 'app-legend',
   templateUrl: './app-legend.component.html',
@@ -24,19 +21,9 @@ const warningColor = '#FEEFB3';
 })
 
 export class AppLegendComponent {
-
-  public background: string = defaultColor;
   public expanded = true;
 
   public toggle(): void {
     this.expanded = !this.expanded;
   }
-
-  public getPredictedGrowth(): string {
-    const rate = 0.6;
-    const isRateMeaningful = Math.abs(rate) > 1e-05;
-    this.background = isRateMeaningful ? defaultColor : warningColor;
-    return isRateMeaningful ? rate.toPrecision(3) : '0';
-  }
-
 }
