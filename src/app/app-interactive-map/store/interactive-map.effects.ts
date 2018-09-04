@@ -96,44 +96,45 @@ export class InteractiveMapEffects {
     map((action: fromActions.SetSpecies) => new fromActions.SetSelectedSpecies(preferredSpecies(action.payload))));
 
   @Effect()
-  selectedSpecies: Observable<Action> = this.actions$.pipe(
+  fetchModels: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SELECTED_SPECIES),
-    switchMap((action: fromActions.SetSelectedSpecies) => {
-      return this.http.get(`${environment.apis.model}/species/${speciesNameToOrgID[action.payload.name]}`);
-    }),
-    map((payload: string[]) => new fromActions.SetModels(payload)),
+    switchMap((action: fromActions.SetSelectedSpecies) =>
+      this.http.get(`${environment.apis.model_warehouse}/models`)),
+    map((models: DeCaF.Model[]) => new fromActions.SetModels(models)),
   );
 
+// TODO set model according to selectedSpecies
   @Effect()
   selectFirstModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODELS),
     map((action: fromActions.SetModels) =>
       new fromActions.SetModel(action.payload[0])),
-  );
+);
 
-  @Effect()
-  fetchModel: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_MODEL),
-    switchMap((action: fromActions.SetModel) => {
-      const payload: SimulateRequest = {
-        method: 'fba',
-        objective: null,
-        objective_direction: null,
-        operations: [],
-      };
-      return forkJoin(
-        this.modelService.loadModel(action.payload),
-        this.simulationSerivce.simulate(action.payload, payload),
-      ).pipe(
-        map(([model, solution]) => ({
-          model,
-          solution,
-          modelId: action.payload,
-        })),
-      );
-    }),
-    map((payload) => new fromActions.ModelFetched(payload)),
-  );
+// TODO no need to fetch (for now), but need to simulate!
+  // @Effect()
+  // fetchModel: Observable<Action> = this.actions$.pipe(
+  //   ofType(fromActions.SET_MODEL),
+  //   switchMap((action: fromActions.SetModel) => {
+  //     const payload: SimulateRequest = {
+  //       method: 'fba',
+  //       objective: null,
+  //       objective_direction: null,
+  //       operations: [],
+  //     };
+  //     return forkJoin(
+  //       this.modelService.loadModel(action.payload),
+  //       this.simulationSerivce.simulate(action.payload, payload),
+  //     ).pipe(
+  //       map(([model, solution]) => ({
+  //         model,
+  //         solution,
+  //         modelId: action.payload,
+  //       })),
+  //     );
+  //   }),
+  //   map((payload) => new fromActions.ModelFetched(payload)),
+  // );
 
   @Effect()
   setMaps: Observable<Action> = combineLatest(
@@ -150,18 +151,31 @@ export class InteractiveMapEffects {
       const model = action.payload;
       const {maps} = storeState.interactiveMap;
       const predicate = (mapItem: MapItem) =>
-        mapItem.model === model && mapItem.name === preferredMapsByModel[model];
+        mapItem.model === model.name; // && mapItem.name === preferredMapsByModel[model];
       return new fromActions.SetMap(preferredSelector(predicate)(maps));
     }),
   );
 
-  @Effect()
-  fetchMaps: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_MAPS),
-    switchMap(() =>
-      this.mapService.loadMaps()),
-    map((maps: MapItem[]) => new fromActions.SetMaps(maps)),
-  );
+//   @Effect()
+//   fetchMaps: Observable<Action> = this.actions$.pipe(
+//     ofType(fromActions.FETCH_MAPS),
+//     switchMap(() =>
+//       this.mapService.loadMaps()),
+//     map((maps: MapItem[]) => new fromActions.SetMaps(maps)),
+//     withLatestFrom(this.store$),
+//     map(([action, store]) => new fromActions.SetModel(store.interactiveMap.selectedModel)),
+//   );
+
+//   @Effect()
+//   setMaps: Observable<Action> = this.actions$.pipe(
+//     ofType(fromActions.SET_MODEL),
+//     switchMap((action: fromActions.SetModel) =>
+//       this.http.get(`${environment.apis.map}/model?model=${action.payload.name}`)),
+//     concatMap((payload: MapItem[]) => ([
+//       new fromActions.SetMaps(payload),
+//       new fromActions.SetMap(preferredItem(payload, preferredMaps, 'name')),
+//     ])),
+//   );
 
   @Effect()
   resetCards: Observable<Action> = this.actions$.pipe(

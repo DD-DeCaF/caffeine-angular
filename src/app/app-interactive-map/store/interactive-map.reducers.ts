@@ -39,8 +39,9 @@ export interface InteractiveMapState {
   selectedCardId: string;
   allSpecies: Species[];
   selectedSpecies: Species;
-  models: string[];
-  selectedModel: string;
+  models: DeCaF.Model[];
+  activeModels: DeCaF.Model[];
+  selectedModel: DeCaF.Model;
   modelData: Cobra.Model;
   defaultSolution: DeCaF.Solution;
   maps: MapItem[];
@@ -69,7 +70,8 @@ export const initialState: InteractiveMapState = {
   selectedCardId: '0',
   allSpecies: [],
   selectedSpecies: null,
-  models: null,
+  models: [],
+  activeModels: [],
   selectedModel: null,
   modelData: null,
   defaultSolution: null,
@@ -133,17 +135,20 @@ export function interactiveMapReducer(
       };
     /* tslint:enable */
     case fromInteractiveMapActions.SET_MODELS:
+      const activeModels = action.payload.filter((m) => m.organism_id === state.selectedSpecies.toString());
       return {
         ...state,
         models: action.payload,
+        activeModels: activeModels,
+        selectedModel: activeModels[0],
       };
-    case fromInteractiveMapActions.MODEL_FETCHED:
-      return {
-        ...state,
-        selectedModel: action.payload.modelId,
-        modelData: action.payload.model,
-        defaultSolution: action.payload.solution,
-      };
+    // case fromInteractiveMapActions.MODEL_FETCHED:
+    //   return {
+    //     ...state,
+    //     selectedModel: action.payload.modelId,
+    //     modelData: action.payload.model,
+    //     defaultSolution: action.payload.solution,
+    //   };
     case fromInteractiveMapActions.SET_MAPS:
       return {
         ...state,

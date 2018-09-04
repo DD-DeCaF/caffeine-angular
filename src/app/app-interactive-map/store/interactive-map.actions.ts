@@ -15,8 +15,8 @@
 import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods, DeCaF, Species} from '../types';
-
+// import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods, DeCaF, Species} from '../types';
+import * as types from '../types';
 
 export const FETCH_SPECIES = 'FETCH_SPECIES';
 export const SET_SPECIES = 'SET_SPECIES';
@@ -57,31 +57,31 @@ export class FetchSpecies implements Action {
 
 export class SetSpecies implements Action {
   readonly type = SET_SPECIES;
-  constructor(public payload: Species[]) {}
+  constructor(public payload: types.Species[]) {}
 }
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
-  constructor(public payload: Species) {}
+  constructor(public payload: types.Species) {}
 }
 
 export class SetModels implements Action {
   readonly type = SET_MODELS;
-  constructor(public payload: string[]) {}
+  constructor(public payload: types.DeCaF.Model[]) {}
 }
 
 export class SetModel implements Action {
   readonly type = SET_MODEL;
-  constructor(public payload: string) {}
+  constructor(public payload: types.DeCaF.Model) {}
 }
 
 export class ModelFetched implements Action {
   readonly type = MODEL_FETCHED;
   constructor(
     public payload: {
-      model: Cobra.Model,
+      model: types.Cobra.Model,
       modelId: string,
-      solution: DeCaF.Solution,
+      solution: types.DeCaF.Solution,
     }) {}
 }
 
@@ -91,17 +91,17 @@ export class FetchMaps implements Action {
 
 export class SetMaps implements Action {
   readonly type = SET_MAPS;
-  constructor(public payload: MapItem[]) {}
+  constructor(public payload: types.MapItem[]) {}
 }
 
 export class SetMap implements Action {
   readonly type = SET_MAP;
-  constructor(public payload: MapItem) {}
+  constructor(public payload: types.MapItem) {}
 }
 
 export class MapFetched implements Action {
   readonly type = MAP_FETCHED;
-  constructor(public payload: {mapData: PathwayMap, mapItem: MapItem}) {}
+  constructor(public payload: {mapData: PathwayMap, mapItem: types.MapItem}) {}
 }
 
 export class ResetCards implements Action {
@@ -132,7 +132,7 @@ export class Loaded implements Action {
 
 export class AddCard implements Action {
   readonly type = ADD_CARD;
-  constructor(public payload: CardType) {}
+  constructor(public payload: types.CardType) {}
 }
 
 export class DeleteCard implements Action {
@@ -147,31 +147,31 @@ export class RenameCard implements Action {
 
 export class SetMethod implements Action {
   readonly type = SET_METHOD;
-  constructor(public payload: Methods) {}
+  constructor(public payload: types.Methods) {}
 }
 
 export class SetMethodApply implements Action {
   readonly type = SET_METHOD_APPLY;
-  constructor(public payload: Methods) {}
+  constructor(public payload: types.Methods) {}
 }
 
 export class ReactionOperation implements Action {
   readonly type = REACTION_OPERATION;
-  constructor(public payload: OperationPayload) {}
+  constructor(public payload: types.OperationPayload) {}
 }
 export class ReactionOperationApply implements Action {
   readonly type = REACTION_OPERATION_APPLY;
-  constructor(public payload: OperationPayload) {}
+  constructor(public payload: types.OperationPayload) {}
 }
 
 export class SetObjectiveReaction implements Action {
   readonly type = SET_OBJECTIVE_REACTION;
-  constructor(public payload: ObjectiveReactionPayload) {}
+  constructor(public payload: types.ObjectiveReactionPayload) {}
 }
 
 export class SetObjectiveReactionApply implements Action {
   readonly type = SET_OBJECTIVE_REACTION_APPLY;
-  constructor(public payload: ObjectiveReactionPayload) {}
+  constructor(public payload: types.ObjectiveReactionPayload) {}
 }
 
 export const operationToApply = {
