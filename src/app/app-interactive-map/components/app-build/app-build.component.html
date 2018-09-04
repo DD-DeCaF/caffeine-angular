@@ -98,9 +98,9 @@
           <label>Method:</label>
           <label>{{card.method}}</label>
         </div>
-        <div class="displayRow" *ngIf="card.solution">
+        <div class="displayRow" *ngIf="card.solution" [ngStyle]="{'background-color': growthRateBackground(card.solution.growth_rate)}">
           <label>Growth rate:</label>
-          <label>{{card.solution.growth_rate}}</label>
+          <label>{{formatGrowthRate(card.solution.growth_rate)}} <i>h<sup>-1</sup></i></label>
         </div>
       </div>
     </div>

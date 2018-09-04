@@ -88,4 +88,18 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public shrink(): void {
     this.expandedCard = null;
   }
+
+  private growthRateMeaningful(growthRate: number): boolean {
+    return Math.abs(growthRate) > 1e-05;
+  }
+
+  public growthRateBackground(growthRate: number): string {
+    return this.growthRateMeaningful(growthRate) ? 'white' : '#FEEFB3';
+  }
+
+  public formatGrowthRate(growthRate: number): string {
+    return this.growthRateMeaningful(growthRate) ?
+      growthRate.toPrecision(3) :
+      '0';
+  }
 }

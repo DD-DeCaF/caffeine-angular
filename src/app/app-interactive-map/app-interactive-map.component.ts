@@ -58,6 +58,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.store.dispatch(new FetchSpecies());
     this.store.dispatch(new fromActions.FetchMaps());
+    this.store.dispatch(new fromActions.FetchModels());
 
     const builderObservable = this.builderSubject.asObservable();
     this.store
