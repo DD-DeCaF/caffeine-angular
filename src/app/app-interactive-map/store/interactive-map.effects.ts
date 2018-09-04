@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
