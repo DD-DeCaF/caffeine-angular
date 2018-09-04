@@ -175,6 +175,6 @@ export const operationToApply = {
 };
 
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
+export type InteractiveMapActions = SetSpecies | SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
   ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
   SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;
