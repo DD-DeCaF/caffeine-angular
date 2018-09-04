@@ -141,6 +141,7 @@ export function interactiveMapReducer(
         models: action.payload,
         activeModels: activeModels,
         selectedModel: activeModels[0],
+        modelData: activeModels[0].model_serialized,
       };
     // case fromInteractiveMapActions.MODEL_FETCHED:
     //   return {
