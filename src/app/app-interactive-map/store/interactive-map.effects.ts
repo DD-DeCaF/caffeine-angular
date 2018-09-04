@@ -14,9 +14,9 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Action, Store} from '@ngrx/store';
+import { Action, Store, select} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, forkJoin, combineLatest } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
@@ -27,7 +27,6 @@ import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
-import { ModelService } from '../services/model.service';
 
 
 const ACTION_OFFSETS = {
@@ -69,22 +68,12 @@ const addedReactionToReaction = ({
     upper_bound: bounds.upperBound,
 });
 
-// Temporary fix because https://github.com/DD-DeCaF/model/blob/caffeine/src/model/app.py#L51
-// doesn't supprt name / species ID yet
-const speciesNameToOrgID = {
-  'Cricetulus griseus': 'CRIGR',
-  'Escherichia coli': 'ECOLX',
-  'Corynebacterium glutamicum': 'CORGT',
-  'Saccharomyces cerevisiae': 'YEAST',
-  'Pseudomonas putida': 'PSEPU',
-};
-
 @Injectable()
 export class InteractiveMapEffects {
   @Effect()
   fetchSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES),
-    switchMap((action: fromActions.FetchSpecies) => {
+    switchMap(() => {
       return this.http.get(`${environment.apis.warehouse}/organisms`);
     }),
     map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
@@ -97,44 +86,25 @@ export class InteractiveMapEffects {
 
   @Effect()
   fetchModels: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_SELECTED_SPECIES),
-    switchMap((action: fromActions.SetSelectedSpecies) =>
+    ofType(fromActions.FETCH_MODELS),
+    switchMap(() =>
       this.http.get(`${environment.apis.model_warehouse}/models`)),
     map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
   );
 
 // TODO set model according to selectedSpecies
   @Effect()
-  selectFirstModel: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_MODELS),
-    map((action: fromActions.SetModels) =>
-      new fromActions.SetModel(action.payload[0])),
-);
-
-// TODO no need to fetch (for now), but need to simulate!
-  // @Effect()
-  // fetchModel: Observable<Action> = this.actions$.pipe(
-  //   ofType(fromActions.SET_MODEL),
-  //   switchMap((action: fromActions.SetModel) => {
-  //     const payload: SimulateRequest = {
-  //       method: 'fba',
-  //       objective: null,
-  //       objective_direction: null,
-  //       operations: [],
-  //     };
-  //     return forkJoin(
-  //       this.modelService.loadModel(action.payload),
-  //       this.simulationSerivce.simulate(action.payload, payload),
-  //     ).pipe(
-  //       map(([model, solution]) => ({
-  //         model,
-  //         solution,
-  //         modelId: action.payload,
-  //       })),
-  //     );
-  //   }),
-  //   map((payload) => new fromActions.ModelFetched(payload)),
-  // );
+  selectFirstModel: Observable<Action> = combineLatest(
+    this.actions$.pipe(ofType(fromActions.FETCH_SPECIES)),
+    this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES)),
+    this.actions$.pipe(ofType(fromActions.SET_MODELS)),
+  ).pipe(
+    map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpecies, fromActions.SetModels]) => {
+      const selectedModel = models
+        .filter((model) => model.organism_id === selectedOrgId.toString())[0];
+      return new fromActions.SetModel(selectedModel);
+    }),
+  );
 
   @Effect()
   setMaps: Observable<Action> = combineLatest(
@@ -151,31 +121,18 @@ export class InteractiveMapEffects {
       const model = action.payload;
       const {maps} = storeState.interactiveMap;
       const predicate = (mapItem: types.MapItem) =>
-        mapItem.model === model.name; // && mapItem.name === preferredMapsByModel[model];
+        mapItem.model === model.name && mapItem.name === preferredMapsByModel[model.name];
       return new fromActions.SetMap(preferredSelector(predicate)(maps));
     }),
   );
 
-//   @Effect()
-//   fetchMaps: Observable<Action> = this.actions$.pipe(
-//     ofType(fromActions.FETCH_MAPS),
-//     switchMap(() =>
-//       this.mapService.loadMaps()),
-//     map((maps: MapItem[]) => new fromActions.SetMaps(maps)),
-//     withLatestFrom(this.store$),
-//     map(([action, store]) => new fromActions.SetModel(store.interactiveMap.selectedModel)),
-//   );
-
-//   @Effect()
-//   setMaps: Observable<Action> = this.actions$.pipe(
-//     ofType(fromActions.SET_MODEL),
-//     switchMap((action: fromActions.SetModel) =>
-//       this.http.get(`${environment.apis.map}/model?model=${action.payload.name}`)),
-//     concatMap((payload: MapItem[]) => ([
-//       new fromActions.SetMaps(payload),
-//       new fromActions.SetMap(preferredItem(payload, preferredMaps, 'name')),
-//     ])),
-//   );
+  @Effect()
+  fetchMaps: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_MAPS),
+    switchMap(() =>
+      this.mapService.loadMaps()),
+    map((maps: types.MapItem[]) => new fromActions.SetMaps(maps)),
+  );
 
   @Effect()
   resetCards: Observable<Action> = this.actions$.pipe(
@@ -184,6 +141,28 @@ export class InteractiveMapEffects {
       new fromActions.ResetCards(),
       new fromActions.AddCard(types.CardType.WildType),
     ]),
+  );
+
+  @Effect()
+  simulateNewCard: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.ADD_CARD),
+    withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModel))),
+    switchMap(([{payload: type}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
+      const payload: types.SimulateRequest = {
+        method: 'fba',
+        objective: null,
+        objective_direction: null,
+        operations: [],
+      };
+      return this.simulationSerivce.simulate(model.name, payload)
+        .pipe(
+          map((solution) => ({
+            type,
+            solution,
+          })),
+        );
+    }),
+    map((data) => new fromActions.AddCardFetched(data)),
   );
 
   @Effect()
@@ -284,7 +263,7 @@ export class InteractiveMapEffects {
           ...bounds,
         ],
       };
-      return this.http.post(`${environment.apis.model}/models/${store.interactiveMap.selectedModel}/simulate`, payload)
+      return this.http.post(`${environment.apis.model}/models/${store.interactiveMap.selectedModel.name}/simulate`, payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
           action: newAction,
           solution,
@@ -302,6 +281,5 @@ export class InteractiveMapEffects {
     private http: HttpClient,
     private mapService: MapService,
     private simulationSerivce: SimulationService,
-    private modelService: ModelService,
   ) {}
 }

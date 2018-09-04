@@ -67,3 +67,10 @@ export const mapItemsByModel = createSelector(
     };
   },
 );
+
+export const activeModels = createSelector(
+  (state: AppState) => state.interactiveMap.models,
+  (state: AppState) => state.interactiveMap.selectedSpecies,
+  (models, selectedSpecies) => models
+    .filter((m) => m.organism_id === selectedSpecies.id.toString()),
+);

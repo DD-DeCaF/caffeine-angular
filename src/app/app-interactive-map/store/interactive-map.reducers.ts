@@ -40,10 +40,7 @@ export interface InteractiveMapState {
   allSpecies: Species[];
   selectedSpecies: Species;
   models: DeCaF.Model[];
-  activeModels: DeCaF.Model[];
   selectedModel: DeCaF.Model;
-  modelData: Cobra.Model;
-  defaultSolution: DeCaF.Solution;
   maps: MapItem[];
   selectedMap: MapItem;
   mapData: PathwayMap;
@@ -71,10 +68,7 @@ export const initialState: InteractiveMapState = {
   allSpecies: [],
   selectedSpecies: null,
   models: [],
-  activeModels: [],
   selectedModel: null,
-  modelData: null,
-  defaultSolution: null,
   maps: [],
   selectedMap: null,
   mapData: null,
@@ -127,29 +121,21 @@ export function interactiveMapReducer(
         ...state,
         allSpecies: action.payload,
       };
-    /* tslint:disable */
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
         ...state,
         selectedSpecies: action.payload,
       };
-    /* tslint:enable */
     case fromInteractiveMapActions.SET_MODELS:
-      const activeModels = action.payload.filter((m) => m.organism_id === state.selectedSpecies.toString());
       return {
         ...state,
         models: action.payload,
-        activeModels: activeModels,
-        selectedModel: activeModels[0],
-        modelData: activeModels[0].model_serialized,
       };
-    // case fromInteractiveMapActions.MODEL_FETCHED:
-    //   return {
-    //     ...state,
-    //     selectedModel: action.payload.modelId,
-    //     modelData: action.payload.model,
-    //     defaultSolution: action.payload.solution,
-    //   };
+    case fromInteractiveMapActions.SET_MODEL:
+      return {
+        ...state,
+        selectedModel: action.payload,
+      };
     case fromInteractiveMapActions.SET_MAPS:
       return {
         ...state,
@@ -180,17 +166,15 @@ export function interactiveMapReducer(
         ...state,
         playing: action.payload,
       };
-    case fromInteractiveMapActions.ADD_CARD: {
+    case fromInteractiveMapActions.ADD_CARD_FETCHED: {
       const newId = idGen.next();
-      const type = action.payload;
+      const {type, solution} = action.payload;
       let name: string;
       let model: Cobra.Model;
-      let solution: DeCaF.Solution;
       switch (type) {
         case CardType.WildType: {
           name = 'Wild Type';
-          model = state.modelData;
-          solution = state.defaultSolution;
+          model = state.selectedModel.model_serialized;
           break;
         }
         case CardType.DataDriven: {

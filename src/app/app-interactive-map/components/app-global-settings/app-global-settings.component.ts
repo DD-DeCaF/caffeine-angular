@@ -20,7 +20,7 @@ import {map} from 'rxjs/operators';
 import { AppState } from '../../../store/app.reducers';
 import { MatSelect, MatSelectChange } from '@angular/material';
 import { SetSelectedSpecies, SetModel, SetMap } from '../../store/interactive-map.actions';
-import { mapItemsByModel } from '../../store/interactive-map.selectors';
+import { mapItemsByModel, activeModels } from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 
 @Component({
@@ -52,7 +52,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
     this.allSpecies = this.store.pipe(select((store) => store.interactiveMap.allSpecies));
 
     this.selectedModel = this.store.pipe(select((store) => store.interactiveMap.selectedModel));
-    this.models = this.store.pipe(select((store) => store.interactiveMap.activeModels));
+    this.models = this.store.pipe(select(activeModels));
 
     this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
     this.mapItems = this.store.pipe(select(mapItemsByModel));
