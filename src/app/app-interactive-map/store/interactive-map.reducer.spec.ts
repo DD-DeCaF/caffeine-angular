@@ -17,6 +17,17 @@ import {interactiveMapReducer, initialState, InteractiveMapState, idGen} from '.
 
 import * as types from '../types';
 
+const addedReaction: types.AddedReaction = {
+  bigg_id: 'asd',
+  name: 'asd',
+  organism: '',
+  metanetx_id: null,
+  reaction_string: null,
+  metabolites: {},
+  database_links: {},
+  model_bigg_id: '',
+};
+
 describe('interactiveMapReducer', () => {
   beforeEach(() => {
     idGen.reset();
@@ -42,9 +53,10 @@ describe('interactiveMapReducer', () => {
           ids: ['0'],
           cardsById: {
             '0': {
-              type: types.CardType.WildType,
               name: 'Wild Type',
+              type: types.CardType.WildType,
               model: null,
+              solution: null,
               method: 'fba',
               addedReactions: [],
               knockoutReactions: [],
@@ -68,38 +80,50 @@ describe('interactiveMapReducer', () => {
     const state2 = interactiveMapReducer(
       state1,
       new fromActions.ReactionOperationApply({
-        item: 'asd',
+        item: {
+          ...addedReaction,
+          bigg_id: 'asd',
+        },
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
-      }, '0'),
+      }),
     );
-    expect(state2.cards.cardsById['0'].addedReactions).toEqual(['asd']);
+    expect(state2.cards.cardsById['0'].addedReactions[0].bigg_id).toEqual('asd');
   });
 
   it('should remove the added reaction', () => {
     const actions = [
       new fromActions.AddCard(types.CardType.WildType),
       new fromActions.ReactionOperationApply({
-        item: 'asd',
+        item: {
+          ...addedReaction,
+          bigg_id: 'asd',
+        },
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
-      }, '0'),
+      }),
       new fromActions.ReactionOperationApply({
-        item: 'foobar',
+        item: {
+          ...addedReaction,
+          bigg_id: 'foobar',
+        },
         direction: types.OperationDirection.Do,
         operationTarget: 'addedReactions',
-      }, '0'),
+      }),
       new fromActions.ReactionOperationApply({
-        item: 'asd',
+        item: {
+          ...addedReaction,
+          bigg_id: 'asd',
+        },
         direction: types.OperationDirection.Undo,
         operationTarget: 'addedReactions',
-      }, '0'),
+      }),
     ];
     const state = actions.reduce(
       (prevState: InteractiveMapState, action) => interactiveMapReducer(prevState, action),
       undefined,
     );
-    expect(state.cards.cardsById['0'].addedReactions).toEqual(['foobar']);
+    expect(state.cards.cardsById['0'].addedReactions[0].bigg_id).toEqual('foobar');
   });
 
   it('should set the objective reaction', () => {
@@ -108,7 +132,7 @@ describe('interactiveMapReducer', () => {
       new fromActions.SetObjectiveReactionApply({
         reactionId: 'asd',
         direction: 'min',
-      }, '0'),
+      }),
     );
     expect(state.cards.cardsById['0'].objectiveReaction).toEqual({
       reactionId: 'asd',

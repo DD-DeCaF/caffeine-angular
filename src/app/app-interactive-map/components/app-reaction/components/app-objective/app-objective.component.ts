@@ -14,45 +14,65 @@
 
 import {Component, ViewChild, AfterViewInit, Input} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {Observable, fromEvent} from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
-import { MatSlideToggle, MatButton } from '@angular/material';
+import {Observable, Subject} from 'rxjs';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
-import { HydratedCard } from '../../../../types';
+import { HydratedCard, Cobra } from '../../../../types';
+import { AppPanelComponent } from '../app-panel/app-panel.component';
+import { AppObjectiveDetailComponent } from '../app-objective-detail/app-objective-detail.component';
 
 @Component({
   selector: 'app-objective',
   templateUrl: './app-objective.component.html',
-  styleUrls: ['./app-objective.component.scss'],
 })
 export class AppObjectiveComponent implements AfterViewInit {
-  @ViewChild('toggle') toggle: MatSlideToggle;
-  @ViewChild('remove') remove: MatButton;
+  @ViewChild('panel') panel: AppPanelComponent;
+  @ViewChild('detail') detail: AppObjectiveDetailComponent;
 
-  @Input() public card: Observable<HydratedCard>;
+  @Input() card: HydratedCard;
 
-  constructor(private store: Store<AppState>) {}
+  public reactions$: Observable<string[]>;
+  public reactionsSubject = new Subject<string[]>();
+
+  constructor(
+    public store: Store<AppState>,
+  ) {
+    this.reactions$ = this.reactionsSubject.asObservable();
+  }
 
   ngAfterViewInit(): void {
-    if (this.card) {
-      this.toggle.change.pipe(
-        withLatestFrom(this.card),
-      ).subscribe(([{checked}, card]) => {
+    this.panel.query
+      .subscribe((query: string) => {
+        const queryString = query.toLocaleLowerCase();
+        const results = this.card.model.reactions
+          .filter((reaction: Cobra.Reaction) =>
+            reaction.id.toLowerCase().includes(queryString))
+          .map((reaction) => reaction.id);
+        this.reactionsSubject.next(results);
+      });
+
+    this.panel.select
+      .subscribe((reactionId: string) => {
         this.store.dispatch(new SetObjectiveReaction({
-          reactionId: card.objectiveReaction.reactionId,
-          direction: checked ? 'max' : 'min',
+          reactionId,
+          direction: 'max',
         }));
       });
 
-      fromEvent(this.remove._elementRef.nativeElement, 'click')
-        .subscribe(() => {
-          this.store.dispatch(new SetObjectiveReaction({
-            reactionId: null,
-            direction: null,
-          }));
-        });
-    }
+    this.detail.remove.subscribe(() => {
+      this.store.dispatch(new SetObjectiveReaction({
+        reactionId: null,
+        direction: null,
+      }));
+    });
+
+    this.detail.changeDirection
+      .subscribe((direction: 'max' | 'min') => {
+        this.store.dispatch(new SetObjectiveReaction({
+          reactionId: this.card.objectiveReaction.reactionId,
+          direction,
+        }));
+      });
   }
 }

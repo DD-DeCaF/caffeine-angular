@@ -12,16 +12,17 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<app-panel
-  placeholder="Enter the reaction you want to change"
-  title="Changed reactions:"
-  [display]="display"
-  [queryHits]="(reactions$ | async)"
-  #panel
-  >
-  <app-bounds-detail
-    [bounds]="card.bounds"
-    #detail
+<div *ngIf="objectiveReaction">
+  <span class="item-name">{{ objectiveReaction.reactionId}}</span>
+  <span>Min</span>
+  <mat-slide-toggle
+    class="mat-primary"
+    [checked]="objectiveReaction.direction === 'max'"
+    (change)="toggleChange($event)"
     >
-  </app-bounds-detail>
-</app-panel>
+  </mat-slide-toggle>
+  <span>Max</span>
+  <button mat-icon-button align="end" (click)="removeObjective()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

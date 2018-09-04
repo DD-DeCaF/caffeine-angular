@@ -15,7 +15,8 @@
 import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Species} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods, DeCaF, Species} from '../types';
+
 
 export const FETCH_SPECIES = 'FETCH_SPECIES';
 export const SET_SPECIES = 'SET_SPECIES';
@@ -47,8 +48,6 @@ export const REACTION_OPERATION = 'REACTION_OPERATION';
 export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
-export const SET_BOUNDS_REACTION = 'SET_BOUNDS_REACTION';
-export const SET_BOUNDS_REACTION_APPLY = 'SET_BOUNDS_REACTION_APPLY';
 
 export class FetchSpecies implements Action {
   readonly type = FETCH_SPECIES;
@@ -76,7 +75,12 @@ export class SetModel implements Action {
 
 export class ModelFetched implements Action {
   readonly type = MODEL_FETCHED;
-  constructor(public payload: {model: Cobra.Model, modelId: string}) {}
+  constructor(
+    public payload: {
+      model: Cobra.Model,
+      modelId: string,
+      solution: DeCaF.Solution,
+    }) {}
 }
 
 export class SetMaps implements Action {
@@ -137,12 +141,12 @@ export class RenameCard implements Action {
 
 export class SetMethod implements Action {
   readonly type = SET_METHOD;
-  constructor(public payload: string) {}
+  constructor(public payload: Methods) {}
 }
 
 export class SetMethodApply implements Action {
   readonly type = SET_METHOD_APPLY;
-  constructor(public payload: string, public cardId: string) {}
+  constructor(public payload: Methods) {}
 }
 
 export class ReactionOperation implements Action {
@@ -151,7 +155,7 @@ export class ReactionOperation implements Action {
 }
 export class ReactionOperationApply implements Action {
   readonly type = REACTION_OPERATION_APPLY;
-  constructor(public payload: OperationPayload, public cardId: string) {}
+  constructor(public payload: OperationPayload) {}
 }
 
 export class SetObjectiveReaction implements Action {
@@ -161,10 +165,16 @@ export class SetObjectiveReaction implements Action {
 
 export class SetObjectiveReactionApply implements Action {
   readonly type = SET_OBJECTIVE_REACTION_APPLY;
-  constructor(public payload: ObjectiveReactionPayload, public cardId: string) {}
+  constructor(public payload: ObjectiveReactionPayload) {}
 }
 
-export type OperationActions = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = FetchSpecies | SetSpecies | SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
+export const operationToApply = {
+  [REACTION_OPERATION]: ReactionOperationApply,
+  [SET_METHOD]: SetMethodApply,
+  [SET_OBJECTIVE_REACTION]: SetObjectiveReactionApply,
+};
+
+export type OperationAction = SetObjectiveReaction | ReactionOperation;
+export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
   ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
   SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;

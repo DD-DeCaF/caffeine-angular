@@ -12,29 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, ViewChild, Input, AfterViewInit } from '@angular/core';
+import {Component, AfterViewInit, ViewChild, Input} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Store } from '@ngrx/store';
 
+import { AppPanelComponent } from '../app-panel/app-panel.component';
+import { HydratedCard, OperationDirection, Cobra } from '../../../../types';
+import { AppDetailComponent } from '../app-detail/app-detail.component';
+import { Store } from '@ngrx/store';
 import { AppState } from '../../../../../store/app.reducers';
 import { ReactionOperation } from '../../../../store/interactive-map.actions';
-import { HydratedCard, Cobra, Bound, OperationDirection } from '../../../../types';
-
-import { AppBoundsDetailComponent } from '../app-bounds-detail/app-bounds-detail.component';
-import { AppPanelComponent } from '../app-panel/app-panel.component';
 
 @Component({
-  selector: 'app-bounds',
-  templateUrl: './app-bounds.component.html',
+  selector: 'app-knockout',
+  templateUrl: './app-knockout.component.html',
 })
-export class AppBoundsComponent implements AfterViewInit {
+export class AppKnockoutComponent implements AfterViewInit {
   @ViewChild('panel') panel: AppPanelComponent;
-  @ViewChild('detail') detail: AppBoundsDetailComponent;
+  @ViewChild('detail') detail: AppDetailComponent;
 
   @Input() card: HydratedCard;
 
-  public reactions$: Observable<Cobra.Reaction[]>;
-  public reactionsSubject = new Subject<Cobra.Reaction[]>();
+  public reactions$: Observable<string[]>;
+  public reactionsSubject = new Subject<string[]>();
 
   constructor(
     public store: Store<AppState>,
@@ -48,41 +47,26 @@ export class AppBoundsComponent implements AfterViewInit {
         const queryString = query.toLocaleLowerCase();
         const results = this.card.model.reactions
           .filter((reaction: Cobra.Reaction) =>
-            reaction.id.toLowerCase().includes(queryString));
+            reaction.id.toLowerCase().includes(queryString))
+          .map((reaction) => reaction.id);
         this.reactionsSubject.next(results);
       });
 
     this.panel.select
-      .subscribe((reaction: Cobra.Reaction) => {
-        this.store.dispatch(new ReactionOperation({
-          item: {
-            reaction,
-            lowerBound: reaction.lower_bound,
-            upperBound: reaction.upper_bound,
-          },
-          operationTarget: 'bounds',
-          direction: OperationDirection.Do,
-        }));
-    });
-
-    this.detail.remove.subscribe((item: Bound) => {
+    .subscribe((reaction: string) => {
       this.store.dispatch(new ReactionOperation({
-        item: item,
-        operationTarget: 'bounds',
-        direction: OperationDirection.Undo,
+        item: reaction,
+        operationTarget: 'knockoutReactions',
+        direction: OperationDirection.Do,
       }));
     });
 
-    this.detail.update.subscribe((item: string) => {
+    this.detail.remove.subscribe((item: string) => {
       this.store.dispatch(new ReactionOperation({
-          item,
-          operationTarget: 'bounds',
-          direction: OperationDirection.Do,
-        }));
+        item: item,
+        operationTarget: 'knockoutReactions',
+        direction: OperationDirection.Undo,
+      }));
     });
-  }
-
-  display(reaction: Cobra.Reaction): string {
-    return reaction.id;
   }
 }

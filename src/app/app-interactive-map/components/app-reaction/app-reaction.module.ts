@@ -15,28 +15,38 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppMaterialModule } from '../../../app-material.module';
 
 import { AppReactionComponent } from './app-reaction.component';
-import { AppBoundsComponent } from './components/app-bounds/app-bounds.component';
+import { AppBoundsDetailComponent } from './components/app-bounds-detail/app-bounds-detail.component';
 import { AppDetailComponent } from './components/app-detail/app-detail.component';
 import { AppObjectiveComponent } from './components/app-objective/app-objective.component';
 import { AppPanelComponent } from './components/app-panel/app-panel.component';
+import { AppAddedComponent } from './components/app-added/app-added.component';
+import { AppKnockoutComponent } from './components/app-knockout/app-knockout.component';
+import { AppBoundsComponent } from './components/app-bounds/app-bounds.component';
+import { AppObjectiveDetailComponent } from './components/app-objective-detail/app-objective-detail.component';
 
 @NgModule({
   declarations: [
     AppReactionComponent,
+    AppBoundsDetailComponent,
     AppBoundsComponent,
     AppDetailComponent,
     AppObjectiveComponent,
+    AppObjectiveDetailComponent,
     AppPanelComponent,
+    AppAddedComponent,
+    AppKnockoutComponent,
   ],
   imports: [
     AppMaterialModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
   ],
   exports: [
     AppReactionComponent,

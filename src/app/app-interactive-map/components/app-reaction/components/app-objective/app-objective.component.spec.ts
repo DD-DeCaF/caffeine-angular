@@ -23,6 +23,9 @@ import { AppMaterialModule } from '../../../../../app-material.module';
 import { AppObjectiveComponent } from './app-objective.component';
 import { initialState } from '../../mock-initial-state';
 import {HttpClientModule} from '@angular/common/http';
+import { AppPanelComponent } from '../app-panel/app-panel.component';
+import { AppObjectiveDetailComponent } from '../app-objective-detail/app-objective-detail.component';
+import { emptyCard } from '../../../../store/interactive-map.reducers';
 
 describe('AppObjectiveComponent', () => {
   let component: AppObjectiveComponent;
@@ -38,7 +41,11 @@ describe('AppObjectiveComponent', () => {
         StoreModule.forRoot(reducers, {initialState}),
         HttpClientModule,
       ],
-      declarations: [ AppObjectiveComponent ],
+      declarations: [
+        AppObjectiveComponent,
+        AppPanelComponent,
+        AppObjectiveDetailComponent,
+      ],
     })
     .compileComponents();
   }));
@@ -46,6 +53,12 @@ describe('AppObjectiveComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppObjectiveComponent);
     component = fixture.componentInstance;
+    // TODO make this test available in the whole IM module.
+    component.card = {
+      ...emptyCard,
+      selected: false,
+      id: '0',
+    };
     fixture.detectChanges();
   });
 

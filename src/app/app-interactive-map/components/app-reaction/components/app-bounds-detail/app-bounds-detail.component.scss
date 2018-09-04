@@ -12,12 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mat-list-item {
-  display: block;
+.item-row {
+  display: flex;
+  justify-content: space-between;
 }
 
-span {
-  font-size: 11px;
+.bounds-list {
+  list-style: none;
+  padding-left: 0;
 }
 
 .lower-bound-item {
@@ -38,49 +40,34 @@ span {
 }
 
 .box-bounds {
-  border: 1px solid black;
-  height: 110px;
+  background: whitesmoke;
+  height: 60px;
   padding: 2%;
   margin-top: 5%;
   text-align: center;
 }
 
-.input-lower {
-  float: left;
-  width: 30px;
+.input-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
-.input-upper {
-  float: right;
-  width: 30px;
-}
-
-.item-display-box {
-  font-size: 12px;
-  width: 100px;
-  text-align: center;
+.bound-input {
+  width: 50px;
 }
 
 .change-button {
-  border-radius: 3px;
+  border-radius: 0;
   background-color: #eee;
   border: 1px solid #ddd;
   margin-top: 8px;
   font-size: 14px;
   padding: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-  float: right;
 }
 
-.button-apply {
-  margin-right: 20px;
-}
-
-.button-reset {
-  margin-right: 0px;
-}
-
-.mat-list .mat-list-item.left .mat-list-item-content{
-  padding: 0 !important;
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }

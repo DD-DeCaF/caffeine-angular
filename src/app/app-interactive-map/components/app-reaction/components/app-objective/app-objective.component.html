@@ -12,19 +12,13 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<mat-list>
-  <span class="item-name">{{ (card | async)?.objectiveReaction.reactionId}}</span>
-  <mat-list-item>
-    <span >Min</span>
-    <mat-slide-toggle
-      #toggle
-      class="mat-primary"
-      [checked]="(card | async)?.objectiveReaction.direction === 'max'"
-      >
-    </mat-slide-toggle>
-    <span>Max</span>
-    <button mat-icon-button align="end" #remove>
-      <mat-icon>close</mat-icon>
-    </button>
-  </mat-list-item>
-</mat-list>
+<app-panel
+  placeholder="Enter the reaction to set as objective"
+  title="Objective:"
+  [queryHits]="(reactions$ | async)"
+  #panel>
+  <app-objective-detail
+    [objectiveReaction]="card.objectiveReaction"
+    #detail>
+  </app-objective-detail>
+</app-panel>

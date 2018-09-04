@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as fromInteractiveMapActions from './interactive-map.actions';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, Species} from '../types';
+import * as fromInteractiveMapActions from './interactive-map.actions';
+import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import { debug } from '../../logger';
 
@@ -42,6 +42,7 @@ export interface InteractiveMapState {
   models: string[];
   selectedModel: string;
   modelData: Cobra.Model;
+  defaultSolution: DeCaF.Solution;
   maps: MapItem[];
   selectedMap: string;
   mapData: PathwayMap;
@@ -51,10 +52,11 @@ export interface InteractiveMapState {
   };
 }
 
-export const emptyCard = {
+export const emptyCard: Card = {
   name: 'foo',
   type: CardType.WildType,
   model: null,
+  solution: null,
   method: 'fba',
   addedReactions: [],
   knockoutReactions: [],
@@ -70,6 +72,7 @@ export const initialState: InteractiveMapState = {
   models: null,
   selectedModel: null,
   modelData: null,
+  defaultSolution: null,
   maps: null,
   selectedMap: null,
   mapData: null,
@@ -82,11 +85,15 @@ export const initialState: InteractiveMapState = {
 
 export const appendUnique = (array, item) => array.includes(item) ? array : [...array, item];
 
+// TODO Here we have definition for equality and non-equaliyty check. These should be merged.
+export const addedReactionEquality = (item: AddedReaction) => (arrayItem: AddedReaction) =>
+  arrayItem.bigg_id === item.bigg_id;
+
 export const boundEquality = (item: Bound) => (arrayItem: Bound) =>
-  arrayItem.reactionId === item.reactionId;
+  arrayItem.reaction.id === item.reaction.id;
 
 const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
-  addedReactions: appendOrUpdateStringList,
+  addedReactions: appendOrUpdate(addedReactionEquality),
   knockoutReactions: appendOrUpdateStringList,
   bounds: appendOrUpdate(boundEquality),
 };
@@ -97,9 +104,9 @@ const filter = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item:
 type OperationFunction<T> = (array: T[], item: T) => T[];
 
 const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
-  addedReactions: filter<string>(stringFilter),
+  addedReactions: filter((a: AddedReaction) => (b: AddedReaction) => a.bigg_id !== b.bigg_id),
   knockoutReactions: filter<string>(stringFilter),
-  bounds: filter((a: Bound) => (b: Bound) => a.reactionId !== b.reactionId),
+  bounds: filter((a: Bound) => (b: Bound) => a.reaction.id !== b.reaction.id),
 };
 
 const operations: {[key in OperationDirection]: {[tKey in OperationTarget]: OperationFunction<Card[tKey][0]>}} = {
@@ -135,6 +142,7 @@ export function interactiveMapReducer(
         ...state,
         selectedModel: action.payload.modelId,
         modelData: action.payload.model,
+        defaultSolution: action.payload.solution,
       };
     case fromInteractiveMapActions.SET_MAPS:
       return {
@@ -171,10 +179,12 @@ export function interactiveMapReducer(
       const type = action.payload;
       let name: string;
       let model: Cobra.Model;
+      let solution: DeCaF.Solution;
       switch (type) {
         case CardType.WildType: {
           name = 'Wild Type';
           model = state.modelData;
+          solution = state.defaultSolution;
           break;
         }
         case CardType.DataDriven: {
@@ -196,6 +206,7 @@ export function interactiveMapReducer(
               type,
               name,
               model,
+              solution,
             },
           },
         },
@@ -220,6 +231,7 @@ export function interactiveMapReducer(
         },
       };
     }
+    // TODO perhaps merge with the ones below
     case fromInteractiveMapActions.RENAME_CARD:
       return {
         ...state,
@@ -237,7 +249,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
-      const {cardId} = action;
+      const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
       switch (action.type) {
@@ -273,6 +285,13 @@ export function interactiveMapReducer(
         }
         default:
       }
+      /* tslint:disable */
+      // @ts-ignore
+      const solution = <DeCaF.Solution>action.solution;
+      if (solution) {
+        newCard.solution = solution;
+      }
+      /* tslint:enable */
       return {
         ...state,
         cards: {

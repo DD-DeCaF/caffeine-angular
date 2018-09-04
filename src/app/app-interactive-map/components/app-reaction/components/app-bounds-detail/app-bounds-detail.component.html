@@ -1,0 +1,53 @@
+<!--Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.-->
+
+<!--Licensed under the Apache License, Version 2.0 (the "License");-->
+<!--you may not use this file except in compliance with the License.-->
+<!--You may obtain a copy of the License at-->
+
+<!--http://www.apache.org/licenses/LICENSE-2.0-->
+
+<!--Unless required by applicable law or agreed to in writing, software-->
+<!--distributed under the License is distributed on an "AS IS" BASIS,-->
+<!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+<!--See the License for the specific language governing permissions and-->
+<!--limitations under the License.-->
+
+<ul class="bounds-list">
+  <li (click)="select(bound)" *ngFor="let bound of bounds; let index = index">
+    <div>
+      <div class="item-row">
+        <p>
+          <span>{{ bound.lowerBound || '-' }}</span>
+          <span class="item-display">
+              &#8804; <span>{{ bound.reaction.id }}</span>
+              &#8804;
+          </span>
+          <span>{{ bound.upperBound || '-' }}</span>
+        </p>
+        <button mat-icon-button (click)="removeItem(bound)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="box-bounds" [hidden]="!showItem(bound)">
+        <div class="input-container">
+          <input mat-input class="bound-input" type="number" #lowerBound/>
+          <span class="item-display-box">
+            &nbsp;&#8804;<span>&nbsp;{{bound.reactionId}}&nbsp;</span>&#8804;&nbsp;
+          </span>
+          <input mat-input class="bound-input" type="number" #upperBound/>
+        </div>
+        <div class="button-container">
+          <button class="change-button" (click)="apply(bound, lowerBound.value, upperBound.value)">
+            Apply
+          </button>
+          <button class="change-button" (click)="reset(bound)">
+            Reset
+          </button>
+          <button class="change-button" (click)="clearSelection($event)">
+            close
+          </button>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>

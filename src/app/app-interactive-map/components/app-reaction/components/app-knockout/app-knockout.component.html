@@ -13,15 +13,12 @@
 <!--limitations under the License.-->
 
 <app-panel
-  placeholder="Enter the reaction you want to change"
-  title="Changed reactions:"
-  [display]="display"
+  placeholder="Enter the reaction you want to remove"
+  title="Removed reactions:"
   [queryHits]="(reactions$ | async)"
-  #panel
-  >
-  <app-bounds-detail
-    [bounds]="card.bounds"
-    #detail
-    >
-  </app-bounds-detail>
+  #panel>
+  <app-detail
+    [items]="card.knockoutReactions"
+    #detail>
+  </app-detail>
 </app-panel>

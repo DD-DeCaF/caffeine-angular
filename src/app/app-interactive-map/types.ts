@@ -24,18 +24,8 @@ export interface Reaction {
   organism: string;
 }
 
-export interface Reactions {
-  added: Reaction[];
-  removed: Reaction[];
-  objective: {
-    reaction: Reaction,
-    direction: string,
-  };
-  changed: Reaction[];
-}
-
 export interface Bound {
-  reactionId: string;
+  reaction: Cobra.Reaction;
   lowerBound: number;
   upperBound: number;
 }
@@ -50,8 +40,14 @@ export type BoundOperationTarget = 'bounds';
 
 export type OperationTarget = SimpleOperationTarget| BoundOperationTarget;
 
-export interface SimpleOperationPayload {
+export interface KnockoutOperationPayload {
   item: string;
+  operationTarget: OperationTarget;
+  direction: OperationDirection;
+}
+
+export interface AddedReactionPayload {
+  item: AddedReaction;
   operationTarget: OperationTarget;
   direction: OperationDirection;
 }
@@ -61,9 +57,10 @@ export interface BoundOperationPayload {
   operationTarget: BoundOperationTarget;
   direction: OperationDirection;
 }
-export type OperationPayload = SimpleOperationPayload | BoundOperationPayload;
+export type OperationPayload = KnockoutOperationPayload | AddedReactionPayload | BoundOperationPayload;
+export type ObjectiveDirection = 'min' | 'max';
 export interface ObjectiveReactionPayload {
-  direction: 'min' | 'max';
+  direction: ObjectiveDirection;
   reactionId: string;
 }
 
@@ -73,15 +70,12 @@ export interface Card {
   type: CardType;
   name: string;
   model: Cobra.Model;
-  method: string;
-  addedReactions: string[];
+  solution: DeCaF.Solution;
+  method: Methods;
+  addedReactions: AddedReaction[];
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;
-  bounds: {
-    reactionId: string,
-    lowerBound: number,
-    upperBound: number,
-  }[];
+  bounds: Bound[];
 }
 
 export interface HydratedCard extends Card {
@@ -95,8 +89,10 @@ export interface MapItem {
   map: string;
 }
 
+export type Methods = 'fba' | 'pfba' | 'fva' | 'pfba-fva';
+
 export interface Method {
-  id: string;
+  id: Methods;
   name: string;
 }
 
@@ -191,9 +187,16 @@ export declare namespace DeCaF {
     operation: 'add' | 'modify' | 'remove';
     type: 'gene' | 'reaction';
     id: string;
-      data?: Cobra.Reaction; // included if operation is 'add' or 'modify'
-    }
+    data?: Cobra.Reaction; // included if operation is 'add' or 'modify'
   }
+}
+
+export interface SimulateRequest {
+  method: Methods;
+  objective?: string;
+  objective_direction: ObjectiveDirection;
+  operations: DeCaF.Operation[];
+}
 
 // Experimental conditions
 // tslint:disable-next-line
@@ -224,6 +227,7 @@ export interface BiggReaction {
 }
 
 export interface AddedReaction extends BiggReaction {
+  bigg_id: string;
   metanetx_id: string;
   reaction_string: string;
   // tslint:disable-next-line

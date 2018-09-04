@@ -13,15 +13,16 @@
 <!--limitations under the License.-->
 
 <app-panel
-  placeholder="Enter the reaction you want to change"
-  title="Changed reactions:"
+  placeholder="Enter the reaction you want to add"
+  title="Added reactions:"
   [display]="display"
   [queryHits]="(reactions$ | async)"
   #panel
   >
-  <app-bounds-detail
-    [bounds]="card.bounds"
+  <app-detail
+    [items]="card.addedReactions"
+    [display]="display"
     #detail
     >
-  </app-bounds-detail>
+  </app-detail>
 </app-panel>

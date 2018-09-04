@@ -16,16 +16,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap, concatMapTo} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import {Cobra, CardType, MapItem, Species} from '../types';
+import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Bound, Species } from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
-import {SetSelectedSpecies} from './interactive-map.actions';
-import {preferredSelector} from '../../utils';
+import { interactiveMapReducer } from './interactive-map.reducers';
+import { SimulationService } from '../services/simulation.service';
+import { MapService } from '../services/map.service';
+import { ModelService } from '../services/model.service';
+
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
@@ -33,19 +36,45 @@ const ACTION_OFFSETS = {
 };
 
 const preferredMaps = [
-  'iJO1366.Central metabolism',
+  'Central metabolism',
 ];
 
 const preferredSpeciesList = [
   'Escherichia coli',
 ];
 
+// const preferredMap = (mapItems: MapItem[]): MapItem =>
+//   mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
+
+const preferredSelector = <T>(
+    predicate: (item: T) => boolean,
+  ) => (items: T[]): T =>
+  items.find(predicate) || items[0];
+
+
 const preferredMap = preferredSelector((mapItem: MapItem) =>
   preferredMaps.includes(mapItem.name));
+
 
 const preferredSpecies = preferredSelector((species: Species) =>
   preferredSpeciesList.includes(species.name));
 
+const addedReactionToReaction = ({
+  bigg_id,
+  metanetx_id,
+  reaction_string,
+  database_links,
+  model_bigg_id,
+  organism,
+  ...rest}: AddedReaction,
+  bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: null, upperBound: null}): Cobra.Reaction =>
+  ({
+    ...rest,
+    id: bigg_id,
+    gene_reaction_rule: reaction_string,
+    lower_bound: bounds.lowerBound,
+    upper_bound: bounds.upperBound,
+});
 
 @Injectable()
 export class InteractiveMapEffects {
@@ -61,7 +90,7 @@ export class InteractiveMapEffects {
   @Effect()
   setSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SPECIES),
-    map((action: fromActions.SetSpecies) => new SetSelectedSpecies(preferredSpecies(action.payload).id)));
+    map((action: fromActions.SetSpecies) => new fromActions.SetSelectedSpecies(preferredSpecies(action.payload).id)));
 
   @Effect()
   selectedSpecies: Observable<Action> = this.actions$.pipe(
@@ -83,26 +112,34 @@ export class InteractiveMapEffects {
   fetchModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetModel) => {
-      return this.http
-        .get(`${environment.apis.model}/models/${action.payload}`)
-        .pipe(
-          map((response: Cobra.Model) => ({
-            response,
-            modelId: action.payload,
-          })),
-        );
+      const payload: SimulateRequest = {
+        method: 'fba',
+        objective: null,
+        objective_direction: null,
+        operations: [],
+      };
+      return forkJoin(
+        this.modelService.loadModel(action.payload),
+        this.simulationSerivce.simulate(action.payload, payload),
+      ).pipe(
+        map(([model, solution]) => ({
+          model,
+          solution,
+          modelId: action.payload,
+        })),
+      );
     }),
-    map(({response, modelId}) => new fromActions.ModelFetched({model: response, modelId})),
+    map((payload) => new fromActions.ModelFetched(payload)),
   );
 
   @Effect()
   setMaps: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetModel) =>
-      this.http.get(`${environment.apis.map}/model?model=${action.payload}`)),
-    concatMap((payload: MapItem[]) => ([
-      new fromActions.SetMaps(payload),
-      new fromActions.SetMap(preferredMap(payload)),
+      this.mapService.loadMaps(action.payload)),
+    concatMap((maps: MapItem[]) => ([
+      new fromActions.SetMaps(maps),
+      new fromActions.SetMap(preferredMap(maps)),
     ])),
   );
 
@@ -163,25 +200,65 @@ export class InteractiveMapEffects {
     ofType(fromActions.LOADED),
     withLatestFrom(this.store$),
     filter(([, storeState]) => storeState.interactiveMap.playing),
-    delay(2000),
+    delay(700),
     mapTo(new fromActions.NextCard()),
   );
 
   @Effect()
   operationReaction: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_METHOD, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_BOUNDS_REACTION),
-    // httpRequest here
-    // mergeMap((reaction) => {
-    //   return this.http.post(`${environment.apis.model}/something here`, reaction);
-    // }),
-    delay(500),
+    ofType(fromActions.SET_METHOD, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION),
     withLatestFrom(this.store$),
-    map(([action, store]: [fromActions.OperationActions, AppState]) =>
-      ({action, cardId: store.interactiveMap.selectedCardId})),
-    map(({action, cardId}) => ({
-      type: `${action.type}_APPLY`,
-      payload: action.payload,
-      cardId,
+    switchMap(([action, store]: [fromActions.OperationAction, AppState]) => {
+      // Ugly hack not to implement the reduction twice.
+      // @ts-ignore
+      const newAction = new fromActions.operationToApply[action.type](action.payload);
+      const IMStore = interactiveMapReducer(store.interactiveMap, newAction);
+      const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
+
+      const addedReactions = selectedCard.addedReactions.map((reaction: AddedReaction): DeCaF.Operation => ({
+        operation: 'add',
+        type: 'reaction',
+        id: reaction.bigg_id,
+        data: addedReactionToReaction(reaction),
+      }));
+
+      const knockouts = selectedCard.knockoutReactions.map((reactionId: string): DeCaF.Operation => ({
+        operation: 'remove',
+        type: 'reaction',
+        id: reactionId,
+        data: null,
+      }));
+
+      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: Bound): DeCaF.Operation => ({
+        operation: 'modify',
+        type: 'reaction',
+        id: reaction.id,
+        data: {
+          ...reaction,
+          lower_bound: lowerBound,
+          upper_bound: upperBound,
+        },
+      }));
+
+      const payload: SimulateRequest = {
+        method: selectedCard.method,
+        objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
+        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        operations: [
+          ...addedReactions,
+          ...knockouts,
+          ...bounds,
+        ],
+      };
+      return this.http.post(`${environment.apis.model}/models/${store.interactiveMap.selectedModel}/simulate`, payload)
+        .pipe(map((solution: DeCaF.Solution) => ({
+          action: newAction,
+          solution,
+        })));
+    }),
+    map(({action, solution}) => ({
+        ...action,
+        solution,
     })),
   );
 
@@ -189,5 +266,8 @@ export class InteractiveMapEffects {
     private actions$: Actions,
     private store$: Store<AppState>,
     private http: HttpClient,
+    private mapService: MapService,
+    private simulationSerivce: SimulationService,
+    private modelService: ModelService,
   ) {}
 }
