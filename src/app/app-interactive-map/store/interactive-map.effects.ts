@@ -22,7 +22,7 @@ import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Bound, Species } from '../types';
+import * as types from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
@@ -49,7 +49,7 @@ const preferredSelector = <T>(
   items.find(predicate) || items[0];
 
 
-const preferredSpecies = preferredSelector((species: Species) =>
+const preferredSpecies = preferredSelector((species: types.Species) =>
   preferredSpeciesList.includes(species.name));
 
 const addedReactionToReaction = ({
@@ -59,8 +59,8 @@ const addedReactionToReaction = ({
   database_links,
   model_bigg_id,
   organism,
-  ...rest}: AddedReaction,
-  bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: null, upperBound: null}): Cobra.Reaction =>
+  ...rest}: types.AddedReaction,
+  bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: null, upperBound: null}): types.Cobra.Reaction =>
   ({
     ...rest,
     id: bigg_id,
@@ -87,7 +87,7 @@ export class InteractiveMapEffects {
     switchMap((action: fromActions.FetchSpecies) => {
       return this.http.get(`${environment.apis.warehouse}/organisms`);
     }),
-    map((payload: Species[]) => new fromActions.SetSpecies(payload)),
+    map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
   );
 
   @Effect()
@@ -100,7 +100,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.SET_SELECTED_SPECIES),
     switchMap((action: fromActions.SetSelectedSpecies) =>
       this.http.get(`${environment.apis.model_warehouse}/models`)),
-    map((models: DeCaF.Model[]) => new fromActions.SetModels(models)),
+    map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
   );
 
 // TODO set model according to selectedSpecies
@@ -150,7 +150,7 @@ export class InteractiveMapEffects {
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
       const {maps} = storeState.interactiveMap;
-      const predicate = (mapItem: MapItem) =>
+      const predicate = (mapItem: types.MapItem) =>
         mapItem.model === model.name; // && mapItem.name === preferredMapsByModel[model];
       return new fromActions.SetMap(preferredSelector(predicate)(maps));
     }),
@@ -182,7 +182,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.MODEL_FETCHED),
     concatMapTo([
       new fromActions.ResetCards(),
-      new fromActions.AddCard(CardType.WildType),
+      new fromActions.AddCard(types.CardType.WildType),
     ]),
   );
 
@@ -249,21 +249,21 @@ export class InteractiveMapEffects {
       const IMStore = interactiveMapReducer(store.interactiveMap, newAction);
       const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
 
-      const addedReactions = selectedCard.addedReactions.map((reaction: AddedReaction): DeCaF.Operation => ({
+      const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
         operation: 'add',
         type: 'reaction',
         id: reaction.bigg_id,
         data: addedReactionToReaction(reaction),
       }));
 
-      const knockouts = selectedCard.knockoutReactions.map((reactionId: string): DeCaF.Operation => ({
+      const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({
         operation: 'remove',
         type: 'reaction',
         id: reactionId,
         data: null,
       }));
 
-      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: Bound): DeCaF.Operation => ({
+      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.Bound): types.DeCaF.Operation => ({
         operation: 'modify',
         type: 'reaction',
         id: reaction.id,
@@ -274,7 +274,7 @@ export class InteractiveMapEffects {
         },
       }));
 
-      const payload: SimulateRequest = {
+      const payload: types.SimulateRequest = {
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
         objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
@@ -285,7 +285,7 @@ export class InteractiveMapEffects {
         ],
       };
       return this.http.post(`${environment.apis.model}/models/${store.interactiveMap.selectedModel}/simulate`, payload)
-        .pipe(map((solution: DeCaF.Solution) => ({
+        .pipe(map((solution: types.DeCaF.Solution) => ({
           action: newAction,
           solution,
         })));
