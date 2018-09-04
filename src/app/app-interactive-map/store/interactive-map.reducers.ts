@@ -44,7 +44,7 @@ export interface InteractiveMapState {
   modelData: Cobra.Model;
   defaultSolution: DeCaF.Solution;
   maps: MapItem[];
-  selectedMap: string;
+  selectedMap: MapItem;
   mapData: PathwayMap;
   cards: {
     ids: string[];
@@ -73,7 +73,7 @@ export const initialState: InteractiveMapState = {
   selectedModel: null,
   modelData: null,
   defaultSolution: null,
-  maps: null,
+  maps: [],
   selectedMap: null,
   mapData: null,
   cards: {
@@ -153,7 +153,7 @@ export function interactiveMapReducer(
       return {
         ...state,
         mapData: action.payload.mapData,
-        selectedMap: action.payload.mapName,
+        selectedMap: action.payload.mapItem,
       };
     case fromInteractiveMapActions.RESET_CARDS:
       return {

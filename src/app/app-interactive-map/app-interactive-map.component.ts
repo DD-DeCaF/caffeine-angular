@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
+import {Store, select} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {filter, withLatestFrom} from 'rxjs/operators';
-import {select} from 'd3';
+import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
 import {Cobra, Card} from './types';
@@ -57,11 +57,12 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store.dispatch(new FetchSpecies());
+    this.store.dispatch(new fromActions.FetchMaps());
 
     const builderObservable = this.builderSubject.asObservable();
     this.store
-      .select((store) => store.interactiveMap.mapData)
       .pipe(
+        select((store) => store.interactiveMap.mapData),
         filter(notNull),
         withLatestFrom(builderObservable),
       ).subscribe(([map, builder]) => {
@@ -71,8 +72,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       });
 
     const selectedCard = this.store
-      .select(getSelectedCard)
       .pipe(
+        select(getSelectedCard),
         filter(notNull),
       );
 
@@ -89,7 +90,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    const element = select(this.elRef.nativeElement.querySelector('.escher-builder'));
+    const element = d3Select(this.elRef.nativeElement.querySelector('.escher-builder'));
     this.builderSubject.next(
       escher.Builder(
         null,

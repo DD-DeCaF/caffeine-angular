@@ -36,3 +36,7 @@ export const objectFilter = (
     );
 // tslint:enable:no-any
 
+export const firstIfContains = (items: string[], item) =>
+  [...items].sort((a, b) => b === item ? 1 : -1);
+
+export const unique = <T>(items: T[]): T[] => Array.from(new Set(items));
