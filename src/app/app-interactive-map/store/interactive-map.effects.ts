@@ -22,19 +22,25 @@ import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
-import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Bound } from '../types';
+import { Cobra, CardType, MapItem, SimulateRequest, AddedReaction, DeCaF, Bound, Species } from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
 import { ModelService } from '../services/model.service';
 
+
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
   [fromActions.PREVIOUS_CARD]: -1,
 };
+
 const preferredMaps = [
   'Central metabolism',
+];
+
+const preferredSpeciesList = [
+  'Escherichia coli',
 ];
 
 // const preferredMap = (mapItems: MapItem[]): MapItem =>
@@ -45,8 +51,13 @@ const preferredSelector = <T>(
   ) => (items: T[]): T =>
   items.find(predicate) || items[0];
 
+
 const preferredMap = preferredSelector((mapItem: MapItem) =>
   preferredMaps.includes(mapItem.name));
+
+
+const preferredSpecies = preferredSelector((species: Species) =>
+  preferredSpeciesList.includes(species.name));
 
 const addedReactionToReaction = ({
   bigg_id,
@@ -67,6 +78,20 @@ const addedReactionToReaction = ({
 
 @Injectable()
 export class InteractiveMapEffects {
+  @Effect()
+  fetchSpecies: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_SPECIES),
+    switchMap((action: fromActions.FetchSpecies) => {
+      return this.http.get(`${environment.apis.warehouse}/organisms`);
+    }),
+    map((payload: Species[]) => new fromActions.SetSpecies(payload)),
+  );
+
+  @Effect()
+  setSpecies: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_SPECIES),
+    map((action: fromActions.SetSpecies) => new fromActions.SetSelectedSpecies(preferredSpecies(action.payload).id)));
+
   @Effect()
   selectedSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SELECTED_SPECIES),

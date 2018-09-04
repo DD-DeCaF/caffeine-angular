@@ -15,8 +15,11 @@
 import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods, DeCaF} from '../types';
+import {CardType, OperationPayload, ObjectiveReactionPayload, Cobra, MapItem, Methods, DeCaF, Species} from '../types';
 
+
+export const FETCH_SPECIES = 'FETCH_SPECIES';
+export const SET_SPECIES = 'SET_SPECIES';
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
@@ -45,6 +48,15 @@ export const REACTION_OPERATION = 'REACTION_OPERATION';
 export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
+
+export class FetchSpecies implements Action {
+  readonly type = FETCH_SPECIES;
+}
+
+export class SetSpecies implements Action {
+  readonly type = SET_SPECIES;
+  constructor(public payload: Species[]) {}
+}
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -163,6 +175,6 @@ export const operationToApply = {
 };
 
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
+export type InteractiveMapActions = SetSpecies | SetSelectedSpecies | SetModels | ModelFetched | SetMaps | MapFetched |
   ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
   SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;

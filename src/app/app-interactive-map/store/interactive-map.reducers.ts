@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as fromInteractiveMapActions from './interactive-map.actions';
 import {PathwayMap} from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF} from '../types';
+import * as fromInteractiveMapActions from './interactive-map.actions';
+import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import { debug } from '../../logger';
 
@@ -37,7 +37,7 @@ export const idGen = new IdGen();
 export interface InteractiveMapState {
   playing: boolean;
   selectedCardId: string;
-  allSpecies: {id: string, name: string}[];
+  allSpecies: Species[];
   selectedSpecies: string;
   models: string[];
   selectedModel: string;
@@ -67,11 +67,7 @@ export const emptyCard: Card = {
 export const initialState: InteractiveMapState = {
   playing: false,
   selectedCardId: '0',
-  allSpecies: [
-    {id: 'ECOLX', name: 'Escherichia coli'},
-    {id: 'YEAST', name: 'Saccharomyces cerevisiae'},
-    {id: 'PSEPU', name: 'Pseudomonas putida'},
-  ],
+  allSpecies: [],
   selectedSpecies: null,
   models: null,
   selectedModel: null,
@@ -124,11 +120,18 @@ export function interactiveMapReducer(
 ): InteractiveMapState {
   debug('Action:', action);
   switch (action.type) {
+    case fromInteractiveMapActions.SET_SPECIES:
+      return {
+        ...state,
+        allSpecies: action.payload,
+      };
+    /* tslint:disable */
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
         ...state,
         selectedSpecies: action.payload,
       };
+    /* tslint:enable */
     case fromInteractiveMapActions.SET_MODELS:
       return {
         ...state,

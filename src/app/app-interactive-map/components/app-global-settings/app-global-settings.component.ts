@@ -19,8 +19,8 @@ import {map, withLatestFrom} from 'rxjs/operators';
 
 import { AppState } from '../../../store/app.reducers';
 import { MatSelect, MatSelectChange } from '@angular/material';
-import { SetSelectedSpecies, SetModel, SetMap } from '../../store/interactive-map.actions';
-import { MapItem } from '../../types';
+import {SetSelectedSpecies, SetModel, SetMap} from '../../store/interactive-map.actions';
+import {MapItem, Species} from '../../types';
 
 @Component({
   selector: 'app-global-settings',
@@ -33,7 +33,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
   @ViewChild('map') mapSelector: MatSelect;
 
   public selectedSpecies: Observable<string>;
-  public allSpecies: Observable<{id: string, name: string}[]>;
+  public allSpecies: Observable<Species[]>;
 
   public selectedModel: Observable<string>;
   public models: Observable<string[]>;
@@ -44,6 +44,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+
     this.selectedSpecies = this.store.select((store) => store.interactiveMap.selectedSpecies);
     this.allSpecies = this.store.select((store) => store.interactiveMap.allSpecies);
 

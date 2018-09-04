@@ -234,3 +234,11 @@ export interface AddedReaction extends BiggReaction {
   metabolites: any;
   database_links: {};
 }
+
+export interface Species {
+  project_id: string;
+  id: string;
+  name: string;
+  created: string;
+  updated: string;
+}
