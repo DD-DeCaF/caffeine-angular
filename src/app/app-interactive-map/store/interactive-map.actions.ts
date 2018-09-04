@@ -20,10 +20,9 @@ import * as types from '../types';
 export const FETCH_SPECIES = 'FETCH_SPECIES';
 export const SET_SPECIES = 'SET_SPECIES';
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
+export const FETCH_MODELS = 'FETCH_MODELS';
 export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
-export const FETCH_MODEL = 'FETCH_MODEL';
-// export const MODEL_FETCHED = 'MODEL_FETCHED';
 
 export const FETCH_MAPS = 'FETCH_MAPS';
 export const SET_MAPS = 'SET_MAPS';
@@ -40,6 +39,7 @@ export const SET_PLAY_STATE = 'SET_PLAY_STATE';
 export const LOADED = 'LOADED';
 
 export const ADD_CARD = 'ADD_CARD';
+export const ADD_CARD_FETCHED = 'ADD_CARD_FETCHED';
 export const DELETE_CARD = 'DELETE_CARD';
 export const RENAME_CARD = 'RENAME_CARD';
 
@@ -64,6 +64,10 @@ export class SetSelectedSpecies implements Action {
   constructor(public payload: types.Species) {}
 }
 
+export class FetchModels implements Action {
+  readonly type = FETCH_MODELS;
+}
+
 export class SetModels implements Action {
   readonly type = SET_MODELS;
   constructor(public payload: types.DeCaF.Model[]) {}
@@ -73,16 +77,6 @@ export class SetModel implements Action {
   readonly type = SET_MODEL;
   constructor(public payload: types.DeCaF.Model) {}
 }
-
-// export class ModelFetched implements Action {
-//   readonly type = MODEL_FETCHED;
-//   constructor(
-//     public payload: {
-//       model: types.Cobra.Model,
-//       modelId: string,
-//       solution: types.DeCaF.Solution,
-//     }) {}
-// }
 
 export class FetchMaps implements Action {
   readonly type = FETCH_MAPS;
@@ -134,6 +128,14 @@ export class AddCard implements Action {
   constructor(public payload: types.CardType) {}
 }
 
+export class AddCardFetched implements Action {
+  readonly type = ADD_CARD_FETCHED;
+  constructor(public payload: {
+    type: types.CardType,
+    solution: types.DeCaF.Solution,
+  }) {}
+}
+
 export class DeleteCard implements Action {
   readonly type = DELETE_CARD;
   constructor(public payload: string) {}
@@ -180,6 +182,6 @@ export const operationToApply = {
 };
 
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = FetchSpecies | SetSpecies | SetSelectedSpecies | SetModels | SetMaps | MapFetched |
-  ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCard | DeleteCard | RenameCard |
+export type InteractiveMapActions = FetchSpecies | SetSpecies | SetSelectedSpecies | SetModels | SetModel | SetMaps | MapFetched |
+  ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCardFetched | DeleteCard | RenameCard |
   SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;

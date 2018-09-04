@@ -17,6 +17,12 @@ import {interactiveMapReducer, initialState, InteractiveMapState, idGen} from '.
 
 import * as types from '../types';
 
+const applyActions = (actions: fromActions.InteractiveMapActions[]): InteractiveMapState =>
+  actions.reduce(
+    (prevState: InteractiveMapState, action) => interactiveMapReducer(prevState, action),
+    undefined,
+  );
+
 const addedReaction: types.AddedReaction = {
   bigg_id: 'asd',
   name: 'asd',
@@ -27,6 +33,28 @@ const addedReaction: types.AddedReaction = {
   database_links: {},
   model_bigg_id: '',
 };
+
+const testModel: types.DeCaF.Model = {
+  created: 'now',
+  id: 0,
+  name: 'Foo',
+  model_serialized: {
+    id: '0',
+    reactions: [],
+    metabolites: [],
+    genes: [],
+  },
+  organism_id: 'asd',
+  default_biomass_reaction: 'bar',
+};
+
+const testSolution: types.DeCaF.Solution = {
+  growth_rate: 0,
+  flux_distribution: {},
+};
+
+const testAddCard = (type: types.CardType): fromActions.AddCardFetched =>
+  new fromActions.AddCardFetched({type, solution: testSolution});
 
 describe('interactiveMapReducer', () => {
   beforeEach(() => {
@@ -45,9 +73,15 @@ describe('interactiveMapReducer', () => {
   });
 
   it('should add a new card', () => {
-    expect(interactiveMapReducer(undefined, new fromActions.AddCard(types.CardType.WildType)))
+    const actions = [
+      new fromActions.SetModel(testModel),
+      testAddCard(types.CardType.WildType),
+    ];
+
+    expect(applyActions(actions))
       .toEqual({
         ...initialState,
+        selectedModel: testModel,
         selectedCardId: '0',
         cards: {
           ids: ['0'],
@@ -55,8 +89,8 @@ describe('interactiveMapReducer', () => {
             '0': {
               name: 'Wild Type',
               type: types.CardType.WildType,
-              model: null,
-              solution: null,
+              model: testModel.model_serialized,
+              solution: testSolution,
               method: 'fba',
               addedReactions: [],
               knockoutReactions: [],
@@ -69,31 +103,41 @@ describe('interactiveMapReducer', () => {
   });
 
   it('should delete card', () => {
-    const state1 = interactiveMapReducer(undefined, new fromActions.AddCard(types.CardType.WildType));
-    const state2 = interactiveMapReducer(state1, new fromActions.AddCard(types.CardType.WildType));
-    const state3 = interactiveMapReducer(state2, new fromActions.DeleteCard('0'));
-    expect(Array.from(Object.keys(state3.cards.cardsById))).toEqual(['1']);
+    const actions = [
+      new fromActions.SetModel(testModel),
+      testAddCard(types.CardType.WildType),
+      testAddCard(types.CardType.WildType),
+      new fromActions.DeleteCard('0'),
+    ];
+    const state = applyActions(actions);
+    expect(Array.from(Object.keys(state.cards.cardsById))).toEqual(['1']);
   });
 
   it('should add new reaction', () => {
-    const state1 = interactiveMapReducer(undefined, new fromActions.AddCard(types.CardType.WildType));
-    const state2 = interactiveMapReducer(
-      state1,
-      new fromActions.ReactionOperationApply({
-        item: {
-          ...addedReaction,
-          bigg_id: 'asd',
-        },
-        direction: types.OperationDirection.Do,
-        operationTarget: 'addedReactions',
-      }),
-    );
-    expect(state2.cards.cardsById['0'].addedReactions[0].bigg_id).toEqual('asd');
+    const operationPayload: types.AddedReactionPayload = {
+      item: {
+        ...addedReaction,
+        bigg_id: 'asd',
+      },
+      direction: types.OperationDirection.Do,
+      operationTarget: 'addedReactions',
+    };
+
+    const actions = [
+      new fromActions.SetModel(testModel),
+      testAddCard(types.CardType.WildType),
+      new fromActions.ReactionOperationApply(operationPayload),
+    ];
+
+    const state = applyActions(actions);
+
+    expect(state.cards.cardsById['0'].addedReactions[0].bigg_id).toEqual('asd');
   });
 
   it('should remove the added reaction', () => {
     const actions = [
-      new fromActions.AddCard(types.CardType.WildType),
+      new fromActions.SetModel(testModel),
+      testAddCard(types.CardType.WildType),
       new fromActions.ReactionOperationApply({
         item: {
           ...addedReaction,
@@ -119,10 +163,7 @@ describe('interactiveMapReducer', () => {
         operationTarget: 'addedReactions',
       }),
     ];
-    const state = actions.reduce(
-      (prevState: InteractiveMapState, action) => interactiveMapReducer(prevState, action),
-      undefined,
-    );
+    const state = applyActions(actions);
     expect(state.cards.cardsById['0'].addedReactions[0].bigg_id).toEqual('foobar');
   });
 
