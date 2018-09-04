@@ -16,8 +16,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, forkJoin } from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMap, concatMapTo} from 'rxjs/operators';
+import { Observable, forkJoin, combineLatest } from 'rxjs';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
@@ -35,25 +35,18 @@ const ACTION_OFFSETS = {
   [fromActions.PREVIOUS_CARD]: -1,
 };
 
-const preferredMaps = [
-  'Central metabolism',
-];
-
 const preferredSpeciesList = [
   'Escherichia coli',
 ];
 
-// const preferredMap = (mapItems: MapItem[]): MapItem =>
-//   mapItems.find((mapItem) => preferredMaps.includes(mapItem.name)) || mapItems[0];
+const preferredMapsByModel = {
+  'iJO1366': 'Central metabolism',
+};
 
 const preferredSelector = <T>(
     predicate: (item: T) => boolean,
   ) => (items: T[]): T =>
   items.find(predicate) || items[0];
-
-
-const preferredMap = preferredSelector((mapItem: MapItem) =>
-  preferredMaps.includes(mapItem.name));
 
 
 const preferredSpecies = preferredSelector((species: Species) =>
@@ -133,14 +126,22 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
-  setMaps: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_MODEL),
+  setMaps: Observable<Action> = combineLatest(
+    this.actions$.pipe(
+      ofType(fromActions.SET_MODEL)),
+    this.actions$.pipe(
+      ofType(fromActions.SET_MAPS),
+      take(1),
+    ),
+  ).pipe(
+    map(([action]) => action),
     withLatestFrom(this.store$),
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
+      const model = action.payload;
       const {maps} = storeState.interactiveMap;
-      const mapItem = maps
-        .find((item: MapItem) => item.model === action.payload) && maps[0];
-      return new fromActions.SetMap(mapItem);
+      const predicate = ((mapItem: MapItem) =>
+        mapItem.model === model && mapItem.name === preferredMapsByModel[model]);
+      return new fromActions.SetMap(preferredSelector(predicate)(maps));
     }),
   );
 
@@ -169,11 +170,11 @@ export class InteractiveMapEffects {
         .http.get(`${environment.apis.map}/map?map=${action.payload.map}`)
         .pipe(map((response: PathwayMap) => ({
           mapData: response,
-          mapName: action.payload.name,
+          mapItem: action.payload,
         })),
       );
     }),
-    map(({mapData, mapName}) => new fromActions.MapFetched({mapData, mapName})),
+    map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
   );
 
   // Steps to the previous or the next card depending on the action

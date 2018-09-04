@@ -12,7 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {appendOrUpdate, appendOrUpdateStringList, notNull, objectFilter} from './utils';
+import {
+  appendOrUpdate,
+  appendOrUpdateStringList,
+  notNull,
+  objectFilter,
+  firstIfContains,
+  unique,
+} from './utils';
 
 describe('notNull', () => {
   it('should be true for no null items', () => {
@@ -117,5 +124,24 @@ describe('objectFilter', () => {
   it('should filter out zero values', () => {
     expect(objectFilter((key, value) => value > 0)(object))
       .toEqual({bar: 3, baz: 6, foobar: 7});
+  });
+});
+
+describe('firstIfContains', () => {
+  it('should return the original array when there\'s no hit', () => {
+    expect(firstIfContains(['foo', 'bar', 'baz'], 'john'))
+      .toEqual(['foo', 'bar', 'baz']);
+  });
+
+  it('should move item to the first position', () => {
+    expect(firstIfContains(['foo', 'bar', 'baz'], 'baz'))
+      .toEqual(['baz', 'foo', 'bar']);
+  });
+});
+
+describe('unique', () => {
+  it('should return a uique array', () => {
+    expect(unique([1, 1, 2, 2, 3, 4, 5, 6, 2]))
+      .toEqual([1, 2, 3, 4, 5, 6]);
   });
 });

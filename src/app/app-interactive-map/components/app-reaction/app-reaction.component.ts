@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import {filter} from 'rxjs/operators';
 
@@ -38,8 +38,9 @@ export class AppReactionComponent implements OnInit {
 
   ngOnInit(): void {
     this.card = this.store
-      .select(getSelectedCard)
       .pipe(
-        filter(notNull));
+        select(getSelectedCard),
+        filter(notNull),
+      );
   }
 }

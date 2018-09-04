@@ -101,7 +101,7 @@ export class SetMap implements Action {
 
 export class MapFetched implements Action {
   readonly type = MAP_FETCHED;
-  constructor(public payload: {mapData: PathwayMap, mapName: string}) {}
+  constructor(public payload: {mapData: PathwayMap, mapItem: MapItem}) {}
 }
 
 export class ResetCards implements Action {

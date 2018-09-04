@@ -13,14 +13,15 @@
 // limitations under the License.
 
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import {map, withLatestFrom} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 
 import { AppState } from '../../../store/app.reducers';
 import { MatSelect, MatSelectChange } from '@angular/material';
-import {SetSelectedSpecies, SetModel, SetMap} from '../../store/interactive-map.actions';
-import {MapItem, Species} from '../../types';
+import { SetSelectedSpecies, SetModel, SetMap } from '../../store/interactive-map.actions';
+import { MapItem, Species } from '../../types';
+import { mapItemsByModel } from '../../store/interactive-map.selectors';
 
 @Component({
   selector: 'app-global-settings',
@@ -38,21 +39,24 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
   public selectedModel: Observable<string>;
   public models: Observable<string[]>;
 
-  public selectedMap: Observable<string>;
-  public maps: Observable<MapItem[]>;
+  public selectedMap: Observable<MapItem>;
+  public mapItems: Observable<{
+    modelIds: string[],
+    mapsByModelId: {[key: string]: MapItem[] },
+  }>;
+  public JSON = JSON;
 
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    this.selectedSpecies = this.store.pipe(select((store) => store.interactiveMap.selectedSpecies));
+    this.allSpecies = this.store.pipe(select((store) => store.interactiveMap.allSpecies));
 
-    this.selectedSpecies = this.store.select((store) => store.interactiveMap.selectedSpecies);
-    this.allSpecies = this.store.select((store) => store.interactiveMap.allSpecies);
+    this.selectedModel = this.store.pipe(select((store) => store.interactiveMap.selectedModel));
+    this.models = this.store.pipe(select((store) => store.interactiveMap.models));
 
-    this.selectedModel = this.store.select((store) => store.interactiveMap.selectedModel);
-    this.models = this.store.select((store) => store.interactiveMap.models);
-
-    this.selectedMap = this.store.select((store) => store.interactiveMap.selectedMap);
-    this.maps = this.store.select((store) => store.interactiveMap.maps);
+    this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
+    this.mapItems = this.store.pipe(select(mapItemsByModel));
   }
 
   ngAfterViewInit(): void {
@@ -68,10 +72,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
 
     this.mapSelector.selectionChange
       .pipe(
-        map((change: MatSelectChange): string => change.value),
-        withLatestFrom(this.maps),
-        map(([selectedName, maps]: [string, MapItem[]]): MapItem =>
-          maps.find(({name}) => name === selectedName)),
+        map((change: MatSelectChange): MapItem => change.value),
       )
       .subscribe((mapItem: MapItem) => {
         this.store.dispatch(new SetMap(mapItem));

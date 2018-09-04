@@ -27,7 +27,9 @@
 
   <mat-form-field>
     <mat-select placeholder="Map" [value]="selectedMap | async" #map>
-      <mat-option [value]="map.name" *ngFor="let map of (maps | async)">{{map.name}}</mat-option>
+      <mat-optgroup *ngFor="let modelforMaps of (mapItems | async).modelIds" [label]="modelforMaps">
+          <mat-option [value]="mapItem" *ngFor="let mapItem of (mapItems | async).mapsByModelId[modelforMaps]">{{mapItem.name}}</mat-option>
+      </mat-optgroup>
     </mat-select>
   </mat-form-field>
 </div>

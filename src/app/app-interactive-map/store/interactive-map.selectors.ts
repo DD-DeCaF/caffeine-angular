@@ -12,15 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {createSelector, createSelectorFactory, defaultMemoize} from '@ngrx/store';
+import {createSelector} from '@ngrx/store';
 import {AppState} from '../../store/app.reducers';
-import {Card, HydratedCard} from '../types';
-
-const isEqualOrNull = (a: any, b: any): boolean => // tslint:disable-line
-  a === b || b === null;
-
-const createSelectorNotNull = createSelectorFactory((projectionFn) =>
-  defaultMemoize(projectionFn, isEqualOrNull));
+import {Card, HydratedCard, MapItem} from '../types';
+import { firstIfContains, unique } from '../../utils';
 
 export const getCardIds = (state: AppState) => state.interactiveMap.cards.ids;
 
@@ -36,7 +31,7 @@ export const getHydratedCards = createSelector(
     })),
 );
 
-export const getSelectedCard = createSelectorNotNull(
+export const getSelectedCard = createSelector(
   (state: AppState) => state.interactiveMap.cards.cardsById,
   (state: AppState) => state.interactiveMap.selectedCardId,
   (cards: { [key: string]: Card; }, selectedID: string): HydratedCard =>
@@ -45,4 +40,30 @@ export const getSelectedCard = createSelectorNotNull(
       id: selectedID,
       selected: true,
     }) : null,
+);
+
+export const mapItemsByModel = createSelector(
+  (state: AppState) => state.interactiveMap.maps,
+  (state: AppState) => state.interactiveMap.selectedModel,
+  (mapItems, selectedModel) => {
+    // Project the map
+    const modelIds = firstIfContains(
+      unique(mapItems.map(({model}) => model)),
+      selectedModel,
+    );
+
+    const mapsByModelId = mapItems.reduce(
+      (accumulator: {[key: string]: MapItem[] }, mapItem: MapItem) => ({
+        ...accumulator,
+        [mapItem.model]: [
+          ...(accumulator[mapItem.model] || []),
+          mapItem,
+        ],
+      }), {});
+
+    return {
+      modelIds,
+      mapsByModelId,
+    };
+  },
 );
