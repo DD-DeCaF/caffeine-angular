@@ -50,6 +50,7 @@ declare module '@dd-decaf/escher' {
       set_gene_data(gene_data: GeneDataArray): void;
       renderSearchBar(hide?: boolean, searchItem?: string): void;
       set_reaction_data(flux: any): void;
+      set_knockout_reactions(reactions: string[]): void;
   }
 
   export function Builder(
