@@ -26,6 +26,7 @@ import * as fromInteractiveMapActions from '../app-interactive-map/store/interac
 export class AppDesignToolComponent implements OnInit {
 
   public designForm: FormGroup;
+  public showSidenav = false // change this when we receive the data from the form;
 
   constructor(
     private store: Store<AppState>,

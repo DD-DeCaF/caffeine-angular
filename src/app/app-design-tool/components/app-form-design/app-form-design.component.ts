@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatButton, MatSelect} from '@angular/material';
 import {Species} from '../../../app-interactive-map/types';
 import {fromEvent, Observable} from 'rxjs';
@@ -29,6 +29,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   @ViewChild('species') speciesSelector: MatSelect;
   @ViewChild('advanced') advancedButton: MatButton;
   @ViewChild('design') designButton: MatButton;
+  @Input() sidenav: boolean;
 
   public designForm: FormGroup;
   public selectedSpecies: Observable<string>;

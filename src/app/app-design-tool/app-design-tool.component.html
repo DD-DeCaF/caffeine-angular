@@ -19,7 +19,6 @@
     <mat-sidenav #sidenav
                  class="mat-elevation-z3"
                  mode="over"
-                 opened
                  position="end"
                  #sidenav
     >
@@ -28,7 +27,7 @@
     <div (click)="sidenav.close()">
      <app-form-design></app-form-design>
     </div>
-    <div class="floating-menu">
+    <div class="floating-menu" [hidden]="!showSidenav">
       <button mat-mini-fab color="primary" (click)="sidenav.open()">
         <mat-icon>apps</mat-icon>
       </button>
