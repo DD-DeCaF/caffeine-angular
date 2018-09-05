@@ -267,7 +267,7 @@ export class InteractiveMapEffects {
           ...bounds,
         ],
       };
-      return this.http.post(`${environment.apis.model}/simulate`, payload)
+      return this.simulationSerivce.simulate(payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
           action: newAction,
           solution,
