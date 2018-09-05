@@ -17,12 +17,12 @@ import {Configuration} from './configuration';
 export const environment: Configuration = {
   production: true,
   apis: {
-    iam: 'https://api.dd-decaf.eu/iam',
-    model: 'https://api.dd-decaf.eu/mcaffeine',
-    model_warehouse: 'https://api.dd-decaf.eu/mwarehouse',
-    map: 'https://api.dd-decaf.eu/maps',
+    iam: 'https://api-staging.dd-decaf.eu/iam',
+    model: 'https://api-staging.dd-decaf.eu/mcaffeine',
+    model_warehouse: 'https://api-staging.dd-decaf.eu/mwarehouse',
+    map: 'https://api-staging.dd-decaf.eu/maps',
     bigg: 'https://api.dd-decaf.eu/bigg',
-    warehouse: 'https://api.dd-decaf.eu/warehouse',
+    warehouse: 'https://api-staging.dd-decaf.eu/warehouse',
   },
   GA: {
     trackingID: 'UA-106144097-2',
