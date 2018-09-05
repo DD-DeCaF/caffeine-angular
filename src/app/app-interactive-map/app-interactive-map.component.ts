@@ -85,6 +85,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.loading = true;
         builder.load_model(card.model);
         builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        builder.set_knockout_reactions(card.knockoutReactions);
         this.store.dispatch(new fromActions.Loaded());
         this.loading = false;
       });
