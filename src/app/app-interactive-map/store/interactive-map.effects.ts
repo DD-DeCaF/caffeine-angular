@@ -34,18 +34,27 @@ const ACTION_OFFSETS = {
   [fromActions.PREVIOUS_CARD]: -1,
 };
 
+const preferredMapItem = {
+  model: 'iJO1366',
+  name : 'Central metabolism',
+};
+
 const preferredSpeciesList = [
   'Escherichia coli',
 ];
 
 const preferredMapsByModel = {
   'iJO1366': 'Central metabolism',
+  'e_coli_core': 'Central metabolism',
+  'iJN746': 'Central metabolism',
+  'iMM904': 'Central metabolism',
 };
 
 const preferredSelector = <T>(
     predicate: (item: T) => boolean,
+    preferredMap?: (item: T) => boolean,
   ) => (items: T[]): T =>
-  items.find(predicate) || items[0];
+  items.find(predicate) || (preferredMap ? items.find(preferredMap) || items[0] : items[0]);
 
 
 const preferredSpecies = preferredSelector((species: types.Species) =>
@@ -120,9 +129,11 @@ export class InteractiveMapEffects {
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
       const {maps} = storeState.interactiveMap;
+      const preferredMap = (mapItem: types.MapItem) =>
+        (mapItem.model === preferredMapItem.model && mapItem.name === preferredMapItem.name);
       const predicate = (mapItem: types.MapItem) =>
-        mapItem.model === model.name && mapItem.name === preferredMapsByModel[model.name];
-      return new fromActions.SetMap(preferredSelector(predicate)(maps));
+        (mapItem.model === model.name && mapItem.name === preferredMapsByModel[model.name]);
+      return new fromActions.SetMap(preferredSelector(predicate, preferredMap)(maps));
     }),
   );
 
