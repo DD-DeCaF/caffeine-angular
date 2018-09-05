@@ -149,12 +149,14 @@ export class InteractiveMapEffects {
     withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModel))),
     switchMap(([{payload: type}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
       const payload: types.SimulateRequest = {
+        model: model.model_serialized,
+        biomass_reaction: model.default_biomass_reaction,
         method: 'fba',
         objective: null,
         objective_direction: null,
         operations: [],
       };
-      return this.simulationSerivce.simulate(model.name, payload)
+      return this.simulationSerivce.simulate(payload)
         .pipe(
           map((solution) => ({
             type,
@@ -254,6 +256,8 @@ export class InteractiveMapEffects {
       }));
 
       const payload: types.SimulateRequest = {
+        model: store.interactiveMap.selectedModel.model_serialized,
+        biomass_reaction: store.interactiveMap.selectedModel.default_biomass_reaction,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
         objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
@@ -263,7 +267,7 @@ export class InteractiveMapEffects {
           ...bounds,
         ],
       };
-      return this.http.post(`${environment.apis.model}/models/${store.interactiveMap.selectedModel.name}/simulate`, payload)
+      return this.http.post(`${environment.apis.model}/simulate`, payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
           action: newAction,
           solution,

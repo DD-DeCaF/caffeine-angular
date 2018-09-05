@@ -24,7 +24,7 @@ export class SimulationService {
     private http: HttpClient,
   ) {}
 
-  simulate(model: string, payload: SimulateRequest): Observable<DeCaF.Solution> {
-    return this.http.post<DeCaF.Solution>(`${environment.apis.model}/models/${model}/simulate`, payload);
+  simulate(payload: SimulateRequest): Observable<DeCaF.Solution> {
+    return this.http.post<DeCaF.Solution>(`${environment.apis.model}/simulate`, payload);
   }
 }

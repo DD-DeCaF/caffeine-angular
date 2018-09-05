@@ -204,6 +204,8 @@ export declare namespace DeCaF {
 }
 
 export interface SimulateRequest {
+  model: Cobra.Model;
+  biomass_reaction: string;
   method: Methods;
   objective?: string;
   objective_direction: ObjectiveDirection;
