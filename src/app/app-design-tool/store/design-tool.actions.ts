@@ -12,20 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ActionReducerMap} from '@ngrx/store';
+import {Action} from '@ngrx/store';
 
-import {SessionState, sessionReducer} from '../session/store/session.reducers';
-import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
-import {designToolReducer, DesignToolState} from '../app-design-tool/store/design-tool.reducers';
+export const DESIGN_OPERATION = 'DESIGN_OPERATION';
 
-export interface AppState {
-  session: SessionState;
-  interactiveMap: InteractiveMapState;
-  designTool: DesignToolState;
+export class DesignOperation implements Action {
+  readonly type = DESIGN_OPERATION;
 }
-
-export const reducers: ActionReducerMap<AppState> = {
-  session: sessionReducer,
-  interactiveMap: interactiveMapReducer,
-  designTool: designToolReducer,
-};
+export type DesignToolActions = DesignOperation;

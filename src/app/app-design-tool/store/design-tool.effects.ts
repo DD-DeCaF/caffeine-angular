@@ -12,20 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ActionReducerMap} from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Store} from '@ngrx/store';
+import { Actions } from '@ngrx/effects';
+import { AppState } from '../../store/app.reducers';
 
-import {SessionState, sessionReducer} from '../session/store/session.reducers';
-import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
-import {designToolReducer, DesignToolState} from '../app-design-tool/store/design-tool.reducers';
 
-export interface AppState {
-  session: SessionState;
-  interactiveMap: InteractiveMapState;
-  designTool: DesignToolState;
+@Injectable()
+export class DesignToolEffects {
+
+  constructor(
+    private actions$: Actions,
+    private store$: Store<AppState>,
+    private http: HttpClient,
+  ) {}
 }
-
-export const reducers: ActionReducerMap<AppState> = {
-  session: sessionReducer,
-  interactiveMap: interactiveMapReducer,
-  designTool: designToolReducer,
-};
