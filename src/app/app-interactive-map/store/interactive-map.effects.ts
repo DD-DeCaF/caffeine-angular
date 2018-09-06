@@ -36,7 +36,7 @@ const ACTION_OFFSETS = {
 
 const preferredMapItem = {
   model: 'iJO1366',
-  name : 'Central metabolism',
+  name: 'Central metabolism',
 };
 
 const preferredSpeciesList = [
@@ -44,23 +44,43 @@ const preferredSpeciesList = [
 ];
 
 const preferredMapsByModel = {
-  'iJO1366': 'Central metabolism',
-  'e_coli_core': 'Central metabolism',
-  'iJN746': 'Central metabolism',
-  'iMM904': 'Central metabolism',
+  'iJO1366': {
+    model: 'iJO1366',
+    name : 'Central metabolism',
+  },
+  'e_coli_core': {
+    model: 'e_coli_core',
+    name : 'Central metabolism',
+  },
+  'iJN746': {
+    model: 'iJN746',
+    name : 'Central metabolism',
+  },
+  'iMM904': {
+    model: 'iMM904',
+    name : 'Central metabolism',
+  },
 };
+
 
 const preferredSelector = <T>(
   predicate: (item: T) => boolean,
-  preferredMap?: (item: T) => boolean,
-  modelHasMaps?: (item: T) => boolean,
 ) => (items: T[]): T =>
-  items.find(predicate) || (items.find(modelHasMaps) || (items.find(preferredMap) ||
-  items[0]));
+  items.find(predicate) || items[0];
 
 
 const preferredSpecies = preferredSelector((species: types.Species) =>
   preferredSpeciesList.includes(species.name));
+
+const compareModel = (a, b) => a && b && a.model === b.model;
+const compareName = (a, b) => a && b && a.name === b.name;
+
+const selectorCreator = <T>(comparators: ((a: T, b: T) => boolean)[]) => (items: T[], preferredItem: T, defaultMap) => {
+  return comparators.reduce((prev: T[], next: (a: T, b: T) => boolean) => {
+    const filtered = prev.length > 0 ? prev.filter((item) => next(item, preferredItem)) : [];
+    return filtered.length > 0 ? filtered : prev[0] || defaultMap;
+  }, items);
+};
 
 const addedReactionToReaction = ({
   bigg_id,
@@ -131,13 +151,9 @@ export class InteractiveMapEffects {
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
       const {maps} = storeState.interactiveMap;
-      const modelHasMaps = (mapItem: types.MapItem) =>
-        (mapItem.model === model.name);
-      const preferredMap = (mapItem: types.MapItem) =>
-        (mapItem.model === preferredMapItem.model && mapItem.name === preferredMapItem.name);
-      const predicate = (mapItem: types.MapItem) =>
-        (mapItem.model === model.name && mapItem.name === preferredMapsByModel[model.name]);
-      return new fromActions.SetMap(preferredSelector(predicate, preferredMap, modelHasMaps)(maps));
+      const preferred = maps.filter((item) => compareModel(item, preferredMapItem) && compareName(item, preferredMapItem));
+      const selectedMap = selectorCreator([compareModel, compareName])(maps, preferredMapsByModel[model.name] || {model: model.name}, preferred);
+      return new fromActions.SetMap(selectedMap[0] || selectedMap);
     }),
   );
 
