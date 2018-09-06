@@ -51,10 +51,12 @@ const preferredMapsByModel = {
 };
 
 const preferredSelector = <T>(
-    predicate: (item: T) => boolean,
-    preferredMap?: (item: T) => boolean,
-  ) => (items: T[]): T =>
-  items.find(predicate) || (preferredMap ? items.find(preferredMap) || items[0] : items[0]);
+  predicate: (item: T) => boolean,
+  preferredMap?: (item: T) => boolean,
+  modelHasMaps?: (item: T) => boolean,
+) => (items: T[]): T =>
+  items.find(predicate) || (items.find(modelHasMaps) || (items.find(preferredMap) ||
+  items[0]));
 
 
 const preferredSpecies = preferredSelector((species: types.Species) =>
@@ -129,11 +131,13 @@ export class InteractiveMapEffects {
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
       const {maps} = storeState.interactiveMap;
+      const modelHasMaps = (mapItem: types.MapItem) =>
+        (mapItem.model === model.name);
       const preferredMap = (mapItem: types.MapItem) =>
         (mapItem.model === preferredMapItem.model && mapItem.name === preferredMapItem.name);
       const predicate = (mapItem: types.MapItem) =>
         (mapItem.model === model.name && mapItem.name === preferredMapsByModel[model.name]);
-      return new fromActions.SetMap(preferredSelector(predicate, preferredMap)(maps));
+      return new fromActions.SetMap(preferredSelector(predicate, preferredMap, modelHasMaps)(maps));
     }),
   );
 
