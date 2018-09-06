@@ -180,4 +180,12 @@ describe('interactiveMapReducer', () => {
       direction: 'min',
     });
   });
+
+  it('should set the selected specie', () => {
+    const state = interactiveMapReducer(
+      undefined,
+      new fromActions.SetSelectedSpecies({project_id: null, id: '2', name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null}),
+    );
+    expect(state.selectedSpecies).toEqual({project_id: null, id: '2', name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null});
+  });
 });
