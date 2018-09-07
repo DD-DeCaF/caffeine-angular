@@ -12,20 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { Cobra } from '../types';
+import {createSelector} from '@ngrx/store';
+import {AppState} from '../../store/app.reducers';
 
-@Injectable()
-export class ModelService {
 
-  constructor(
-    private http: HttpClient,
-  ) {}
-
-  loadModel(modelId: string): Observable<Cobra.Model> {
-    return this.http.get<Cobra.Model>(`${environment.apis.model}/models/${modelId}`);
-  }
-}
+export const activeModels = createSelector(
+  (state: AppState) => state.designTool.models,
+  (state: AppState) => state.designTool.selectedSpecies,
+  (models, selectedSpecies) => models
+    .filter((m) => m.organism_id === selectedSpecies.id.toString()),
+);

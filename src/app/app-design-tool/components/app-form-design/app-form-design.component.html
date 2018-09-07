@@ -13,17 +13,30 @@
 <!--limitations under the License.-->
 
 <div class="container">
-  <form [formGroup]="designForm" (ngSubmit)="submit()" novalidate class="design-form">
+  <form class="design-form" #designForm="ngForm">
     <mat-form-field>
       <mat-label class="title">Organism</mat-label>
-      <mat-select formControlName="species" [value]="selectedSpecies | async" #species>
-        <mat-option [value]="species.id" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
+      <mat-select type="text"
+                  id="species"
+                  class="form-control"
+                  name="species"
+                  ngModel
+                  required
+                  #species>
+        <mat-option [value]="species" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
       </mat-select>
       <mat-hint>*Required</mat-hint>
     </mat-form-field>
     <mat-form-field class="example-full-width">
       <mat-label class="title">Product</mat-label>
-      <input type="text" placeholder="Pick one" aria-label="Number" matInput formControlName="product" [matAutocomplete]="auto">
+      <input type="text"
+             placeholder="Pick one"
+             aria-label="Number"
+             matInput
+             name="product"
+             ngModel
+             required
+             [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of options" [value]="option">
           {{option}}
@@ -39,21 +52,36 @@
     <div *ngIf="!collapsed">
       <div class="checkbox-group" [ngClass]="{'grid': sidenav==true}">
         <mat-label class="title">Select Databases</mat-label>
-        <mat-checkbox formControlName="bigg" color="primary">BIGG</mat-checkbox>
-        <mat-checkbox formControlName="kegg" color="primary">KEGG</mat-checkbox>
-        <mat-checkbox formControlName="rhea" color="primary">RHEA</mat-checkbox>
+        <mat-checkbox name="bigg"
+                      ngModel
+                      color="primary">BIGG
+        </mat-checkbox>
+        <mat-checkbox name="kegg"
+                      ngModel
+                      color="primary">KEGG
+        </mat-checkbox>
+        <mat-checkbox name="rhea"
+                      ngModel
+                      color="primary">RHEA
+        </mat-checkbox>
       </div>
       <mat-form-field>
         <mat-label class="title">Model</mat-label>
-        <mat-select formControlName="model" [value]="selectedSpecies | async" #species>
-          <mat-option [value]="species.id" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
+        <mat-select name="model"
+                    ngModel
+                    [value]="selectedModel | async" #model>
+          <mat-option [value]="model" *ngFor="let model of (models | async)">{{model.name}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field>
         <mat-label class="title">Number of pathways</mat-label>
-        <input formControlName="number_pathways" type="number" placeholder="10" matInput>
+        <input name="number_pathways"
+               ngModel
+               type="number"
+               placeholder="10"
+               matInput>
       </mat-form-field>
     </div>
-    <button mat-button [disabled]="!designForm.valid" #design>DESIGN</button>
+    <button mat-button [disabled]="!designForm.valid" type="submit" #design>DESIGN</button>
   </form>
 </div>

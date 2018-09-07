@@ -49,6 +49,7 @@ import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map
 import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
 import { AppDesignToolComponent } from './app-design-tool/app-design-tool.component';
 import {AppFormDesignComponent} from './app-design-tool/components/app-form-design/app-form-design.component';
+import {DesignToolEffects} from './app-design-tool/store/design-tool.effects';
 // end interactive map
 
 if (environment.sentry) {
@@ -100,7 +101,7 @@ export class RavenErrorHandler implements ErrorHandler {
 
     // NgRX imports
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([InteractiveMapEffects]),
+    EffectsModule.forRoot([InteractiveMapEffects, DesignToolEffects]),
   ],
   providers: [
     SessionService,

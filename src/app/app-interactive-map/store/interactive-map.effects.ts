@@ -28,6 +28,8 @@ import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
 import { WarehouseService } from '../services/warehouse.service';
+import {ModelService} from '../../services/model.service';
+import {SpeciesService} from '../../services/species.service';
 
 
 const ACTION_OFFSETS = {
@@ -71,7 +73,7 @@ export class InteractiveMapEffects {
   fetchModels: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MODELS),
     switchMap(() =>
-      this.http.get(`${environment.apis.model_warehouse}/models`)),
+      this.modelService.loadModels()),
     map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
   );
 
@@ -138,7 +140,7 @@ export class InteractiveMapEffects {
         objective_direction: null,
         operations: [],
       };
-      return this.simulationSerivce.simulate(payload)
+      return this.simulationService.simulate(payload)
         .pipe(
           map((solution) => ({
             type,
@@ -249,7 +251,7 @@ export class InteractiveMapEffects {
           ...bounds,
         ],
       };
-      return this.simulationSerivce.simulate(payload)
+      return this.simulationService.simulate(payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
           action: newAction,
           solution,
@@ -266,7 +268,9 @@ export class InteractiveMapEffects {
     private store$: Store<AppState>,
     private http: HttpClient,
     private mapService: MapService,
-    private simulationSerivce: SimulationService,
     private warehouseService: WarehouseService,
+    private modelService: ModelService,
+    private simulationService: SimulationService,
+    private speciesService: SpeciesService,
   ) {}
 }

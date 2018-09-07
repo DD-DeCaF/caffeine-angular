@@ -13,18 +13,58 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Store} from '@ngrx/store';
-import { Actions } from '@ngrx/effects';
+import {Action, Store} from '@ngrx/store';
+import {Actions, Effect, ofType} from '@ngrx/effects';
 import { AppState } from '../../store/app.reducers';
+import {map, switchMap} from 'rxjs/operators';
+import * as fromActions from './design-tool.actions';
+import {Observable} from 'rxjs';
+import * as types from '../../app-interactive-map/types';
+import {SpeciesService} from '../../services/species.service';
+import {ModelService} from '../../services/model.service';
+import {SetModelsDesign, SetSelectedSpeciesDesign, SetSpeciesDesign} from './design-tool.actions';
 
+const preferredSpeciesList = [
+  'Escherichia coli',
+];
+
+const preferredSelector = <T>(
+  predicate: (item: T) => boolean,
+  preferredMap?: (item: T) => boolean,
+) => (items: T[]): T =>
+  items.find(predicate) || (preferredMap ? items.find(preferredMap) || items[0] : items[0]);
+
+
+const preferredSpecies = preferredSelector((species: types.Species) =>
+  preferredSpeciesList.includes(species.name));
 
 @Injectable()
 export class DesignToolEffects {
+  @Effect()
+  fetchSpeciesDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_SPECIES_DESIGN),
+    switchMap(() =>
+      this.speciesService.loadSpecies()),
+    map((payload: types.Species[]) => new SetSpeciesDesign(payload)),
+  );
+
+  @Effect()
+  setSpeciesDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_SPECIES_DESIGN),
+    map((action: fromActions.SetSpeciesDesign) => new SetSelectedSpeciesDesign(preferredSpecies(action.payload))));
+
+  @Effect()
+  fetchModelsDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_MODELS_DESIGN),
+    switchMap(() =>
+      this.modelService.loadModels()),
+    map((models: types.DeCaF.Model[]) => new SetModelsDesign(models)),
+  );
 
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
-    private http: HttpClient,
+    private modelService: ModelService,
+    private speciesService: SpeciesService,
   ) {}
 }

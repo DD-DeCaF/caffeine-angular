@@ -14,13 +14,20 @@
 
 import * as fromDesingToolActions from './design-tool.actions';
 import {debug} from '../../logger';
+import * as types from '../../app-interactive-map/types';
 
 export interface DesignToolState {
-  state: string;
+  allSpecies: types.Species[];
+  selectedSpecies: types.Species;
+  models: types.DeCaF.Model[];
+  selectedModel: types.DeCaF.Model;
 }
 
 export const initialState: DesignToolState = {
-  state: null,
+  allSpecies: [],
+  selectedSpecies: null,
+  models: [],
+  selectedModel: null,
 };
 
 
@@ -28,8 +35,28 @@ export function designToolReducer(
   state: DesignToolState = initialState,
   action: fromDesingToolActions.DesignToolActions,
 ): DesignToolState {
-  debug('Action:', action);
+  debug('Action reducer:', action);
   switch (action.type) {
+    case fromDesingToolActions.SET_SPECIES_DESIGN:
+      return {
+        ...state,
+        allSpecies: action.payload,
+      };
+    case fromDesingToolActions.SET_SELECTED_SPECIES_DESIGN:
+      return {
+        ...state,
+        selectedSpecies: action.payload,
+      };
+    case fromDesingToolActions.SET_MODELS_DESIGN:
+      return {
+        ...state,
+        models: action.payload,
+      };
+    case fromDesingToolActions.SET_MODEL_DESIGN:
+      return {
+        ...state,
+        selectedModel: action.payload,
+      };
     default:
       return state;
   }

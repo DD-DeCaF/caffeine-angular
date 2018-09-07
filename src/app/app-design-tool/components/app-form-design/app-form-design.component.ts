@@ -14,11 +14,14 @@
 
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatButton, MatSelect} from '@angular/material';
-import {Species} from '../../../app-interactive-map/types';
-import {fromEvent, Observable} from 'rxjs';
-import {Store} from '@ngrx/store';
+import * as types from '../../../app-interactive-map/types';
+import {fromEvent, Observable, Subscription} from 'rxjs';
+import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { NgForm } from '@angular/forms';
+import {FetchModelsDesign, FetchSpeciesDesign} from '../../store/design-tool.actions';
+import {activeModels} from '../../store/design-tool.selectors';
+
 
 @Component({
   selector: 'app-form-design',
@@ -26,45 +29,45 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./app-form-design.component.scss'],
 })
 export class AppFormDesignComponent implements OnInit, AfterViewInit {
-  @ViewChild('species') speciesSelector: MatSelect;
+  @ViewChild('designForm') designForm: NgForm;
+  subscription: Subscription;
   @ViewChild('advanced') advancedButton: MatButton;
   @ViewChild('design') designButton: MatButton;
+
   @Input() sidenav: boolean;
 
-  public designForm: FormGroup;
-  public selectedSpecies: Observable<string>;
-  public allSpecies: Observable<Species[]>;
-  public submited = false;
+  public selectedSpecies: Observable<types.Species>;
+  public allSpecies: Observable<types.Species[]>;
   public collapsed = true;
   public options: string[] = ['One', 'Two', 'Three'];
+  public selectedModel: Observable<types.DeCaF.Model>;
+  public models: Observable<types.DeCaF.Model[]>;
 
   constructor(
-    private store: Store<AppState>,
-    public fb: FormBuilder) {
-    this.designForm = this.fb.group({
-      species: ['', Validators.required],
-      product: ['', Validators.required],
-      bigg: [''],
-      kegg: [''],
-      rhea: [''],
-      model: [''],
-      number_pathways: [10],
-    });
-  }
+    private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    this.store.dispatch(new FetchSpeciesDesign());
+    this.store.dispatch(new FetchModelsDesign());
     /* Just to make it works, I am going to change it for a new store*/
-    this.selectedSpecies = this.store.select((store) => store.interactiveMap.selectedSpecies);
-    this.allSpecies = this.store.select((store) => store.interactiveMap.allSpecies);
+    this.allSpecies = this.store.pipe(select((store) => store.designTool.allSpecies));
+    this.models = this.store.pipe(select(activeModels));
+
+    this.subscription = this.store.select('designTool')
+      .subscribe(
+        (data) => {
+          if (data.selectedSpecies) {
+            this.designForm.setValue({
+              species: data.selectedSpecies,
+              product: 'One',
+            });
+          }
+        },
+      );
   }
 
   ngAfterViewInit(): void {
     fromEvent(this.advancedButton._elementRef.nativeElement, 'click').subscribe(() => this.collapsed = this.collapsed !== true);
-    fromEvent(this.designButton._elementRef.nativeElement, 'click').subscribe(() => console.log(this.designForm));
-
-  }
-
-  submit(): void {
-    this.submited = true;
+    fromEvent(this.designButton._elementRef.nativeElement, 'click').subscribe(() => console.log('DESIGN BUTTON', this.designForm.value));
   }
 }

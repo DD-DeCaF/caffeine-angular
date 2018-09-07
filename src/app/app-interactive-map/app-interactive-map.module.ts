@@ -28,8 +28,8 @@ import { AppLegendComponent } from './components/app-legend/app-legend.component
 import { AppGlobalSettingsComponent } from './components/app-global-settings/app-global-settings.component';
 import { SimulationService } from './services/simulation.service';
 import { MapService } from './services/map.service';
-import { ModelService } from './services/model.service';
 import { WarehouseService } from './services/warehouse.service';
+import { ModelService } from '../services/model.service';
 
 
 @NgModule({
