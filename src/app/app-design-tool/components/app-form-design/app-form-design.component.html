@@ -15,7 +15,7 @@
 <div class="container">
   <form [formGroup]="designForm" (ngSubmit)="submit()" novalidate class="design-form">
     <mat-form-field>
-      <mat-label class="title">Species</mat-label>
+      <mat-label class="title">Organism</mat-label>
       <mat-select formControlName="species" [value]="selectedSpecies | async" #species>
         <mat-option [value]="species.id" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
       </mat-select>
@@ -37,7 +37,7 @@
       </button>
     </div>
     <div *ngIf="!collapsed">
-      <div class="checkbox-group">
+      <div class="checkbox-group" [ngClass]="{'grid': sidenav==true}">
         <mat-label class="title">Select Databases</mat-label>
         <mat-checkbox formControlName="bigg" color="primary">BIGG</mat-checkbox>
         <mat-checkbox formControlName="kegg" color="primary">KEGG</mat-checkbox>

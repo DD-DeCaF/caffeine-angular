@@ -19,10 +19,11 @@
     <mat-sidenav #sidenav
                  class="mat-elevation-z3"
                  mode="over"
+                 opened
                  position="end"
                  #sidenav
     >
-      <app-form-design></app-form-design>
+      <app-form-design [sidenav]="true"></app-form-design>
     </mat-sidenav>
     <div (click)="sidenav.close()">
      <app-form-design></app-form-design>
