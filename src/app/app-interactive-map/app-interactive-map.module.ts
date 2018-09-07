@@ -29,6 +29,7 @@ import { AppGlobalSettingsComponent } from './components/app-global-settings/app
 import { SimulationService } from './services/simulation.service';
 import { MapService } from './services/map.service';
 import { ModelService } from './services/model.service';
+import { WarehouseService } from './services/warehouse.service';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { ModelService } from './services/model.service';
     SimulationService,
     MapService,
     ModelService,
+    WarehouseService,
   ],
   exports: [
     AppInteractiveMapComponent,

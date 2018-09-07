@@ -27,6 +27,8 @@ import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
+import { objectMatcher } from '../../utils';
+import { WarehouseService } from '../services/warehouse.service';
 
 
 const ACTION_OFFSETS = {
@@ -34,53 +36,9 @@ const ACTION_OFFSETS = {
   [fromActions.PREVIOUS_CARD]: -1,
 };
 
-const preferredMapItem = {
-  model: 'iJO1366',
-  name: 'Central metabolism',
-};
-
 const preferredSpeciesList = [
   'Escherichia coli',
 ];
-
-const preferredMapsByModel = {
-  'iJO1366': {
-    model: 'iJO1366',
-    name : 'Central metabolism',
-  },
-  'e_coli_core': {
-    model: 'e_coli_core',
-    name : 'Central metabolism',
-  },
-  'iJN746': {
-    model: 'iJN746',
-    name : 'Central metabolism',
-  },
-  'iMM904': {
-    model: 'iMM904',
-    name : 'Central metabolism',
-  },
-};
-
-
-const preferredSelector = <T>(
-  predicate: (item: T) => boolean,
-) => (items: T[]): T =>
-  items.find(predicate) || items[0];
-
-
-const preferredSpecies = preferredSelector((species: types.Species) =>
-  preferredSpeciesList.includes(species.name));
-
-const compareModel = (a, b) => a && b && a.model === b.model;
-const compareName = (a, b) => a && b && a.name === b.name;
-
-const selectorCreator = <T>(comparators: ((a: T, b: T) => boolean)[]) => (items: T[], preferredItem: T, defaultMap) => {
-  return comparators.reduce((prev: T[], next: (a: T, b: T) => boolean) => {
-    const filtered = prev.length > 0 ? prev.filter((item) => next(item, preferredItem)) : [];
-    return filtered.length > 0 ? filtered : prev[0] || defaultMap;
-  }, items);
-};
 
 const addedReactionToReaction = ({
   bigg_id,
@@ -104,16 +62,15 @@ export class InteractiveMapEffects {
   @Effect()
   fetchSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES),
-    switchMap(() => {
-      return this.http.get(`${environment.apis.warehouse}/organisms`);
-    }),
+    switchMap(() => this.warehouseService.getOrganisms()),
     map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
   );
 
   @Effect()
   setSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SPECIES),
-    map((action: fromActions.SetSpecies) => new fromActions.SetSelectedSpecies(preferredSpecies(action.payload))));
+    map((action: fromActions.SetSpecies) =>
+      new fromActions.SetSelectedSpecies(WarehouseService.preferredSpecies(action.payload))));
 
   @Effect()
   fetchModels: Observable<Action> = this.actions$.pipe(
@@ -149,11 +106,10 @@ export class InteractiveMapEffects {
     map(([action]) => action),
     withLatestFrom(this.store$),
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
-      const model = action.payload;
+      const model = action.payload.name;
       const {maps} = storeState.interactiveMap;
-      const preferred = maps.filter((item) => compareModel(item, preferredMapItem) && compareName(item, preferredMapItem));
-      const selectedMap = selectorCreator([compareModel, compareName])(maps, preferredMapsByModel[model.name] || {model: model.name}, preferred);
-      return new fromActions.SetMap(selectedMap[0] || selectedMap);
+      const mapSelector = MapService.createMapSelector(model);
+      return new fromActions.SetMap(mapSelector(maps));
     }),
   );
 
@@ -312,5 +268,6 @@ export class InteractiveMapEffects {
     private http: HttpClient,
     private mapService: MapService,
     private simulationSerivce: SimulationService,
+    private warehouseService: WarehouseService,
   ) {}
 }

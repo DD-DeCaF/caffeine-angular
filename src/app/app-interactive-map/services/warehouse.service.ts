@@ -17,38 +17,21 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as types from '../types';
 import { environment } from '../../../environments/environment';
-import { objectMatcher } from '../../utils';
 
-const preferredMapItem = {
-  model: 'iJO1366',
-  name: 'Central metabolism',
-};
-
-const preferredMapsByModel = {
-  'iJO1366': 'Central metabolism',
-  'e_coli_core': 'Central metabolism',
-  'iJN746': 'Central metabolism',
-  'iMM904': 'Central metabolism',
-};
+const preferredSpecies = 'Escherichia coli';
 
 @Injectable()
-export class MapService {
+export class WarehouseService {
 
   constructor(
     private http: HttpClient,
   ) {}
 
-  public static createMapSelector(model: string): (items: types.MapItem[]) => types.MapItem {
-    return objectMatcher<types.MapItem>([
-      {model, name: preferredMapsByModel[model]},
-      {model},
-      preferredMapItem,
-    ]);
+  public static preferredSpecies(speciesList: types.Species[]): types.Species {
+    return speciesList.find((species) => species.name === preferredSpecies) || speciesList[0];
   }
 
-  loadMaps(): Observable<types.MapItem[]> {
-    return this.http.get<types.MapItem[]>(`${environment.apis.map}/list`);
+  getOrganisms(): Observable<types.Species[]> {
+    return this.http.get<types.Species[]>(`${environment.apis.warehouse}/organisms`);
   }
-
-
 }

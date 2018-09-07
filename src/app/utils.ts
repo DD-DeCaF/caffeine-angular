@@ -40,3 +40,17 @@ export const firstIfContains = (items: string[], item) =>
   [...items].sort((a, b) => b === item ? 1 : -1);
 
 export const unique = <T>(items: T[]): T[] => Array.from(new Set(items));
+
+const createComparator = <T>(matchItem: Partial<T>) => (item: T): boolean =>
+  Object.entries(matchItem)
+  .map(([key, value]) => item[key] === value)
+  .every((v) => v);
+
+const matchSelector = <T>(comparators: ((item: T) => boolean)[]) => (items: T[]) =>
+  comparators.reduce(
+    (prev: T, comparator: (item: T) => boolean) => prev || items.find(comparator),
+    undefined,
+  );
+
+export const objectMatcher = <T>(matchers: Partial<T>[]) => (items: T[]) =>
+  matchSelector(matchers.map(createComparator))(items);
