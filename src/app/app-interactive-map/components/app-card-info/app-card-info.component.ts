@@ -14,13 +14,14 @@
 
 import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material';
-import {Store, select} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
 import {AppState} from '../../../store/app.reducers';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
 import { HydratedCard, Method } from '../../types';
 import { SetMethod, RenameCard } from '../../store/interactive-map.actions';
+import { selectNotNull } from '../../../framework-extensions';
 
 @Component({
   selector: 'app-card-info',
@@ -44,7 +45,7 @@ export class AppCardInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.card = this.store.pipe(
-      select(getSelectedCard));
+      selectNotNull(getSelectedCard));
 
     this.method.selectionChange
       .subscribe((change: MatSelectChange) => {

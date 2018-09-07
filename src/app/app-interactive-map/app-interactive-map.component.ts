@@ -13,9 +13,9 @@
 // limitations under the License.
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
-import {Store, select} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
-import {filter, withLatestFrom} from 'rxjs/operators';
+import {withLatestFrom} from 'rxjs/operators';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
@@ -23,9 +23,10 @@ import {Cobra, Card} from './types';
 import escherSettingsConst from './escherSettings';
 import {AppState} from '../store/app.reducers';
 import * as fromActions from './store/interactive-map.actions';
-import { notNull, objectFilter } from '../utils';
+import { objectFilter } from '../utils';
 import { getSelectedCard } from './store/interactive-map.selectors';
 import {FetchSpecies} from './store/interactive-map.actions';
+import { selectNotNull } from '../framework-extensions';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -63,8 +64,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     const builderObservable = this.builderSubject.asObservable();
     this.store
       .pipe(
-        select((store) => store.interactiveMap.mapData),
-        filter(notNull),
+        selectNotNull((store) => store.interactiveMap.mapData),
         withLatestFrom(builderObservable),
       ).subscribe(([map, builder]) => {
         this.loading = true;
@@ -74,8 +74,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
     const selectedCard = this.store
       .pipe(
-        select(getSelectedCard),
-        filter(notNull),
+        selectNotNull(getSelectedCard),
       );
 
     // Detect changes in model only..
