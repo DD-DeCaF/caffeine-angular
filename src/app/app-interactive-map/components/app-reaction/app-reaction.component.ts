@@ -13,15 +13,14 @@
 // limitations under the License.
 
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import {filter} from 'rxjs/operators';
 
 import { HydratedCard} from '../../types';
 import { AppState } from '../../../store/app.reducers';
 import { getSelectedCard } from '../../store/interactive-map.selectors';
-import {notNull} from '../../../utils';
 import { AppPanelComponent } from './components/app-panel/app-panel.component';
+import { selectNotNull } from '../../../framework-extensions';
 
 @Component({
   selector: 'app-reaction',
@@ -39,8 +38,7 @@ export class AppReactionComponent implements OnInit {
   ngOnInit(): void {
     this.card = this.store
       .pipe(
-        select(getSelectedCard),
-        filter(notNull),
+        selectNotNull(getSelectedCard),
       );
   }
 }
