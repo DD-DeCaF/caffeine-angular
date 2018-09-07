@@ -185,7 +185,7 @@ export declare namespace DeCaF {
 
   // Operation that can be applied to a model
   export interface Operation {
-    operation: 'add' | 'modify' | 'remove';
+    operation: 'add' | 'modify' | 'knockout';
     type: 'gene' | 'reaction';
     id: string;
     data?: Cobra.Reaction; // included if operation is 'add' or 'modify'
