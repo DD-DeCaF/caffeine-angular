@@ -249,7 +249,7 @@ export class InteractiveMapEffects {
       }));
 
       const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({
-        operation: 'remove',
+        operation: 'knockout',
         type: 'reaction',
         id: reactionId,
         data: null,
