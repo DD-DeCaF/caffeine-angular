@@ -19,6 +19,7 @@ import {
   objectFilter,
   firstIfContains,
   unique,
+  objectMatcher,
 } from './utils';
 
 describe('notNull', () => {
@@ -143,5 +144,40 @@ describe('unique', () => {
   it('should return a uique array', () => {
     expect(unique([1, 1, 2, 2, 3, 4, 5, 6, 2]))
       .toEqual([1, 2, 3, 4, 5, 6]);
+  });
+});
+
+describe('objectMatcher', () => {
+  it('should return undefined for no matchers', () => {
+    expect(objectMatcher([])([1, 2, 3, 4]))
+      .toEqual(undefined);
+  });
+
+  it('should return an exact match', () => {
+    expect(objectMatcher([{a: 1, b: 2}])([
+      {a: 2, b: 5},
+      {a: 4, b: 7},
+      {a: 1, b: 2},
+    ])).toEqual({a: 1, b: 2});
+  });
+
+  it('should return a partial match', () => {
+    expect(objectMatcher<{a: number, b: number}>([{a: 4, b: 3}, {a: 4}])([
+      {a: 2, b: 5},
+      {a: 4, b: 7},
+      {a: 1, b: 2},
+    ])).toEqual({a: 4, b: 7});
+  });
+
+  it('should work with multiple matchers', () => {
+    expect(objectMatcher<{a: number, b: number}>([
+      {a: 4, b: 3},
+      {a: 6},
+      {a: 2, b: 5},
+    ])([
+      {a: 2, b: 5},
+      {a: 4, b: 7},
+      {a: 1, b: 2},
+    ])).toEqual({a: 2, b: 5});
   });
 });
