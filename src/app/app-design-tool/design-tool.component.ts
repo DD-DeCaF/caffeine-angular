@@ -14,19 +14,20 @@
 
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import * as fromInteractiveMapActions from '../app-interactive-map/store/interactive-map.actions';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-design-tool',
-  templateUrl: './app-design-tool.component.html',
-  styleUrls: ['./app-design-tool.component.scss'],
+  templateUrl: './design-tool.component.html',
+  styleUrls: ['./design-tool.component.scss'],
 })
-export class AppDesignToolComponent implements OnInit {
+export class DesignToolComponent implements OnInit {
 
   public designForm: FormGroup;
-  public showSidenav = false; // change this when we receive the data from the form;
+  public designStarted: Observable<boolean>;
 
   constructor(
     private store: Store<AppState>,
@@ -43,10 +44,7 @@ export class AppDesignToolComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new fromInteractiveMapActions.FetchSpecies());
-  }
-
-  submit(): void {
-    console.log('SUBMIT');
+    this.designStarted = this.store.pipe(select((store) => store.designTool.designStarted));
   }
 
 }

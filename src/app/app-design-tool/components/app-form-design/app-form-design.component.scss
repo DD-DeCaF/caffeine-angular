@@ -19,32 +19,35 @@
 }
 
 mat-form-field {
-  width: 100%;
-  margin-bottom: 1%;
+  display: inherit;
 }
 
 .design-form {
   padding: 20px;
 }
 
-mat-label.title{
+mat-label.title {
   font-size: 14px !important;
   color: #000;
   display: block;
   margin-bottom: 5px;
+  margin-top: 5px;
 }
 
-.container-button{
+.container-button {
   text-align: center;
-  button{
+
+  button {
     text-transform: uppercase;
   }
-  mat-icon{
+
+  mat-icon {
     margin-left: 15px;
   }
+
 }
 
-.checkbox-group{
+.checkbox-group {
   margin-bottom: 2%;
 }
 
@@ -52,12 +55,15 @@ mat-checkbox {
   margin-right: 20px;
 }
 
-.advanced-button{
+.advanced-button {
   margin-bottom: 5px;
 }
 
-.grid{
+.grid {
   display: inline-grid;
 }
 
+.design-button {
+  margin-top: 10px;
+}
 

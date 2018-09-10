@@ -19,16 +19,16 @@
     <mat-sidenav #sidenav
                  class="mat-elevation-z3"
                  mode="over"
-                 opened
                  position="end"
                  #sidenav
     >
       <app-form-design [sidenav]="true"></app-form-design>
     </mat-sidenav>
     <div (click)="sidenav.close()">
-     <app-form-design></app-form-design>
+     <app-form-design [hidden]="(designStarted | async)"></app-form-design>
+     <app-jobs-list *ngIf="(designStarted | async)"></app-jobs-list>
     </div>
-    <div class="floating-menu" [hidden]="!showSidenav">
+    <div class="floating-menu" *ngIf="(designStarted | async)">
       <button mat-mini-fab color="primary" (click)="sidenav.open()">
         <mat-icon>apps</mat-icon>
       </button>

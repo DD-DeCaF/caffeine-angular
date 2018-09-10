@@ -14,7 +14,7 @@
 
 import { initialState as IMInitialState, InteractiveMapState, emptyCard } from '../../store/interactive-map.reducers';
 import { initialState as SInitialState } from '../../../session/store/session.reducers';
-import { initialState as DSTInitialState } from '../../../app-design-tool/store/design-tool.reducers';
+import { initialState as DTInitialState } from '../../../app-design-tool/store/design-tool.reducers';
 
 import { AppState } from '../../../store/app.reducers';
 
@@ -37,5 +37,5 @@ const mockedIMInitialState: InteractiveMapState = {
 export const initialState: AppState = {
   interactiveMap: mockedIMInitialState,
   session: SInitialState,
-  designTool: DSTInitialState,
+  designTool: DTInitialState,
 };

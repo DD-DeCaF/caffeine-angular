@@ -43,3 +43,6 @@ a {
 button,html,input,select,textarea {
   font-family: Roboto,Helvetica Neue,sans-serif
 }
+span.mat-placeholder-required.mat-form-field-required-marker {
+  display: none !important;
+}

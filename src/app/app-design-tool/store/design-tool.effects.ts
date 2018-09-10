@@ -13,16 +13,23 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import {Action, Store} from '@ngrx/store';
+import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import { AppState } from '../../store/app.reducers';
 import {map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
 import {Observable} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
 import {SpeciesService} from '../../services/species.service';
 import {ModelService} from '../../services/model.service';
-import {SetModelsDesign, SetSelectedSpeciesDesign, SetSpeciesDesign} from './design-tool.actions';
+import {
+  FetchJobsDesign,
+  SetJobsDesign,
+  SetModelsDesign,
+  SetProductsDesign,
+  SetSelectedSpeciesDesign,
+  SetSpeciesDesign,
+  StartDesign
+} from './design-tool.actions';
 
 const preferredSpeciesList = [
   'Escherichia coli',
@@ -61,9 +68,36 @@ export class DesignToolEffects {
     map((models: types.DeCaF.Model[]) => new SetModelsDesign(models)),
   );
 
+  @Effect()
+  fetchProductsDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_PRODUCTS_DESIGN),
+    switchMap(() =>
+      this.speciesService.loadProducts()),
+    map((payload: types.Species[]) => new SetProductsDesign(payload)),
+  );
+
+  @Effect()
+  startDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.START_DESIGN),
+    map(() => new FetchJobsDesign()));
+
+  @Effect()
+  fetchJobsDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_PRODUCTS_DESIGN),
+    switchMap(() =>
+      this.speciesService.loadJobs()),
+    map((payload: string[]) => new SetJobsDesign(payload)),
+  );
+
+ /* @Effect()
+  abortJobDesign: Observable<string> = this.actions$.pipe(
+    ofType(fromActions.FETCH_PRODUCTS_DESIGN),
+    switchMap((action) =>
+      this.speciesService.abortJob(action.payload)),
+  );*/
+
   constructor(
     private actions$: Actions,
-    private store$: Store<AppState>,
     private modelService: ModelService,
     private speciesService: SpeciesService,
   ) {}

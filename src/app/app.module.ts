@@ -47,7 +47,7 @@ import {environment} from '../environments/environment';
 // Interactive map
 import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
 import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
-import { AppDesignToolComponent } from './app-design-tool/app-design-tool.component';
+import { DesignToolComponent } from './app-design-tool/design-tool.component';
 import {AppFormDesignComponent} from './app-design-tool/components/app-form-design/app-form-design.component';
 import {DesignToolEffects} from './app-design-tool/store/design-tool.effects';
 // end interactive map
@@ -80,8 +80,9 @@ export class RavenErrorHandler implements ErrorHandler {
     AppNotFoundComponent,
     JobsComponent,
     JobComponent,
-    AppDesignToolComponent,
+    DesignToolComponent,
     AppFormDesignComponent,
+    JobComponent,
   ],
   imports: [
     // Angular modules

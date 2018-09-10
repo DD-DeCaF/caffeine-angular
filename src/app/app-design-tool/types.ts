@@ -12,7 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as fromActions from './design-tool.actions';
 
-describe('designToolReducer', () => {
-});
+import * as types from '../app-interactive-map/types';
+
+export interface Product {
+  name: string;
+  id: string;
+}
+
+export interface Design {
+  species: types.Species;
+  product: Product;
+  bigg: boolean;
+  kegg: boolean;
+  rhea: boolean;
+  model: types.DeCaF.Model;
+  number_pathways: 10;
+}
