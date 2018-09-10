@@ -14,6 +14,13 @@
 
 export interface Job {
   id: number;
-  type: string;
+  started: Date;
+  completed?: Date;
   state: "running" | "errored" | "completed";
+  type: string;
+  organism: string;
+  product: string;
+  model: string;
+  numberOfPathways: number;
+  error?: string;
 }
