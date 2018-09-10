@@ -28,6 +28,21 @@ limitations under the License.
       </p>
     </mat-list-item>
     <mat-list-item>
+      <mat-icon mat-list-icon>timelapse</mat-icon>
+      <p>
+        Started:
+        <strong>{{ job.started | date : 'd. LLL yyyy HH:mm' }}</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-icon mat-list-icon>timelapse</mat-icon>
+      <p>
+        Completed:
+        <strong *ngIf="job.completed">{{ job.completed | date : 'd. LLL yyyy HH:mm' }}</strong>
+        <strong *ngIf="!job.completed">Still running</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
       <mat-icon mat-list-icon>pets</mat-icon>
       <p>
         Organism:

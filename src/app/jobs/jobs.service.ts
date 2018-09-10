@@ -27,6 +27,8 @@ export class JobService {
     const fixtures$ = Observable.create((observer) => {
         observer.next([{
             id: 1,
+            started: new Date("2018-09-10T16:24:06"),
+            completed: new Date("2018-09-10T18:11:41"),
             state: "completed",
             type: "Pathway prediction",
             organism: "Some organism?",
@@ -35,6 +37,8 @@ export class JobService {
             numberOfPathways: 10,
         }, {
             id: 2,
+            started: new Date("2018-09-10T16:24:06"),
+            completed: new Date("2018-09-10T18:11:41"),
             state: "errored",
             type: "Pathway prediction",
             organism: "Some organism?",
@@ -44,6 +48,8 @@ export class JobService {
             error: "KeyError: Unknown model 'iMM904'",
         }, {
             id: 3,
+            started: new Date("2018-09-10T16:24:06"),
+            completed: new Date("2018-09-10T18:11:41"),
             state: "completed",
             type: "Pathway prediction",
             organism: "Some organism?",
@@ -52,6 +58,8 @@ export class JobService {
             numberOfPathways: 10,
         }, {
             id: 4,
+            started: new Date("2018-09-10T16:24:06"),
+            completed: null,
             state: "running",
             type: "Pathway prediction",
             organism: "Some organism?",
@@ -60,6 +68,8 @@ export class JobService {
             numberOfPathways: 10,
         }, {
             id: 5,
+            started: new Date("2018-09-10T16:24:06"),
+            completed: null,
             state: "running",
             type: "Pathway prediction",
             organism: "Some organism?",
