@@ -12,12 +12,42 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+
+import {merge, Observable, of as observableOf} from 'rxjs';
+import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+
+import {JobService} from './jobs.service';
+import { Job } from './types';
+
 
 @Component({
   selector: 'jobs',
   templateUrl: './jobs.component.html',
+  styleUrls: ['./jobs.component.scss'],
 })
-export class JobsComponent {
+export class JobsComponent implements OnInit {
+  jobService: JobService | null;
+  jobs: Job[] | null = [];
 
+  isLoading = true;
+  loadError = false;
+  displayedColumns: string[] = ['id', 'name'];
+
+  constructor() {}
+
+  ngOnInit() {
+    this.jobService = new JobService();
+    this.jobService.getJobs().subscribe(
+      (jobs: Job[]) => {
+        this.isLoading = false;
+        this.loadError = false;
+        this.jobs = jobs;
+      },
+      (error: string) => {
+        this.isLoading = false;
+        this.loadError = true;
+      },
+    );
+  }
 }
