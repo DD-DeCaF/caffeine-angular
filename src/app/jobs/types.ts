@@ -14,5 +14,6 @@
 
 export interface Job {
   id: number;
-  name: string;
+  type: string;
+  state: "running" | "errored" | "completed";
 }

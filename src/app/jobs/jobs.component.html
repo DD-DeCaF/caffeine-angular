@@ -26,15 +26,38 @@ limitations under the License.
       <p>Sorry, we were not able to retrieve your jobs. Please try again by refreshing the page.</p>
     </div>
 
-    <table mat-table [dataSource]="jobs"*ngIf="!isLoading && !loadError">
+    <table mat-table [dataSource]="jobs" *ngIf="!isLoading && !loadError">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let job">{{job.id}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Title</th>
-        <td mat-cell *matCellDef="let job">{{job.name}}</td>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let job">{{job.type}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef>State</th>
+        <td mat-cell *matCellDef="let job">{{job.state | titlecase}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="abort">
+        <th mat-header-cell *matHeaderCellDef>Abort</th>
+        <td mat-cell *matCellDef="let job">
+          <button mat-button color="warn" (click)="abort(job)" *ngIf="job.state == 'running'">
+            Abort job
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef>Details</th>
+        <td mat-cell *matCellDef="let job">
+          <button mat-button color="primary" [routerLink]="['/jobs/', job.id]">
+            Details
+          </button>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

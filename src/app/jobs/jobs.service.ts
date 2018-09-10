@@ -26,9 +26,11 @@ export class JobService {
   getJobs(): Observable<Job[]> {
     const fixtures$ = Observable.create((observer) => {
         observer.next([
-            {id: 1, name: "Job one"},
-            {id: 2, name: "Job two"},
-            {id: 3, name: "Job three"},
+            {id: 1, state: "completed", type: "Pathway prediction"},
+            {id: 2, state: "errored", type: "Pathway prediction"},
+            {id: 3, state: "completed", type: "Pathway prediction"},
+            {id: 4, state: "running", type: "Pathway prediction"},
+            {id: 5, state: "running", type: "Pathway prediction"},
         ]);
     });
     return fixtures$;
