@@ -27,7 +27,6 @@ import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
-import { objectMatcher } from '../../utils';
 import { WarehouseService } from '../services/warehouse.service';
 
 
@@ -35,10 +34,6 @@ const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
   [fromActions.PREVIOUS_CARD]: -1,
 };
-
-const preferredSpeciesList = [
-  'Escherichia coli',
-];
 
 const addedReactionToReaction = ({
   bigg_id,
