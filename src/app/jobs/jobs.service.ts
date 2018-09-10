@@ -25,13 +25,48 @@ export class JobService {
 
   getJobs(): Observable<Job[]> {
     const fixtures$ = Observable.create((observer) => {
-        observer.next([
-            {id: 1, state: "completed", type: "Pathway prediction"},
-            {id: 2, state: "errored", type: "Pathway prediction"},
-            {id: 3, state: "completed", type: "Pathway prediction"},
-            {id: 4, state: "running", type: "Pathway prediction"},
-            {id: 5, state: "running", type: "Pathway prediction"},
-        ]);
+        observer.next([{
+            id: 1,
+            state: "completed",
+            type: "Pathway prediction",
+            organism: "Some organism?",
+            product: "itaconate",
+            model: "iJO1366",
+            numberOfPathways: 10,
+        }, {
+            id: 2,
+            state: "errored",
+            type: "Pathway prediction",
+            organism: "Some organism?",
+            product: "globoside",
+            model: "iMM904",
+            numberOfPathways: 10,
+            error: "KeyError: Unknown model 'iMM904'",
+        }, {
+            id: 3,
+            state: "completed",
+            type: "Pathway prediction",
+            organism: "Some organism?",
+            product: "selenophosphate",
+            model: "iJO1366",
+            numberOfPathways: 10,
+        }, {
+            id: 4,
+            state: "running",
+            type: "Pathway prediction",
+            organism: "Some organism?",
+            product: "5'-hydroxyomeprazole",
+            model: "iJO1366",
+            numberOfPathways: 10,
+        }, {
+            id: 5,
+            state: "running",
+            type: "Pathway prediction",
+            organism: "Some organism?",
+            product: "alpha-carotene",
+            model: "iJO1366",
+            numberOfPathways: 10,
+        }]);
     });
     return fixtures$;
 

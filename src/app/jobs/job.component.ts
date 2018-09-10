@@ -12,40 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild} from '@angular/core';
-
-import {merge, Observable, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 import {JobService} from './jobs.service';
-import { Job } from './types';
+import {Job} from './types';
 
 
 @Component({
-  selector: 'jobs',
-  templateUrl: './jobs.component.html',
-  styleUrls: ['./jobs.component.scss'],
+  selector: 'job',
+  templateUrl: './job.component.html',
+  styleUrls: ['./job.component.scss'],
 })
-export class JobsComponent implements OnInit {
-  jobService: JobService | null;
-  jobs: Job[] | null = [];
-
-  isLoading = true;
+export class JobComponent implements OnInit {
+  job: Job;
+  loaded = false;
   loadError = false;
-  displayedColumns: string[] = ['id', 'type', 'product', 'state', 'abort', 'details'];
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.jobService = new JobService();
-    this.jobService.getJobs().subscribe(
+    new JobService().getJobs().subscribe(
       (jobs: Job[]) => {
-        this.isLoading = false;
-        this.loadError = false;
-        this.jobs = jobs;
+        this.job = jobs.filter((job) => job.id === Number(this.route.snapshot.params['id']))[0];
       },
       (error: string) => {
-        this.isLoading = false;
         this.loadError = true;
       },
     );

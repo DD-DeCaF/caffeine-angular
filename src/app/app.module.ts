@@ -35,6 +35,7 @@ import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
 import {JobsComponent} from './jobs/jobs.component';
+import {JobComponent} from './jobs/job.component';
 
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
@@ -75,6 +76,7 @@ export class RavenErrorHandler implements ErrorHandler {
     OpenLoginDialogDirective,
     AppNotFoundComponent,
     JobsComponent,
+    JobComponent,
   ],
   imports: [
     // Angular modules
