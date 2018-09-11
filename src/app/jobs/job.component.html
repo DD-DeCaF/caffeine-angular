@@ -76,7 +76,7 @@ limitations under the License.
 
   <p *ngIf="job.state === 'running'">
     The job is still running.
-    <button mat-button color="warn" (click)="abort(job)" *ngIf="job.state == 'running'">
+    <button mat-button color="warn" (click)="abort(job)">
       Abort job
     </button>
   </p>

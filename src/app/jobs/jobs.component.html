@@ -18,9 +18,7 @@ limitations under the License.
   <h1>Jobs</h1>
 
   <div class="mat-elevation-z8">
-    <div *ngIf="isLoading">
-      <mat-spinner *ngIf="isLoading"></mat-spinner>
-    </div>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
 
     <div class="load-error" *ngIf="loadError">
       <p>Sorry, we were not able to retrieve your jobs. Please try again by refreshing the page.</p>

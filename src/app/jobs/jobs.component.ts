@@ -26,7 +26,7 @@ import { Job } from './types';
 })
 export class JobsComponent implements OnInit {
   jobService: JobService | null;
-  jobs: Job[] | null = [];
+  jobs: Job[] = [];
 
   isLoading = true;
   loadError = false;
