@@ -85,6 +85,10 @@ limitations under the License.
     The job errored with the following message: <strong>{{ job.error }}</strong>
   </mat-error>
 
+  <mat-error *ngIf="job.state === 'aborted'">
+    The job was manually aborted at {{ job.completed | date : 'd. LLL yyyy HH:mm' }}
+  </mat-error>
+
   <div *ngIf="job.state === 'completed'">
     Results table goes here.
   </div>

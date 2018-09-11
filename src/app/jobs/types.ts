@@ -16,7 +16,7 @@ export interface Job {
   id: number;
   started: Date;
   completed?: Date;
-  state: "running" | "errored" | "completed";
+  state: "running" | "errored" | "completed" | "aborted";
   type: string;
   organism: string;
   product: string;

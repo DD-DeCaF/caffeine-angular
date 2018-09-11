@@ -47,6 +47,8 @@ export class JobComponent implements OnInit {
     if(!confirm(`Are you sure you wish to abort job ${job.id}: ${job.type}?`)) {
       return;
     }
+    job.state = 'aborted';
+    job.completed = new Date();
     console.log(`Cancel job: ${job.id}`);
   }
 }
