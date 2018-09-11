@@ -42,7 +42,7 @@ export function designToolReducer(
   state: DesignToolState = initialState,
   action: fromDesingToolActions.DesignToolActions,
 ): DesignToolState {
-  debug('Action reducer:', action);
+  debug('Desing tool reducer:', action);
   switch (action.type) {
     case fromDesingToolActions.SET_SPECIES_DESIGN:
       return {

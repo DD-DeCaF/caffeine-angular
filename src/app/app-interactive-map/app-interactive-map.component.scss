@@ -12,10 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mat-sidenav-container {
-  height: 100%;
-}
-
 mat-sidenav {
   width: 280px;
 }
@@ -30,11 +26,4 @@ mat-sidenav {
 
 .escher-builder {
   height: 100%;
-}
-
-.floating-menu {
-  z-index: 11;
-  position: absolute;
-  right: 20px;
-  top: 20px;
 }

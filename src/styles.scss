@@ -46,3 +46,14 @@ button,html,input,select,textarea {
 span.mat-placeholder-required.mat-form-field-required-marker {
   display: none !important;
 }
+
+mat-sidenav-container {
+  height: 100%;
+}
+
+.floating-menu {
+  z-index: 11;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
