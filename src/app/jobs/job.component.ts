@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {JobService} from './jobs.service';
-import {Job} from './types';
+import { JobService } from './jobs.service';
+import { Job } from './types';
 
 
 @Component({
