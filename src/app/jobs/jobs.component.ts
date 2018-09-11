@@ -32,7 +32,7 @@ export class JobsComponent implements OnInit {
 
   isLoading = true;
   loadError = false;
-  displayedColumns: string[] = ['id', 'type', 'product', 'state', 'abort', 'details'];
+  displayedColumns: string[] = ['id', 'type', 'product', 'state', 'details'];
 
   constructor() {}
 
@@ -49,13 +49,5 @@ export class JobsComponent implements OnInit {
         this.loadError = true;
       },
     );
-  }
-
-  public abort(job: Job) {
-    // TODO: use mat-dialog https://material.angular.io/components/dialog/overview
-    if(!confirm(`Are you sure you wish to abort job ${job.id}: ${job.type}?`)) {
-      return;
-    }
-    console.log(`Cancel job: ${job.id}`);
   }
 }

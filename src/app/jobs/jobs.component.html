@@ -47,15 +47,6 @@ limitations under the License.
         <td mat-cell *matCellDef="let job">{{job.state | titlecase}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="abort">
-        <th mat-header-cell *matHeaderCellDef>Abort</th>
-        <td mat-cell *matCellDef="let job">
-          <button mat-button color="warn" (click)="abort(job)" *ngIf="job.state == 'running'">
-            Abort job
-          </button>
-        </td>
-      </ng-container>
-
       <ng-container matColumnDef="details">
         <th mat-header-cell *matHeaderCellDef>Details</th>
         <td mat-cell *matCellDef="let job">
