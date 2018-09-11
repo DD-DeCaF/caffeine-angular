@@ -20,7 +20,7 @@ import {Job} from './types';
 
 
 @Component({
-  selector: 'job',
+  selector: 'app-job',
   templateUrl: './job.component.html',
   styleUrls: ['./job.component.scss'],
 })
@@ -31,7 +31,7 @@ export class JobComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     new JobService().getJobs().subscribe(
       (jobs: Job[]) => {
         this.job = jobs.filter((job) => job.id === Number(this.route.snapshot.params['id']))[0];
@@ -42,7 +42,7 @@ export class JobComponent implements OnInit {
     );
   }
 
-  public abort(job: Job) {
+  public abort(job: Job): void {
     // TODO: use mat-dialog https://material.angular.io/components/dialog/overview
     if (!confirm(`Are you sure you wish to abort job ${job.id}: ${job.data.type}?`)) {
       return;

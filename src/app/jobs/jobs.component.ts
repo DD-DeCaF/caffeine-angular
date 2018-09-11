@@ -20,7 +20,7 @@ import { Job } from './types';
 
 
 @Component({
-  selector: 'jobs',
+  selector: 'app-jobs',
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.scss'],
 })
@@ -34,7 +34,7 @@ export class JobsComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.jobService = new JobService();
     this.jobService.getJobs().subscribe(
       (jobs: Job[]) => {
