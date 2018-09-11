@@ -16,13 +16,13 @@ export interface Job {
   id: number;
   started: Date;
   completed?: Date;
-  state: "running" | "errored" | "completed" | "aborted";
+  state: 'running' | 'errored' | 'completed' | 'aborted';
   error?: string;
   data: PathwayPrediction;
 }
 
 export interface PathwayPrediction {
-  type: "Pathway prediction";
+  type: 'Pathway prediction';
   organism: string;
   product: string;
   model: string;

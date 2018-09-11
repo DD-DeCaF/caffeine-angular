@@ -13,8 +13,7 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, Observer } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Job } from './types';
 
@@ -27,63 +26,63 @@ export class JobService {
     const fixtures$ = Observable.create((observer) => {
         observer.next([{
             id: 1,
-            started: new Date("2018-09-10T16:24:06"),
-            completed: new Date("2018-09-10T18:11:41"),
-            state: "completed",
+            started: new Date('2018-09-10T16:24:06'),
+            completed: new Date('2018-09-10T18:11:41'),
+            state: 'completed',
             data: {
-                type: "Pathway prediction",
-                organism: "Some organism?",
-                product: "itaconate",
-                model: "iJO1366",
+                type: 'Pathway prediction',
+                organism: 'Some organism?',
+                product: 'itaconate',
+                model: 'iJO1366',
                 numberOfPathways: 10,
             },
         }, {
             id: 2,
-            started: new Date("2018-09-10T16:24:06"),
-            completed: new Date("2018-09-10T18:11:41"),
-            state: "errored",
-            error: "KeyError: Unknown model 'iMM904'",
+            started: new Date('2018-09-10T16:24:06'),
+            completed: new Date('2018-09-10T18:11:41'),
+            state: 'errored',
+            error: 'KeyError: Unknown model \'iMM904\'',
             data: {
-                type: "Pathway prediction",
-                organism: "Some organism?",
-                product: "globoside",
-                model: "iMM904",
+                type: 'Pathway prediction',
+                organism: 'Some organism?',
+                product: 'globoside',
+                model: 'iMM904',
                 numberOfPathways: 10,
             },
         }, {
             id: 3,
-            started: new Date("2018-09-10T16:24:06"),
-            completed: new Date("2018-09-10T18:11:41"),
-            state: "completed",
+            started: new Date('2018-09-10T16:24:06'),
+            completed: new Date('2018-09-10T18:11:41'),
+            state: 'completed',
             data: {
-                type: "Pathway prediction",
-                organism: "Some organism?",
-                product: "selenophosphate",
-                model: "iJO1366",
+                type: 'Pathway prediction',
+                organism: 'Some organism?',
+                product: 'selenophosphate',
+                model: 'iJO1366',
                 numberOfPathways: 10,
             },
         }, {
             id: 4,
-            started: new Date("2018-09-10T16:24:06"),
+            started: new Date('2018-09-10T16:24:06'),
             completed: null,
-            state: "running",
+            state: 'running',
             data: {
-                type: "Pathway prediction",
-                organism: "Some organism?",
-                product: "5'-hydroxyomeprazole",
-                model: "iJO1366",
+                type: 'Pathway prediction',
+                organism: 'Some organism?',
+                product: '5\'-hydroxyomeprazole',
+                model: 'iJO1366',
                 numberOfPathways: 10,
             },
         }, {
             id: 5,
-            started: new Date("2018-09-10T16:24:06"),
+            started: new Date('2018-09-10T16:24:06'),
             completed: null,
-            state: "running",
+            state: 'running',
             data: {
-                type: "Pathway prediction",
-                organism: "Some organism?",
-                product: "alpha-carotene",
-                model: "iJO1366",
+                type: 'Pathway prediction',
+                organism: 'Some organism?',
+                product: 'alpha-carotene',
+                model: 'iJO1366',
                 numberOfPathways: 10,
             },
         }]);
