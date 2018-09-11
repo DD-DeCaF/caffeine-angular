@@ -4,7 +4,6 @@ import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import * as types from '../app-interactive-map/types';
 import * as typesDesign from '../app-design-tool/types';
-import {Action} from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',

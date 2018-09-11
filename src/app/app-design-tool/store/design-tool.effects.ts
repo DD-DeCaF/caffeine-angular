@@ -28,7 +28,6 @@ import {
   SetProductsDesign,
   SetSelectedSpeciesDesign,
   SetSpeciesDesign,
-  StartDesign
 } from './design-tool.actions';
 
 const preferredSpeciesList = [
