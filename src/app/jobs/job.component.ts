@@ -23,16 +23,17 @@ import {Job} from './types';
   selector: 'app-job',
   templateUrl: './job.component.html',
   styleUrls: ['./job.component.scss'],
+  providers: [JobService],
 })
 export class JobComponent implements OnInit {
   job: Job;
   loaded = false;
   loadError = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, public jobService: JobService) {}
 
   ngOnInit(): void {
-    new JobService().getJobs().subscribe(
+    this.jobService.getJobs().subscribe(
       (jobs: Job[]) => {
         this.job = jobs.filter((job) => job.id === Number(this.route.snapshot.params['id']))[0];
       },

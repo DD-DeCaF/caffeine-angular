@@ -23,19 +23,18 @@ import { Job } from './types';
   selector: 'app-jobs',
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.scss'],
+  providers: [JobService],
 })
 export class JobsComponent implements OnInit {
-  jobService: JobService | null;
   jobs: Job[] = [];
 
   isLoading = true;
   loadError = false;
   displayedColumns: string[] = ['id', 'type', 'product', 'state', 'details'];
 
-  constructor() {}
+  constructor(public jobService: JobService) {}
 
   ngOnInit(): void {
-    this.jobService = new JobService();
     this.jobService.getJobs().subscribe(
       (jobs: Job[]) => {
         this.isLoading = false;
