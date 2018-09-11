@@ -41,7 +41,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   subscription: Subscription;
   @ViewChild('design') designButton: MatButton;
 
-  @Input() sidenav: boolean;
+  @Input() gridView: boolean;
 
   public selectedSpecies: Observable<types.Species>;
   public allSpecies: Observable<types.Species[]>;

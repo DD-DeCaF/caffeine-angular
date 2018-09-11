@@ -14,14 +14,13 @@
 
 <div class="container">
   <mat-sidenav-container
-    hasBackdrop="false"
-  >
+    hasBackdrop="false">
     <mat-sidenav #sidenav
                  class="mat-elevation-z3"
                  mode="over"
                  position="end"
                  #sidenav>
-      <app-form-design [sidenav]="true"></app-form-design>
+      <app-form-design [gridView]="true"></app-form-design>
     </mat-sidenav>
     <div (click)="sidenav.close()">
      <app-form-design [hidden]="(designStarted | async)"></app-form-design>
