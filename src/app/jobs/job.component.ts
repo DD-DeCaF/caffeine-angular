@@ -44,7 +44,7 @@ export class JobComponent implements OnInit {
 
   public abort(job: Job) {
     // TODO: use mat-dialog https://material.angular.io/components/dialog/overview
-    if(!confirm(`Are you sure you wish to abort job ${job.id}: ${job.type}?`)) {
+    if(!confirm(`Are you sure you wish to abort job ${job.id}: ${job.data.type}?`)) {
       return;
     }
     job.state = 'aborted';

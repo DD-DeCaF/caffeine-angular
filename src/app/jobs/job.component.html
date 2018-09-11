@@ -16,7 +16,7 @@ limitations under the License.
 
 <div class="container" *ngIf="job">
   <h1>
-    <a routerLink="/jobs">Jobs</a> / {{ job.id }}: {{ job.type }}
+    <a routerLink="/jobs">Jobs</a> / #{{ job.id }}
   </h1>
 
   <mat-list>
@@ -24,7 +24,7 @@ limitations under the License.
       <mat-icon mat-list-icon>dashboard</mat-icon>
       <p>
         Type:
-        <strong>{{ job.type }}</strong>
+        <strong>{{ job.data.type }}</strong>
       </p>
     </mat-list-item>
     <mat-list-item>
@@ -46,28 +46,28 @@ limitations under the License.
       <mat-icon mat-list-icon>pets</mat-icon>
       <p>
         Organism:
-        <strong>{{ job.organism }}</strong>
+        <strong>{{ job.data.organism }}</strong>
       </p>
     </mat-list-item>
     <mat-list-item>
       <mat-icon mat-list-icon>gavel</mat-icon>
       <p>
         Product:
-        <strong>{{ job.product }}</strong>
+        <strong>{{ job.data.product }}</strong>
       </p>
     </mat-list-item>
     <mat-list-item>
       <mat-icon mat-list-icon>rounded_corner</mat-icon>
       <p>
         Model:
-        <strong>{{ job.model }}</strong>
+        <strong>{{ job.data.model }}</strong>
       </p>
     </mat-list-item>
     <mat-list-item>
       <mat-icon mat-list-icon>equalizer</mat-icon>
       <p>
         Number of pathways:
-        <strong>{{ job.numberOfPathways }}</strong>
+        <strong>{{ job.data.numberOfPathways }}</strong>
       </p>
     </mat-list-item>
   </mat-list>

@@ -17,10 +17,14 @@ export interface Job {
   started: Date;
   completed?: Date;
   state: "running" | "errored" | "completed" | "aborted";
-  type: string;
+  error?: string;
+  data: PathwayPrediction;
+}
+
+export interface PathwayPrediction {
+  type: "Pathway prediction";
   organism: string;
   product: string;
   model: string;
   numberOfPathways: number;
-  error?: string;
 }
