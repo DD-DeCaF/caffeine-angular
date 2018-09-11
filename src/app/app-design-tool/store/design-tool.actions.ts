@@ -16,7 +16,7 @@ import {Action} from '@ngrx/store';
 import * as types from '../../app-interactive-map/types';
 import * as typesDesign from '../types';
 
-
+export const INIT_DESIGN = 'INIT_DESIGN';
 export const FETCH_SPECIES_DESIGN = 'FETCH_SPECIES_DESIGN';
 export const SET_SPECIES_DESIGN = 'SET_SPECIES_DESIGN';
 export const SET_SELECTED_SPECIES_DESIGN = 'SET_SELECTED_SPECIES_DESIGN';
@@ -29,6 +29,10 @@ export const FETCH_JOBS_DESIGN = 'FETCH_JOBS_DESIGN';
 export const SET_JOBS_DESIGN = 'SET_JOBS_DESIGN';
 export const ABORT_JOB_DESIGN = 'ABORT_JOB_DESIGN';
 export const START_DESIGN = 'START_DESIGN';
+
+export class InitDesign implements Action {
+  readonly type = INIT_DESIGN;
+}
 
 export class FetchSpeciesDesign implements Action {
   readonly type = FETCH_SPECIES_DESIGN;
@@ -87,5 +91,5 @@ export class StartDesign implements Action {
   constructor(public payload: typesDesign.Design) {}
 }
 
-export type DesignToolActions = FetchSpeciesDesign | SetSpeciesDesign | SetSelectedSpeciesDesign | FetchModelsDesign | SetModelsDesign | SetModelDesign
-            | FetchProductsDesign | SetProductsDesign | StartDesign | FetchJobsDesign | SetJobsDesign | AbortJobDesign;
+export type DesignToolActions = InitDesign | FetchSpeciesDesign | SetSpeciesDesign | SetSelectedSpeciesDesign | FetchModelsDesign | SetModelsDesign |
+  SetModelDesign | FetchProductsDesign | SetProductsDesign | StartDesign | FetchJobsDesign | SetJobsDesign | AbortJobDesign;

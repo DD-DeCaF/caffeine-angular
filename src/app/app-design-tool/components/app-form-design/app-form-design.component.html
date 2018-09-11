@@ -40,8 +40,8 @@
                [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete"
                           [displayWith]="displayFn">
-          <mat-option *ngFor="let option of options" [value]="option">
-            {{option.name}}
+          <mat-option *ngFor="let product of (products | async)" [value]="product">
+            {{product.name}}
           </mat-option>
         </mat-autocomplete>
         <mat-hint>*Required</mat-hint>

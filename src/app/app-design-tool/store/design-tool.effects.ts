@@ -15,89 +15,87 @@
 import { Injectable } from '@angular/core';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {map, switchMap} from 'rxjs/operators';
+import {concatMapTo, map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
-import {Observable} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
-import {SpeciesService} from '../../services/species.service';
 import {ModelService} from '../../services/model.service';
-import {
-  FetchJobsDesign,
-  SetJobsDesign,
-  SetModelsDesign,
-  SetProductsDesign,
-  SetSelectedSpeciesDesign,
-  SetSpeciesDesign,
-} from './design-tool.actions';
+import {WarehouseService} from '../../services/warehouse.service';
 
-const preferredSpeciesList = [
-  'Escherichia coli',
-];
-
-const preferredSelector = <T>(
-  predicate: (item: T) => boolean,
-  preferredMap?: (item: T) => boolean,
-) => (items: T[]): T =>
-  items.find(predicate) || (preferredMap ? items.find(preferredMap) || items[0] : items[0]);
-
-
-const preferredSpecies = preferredSelector((species: types.Species) =>
-  preferredSpeciesList.includes(species.name));
 
 @Injectable()
 export class DesignToolEffects {
+
+  @Effect()
+  initDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.INIT_DESIGN),
+    concatMapTo([
+      new fromActions.FetchSpeciesDesign(),
+      new fromActions.FetchModelsDesign(),
+      new fromActions.FetchProductsDesign(),
+    ]),
+  );
+
   @Effect()
   fetchSpeciesDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES_DESIGN),
     switchMap(() =>
-      this.speciesService.loadSpecies()),
-    map((payload: types.Species[]) => new SetSpeciesDesign(payload)),
+      this.warehouseService.getOrganisms()),
+    map((payload: types.Species[]) => new fromActions.SetSpeciesDesign(payload)),
   );
 
   @Effect()
   setSpeciesDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_SPECIES_DESIGN),
-    map((action: fromActions.SetSpeciesDesign) => new SetSelectedSpeciesDesign(preferredSpecies(action.payload))));
+    map((action: fromActions.SetSpeciesDesign) => new fromActions.SetSelectedSpeciesDesign(WarehouseService.preferredSpecies(action.payload))));
 
   @Effect()
   fetchModelsDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MODELS_DESIGN),
     switchMap(() =>
       this.modelService.loadModels()),
-    map((models: types.DeCaF.Model[]) => new SetModelsDesign(models)),
+    map((models: types.DeCaF.Model[]) => new fromActions.SetModelsDesign(models)),
+  );
+
+  @Effect()
+  selectFirstModel: Observable<Action> = combineLatest(
+    this.actions$.pipe(ofType(fromActions.FETCH_SPECIES_DESIGN)),
+    this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES_DESIGN)),
+    this.actions$.pipe(ofType(fromActions.SET_MODELS_DESIGN)),
+  ).pipe(
+    map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpeciesDesign, fromActions.SetModelsDesign]) => {
+      const selectedModel = models
+        .filter((model) => model.organism_id === selectedOrgId.toString())[0];
+      return new fromActions.SetModelDesign(selectedModel);
+    }),
   );
 
   @Effect()
   fetchProductsDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_PRODUCTS_DESIGN),
     switchMap(() =>
-      this.speciesService.loadProducts()),
-    map((payload: types.Species[]) => new SetProductsDesign(payload)),
+      this.warehouseService.getProducts()),
+    map((payload: types.Species[]) => new fromActions.SetProductsDesign(payload)),
   );
 
   @Effect()
   startDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.START_DESIGN),
-    map(() => new FetchJobsDesign()));
+    switchMap((action: fromActions.StartDesign) =>
+      this.warehouseService.startDesign(action.payload)),
+    map(() => new fromActions.FetchJobsDesign()));
 
-  @Effect()
+ /* @Effect()
   fetchJobsDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_PRODUCTS_DESIGN),
     switchMap(() =>
       this.speciesService.loadJobs()),
     map((payload: string[]) => new SetJobsDesign(payload)),
-  );
-
- /* @Effect()
-  abortJobDesign: Observable<string> = this.actions$.pipe(
-    ofType(fromActions.FETCH_PRODUCTS_DESIGN),
-    switchMap((action) =>
-      this.speciesService.abortJob(action.payload)),
   );*/
 
   constructor(
     private actions$: Actions,
     private modelService: ModelService,
-    private speciesService: SpeciesService,
+    private warehouseService: WarehouseService,
   ) {}
 }

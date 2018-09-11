@@ -27,9 +27,8 @@ import { PathwayMap } from '@dd-decaf/escher';
 import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
-import { WarehouseService } from '../services/warehouse.service';
+import { WarehouseService } from '../../services/warehouse.service';
 import {ModelService} from '../../services/model.service';
-import {SpeciesService} from '../../services/species.service';
 
 
 const ACTION_OFFSETS = {
@@ -271,6 +270,5 @@ export class InteractiveMapEffects {
     private warehouseService: WarehouseService,
     private modelService: ModelService,
     private simulationService: SimulationService,
-    private speciesService: SpeciesService,
   ) {}
 }

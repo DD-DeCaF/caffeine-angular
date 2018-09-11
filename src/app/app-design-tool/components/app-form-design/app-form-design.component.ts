@@ -13,13 +13,18 @@
 // limitations under the License.
 
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MatButton} from '@angular/material';
+import {MatButton, MatSelect, MatSelectChange} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {Observable, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {NgForm} from '@angular/forms';
-import {FetchModelsDesign, FetchSpeciesDesign, StartDesign} from '../../store/design-tool.actions';
+import {
+  InitDesign,
+  SetModelsDesign,
+  SetSelectedSpeciesDesign,
+  StartDesign,
+} from '../../store/design-tool.actions';
 import {activeModels} from '../../store/design-tool.selectors';
 import * as typesDesign from '../../types';
 
@@ -30,6 +35,8 @@ import * as typesDesign from '../../types';
   styleUrls: ['./app-form-design.component.scss'],
 })
 export class AppFormDesignComponent implements OnInit, AfterViewInit {
+  @ViewChild('species') speciesSelector: MatSelect;
+  @ViewChild('model') modelSelector: MatSelect;
   @ViewChild('designForm') designForm: NgForm;
   subscription: Subscription;
   @ViewChild('design') designButton: MatButton;
@@ -39,13 +46,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   public selectedSpecies: Observable<types.Species>;
   public allSpecies: Observable<types.Species[]>;
 
-  public options: typesDesign.Product[] = [ {'name': 'menaquinol-10', 'id': 'menaquinol-10'}, {
-    'name': '2,6,10,14-tetramethylpentadecanal',
-    'id': '2,6,10,14-tetramethylpentadecanal',
-  }, {
-    'name': 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
-    'id': 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
-  }, {'name': '3-oxododecanoyl-CoA', 'id': '3-oxododecanoyl-CoA'}];
+  public products: Observable<typesDesign.Product[]>;
 
   public selectedModel: Observable<types.DeCaF.Model>;
   public models: Observable<types.DeCaF.Model[]>;
@@ -55,12 +56,14 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new FetchSpeciesDesign());
-    this.store.dispatch(new FetchModelsDesign());
+    this.store.dispatch(new InitDesign());
+
     /* Just to make it works, I am going to change it for a new store*/
     this.allSpecies = this.store.pipe(select((store) => store.designTool.allSpecies));
 
+    this.products = this.store.pipe(select((store) => store.designTool.products));
 
+    this.selectedModel = this.store.pipe(select((store) => store.designTool.selectedModel));
     this.models = this.store.pipe(select(activeModels));
 
     this.subscription = this.store.select('designTool')
@@ -77,7 +80,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
               bigg: false,
               kegg: false,
               rhea: false,
-              model: {},
+              model: data.selectedModel,
               number_pathways: 10,
             });
           }
@@ -86,6 +89,15 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.speciesSelector.selectionChange
+      .subscribe((change: MatSelectChange) => {
+        this.store.dispatch(new SetSelectedSpeciesDesign(change.value));
+      });
+
+    this.modelSelector.selectionChange
+      .subscribe((change: MatSelectChange) => {
+        this.store.dispatch(new SetModelsDesign(change.value));
+      });
   }
 
   // tslint:disable-next-line:no-any
