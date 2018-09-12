@@ -18,7 +18,8 @@ import * as types from '../../../app-interactive-map/types';
 import {Observable, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
-import {NgForm} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+
 import {
   InitDesign,
   SetModelsDesign,
@@ -35,9 +36,9 @@ import * as typesDesign from '../../types';
   styleUrls: ['./app-form-design.component.scss'],
 })
 export class AppFormDesignComponent implements OnInit, AfterViewInit {
+  designForm: FormGroup;
   @ViewChild('species') speciesSelector: MatSelect;
   @ViewChild('model') modelSelector: MatSelect;
-  @ViewChild('designForm') designForm: NgForm;
   subscription: Subscription;
   @ViewChild('design') designButton: MatButton;
 
@@ -52,7 +53,17 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   public models: Observable<types.DeCaF.Model[]>;
 
   constructor(
+    private fb: FormBuilder,
     private store: Store<AppState>) {
+    this.designForm = this.fb.group({
+      species: ['', Validators.required],
+      product: ['', Validators.required],
+      bigg: [''],
+      kegg: [''],
+      rhea: [''],
+      model: [''],
+      number_pathways: [''],
+    });
   }
 
   ngOnInit(): void {
