@@ -14,6 +14,8 @@
 
 import { initialState as IMInitialState, InteractiveMapState, emptyCard } from '../../store/interactive-map.reducers';
 import { initialState as SInitialState } from '../../../session/store/session.reducers';
+import { initialState as LInitialState } from '../../../loader/store/loader.reducers';
+
 import { AppState } from '../../../store/app.reducers';
 
 const mockedIMInitialState: InteractiveMapState = {
@@ -35,4 +37,5 @@ const mockedIMInitialState: InteractiveMapState = {
 export const initialState: AppState = {
   interactiveMap: mockedIMInitialState,
   session: SInitialState,
+  loader: LInitialState,
 };

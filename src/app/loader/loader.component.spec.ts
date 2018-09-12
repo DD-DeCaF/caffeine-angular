@@ -12,20 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ActionReducerMap} from '@ngrx/store';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {SessionState, sessionReducer} from '../session/store/session.reducers';
-import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
-import {loaderReducer, LoaderState} from '../loader/store/loader.reducers';
+import { LoaderComponent } from './loader.component';
 
-export interface AppState {
-  session: SessionState;
-  interactiveMap: InteractiveMapState;
-  loader: LoaderState;
-}
+describe('LoaderComponent', () => {
+  let component: LoaderComponent;
+  let fixture: ComponentFixture<LoaderComponent>;
 
-export const reducers: ActionReducerMap<AppState> = {
-  session: sessionReducer,
-  interactiveMap: interactiveMapReducer,
-  loader: loaderReducer,
-};
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ LoaderComponent ],
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LoaderComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

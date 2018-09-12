@@ -45,6 +45,7 @@ import {environment} from '../environments/environment';
 // Interactive map
 import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
 import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
+import {LoaderComponent} from './loader/loader.component';
 // end interactive map
 
 if (environment.sentry) {
@@ -73,6 +74,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppLoginDialogComponent,
     OpenLoginDialogDirective,
     AppNotFoundComponent,
+    LoaderComponent,
   ],
   imports: [
     // Angular modules

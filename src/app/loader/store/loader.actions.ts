@@ -12,20 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ActionReducerMap} from '@ngrx/store';
+import {Action} from '@ngrx/store';
 
-import {SessionState, sessionReducer} from '../session/store/session.reducers';
-import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
-import {loaderReducer, LoaderState} from '../loader/store/loader.reducers';
 
-export interface AppState {
-  session: SessionState;
-  interactiveMap: InteractiveMapState;
-  loader: LoaderState;
+export const LOADING = 'LOADING';
+export const LOADING_SUCCESS = 'LOADING_SUCCESS';
+export const INCREMENT = 'INCREMENT';
+export const DECREMENT = 'DECREMENT';
+
+
+export class Loading implements Action {
+  readonly type = LOADING;
 }
 
-export const reducers: ActionReducerMap<AppState> = {
-  session: sessionReducer,
-  interactiveMap: interactiveMapReducer,
-  loader: loaderReducer,
-};
+export class LoadingSuccess implements Action {
+  readonly type = LOADING_SUCCESS;
+}
+
+export class Increment implements Action {
+  readonly type = INCREMENT;
+}
+
+export class Decrement implements Action {
+  readonly type = DECREMENT;
+}
+
+export type LoaderActions = Loading | LoadingSuccess | Increment | Decrement;

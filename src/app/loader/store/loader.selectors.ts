@@ -12,20 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ActionReducerMap} from '@ngrx/store';
+import {createSelector} from '@ngrx/store';
+import {AppState} from '../../store/app.reducers';
 
-import {SessionState, sessionReducer} from '../session/store/session.reducers';
-import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
-import {loaderReducer, LoaderState} from '../loader/store/loader.reducers';
 
-export interface AppState {
-  session: SessionState;
-  interactiveMap: InteractiveMapState;
-  loader: LoaderState;
-}
+export const isLoading = createSelector(
+  (state: AppState) => state.loader.loading);
 
-export const reducers: ActionReducerMap<AppState> = {
-  session: sessionReducer,
-  interactiveMap: interactiveMapReducer,
-  loader: loaderReducer,
-};
