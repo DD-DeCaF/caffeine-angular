@@ -12,26 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { initialState as IMInitialState, InteractiveMapState, emptyCard } from '../../store/interactive-map.reducers';
-import { initialState as originalinitialState, AppState } from '../../../store/app.reducers';
+import {Route} from '@angular/router';
+import { JobListComponent } from './components/job-list/job-list.component';
+import { JobDetailComponent } from './components/job-detail/job-detail.component';
+import { JobsComponent } from './jobs.component';
 
-const mockedIMInitialState: InteractiveMapState = {
-  ...IMInitialState,
-  cards: {
-    ids: ['0'],
-    cardsById: {
-      '0': {
-        ...emptyCard,
-        objectiveReaction: {
-          reactionId: 'fooBar',
-          direction: 'max',
-        },
+export const jobsRoutes: Route[] = [
+  {
+    path: 'jobs',
+    component: JobsComponent,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        component: JobListComponent,
       },
-    },
+      {
+        path: ':id',
+        component: JobDetailComponent,
+      },
+    ],
   },
-};
-
-export const initialState: AppState = {
-  ...originalinitialState,
-  interactiveMap: mockedIMInitialState,
-};
+];

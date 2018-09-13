@@ -16,6 +16,7 @@ import * as fromActions from './interactive-map.actions';
 import {interactiveMapReducer, initialState, InteractiveMapState, idGen} from './interactive-map.reducers';
 
 import * as types from '../types';
+import { combineReducers } from '@ngrx/store';
 
 const applyActions = (actions: fromActions.InteractiveMapActions[]): InteractiveMapState =>
   actions.reduce(

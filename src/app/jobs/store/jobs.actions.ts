@@ -12,26 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { initialState as IMInitialState, InteractiveMapState, emptyCard } from '../../store/interactive-map.reducers';
-import { initialState as originalinitialState, AppState } from '../../../store/app.reducers';
+import { Action } from '@ngrx/store';
+import { Job } from '../types';
 
-const mockedIMInitialState: InteractiveMapState = {
-  ...IMInitialState,
-  cards: {
-    ids: ['0'],
-    cardsById: {
-      '0': {
-        ...emptyCard,
-        objectiveReaction: {
-          reactionId: 'fooBar',
-          direction: 'max',
-        },
-      },
-    },
-  },
-};
+export const FETCH_JOBS = 'FETCH_JOBS';
+export const FETCH_JOBS_SUCCESS = 'FETCH_JOBS_SUCCESS';
+export const FETCH_JOBS_FAILED = 'FETCH_JOBS_FAILED';
 
-export const initialState: AppState = {
-  ...originalinitialState,
-  interactiveMap: mockedIMInitialState,
-};
+export class FetchJobs implements Action {
+  readonly type = FETCH_JOBS;
+}
+
+export class FetchJobsSuccess implements Action {
+  readonly type = FETCH_JOBS_SUCCESS;
+  constructor(public payload: Job[]) {}
+}
+
+export class FetchJobsFailed implements Action {
+  readonly type = FETCH_JOBS_FAILED;
+}
+
+export type JobsActions = FetchJobs | FetchJobsSuccess | FetchJobsFailed;

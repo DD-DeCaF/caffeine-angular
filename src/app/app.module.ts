@@ -34,8 +34,6 @@ import {AppLoginDialogComponent} from './app-login-dialog/app-login-dialog.compo
 import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
-import {JobsComponent} from './jobs/jobs.component';
-import {JobComponent} from './jobs/job.component';
 
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
@@ -47,6 +45,8 @@ import {environment} from '../environments/environment';
 // Interactive map
 import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
 import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
+import { JobsEffects } from './jobs/store/jobs.effects';
+import { JobsModule } from './jobs/jobs.module';
 // end interactive map
 
 if (environment.sentry) {
@@ -75,8 +75,6 @@ export class RavenErrorHandler implements ErrorHandler {
     AppLoginDialogComponent,
     OpenLoginDialogDirective,
     AppNotFoundComponent,
-    JobsComponent,
-    JobComponent,
   ],
   imports: [
     // Angular modules
@@ -93,10 +91,14 @@ export class RavenErrorHandler implements ErrorHandler {
 
     // Own modules
     AppInteractiveMapModule,
+    JobsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([InteractiveMapEffects]),
+    EffectsModule.forRoot([
+      InteractiveMapEffects,
+      JobsEffects,
+    ]),
   ],
   providers: [
     SessionService,

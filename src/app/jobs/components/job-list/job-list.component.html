@@ -18,13 +18,13 @@ limitations under the License.
   <h1>Jobs</h1>
 
   <div class="mat-elevation-z8">
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <!-- <mat-spinner *ngIf="isLoading"></mat-spinner> -->
 
-    <div class="load-error" *ngIf="loadError">
+    <!-- <div class="load-error" *ngIf="loadError">
       <p>Sorry, we were not able to retrieve your jobs. Please try again by refreshing the page.</p>
-    </div>
+    </div> -->
 
-    <table mat-table [dataSource]="jobs" *ngIf="!isLoading && !loadError">
+    <table mat-table [dataSource]="jobs | async">
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>#</th>
         <td mat-cell *matCellDef="let job">{{job.id}}</td>

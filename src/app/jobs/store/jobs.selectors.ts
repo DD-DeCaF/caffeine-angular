@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  margin: 0 20px;
-}
+import { createSelector } from '@ngrx/store';
+import {AppState} from '../../store/app.reducers';
+import { Job } from '../types';
+
+export const getJob = createSelector(
+  (state: AppState) => state.jobs.jobs,
+  (jobs: Job[], {jobId}) =>
+    jobs.find((job) => job.id === jobId) || null,
+);

@@ -19,7 +19,7 @@ import { Job } from './types';
 
 
 @Injectable()
-export class JobService {
+export class JobsService {
   constructor() {}
 
   getJobs(): Observable<Job[]> {
