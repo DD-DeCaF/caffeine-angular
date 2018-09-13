@@ -94,17 +94,17 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.loading = false;
       });
 
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+
     this.store
       .pipe(
         select(isLoading),
       ).subscribe((loading) => {
         if (loading) {
-          console.log('LOADIIIING', loading);
-          const dialogConfig = new MatDialogConfig();
-          dialogConfig.disableClose = true;
-          dialogConfig.autoFocus = true;
-          dialogConfig.panelClass = 'loader';
-          setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
+          this.dialog.open(LoaderComponent, dialogConfig);
         } else {
           this.dialog.closeAll();
         }

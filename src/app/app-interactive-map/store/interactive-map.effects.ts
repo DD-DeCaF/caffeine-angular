@@ -263,25 +263,15 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
-  incrementRequest: Observable<Action> = combineLatest(
-    this.actions$.pipe(ofType(fromActions.FETCH_SPECIES)),
-    this.actions$.pipe(ofType(fromActions.FETCH_MODELS)),
-    this.actions$.pipe(ofType(fromActions.FETCH_MAPS)),
-  ).pipe(
-    map(() => {
-      return new loaderActions.Increment();
-    }),
+  incrementRequest: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_SPECIES, fromActions.FETCH_MODELS, fromActions.FETCH_MAPS),
+    mapTo(new loaderActions.Increment()),
   );
 
   @Effect()
-  decrementRequest: Observable<Action> = combineLatest(
-    this.actions$.pipe(ofType(fromActions.SET_SPECIES)),
-    this.actions$.pipe(ofType(fromActions.SET_MODELS)),
-    this.actions$.pipe(ofType(fromActions.SET_MAPS)),
-  ).pipe(
-    map(() => {
-      return new loaderActions.Decrement();
-    }),
+  decrementRequest: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_SPECIES, fromActions.SET_MODELS, fromActions.SET_MAPS),
+    mapTo(new loaderActions.Decrement()),
   );
 
   constructor(

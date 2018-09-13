@@ -33,14 +33,14 @@ export function loaderReducer(
     case fromLoaderActions.INCREMENT:
       return {
         ...state,
-        count: ++state.count,
+        count: state.count + 1,
       };
     case fromLoaderActions.DECREMENT:
       return {
         ...state,
-        count: --state.count,
+        count: state.count - 1,
       };
-      default:
+    default:
       return state;
   }
 }

@@ -26,7 +26,6 @@ import {isLoading} from './store/loader.selectors';
 })
 export class LoaderComponent implements OnInit {
 
-
   constructor(
     private store: Store<AppState>) { }
 
@@ -35,6 +34,5 @@ export class LoaderComponent implements OnInit {
   ngOnInit(): void {
     this.loading = this.store.pipe(select(isLoading));
   }
-
 }
 
