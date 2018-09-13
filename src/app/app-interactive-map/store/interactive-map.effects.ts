@@ -28,6 +28,7 @@ import { interactiveMapReducer } from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
 import { WarehouseService } from '../services/warehouse.service';
+import * as loaderActions from '../components/loader/store/loader.actions';
 
 
 const ACTION_OFFSETS = {
@@ -259,6 +260,28 @@ export class InteractiveMapEffects {
         ...action,
         solution,
     })),
+  );
+
+  @Effect()
+  incrementRequest: Observable<Action> = combineLatest(
+    this.actions$.pipe(ofType(fromActions.FETCH_SPECIES)),
+    this.actions$.pipe(ofType(fromActions.FETCH_MODELS)),
+    this.actions$.pipe(ofType(fromActions.FETCH_MAPS)),
+  ).pipe(
+    map(() => {
+      return new loaderActions.Increment();
+    }),
+  );
+
+  @Effect()
+  decrementRequest: Observable<Action> = combineLatest(
+    this.actions$.pipe(ofType(fromActions.SET_SPECIES)),
+    this.actions$.pipe(ofType(fromActions.SET_MODELS)),
+    this.actions$.pipe(ofType(fromActions.SET_MAPS)),
+  ).pipe(
+    map(() => {
+      return new loaderActions.Decrement();
+    }),
   );
 
   constructor(

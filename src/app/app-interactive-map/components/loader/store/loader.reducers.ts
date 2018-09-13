@@ -13,16 +13,14 @@
 // limitations under the License.
 
 import * as fromLoaderActions from './loader.actions';
-import { debug } from '../../logger';
+import { debug } from '../../../../logger';
 
 
 export interface LoaderState {
-  loading: boolean;
   count: number;
 }
 
 export const initialState: LoaderState = {
-  loading: false,
   count: 0,
 };
 
@@ -30,19 +28,17 @@ export function loaderReducer(
   state: LoaderState = initialState,
   action: fromLoaderActions.LoaderActions,
 ): LoaderState {
-  debug('Action:', action);
+  debug('Action:', action, state.count);
   switch (action.type) {
     case fromLoaderActions.INCREMENT:
       return {
         ...state,
-        count: state.count++,
-        loading: state.count === 0,
+        count: ++state.count,
       };
     case fromLoaderActions.DECREMENT:
       return {
         ...state,
-        count: state.count--,
-        loading: state.count === 0,
+        count: --state.count,
       };
       default:
       return state;

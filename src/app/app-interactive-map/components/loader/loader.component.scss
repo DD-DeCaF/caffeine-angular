@@ -12,24 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
-import {AppState} from '../store/app.reducers';
-import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
-import {isLoading} from './store/loader.selectors';
 
-@Component({
-  selector: 'app-loader',
-  templateUrl: './loader.component.html',
-})
-export class LoaderComponent implements OnInit {
+/deep/ .loader .mat-dialog-container {
+  background: transparent;
+  box-shadow: none;
+}
 
-  constructor(private store: Store<AppState>) { }
+/deep/  .mat-progress-spinner circle, .mat-spinner circle {
+  stroke: white;
+}
 
-  loading: Observable<boolean>;
+.map-progress {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  opacity: 0.9;
+}
 
-  ngOnInit(): void {
-    this.loading = this.store.pipe(select(isLoading));
-  }
-
+.map-progress-text {
+  color: white;
+  opacity: 1;
+  font-weight: bold;
+  font-size: 25px;
 }

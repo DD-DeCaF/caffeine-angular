@@ -30,6 +30,7 @@ import { SimulationService } from './services/simulation.service';
 import { MapService } from './services/map.service';
 import { ModelService } from './services/model.service';
 import { WarehouseService } from './services/warehouse.service';
+import {LoaderComponent} from './components/loader/loader.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { WarehouseService } from './services/warehouse.service';
     AppCardInfoComponent,
     AppLegendComponent,
     AppGlobalSettingsComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,5 +62,6 @@ import { WarehouseService } from './services/warehouse.service';
   exports: [
     AppInteractiveMapComponent,
   ],
+  entryComponents: [LoaderComponent],
 })
 export class AppInteractiveMapModule {}

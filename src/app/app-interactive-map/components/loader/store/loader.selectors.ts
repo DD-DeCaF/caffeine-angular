@@ -12,29 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Action} from '@ngrx/store';
+import {createSelector} from '@ngrx/store';
+import {AppState} from '../../../../store/app.reducers';
 
 
-export const LOADING = 'LOADING';
-export const LOADING_SUCCESS = 'LOADING_SUCCESS';
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
+export const isLoading = createSelector(
+  (state: AppState) => state.loader.count !== 0);
 
-
-export class Loading implements Action {
-  readonly type = LOADING;
-}
-
-export class LoadingSuccess implements Action {
-  readonly type = LOADING_SUCCESS;
-}
-
-export class Increment implements Action {
-  readonly type = INCREMENT;
-}
-
-export class Decrement implements Action {
-  readonly type = DECREMENT;
-}
-
-export type LoaderActions = Loading | LoadingSuccess | Increment | Decrement;

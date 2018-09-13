@@ -12,20 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ActionReducerMap} from '@ngrx/store';
+import {Component, OnInit} from '@angular/core';
+import {AppState} from '../../../store/app.reducers';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {isLoading} from './store/loader.selectors';
 
-import {SessionState, sessionReducer} from '../session/store/session.reducers';
-import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
-import {loaderReducer, LoaderState} from '../app-interactive-map/components/loader/store/loader.reducers';
+@Component({
+  selector: 'app-loader',
+  templateUrl: './loader.component.html',
+  styleUrls: ['./loader.component.scss'],
 
-export interface AppState {
-  session: SessionState;
-  interactiveMap: InteractiveMapState;
-  loader: LoaderState;
+})
+export class LoaderComponent implements OnInit {
+
+
+  constructor(
+    private store: Store<AppState>) { }
+
+  loading: Observable<boolean>;
+
+  ngOnInit(): void {
+    this.loading = this.store.pipe(select(isLoading));
+  }
+
 }
 
-export const reducers: ActionReducerMap<AppState> = {
-  session: sessionReducer,
-  interactiveMap: interactiveMapReducer,
-  loader: loaderReducer,
-};
