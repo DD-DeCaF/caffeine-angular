@@ -93,22 +93,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new fromActions.Loaded());
         this.loading = false;
       });
-
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'loader';
-
-    this.store
-      .pipe(
-        select(isLoading),
-      ).subscribe((loading) => {
-        if (loading) {
-          this.dialog.open(LoaderComponent, dialogConfig);
-        } else {
-          this.dialog.closeAll();
-        }
-    });
   }
 
   ngAfterViewInit(): void {
@@ -122,6 +106,22 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.escherSettings,
       ),
     );
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+
+    this.store
+      .pipe(
+        select(isLoading),
+      ).subscribe((loading) => {
+      if (loading) {
+        Promise.resolve().then(() => { this.dialog.open(LoaderComponent, dialogConfig); });
+      } else {
+        this.dialog.closeAll();
+      }
+    });
   }
 
   handleKnockout(args: string): void {

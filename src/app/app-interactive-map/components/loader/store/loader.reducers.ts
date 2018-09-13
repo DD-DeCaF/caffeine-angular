@@ -28,7 +28,7 @@ export function loaderReducer(
   state: LoaderState = initialState,
   action: fromLoaderActions.LoaderActions,
 ): LoaderState {
-  debug('Action:', action, state.count);
+  debug('Action:', action);
   switch (action.type) {
     case fromLoaderActions.INCREMENT:
       return {
