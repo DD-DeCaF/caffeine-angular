@@ -12,35 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+import {createSelector} from '@ngrx/store';
+import {AppState} from '../../../../store/app.reducers';
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
 
-app-root {
-  display: block;
-  height: 100%;
-}
-
-a {
-  color: rgba(0, 0, 0, 0.54);
-  color: #2196F9;
-  text-decoration: none;
-
-  &:active,
-  &:hover,
-  &:focus {
-    color: black;
-  }
-}
-
-button,html,input,select,textarea {
-  font-family: Roboto,Helvetica Neue,sans-serif
-}
+export const isLoading = createSelector(
+  (state: AppState) => state.loader.count !== 0);
 

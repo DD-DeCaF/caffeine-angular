@@ -12,35 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+import {Action} from '@ngrx/store';
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
+
+export const INCREMENT = 'INCREMENT';
+export const DECREMENT = 'DECREMENT';
+
+
+export class Increment implements Action {
+  readonly type = INCREMENT;
 }
 
-app-root {
-  display: block;
-  height: 100%;
+export class Decrement implements Action {
+  readonly type = DECREMENT;
 }
 
-a {
-  color: rgba(0, 0, 0, 0.54);
-  color: #2196F9;
-  text-decoration: none;
-
-  &:active,
-  &:hover,
-  &:focus {
-    color: black;
-  }
-}
-
-button,html,input,select,textarea {
-  font-family: Roboto,Helvetica Neue,sans-serif
-}
-
+export type LoaderActions = Increment | Decrement;

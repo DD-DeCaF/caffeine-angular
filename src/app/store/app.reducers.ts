@@ -16,13 +16,16 @@ import {ActionReducerMap} from '@ngrx/store';
 
 import {SessionState, sessionReducer} from '../session/store/session.reducers';
 import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
+import {loaderReducer, LoaderState} from '../app-interactive-map/components/loader/store/loader.reducers';
 
 export interface AppState {
   session: SessionState;
   interactiveMap: InteractiveMapState;
+  loader: LoaderState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   session: sessionReducer,
   interactiveMap: interactiveMapReducer,
+  loader: loaderReducer,
 };
