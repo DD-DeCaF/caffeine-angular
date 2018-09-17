@@ -15,6 +15,19 @@ limitations under the License.
 -->
 <table mat-table [dataSource]="dataSource" matSort class="table">
 
+  <!-- Chevron column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      Select
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button (click)="element.expanded = !element.expanded;">
+        <mat-icon *ngIf="!element.expanded">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="element.expanded">keyboard_arrow_up</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
   <ng-container  matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
     <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -76,8 +89,8 @@ limitations under the License.
       class="element-row"
       [appJobResultsDetailRow]="row"
       [appJobResultsDetailRowTpl]="tpl"
-      (toggleChange)="onToggleChange($event)">
-      ></tr>
+      (toggleChange)="toggleChange($event)">
+    </tr>
 </table>
 
 <ng-template #tpl let-element>
@@ -88,7 +101,7 @@ limitations under the License.
       <div class="linkListInner">
         <div *ngFor="let manipulation of element.manipulations">
             <a
-              [attr.href]="geneLink(manipulation.value)"
+              [attr.href]="geneLink(manipulation)"
               target="_blank">
               {{dispManipulation(manipulation)}}
             </a>

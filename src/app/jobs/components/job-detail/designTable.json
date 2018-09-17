@@ -3308,9 +3308,7 @@
     "biomass": 0.9823718127257735,
     "id": 4.0,
     "yield": 0.0,
-    "manipulations": [
-      null
-    ]
+    "manipulations": []
   },
   {
     "product": 2.0419396991869907,
@@ -5437,9 +5435,7 @@
     "biomass": 0.2878657037003343,
     "id": 8.0,
     "yield": -0.0,
-    "manipulations": [
-      null
-    ]
+    "manipulations": []
   },
   {
     "product": 3.368421,
@@ -7502,8 +7498,6 @@
     "biomass": 0.2878657037040202,
     "id": 12.0,
     "yield": 0.0,
-    "manipulations": [
-      null
-    ]
+    "manipulations": []
   }
 ]

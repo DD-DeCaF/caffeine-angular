@@ -51,7 +51,7 @@ export class JobResultsDetailRowDirective {
     }
   }
 
-  @Output() toggleChange = new EventEmitter<JobResultsDetailRowDirective>();
+  @Output() toggleChange = new EventEmitter<{}>();
 
   constructor(public vcRef: ViewContainerRef) { }
 
@@ -63,11 +63,12 @@ export class JobResultsDetailRowDirective {
   toggle(): void {
     if (this.opened) {
       this.vcRef.clear();
+      this.toggleChange.emit(null);
     } else {
       this.render();
+      this.toggleChange.emit(this.row);
     }
     this.opened = this.vcRef.length > 0;
-    this.toggleChange.emit(this);
   }
 
   private render(): void {

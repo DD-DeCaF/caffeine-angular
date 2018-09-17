@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, AfterViewInit, EventEmitter } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 
 import { PathwayPredictionResult } from '../../../../types';
@@ -31,13 +31,14 @@ const indicators = {
 })
 export class JobResultTableComponent implements AfterViewInit {
   @Input() tableData: PathwayPredictionResult[];
-  @Input() singleChildRowDetail: boolean;
   @ViewChild(MatSort) sort: MatSort;
-  private openedRow: JobResultsDetailRowDirective;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
+  private collapseClicked = new EventEmitter<PathwayPredictionResult>();
+  public expandedId: string = null;
 
   displayedColumns: string[] = [
+    'select',
     'id',
     'host',
     'model',
@@ -68,17 +69,15 @@ export class JobResultTableComponent implements AfterViewInit {
           return item[property];
       }
     };
+
+    // Later on use with datasource observable
+    this.collapseClicked.subscribe((value) => {
+      this.expandedId = value ? value.id : null;
+    });
   }
 
-  onToggleChange(cdkDetailRow: JobResultsDetailRowDirective): void {
-    if (this.singleChildRowDetail && this.openedRow && this.openedRow.expanded) {
-      this.openedRow.toggle();
-    }
-    this.openedRow = cdkDetailRow.expanded ? cdkDetailRow : undefined;
-  }
-
-  geneLink(geneName: string): string {
-    return `http://bigg.ucsd.edu/search?query=${geneName}`;
+  geneLink(manipulation: {value: string}): string {
+    return `http://bigg.ucsd.edu/search?query=${manipulation.value}`;
   }
 
   hpLink(hp: string): string {
@@ -100,6 +99,12 @@ export class JobResultTableComponent implements AfterViewInit {
       } else {
         return '-';
       }
+  }
+
+
+  toggleChange(val: JobResultsDetailRowDirective): void {
+    // @ts-ignore
+    this.collapseClicked.emit(val.row);
   }
 
   dispHP(hp: string[]): string {
