@@ -1,0 +1,111 @@
+<!--
+Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<table mat-table [dataSource]="dataSource" matSort class="table">
+
+  <ng-container  matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="host">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Host</th>
+    <td mat-cell *matCellDef="let element"> {{element.host}} </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="model">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+    <td mat-cell *matCellDef="let element"> {{element.model}} </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="manipulations">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Manipulations</th>
+    <td mat-cell *matCellDef="let element">
+      <a>{{element.manipulations.length}}</a>
+    </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="heterologous_pathway">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Heterologous Pathways</th>
+    <td mat-cell *matCellDef="let element">
+      <a>{{element.heterologous_pathway.length}}</a>
+    </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="product">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
+    <td mat-cell *matCellDef="let element"> {{element.product | float}} </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="biomass">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Biomass</th>
+    <td mat-cell *matCellDef="let element"> {{element.biomass | float}} </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="yield">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Yield</th>
+    <td mat-cell *matCellDef="let element"> {{element.yield | float}} </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="fitness">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fitness</th>
+    <td mat-cell *matCellDef="let element"> {{element.fitness | float}} </td>
+  </ng-container>
+
+  <ng-container  matColumnDef="method">
+    <th mat-header-cell *matHeaderCellDef>Method</th>
+    <td mat-cell *matCellDef="let element"> {{element.method}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row
+      *matRowDef="let row; columns: displayedColumns;"
+      matRipple
+      class="element-row"
+      [appJobResultsDetailRow]="row"
+      [appJobResultsDetailRowTpl]="tpl"
+      (toggleChange)="onToggleChange($event)">
+      ></tr>
+</table>
+
+<ng-template #tpl let-element>
+  <tr class="mat-row expandRow">
+    <td colspan="3"></td>
+
+    <td class="linkList">
+      <div class="linkListInner">
+        <div *ngFor="let manipulation of element.manipulations">
+            <a
+              [attr.href]="geneLink(manipulation.value)"
+              target="_blank">
+              {{dispManipulation(manipulation)}}
+            </a>
+        </div>
+      </div>
+    </td>
+
+    <td class="linkList">
+      <div *ngFor="let hp of element.heterologous_pathway">
+        <a
+          [attr.href]="hpLink(hp)"
+          target="_blank">
+            {{hp}}
+        </a>
+      </div>
+    </td>
+
+    <td colspan="5"></td>
+  </tr>
+</ng-template>

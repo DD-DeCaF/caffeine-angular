@@ -12,12 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  padding: 3px;
-  background: gainsboro;
+.table {
+  width: 100%;
 }
 
-.card {
-  padding: 10px;
-  margin: 5px;
+td.linkList {
+  vertical-align: top;
+}
+
+tr.expanded > td {
+  border-bottom: none;
+}
+
+.linkListInner {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.expandRow > td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }

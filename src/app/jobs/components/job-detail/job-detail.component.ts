@@ -15,14 +15,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Job } from '../../types';
+import { Job, PathwayPredictionResult } from '../../types';
 import { Observable } from 'rxjs';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 import { getJob } from '../../store/jobs.selectors';
-import { filter, map } from 'rxjs/operators';
-import { notNull } from '../../../utils';
 import { selectNotNull } from '../../../framework-extensions';
+import tableData from './designTable.json';
 
 
 @Component({
@@ -33,6 +32,8 @@ import { selectNotNull } from '../../../framework-extensions';
 export class JobDetailComponent implements OnInit {
   job: Observable<Job>;
   loadError = false;
+  // @ts-ignore
+  tableData: PathwayPredictionResult[] = <PathwayPredictionResult[]>tableData;
 
   constructor(
     private route: ActivatedRoute,
@@ -42,8 +43,6 @@ export class JobDetailComponent implements OnInit {
   ngOnInit(): void {
     const jobId = Number(this.route.snapshot.params['id']);
     this.job = this.store.pipe(
-      // select(getJob, {jobId}),
-      // filter(notNull),
       selectNotNull(getJob, {jobId}),
     );
     // this.jobSservice.getJobs().subscribe(

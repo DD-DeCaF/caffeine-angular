@@ -27,4 +27,21 @@ export interface PathwayPrediction {
   product: string;
   model: string;
   numberOfPathways: number;
+  // results: PathwayPredictionResult[];
+}
+
+export interface PathwayPredictionResult {
+  id: string;
+  host: string;
+  model: string;
+  manipulations: {
+    direction: 'delta' | 'down' | 'up';
+    value: string;
+  }[];
+  heterologous_pathway: string[];
+  fitness: number;
+  yield: number;
+  product: number;
+  biomass: number;
+  method: string;
 }

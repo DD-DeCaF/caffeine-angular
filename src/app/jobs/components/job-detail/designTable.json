@@ -1,0 +1,7509 @@
+[
+  {
+    "product": 0.0011528681169345502,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM126",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": 2.57109776e-05,
+    "biomass": 0.2229918988267989,
+    "id": 0.0,
+    "yield": 0.000154,
+    "manipulations": [
+      {
+        "direction": "delta",
+        "value": "YBR196C"
+      }
+    ]
+  },
+  {
+    "product": 7.58479,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Escherichia coli",
+    "heterologous_pathway": [
+      "MNXR651",
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM2449",
+      "DM_MNXM7019",
+      "DM_MNXM147499",
+      "DM_MNXM754"
+    ],
+    "model": "iJO1366",
+    "fitness": 0.0,
+    "biomass": 0.0,
+    "id": 1.0,
+    "yield": 1.011305,
+    "manipulations": [
+      {
+        "direction": "delta",
+        "value": "3OAR140"
+      },
+      {
+        "direction": "delta",
+        "value": "3OAS140"
+      },
+      {
+        "direction": "delta",
+        "value": "5DOAN"
+      },
+      {
+        "direction": "delta",
+        "value": "A5PISO"
+      },
+      {
+        "direction": "delta",
+        "value": "ACCOAC"
+      },
+      {
+        "direction": "delta",
+        "value": "ACGK"
+      },
+      {
+        "direction": "delta",
+        "value": "ACGS"
+      },
+      {
+        "direction": "delta",
+        "value": "ACHBS"
+      },
+      {
+        "direction": "delta",
+        "value": "ACLS"
+      },
+      {
+        "direction": "delta",
+        "value": "ACODA"
+      },
+      {
+        "direction": "delta",
+        "value": "ACOTA"
+      },
+      {
+        "direction": "delta",
+        "value": "ADCL"
+      },
+      {
+        "direction": "delta",
+        "value": "ADCS"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSK"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL1r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL2r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSS"
+      },
+      {
+        "direction": "delta",
+        "value": "AGPAT160"
+      },
+      {
+        "direction": "delta",
+        "value": "AGPAT161"
+      },
+      {
+        "direction": "delta",
+        "value": "AGPR"
+      },
+      {
+        "direction": "delta",
+        "value": "AHCYSNS"
+      },
+      {
+        "direction": "delta",
+        "value": "AICART"
+      },
+      {
+        "direction": "delta",
+        "value": "AIRC2"
+      },
+      {
+        "direction": "delta",
+        "value": "AIRC3"
+      },
+      {
+        "direction": "delta",
+        "value": "ALAALAr"
+      },
+      {
+        "direction": "delta",
+        "value": "ALAR"
+      },
+      {
+        "direction": "delta",
+        "value": "AMAOTr"
+      },
+      {
+        "direction": "delta",
+        "value": "AMPMS2"
+      },
+      {
+        "direction": "delta",
+        "value": "ANPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "ANS"
+      },
+      {
+        "direction": "delta",
+        "value": "AOXSr2"
+      },
+      {
+        "direction": "delta",
+        "value": "APRAUR"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSL"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSS"
+      },
+      {
+        "direction": "delta",
+        "value": "ASAD"
+      },
+      {
+        "direction": "delta",
+        "value": "ASP1DC"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPCT"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPK"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPTA"
+      },
+      {
+        "direction": "delta",
+        "value": "ATPPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.932ATPS4rpp"
+      },
+      {
+        "direction": "delta",
+        "value": "BMOCOS"
+      },
+      {
+        "direction": "delta",
+        "value": "BMOGDS1"
+      },
+      {
+        "direction": "delta",
+        "value": "BMOGDS2"
+      },
+      {
+        "direction": "delta",
+        "value": "BPNT"
+      },
+      {
+        "direction": "delta",
+        "value": "BTS5"
+      },
+      {
+        "direction": "delta",
+        "value": "CA2tex"
+      },
+      {
+        "direction": "delta",
+        "value": "CDPMEK"
+      },
+      {
+        "direction": "delta",
+        "value": "CHORM"
+      },
+      {
+        "direction": "delta",
+        "value": "CHORS"
+      },
+      {
+        "direction": "delta",
+        "value": "CHRPL"
+      },
+      {
+        "direction": "delta",
+        "value": "CLt3_2pp"
+      },
+      {
+        "direction": "delta",
+        "value": "CLtex"
+      },
+      {
+        "direction": "INV",
+        "value": "(-19.350 -> 0.678)-CO2tex"
+      },
+      {
+        "direction": "delta",
+        "value": "COBALT2tex"
+      },
+      {
+        "direction": "delta",
+        "value": "COBALT2tpp"
+      },
+      {
+        "direction": "delta",
+        "value": "CPMPS"
+      },
+      {
+        "direction": "delta",
+        "value": "CTPS2"
+      },
+      {
+        "direction": "delta",
+        "value": "CU2tex"
+      },
+      {
+        "direction": "delta",
+        "value": "CU2tpp"
+      },
+      {
+        "direction": "delta",
+        "value": "CYSS"
+      },
+      {
+        "direction": "delta",
+        "value": "CYSTL"
+      },
+      {
+        "direction": "delta",
+        "value": "DAPDC"
+      },
+      {
+        "direction": "delta",
+        "value": "DAPE"
+      },
+      {
+        "direction": "delta",
+        "value": "DASYN160"
+      },
+      {
+        "direction": "delta",
+        "value": "DASYN161"
+      },
+      {
+        "direction": "delta",
+        "value": "DB4PS"
+      },
+      {
+        "direction": "delta",
+        "value": "DBTS"
+      },
+      {
+        "direction": "up",
+        "value": "2.284DDPA"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD1"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD2"
+      },
+      {
+        "direction": "delta",
+        "value": "DHDPRy"
+      },
+      {
+        "direction": "delta",
+        "value": "DHDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "DHFR"
+      },
+      {
+        "direction": "delta",
+        "value": "DHFS"
+      },
+      {
+        "direction": "delta",
+        "value": "DHNPA2r"
+      },
+      {
+        "direction": "delta",
+        "value": "DHORTS"
+      },
+      {
+        "direction": "delta",
+        "value": "DHPPDA2"
+      },
+      {
+        "direction": "delta",
+        "value": "DHPS2"
+      },
+      {
+        "direction": "delta",
+        "value": "DHPTDCs2"
+      },
+      {
+        "direction": "up",
+        "value": "2.284DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "2.453DHQTi"
+      },
+      {
+        "direction": "delta",
+        "value": "DMATT"
+      },
+      {
+        "direction": "delta",
+        "value": "DNMPPA"
+      },
+      {
+        "direction": "delta",
+        "value": "DNTPPA"
+      },
+      {
+        "direction": "delta",
+        "value": "DPCOAK"
+      },
+      {
+        "direction": "delta",
+        "value": "DPR"
+      },
+      {
+        "direction": "delta",
+        "value": "DTMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "DXPRIi"
+      },
+      {
+        "direction": "delta",
+        "value": "DXPS"
+      },
+      {
+        "direction": "delta",
+        "value": "E4PD"
+      },
+      {
+        "direction": "delta",
+        "value": "EGMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "EPMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "FCLT"
+      },
+      {
+        "direction": "delta",
+        "value": "FMNAT"
+      },
+      {
+        "direction": "delta",
+        "value": "G1PACT"
+      },
+      {
+        "direction": "delta",
+        "value": "G1SAT"
+      },
+      {
+        "direction": "delta",
+        "value": "G3PD2"
+      },
+      {
+        "direction": "delta",
+        "value": "G5SADs"
+      },
+      {
+        "direction": "delta",
+        "value": "GCALDD"
+      },
+      {
+        "direction": "delta",
+        "value": "GF6PTA"
+      },
+      {
+        "direction": "delta",
+        "value": "GK1"
+      },
+      {
+        "direction": "delta",
+        "value": "GLNS"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUR"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUTRR"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUTRS"
+      },
+      {
+        "direction": "delta",
+        "value": "GMPS2"
+      },
+      {
+        "direction": "delta",
+        "value": "GRTT"
+      },
+      {
+        "direction": "delta",
+        "value": "GTPCI"
+      },
+      {
+        "direction": "delta",
+        "value": "GTPCII2"
+      },
+      {
+        "direction": "delta",
+        "value": "HBZOPT"
+      },
+      {
+        "direction": "delta",
+        "value": "HCO3E"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTD"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTP"
+      },
+      {
+        "direction": "delta",
+        "value": "HMBS"
+      },
+      {
+        "direction": "delta",
+        "value": "HPPK2"
+      },
+      {
+        "direction": "delta",
+        "value": "HSDy"
+      },
+      {
+        "direction": "delta",
+        "value": "HSK"
+      },
+      {
+        "direction": "delta",
+        "value": "HSST"
+      },
+      {
+        "direction": "delta",
+        "value": "HSTPT"
+      },
+      {
+        "direction": "delta",
+        "value": "ICYSDS"
+      },
+      {
+        "direction": "delta",
+        "value": "IG3PS"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPDH"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPS"
+      },
+      {
+        "direction": "delta",
+        "value": "ILETA"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "IPMD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIa"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIb"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPS"
+      },
+      {
+        "direction": "delta",
+        "value": "K2L4Aabcpp"
+      },
+      {
+        "direction": "delta",
+        "value": "K2L4Aabctex"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA1"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA2"
+      },
+      {
+        "direction": "delta",
+        "value": "KDOCT2"
+      },
+      {
+        "direction": "delta",
+        "value": "KDOPP"
+      },
+      {
+        "direction": "delta",
+        "value": "KDOPS"
+      },
+      {
+        "direction": "delta",
+        "value": "Ktex"
+      },
+      {
+        "direction": "delta",
+        "value": "LEUTAi"
+      },
+      {
+        "direction": "delta",
+        "value": "LPADSS"
+      },
+      {
+        "direction": "delta",
+        "value": "MALCOAMT"
+      },
+      {
+        "direction": "delta",
+        "value": "MCOATA"
+      },
+      {
+        "direction": "delta",
+        "value": "MCTP1App"
+      },
+      {
+        "direction": "delta",
+        "value": "MECDPDH5"
+      },
+      {
+        "direction": "delta",
+        "value": "MECDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "MEOHtex"
+      },
+      {
+        "direction": "delta",
+        "value": "MEOHtrpp"
+      },
+      {
+        "direction": "delta",
+        "value": "MEPCT"
+      },
+      {
+        "direction": "delta",
+        "value": "METAT"
+      },
+      {
+        "direction": "delta",
+        "value": "METS"
+      },
+      {
+        "direction": "delta",
+        "value": "MG2tex"
+      },
+      {
+        "direction": "up",
+        "value": "2.959MNXR5336"
+      },
+      {
+        "direction": "up",
+        "value": "2.959MNXR5340"
+      },
+      {
+        "direction": "up",
+        "value": "2.959MNXR68718"
+      },
+      {
+        "direction": "delta",
+        "value": "MNtex"
+      },
+      {
+        "direction": "delta",
+        "value": "MOADSUx"
+      },
+      {
+        "direction": "delta",
+        "value": "MOAT"
+      },
+      {
+        "direction": "delta",
+        "value": "MOAT2"
+      },
+      {
+        "direction": "delta",
+        "value": "MOBDabcpp"
+      },
+      {
+        "direction": "delta",
+        "value": "MOBDtex"
+      },
+      {
+        "direction": "delta",
+        "value": "MOCOS"
+      },
+      {
+        "direction": "delta",
+        "value": "MOHMT"
+      },
+      {
+        "direction": "delta",
+        "value": "MPTAT"
+      },
+      {
+        "direction": "delta",
+        "value": "MPTG"
+      },
+      {
+        "direction": "delta",
+        "value": "MPTS"
+      },
+      {
+        "direction": "delta",
+        "value": "MPTSS"
+      },
+      {
+        "direction": "delta",
+        "value": "MTHFR2"
+      },
+      {
+        "direction": "delta",
+        "value": "MTHTHFSs"
+      },
+      {
+        "direction": "delta",
+        "value": "NADK"
+      },
+      {
+        "direction": "delta",
+        "value": "NADS1"
+      },
+      {
+        "direction": "delta",
+        "value": "NDPK2"
+      },
+      {
+        "direction": "delta",
+        "value": "NDPK4"
+      },
+      {
+        "direction": "delta",
+        "value": "NH4tex"
+      },
+      {
+        "direction": "delta",
+        "value": "NH4tpp"
+      },
+      {
+        "direction": "delta",
+        "value": "NI2tex"
+      },
+      {
+        "direction": "delta",
+        "value": "NNATr"
+      },
+      {
+        "direction": "delta",
+        "value": "NNDPR"
+      },
+      {
+        "direction": "INV",
+        "value": "(17.274 -> -4.471)-O2tpp"
+      },
+      {
+        "direction": "delta",
+        "value": "OCBT"
+      },
+      {
+        "direction": "delta",
+        "value": "OCTDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPD"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPS"
+      },
+      {
+        "direction": "delta",
+        "value": "OHPBAT"
+      },
+      {
+        "direction": "delta",
+        "value": "OMCDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OMPDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OPHBDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPD"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPS"
+      },
+      {
+        "direction": "delta",
+        "value": "ORPT"
+      },
+      {
+        "direction": "delta",
+        "value": "P5CR"
+      },
+      {
+        "direction": "delta",
+        "value": "PANTS"
+      },
+      {
+        "direction": "delta",
+        "value": "PAPPT3"
+      },
+      {
+        "direction": "delta",
+        "value": "PDX5PS"
+      },
+      {
+        "direction": "delta",
+        "value": "PE160abcpp"
+      },
+      {
+        "direction": "delta",
+        "value": "PE161abcpp"
+      },
+      {
+        "direction": "delta",
+        "value": "PERD"
+      },
+      {
+        "direction": "delta",
+        "value": "PGAMT"
+      },
+      {
+        "direction": "delta",
+        "value": "PHETA1"
+      },
+      {
+        "direction": "delta",
+        "value": "PItex"
+      },
+      {
+        "direction": "delta",
+        "value": "PMDPHT"
+      },
+      {
+        "direction": "delta",
+        "value": "PMEACPE"
+      },
+      {
+        "direction": "delta",
+        "value": "PMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "PNTK"
+      },
+      {
+        "direction": "delta",
+        "value": "PPBNGS"
+      },
+      {
+        "direction": "delta",
+        "value": "PPCDC"
+      },
+      {
+        "direction": "delta",
+        "value": "PPNCL2"
+      },
+      {
+        "direction": "delta",
+        "value": "PPND"
+      },
+      {
+        "direction": "delta",
+        "value": "PPNDH"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAGSr"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "PRASCSi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRATPP"
+      },
+      {
+        "direction": "delta",
+        "value": "PRFGS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRMICI"
+      },
+      {
+        "direction": "delta",
+        "value": "PSCVT"
+      },
+      {
+        "direction": "delta",
+        "value": "PSD160"
+      },
+      {
+        "direction": "delta",
+        "value": "PSD161"
+      },
+      {
+        "direction": "delta",
+        "value": "PSSA160"
+      },
+      {
+        "direction": "delta",
+        "value": "PSSA161"
+      },
+      {
+        "direction": "delta",
+        "value": "PTPATi"
+      },
+      {
+        "direction": "delta",
+        "value": "QULNS"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFK"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSa"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSb"
+      },
+      {
+        "direction": "delta",
+        "value": "RHCCE"
+      },
+      {
+        "direction": "delta",
+        "value": "SADT2"
+      },
+      {
+        "direction": "delta",
+        "value": "SDPDS"
+      },
+      {
+        "direction": "delta",
+        "value": "SDPTA"
+      },
+      {
+        "direction": "delta",
+        "value": "SERAT"
+      },
+      {
+        "direction": "delta",
+        "value": "SHCHD2"
+      },
+      {
+        "direction": "delta",
+        "value": "SHCHF"
+      },
+      {
+        "direction": "delta",
+        "value": "SHK3Dr"
+      },
+      {
+        "direction": "delta",
+        "value": "SHKK"
+      },
+      {
+        "direction": "delta",
+        "value": "SHSL1"
+      },
+      {
+        "direction": "delta",
+        "value": "SO4tex"
+      },
+      {
+        "direction": "delta",
+        "value": "SULRi"
+      },
+      {
+        "direction": "delta",
+        "value": "TDSK"
+      },
+      {
+        "direction": "delta",
+        "value": "THDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "THRD_L"
+      },
+      {
+        "direction": "delta",
+        "value": "THRS"
+      },
+      {
+        "direction": "delta",
+        "value": "THZPSN3"
+      },
+      {
+        "direction": "delta",
+        "value": "TMDS"
+      },
+      {
+        "direction": "delta",
+        "value": "TMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "TMPPP"
+      },
+      {
+        "direction": "delta",
+        "value": "TYRL"
+      },
+      {
+        "direction": "delta",
+        "value": "TYRTA"
+      },
+      {
+        "direction": "delta",
+        "value": "U23GAAT"
+      },
+      {
+        "direction": "delta",
+        "value": "UAAGDS"
+      },
+      {
+        "direction": "delta",
+        "value": "UAGAAT"
+      },
+      {
+        "direction": "delta",
+        "value": "UAGCVT"
+      },
+      {
+        "direction": "delta",
+        "value": "UAGDP"
+      },
+      {
+        "direction": "delta",
+        "value": "UAGPT3"
+      },
+      {
+        "direction": "delta",
+        "value": "UAMAGS"
+      },
+      {
+        "direction": "delta",
+        "value": "UAMAS"
+      },
+      {
+        "direction": "delta",
+        "value": "UAPGR"
+      },
+      {
+        "direction": "delta",
+        "value": "UDCPDP"
+      },
+      {
+        "direction": "delta",
+        "value": "UDCPDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "UGMDDS"
+      },
+      {
+        "direction": "delta",
+        "value": "UHGADA"
+      },
+      {
+        "direction": "delta",
+        "value": "UMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "UPP3MT"
+      },
+      {
+        "direction": "delta",
+        "value": "UPP3S"
+      },
+      {
+        "direction": "delta",
+        "value": "UPPDC1"
+      },
+      {
+        "direction": "delta",
+        "value": "USHD"
+      },
+      {
+        "direction": "delta",
+        "value": "Zn2tex"
+      }
+    ]
+  },
+  {
+    "product": 5.71849868493582,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Escherichia coli",
+    "heterologous_pathway": [
+      "MNXR651",
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM2449",
+      "DM_MNXM7019",
+      "DM_MNXM147499",
+      "DM_MNXM754"
+    ],
+    "model": "iJO1366",
+    "fitness": 0.1404423324907,
+    "biomass": 0.24559341062549697,
+    "id": 2.0,
+    "yield": 0.762467,
+    "manipulations": [
+      {
+        "direction": "down",
+        "value": "-0.9983OAR140"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9983OAS140"
+      },
+      {
+        "direction": "down",
+        "value": "-1.0005DOAN"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969A5PISO"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000ACCOAC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ACGK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ACGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966ACHBS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.934ACLS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995ACODA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995ACOTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769ADCL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769ADCS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989ADSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ADSL1r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982ADSL2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ADSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999AGPAT160"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999AGPAT161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997AGPR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000AHCYSNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.979AICART"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982AIRC2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982AIRC3"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000ALAALAr"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000ALAR"
+      },
+      {
+        "direction": "delta",
+        "value": "AMAOTr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.745AMPMS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ANPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ANS"
+      },
+      {
+        "direction": "delta",
+        "value": "AOXSr2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749APRAUR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993ARGSL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993ARGSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.984ASAD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749ASP1DC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982ASPCT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.984ASPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995ASPTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ATPPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.831ATPS4rpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747BMOCOS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747BMOGDS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747BMOGDS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989BPNT"
+      },
+      {
+        "direction": "delta",
+        "value": "BTS5"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750CA2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.827CDPMEK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.953CHORM"
+      },
+      {
+        "direction": "down",
+        "value": "-0.946CHORS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749CHRPL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750CLt3_2pp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750CLtex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.712COBALT2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750CPMPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998CTPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749CU2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000CU2tpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997CYSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.953CYSTL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.962DAPDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.959DAPE"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DASYN160"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DASYN161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749DB4PS"
+      },
+      {
+        "direction": "delta",
+        "value": "DBTS"
+      },
+      {
+        "direction": "up",
+        "value": "1.517DDPA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.934DHAD1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966DHAD2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.959DHDPRy"
+      },
+      {
+        "direction": "down",
+        "value": "-0.959DHDPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998DHFR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769DHFS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769DHNPA2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982DHORTS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749DHPPDA2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769DHPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DHPTDCs2"
+      },
+      {
+        "direction": "up",
+        "value": "1.517DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "1.646DHQTi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.843DMATT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769DNMPPA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769DNTPPA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749DPCOAK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749DPR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DTMPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.827DXPRIi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.818DXPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749E4PD"
+      },
+      {
+        "direction": "delta",
+        "value": "EGMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "EPMEACPR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000FCLT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747FMNAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998G1PACT"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000G1SAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999G3PD2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999G5SADs"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769GCALDD"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000GF6PTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999GK1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993GLNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982GLUPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999GLUR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000GLUTRR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000GLUTRS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998GMPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.843GRTT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769GTPCI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749GTPCII2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749HBZOPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998HCO3E"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990HISTD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990HISTP"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000HMBS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.769HPPK2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989HSDy"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992HSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.953HSST"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990HSTPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749ICYSDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990IG3PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990IGPDH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990IGPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966ILETA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.979IMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.954IPMD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.954IPPMIa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.954IPPMIb"
+      },
+      {
+        "direction": "down",
+        "value": "-0.954IPPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969K2L4Aabcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969K2L4Aabctex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.934KARA1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966KARA2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969KDOCT2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969KDOPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969KDOPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750Ktex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.954LEUTAi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969LPADSS"
+      },
+      {
+        "direction": "delta",
+        "value": "MALCOAMT"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000MCOATA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999MCTP1App"
+      },
+      {
+        "direction": "down",
+        "value": "-0.827MECDPDH5"
+      },
+      {
+        "direction": "down",
+        "value": "-0.827MECDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "MEOHtex"
+      },
+      {
+        "direction": "delta",
+        "value": "MEOHtrpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.827MEPCT"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000METAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.953METS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MG2tex"
+      },
+      {
+        "direction": "up",
+        "value": "1.985MNXR5336"
+      },
+      {
+        "direction": "up",
+        "value": "1.985MNXR5340"
+      },
+      {
+        "direction": "up",
+        "value": "1.985MNXR68718"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MNtex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MOADSUx"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969MOAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969MOAT2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.752MOBDabcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.752MOBDtex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.754MOCOS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749MOHMT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.746MPTAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999MPTG"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MPTS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MPTSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.953MTHFR2"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000MTHTHFSs"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NADK"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NADS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998NDPK2"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NDPK4"
+      },
+      {
+        "direction": "down",
+        "value": "-0.902NH4tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.961NH4tpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.748NI2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NNATr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750NNDPR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.972O2tpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993OCBT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.833OCTDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPD"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749OHPBAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.954OMCDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982OMPDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749OPHBDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPD"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982ORPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997P5CR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749PANTS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PAPPT3"
+      },
+      {
+        "direction": "down",
+        "value": "-0.744PDX5PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PE160abcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000PE161abcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749PERD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PGAMT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.970PHETA1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.935PItex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749PMDPHT"
+      },
+      {
+        "direction": "delta",
+        "value": "PMEACPE"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000PMPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749PNTK"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000PPBNGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749PPCDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.748PPNCL2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978PPND"
+      },
+      {
+        "direction": "down",
+        "value": "-0.970PPNDH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982PRAGSr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982PRAIS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990PRAIi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990PRAMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982PRASCSi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990PRATPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982PRFGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990PRMICI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.946PSCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PSD160"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PSD161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PSSA160"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PSSA161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749PTPATi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750QULNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749RBFK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749RBFSa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749RBFSb"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000RHCCE"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989SADT2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.959SDPDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.959SDPTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997SERAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749SHCHD2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749SHCHF"
+      },
+      {
+        "direction": "down",
+        "value": "-0.946SHK3Dr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.946SHKK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.953SHSL1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989SO4tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989SULRi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969TDSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.959THDPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994THRD_L"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992THRS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749THZPSN3"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998TMDS"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000TMPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.745TMPPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.745TYRL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978TYRTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969U23GAAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UAAGDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969UAGAAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UAGCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998UAGDP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UAGPT3"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UAMAGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UAMAS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UAPGR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UDCPDP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.740UDCPDPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UGMDDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969UHGADA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998UMPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749UPP3MT"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000UPP3S"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000UPPDC1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969USHD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.748Zn2tex"
+      }
+    ]
+  },
+  {
+    "product": 3.8245934040244474,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Escherichia coli",
+    "heterologous_pathway": [
+      "MNXR651",
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM2449",
+      "DM_MNXM7019",
+      "DM_MNXM147499",
+      "DM_MNXM754"
+    ],
+    "model": "iJO1366",
+    "fitness": 0.1878590361891,
+    "biomass": 0.49118673163907545,
+    "id": 3.0,
+    "yield": 0.509946,
+    "manipulations": [
+      {
+        "direction": "down",
+        "value": "-0.9963OAR140"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9963OAS140"
+      },
+      {
+        "direction": "down",
+        "value": "-1.0005DOAN"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938A5PISO"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ACCOAC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995ACGK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995ACGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.932ACHBS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.869ACLS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ACODA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ACOTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539ADCL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539ADCS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.979ADSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ADSL1r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965ADSL2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ADSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998AGPAT160"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997AGPAT161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995AGPR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000AHCYSNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.958AICART"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965AIRC2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965AIRC3"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000ALAALAr"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000ALAR"
+      },
+      {
+        "direction": "delta",
+        "value": "AMAOTr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498AMPMS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.981ANPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.981ANS"
+      },
+      {
+        "direction": "delta",
+        "value": "AOXSr2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498APRAUR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987ARGSL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987ARGSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.968ASAD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500ASP1DC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965ASPCT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.968ASPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ASPTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980ATPPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.494BMOCOS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.494BMOGDS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.494BMOGDS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.979BPNT"
+      },
+      {
+        "direction": "delta",
+        "value": "BTS5"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500CA2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.654CDPMEK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.905CHORM"
+      },
+      {
+        "direction": "down",
+        "value": "-0.891CHORS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498CHRPL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500CLt3_2pp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500CLtex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.464COBALT2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.501CPMPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996CTPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.499CU2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994CYSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.907CYSTL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.924DAPDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.919DAPE"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DASYN160"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DASYN161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500DB4PS"
+      },
+      {
+        "direction": "delta",
+        "value": "DBTS"
+      },
+      {
+        "direction": "up",
+        "value": "0.737DDPA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.869DHAD1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.932DHAD2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.919DHDPRy"
+      },
+      {
+        "direction": "down",
+        "value": "-0.919DHDPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995DHFR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.538DHFS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.538DHNPA2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965DHORTS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498DHPPDA2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539DHPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DHPTDCs2"
+      },
+      {
+        "direction": "up",
+        "value": "0.737DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "0.826DHQTi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.687DMATT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539DNMPPA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539DNTPPA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500DPCOAK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500DPR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DTMPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.654DXPRIi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.637DXPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498E4PD"
+      },
+      {
+        "direction": "delta",
+        "value": "EGMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "EPMEACPR"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000FCLT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.494FMNAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996G1PACT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999G1SAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999G3PD2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998G5SADs"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539GCALDD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999GF6PTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998GK1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985GLNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965GLUPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997GLUR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999GLUTRR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999GLUTRS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995GMPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.687GRTT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539GTPCI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498GTPCII2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498HBZOPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996HCO3E"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980HISTD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980HISTP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999HMBS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.539HPPK2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.979HSDy"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983HSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.907HSST"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980HSTPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980IG3PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980IGPDH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.981IGPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.932ILETA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.958IMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.909IPMD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.909IPPMIa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.909IPPMIb"
+      },
+      {
+        "direction": "down",
+        "value": "-0.909IPPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938K2L4Aabcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938K2L4Aabctex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.869KARA1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.932KARA2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938KDOCT2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938KDOPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938KDOPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500Ktex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.909LEUTAi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938LPADSS"
+      },
+      {
+        "direction": "delta",
+        "value": "MALCOAMT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999MCOATA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998MCTP1App"
+      },
+      {
+        "direction": "down",
+        "value": "-0.654MECDPDH5"
+      },
+      {
+        "direction": "down",
+        "value": "-0.654MECDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "MEOHtex"
+      },
+      {
+        "direction": "delta",
+        "value": "MEOHtrpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.654MEPCT"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000METAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.907METS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500MG2tex"
+      },
+      {
+        "direction": "up",
+        "value": "0.996MNXR5336"
+      },
+      {
+        "direction": "up",
+        "value": "0.996MNXR5340"
+      },
+      {
+        "direction": "up",
+        "value": "0.996MNXR68718"
+      },
+      {
+        "direction": "down",
+        "value": "-0.499MNtex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.501MOADSUx"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938MOAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938MOAT2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.503MOBDabcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.503MOBDtex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.508MOCOS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500MOHMT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.493MPTAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998MPTG"
+      },
+      {
+        "direction": "down",
+        "value": "-0.501MPTS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.501MPTSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.907MTHFR2"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000MTHTHFSs"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NADS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996NDPK2"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NDPK4"
+      },
+      {
+        "direction": "down",
+        "value": "-0.803NH4tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.921NH4tpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.499NI2tex"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NNATr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.501NNDPR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.777O2tpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987OCBT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.666OCTDPS"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPD"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "OGMEACPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498OHPBAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.909OMCDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965OMPDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498OPHBDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPD"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPR"
+      },
+      {
+        "direction": "delta",
+        "value": "OPMEACPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965ORPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994P5CR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500PANTS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PAPPT3"
+      },
+      {
+        "direction": "down",
+        "value": "-0.488PDX5PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PE160abcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PE161abcpp"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498PERD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996PGAMT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.940PHETA1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.870PItex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498PMDPHT"
+      },
+      {
+        "direction": "delta",
+        "value": "PMEACPE"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500PNTK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PPBNGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500PPCDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.497PPNCL2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.956PPND"
+      },
+      {
+        "direction": "down",
+        "value": "-0.940PPNDH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965PRAGSr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965PRAIS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.981PRAIi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980PRAMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965PRASCSi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980PRATPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.965PRFGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980PRMICI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.891PSCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997PSD160"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996PSD161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997PSSA160"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996PSSA161"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500PTPATi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.501QULNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498RBFK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500RBFSa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498RBFSb"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000RHCCE"
+      },
+      {
+        "direction": "down",
+        "value": "-0.979SADT2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.919SDPDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.919SDPTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994SERAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498SHCHD2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498SHCHF"
+      },
+      {
+        "direction": "down",
+        "value": "-0.891SHK3Dr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.891SHKK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.907SHSL1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978SO4tex"
+      },
+      {
+        "direction": "down",
+        "value": "-0.979SULRi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938TDSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.919THDPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987THRD_L"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983THRS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498THZPSN3"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995TMDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498TMPPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498TYRL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.956TYRTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938U23GAAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997UAAGDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938UAGAAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998UAGCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996UAGDP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998UAGPT3"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997UAMAGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997UAMAS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998UAPGR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998UDCPDP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.480UDCPDPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998UGMDDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938UHGADA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997UMPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498UPP3MT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UPP3S"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000UPPDC1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.938USHD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.496Zn2tex"
+      }
+    ]
+  },
+  {
+    "product": 0.0,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Escherichia coli",
+    "heterologous_pathway": [
+      "MNXR651",
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM2449",
+      "DM_MNXM7019",
+      "DM_MNXM147499",
+      "DM_MNXM754"
+    ],
+    "model": "iJO1366",
+    "fitness": 0.0,
+    "biomass": 0.9823718127257735,
+    "id": 4.0,
+    "yield": 0.0,
+    "manipulations": [
+      null
+    ]
+  },
+  {
+    "product": 2.0419396991869907,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR14769",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": 0.0,
+    "biomass": 0.0,
+    "id": 5.0,
+    "yield": 0.272259,
+    "manipulations": [
+      {
+        "direction": "delta",
+        "value": "13GS"
+      },
+      {
+        "direction": "delta",
+        "value": "2OXOADPtim"
+      },
+      {
+        "direction": "delta",
+        "value": "3MOBtm"
+      },
+      {
+        "direction": "delta",
+        "value": "6PGLter"
+      },
+      {
+        "direction": "delta",
+        "value": "AATA"
+      },
+      {
+        "direction": "delta",
+        "value": "ACCOAC"
+      },
+      {
+        "direction": "delta",
+        "value": "ACHBSm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACLSm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACS"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSK"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL1r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL2r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSS"
+      },
+      {
+        "direction": "delta",
+        "value": "AGAT_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "AHCi"
+      },
+      {
+        "direction": "delta",
+        "value": "AICART"
+      },
+      {
+        "direction": "delta",
+        "value": "AIRCr"
+      },
+      {
+        "direction": "up",
+        "value": "1.281ANPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "ANS"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSL"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSS"
+      },
+      {
+        "direction": "delta",
+        "value": "ASADi"
+      },
+      {
+        "direction": "delta",
+        "value": "ASNS1"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPCT"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPK"
+      },
+      {
+        "direction": "delta",
+        "value": "ATPPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "C14STR"
+      },
+      {
+        "direction": "delta",
+        "value": "C24STRer"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STDH1"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STDH2"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STKR1"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STKR2"
+      },
+      {
+        "direction": "delta",
+        "value": "C4STMO1"
+      },
+      {
+        "direction": "delta",
+        "value": "C4STMO2"
+      },
+      {
+        "direction": "delta",
+        "value": "CBPS"
+      },
+      {
+        "direction": "delta",
+        "value": "CHORM"
+      },
+      {
+        "direction": "up",
+        "value": "0.818CHORS"
+      },
+      {
+        "direction": "up",
+        "value": "2.967CHRPL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993CO2tm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978CSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997CYOOm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997CYOR_u6m"
+      },
+      {
+        "direction": "delta",
+        "value": "DADK"
+      },
+      {
+        "direction": "delta",
+        "value": "DB4PS"
+      },
+      {
+        "direction": "delta",
+        "value": "DESAT18_2"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD1m"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD2m"
+      },
+      {
+        "direction": "delta",
+        "value": "DHFR"
+      },
+      {
+        "direction": "delta",
+        "value": "DHORTS"
+      },
+      {
+        "direction": "up",
+        "value": "0.818DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "0.818DHQTi"
+      },
+      {
+        "direction": "delta",
+        "value": "DMATT"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPMMer"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPMTcer"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPt2er"
+      },
+      {
+        "direction": "delta",
+        "value": "DPMVD"
+      },
+      {
+        "direction": "delta",
+        "value": "DROPPRy"
+      },
+      {
+        "direction": "delta",
+        "value": "DRTPPD"
+      },
+      {
+        "direction": "delta",
+        "value": "ERGSTter"
+      },
+      {
+        "direction": "delta",
+        "value": "ERGTETROLter"
+      },
+      {
+        "direction": "up",
+        "value": "2.967FALDH"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS100COA"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS120COA"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS80COA_L"
+      },
+      {
+        "direction": "up",
+        "value": "1.297FKYNH"
+      },
+      {
+        "direction": "delta",
+        "value": "G5SADs"
+      },
+      {
+        "direction": "delta",
+        "value": "G6PDH2er"
+      },
+      {
+        "direction": "delta",
+        "value": "G6Pter"
+      },
+      {
+        "direction": "delta",
+        "value": "GARFT"
+      },
+      {
+        "direction": "delta",
+        "value": "GLNS"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "GMPS2"
+      },
+      {
+        "direction": "delta",
+        "value": "GRTT"
+      },
+      {
+        "direction": "delta",
+        "value": "GTPCII"
+      },
+      {
+        "direction": "delta",
+        "value": "H2Oter"
+      },
+      {
+        "direction": "delta",
+        "value": "HACNHm"
+      },
+      {
+        "direction": "delta",
+        "value": "HCITSm"
+      },
+      {
+        "direction": "delta",
+        "value": "HICITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTD"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTP"
+      },
+      {
+        "direction": "delta",
+        "value": "HMGCOAR"
+      },
+      {
+        "direction": "delta",
+        "value": "HSK"
+      },
+      {
+        "direction": "delta",
+        "value": "HSTPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977ICDHyr"
+      },
+      {
+        "direction": "delta",
+        "value": "IG3PS"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPDH"
+      },
+      {
+        "direction": "up",
+        "value": "1.281IGPS"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPDDI"
+      },
+      {
+        "direction": "delta",
+        "value": "IPMD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIa"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIb"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA1im"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA2im"
+      },
+      {
+        "direction": "up",
+        "value": "1.297KYN"
+      },
+      {
+        "direction": "delta",
+        "value": "LEUTA"
+      },
+      {
+        "direction": "delta",
+        "value": "LNSTLS"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN1PT"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN6PI"
+      },
+      {
+        "direction": "delta",
+        "value": "MANNANter"
+      },
+      {
+        "direction": "delta",
+        "value": "MCITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "METS"
+      },
+      {
+        "direction": "delta",
+        "value": "MFAPS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PP"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PS"
+      },
+      {
+        "direction": "up",
+        "value": "2.967MNXR14769"
+      },
+      {
+        "direction": "up",
+        "value": "2.967MNXR5336"
+      },
+      {
+        "direction": "up",
+        "value": "2.967MNXR5340"
+      },
+      {
+        "direction": "delta",
+        "value": "MTHFR3"
+      },
+      {
+        "direction": "delta",
+        "value": "NDPK2"
+      },
+      {
+        "direction": "delta",
+        "value": "O2ter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997O2tm"
+      },
+      {
+        "direction": "delta",
+        "value": "OCBT"
+      },
+      {
+        "direction": "delta",
+        "value": "OMCDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OMPDC"
+      },
+      {
+        "direction": "delta",
+        "value": "ORPT"
+      },
+      {
+        "direction": "delta",
+        "value": "OXAGm"
+      },
+      {
+        "direction": "delta",
+        "value": "P5CR"
+      },
+      {
+        "direction": "delta",
+        "value": "PAPSR"
+      },
+      {
+        "direction": "delta",
+        "value": "PETOHM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PGMT"
+      },
+      {
+        "direction": "delta",
+        "value": "PHETA1"
+      },
+      {
+        "direction": "delta",
+        "value": "PINOS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PIt2r"
+      },
+      {
+        "direction": "delta",
+        "value": "PMANM"
+      },
+      {
+        "direction": "delta",
+        "value": "PMDPHT"
+      },
+      {
+        "direction": "delta",
+        "value": "PMETM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PMEVK"
+      },
+      {
+        "direction": "delta",
+        "value": "PPNDH"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAGSr"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIS"
+      },
+      {
+        "direction": "up",
+        "value": "1.281PRAIi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "PRASCSi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRATPP"
+      },
+      {
+        "direction": "delta",
+        "value": "PRFGS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRMICI"
+      },
+      {
+        "direction": "up",
+        "value": "0.818PSCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.615PYK"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSa"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSb"
+      },
+      {
+        "direction": "up",
+        "value": "1.155RPE"
+      },
+      {
+        "direction": "up",
+        "value": "0.721RPI"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD1"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD2"
+      },
+      {
+        "direction": "up",
+        "value": "2.967SFGTHi"
+      },
+      {
+        "direction": "up",
+        "value": "0.818SHK3Dr"
+      },
+      {
+        "direction": "up",
+        "value": "0.818SHKK"
+      },
+      {
+        "direction": "delta",
+        "value": "SO4ti"
+      },
+      {
+        "direction": "delta",
+        "value": "SQ23EPXter"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLEr"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLS"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLter"
+      },
+      {
+        "direction": "delta",
+        "value": "SULR"
+      },
+      {
+        "direction": "delta",
+        "value": "THRS"
+      },
+      {
+        "direction": "up",
+        "value": "1.364TKT2"
+      },
+      {
+        "direction": "delta",
+        "value": "TMDS"
+      },
+      {
+        "direction": "delta",
+        "value": "TRDR"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PP"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PS"
+      },
+      {
+        "direction": "up",
+        "value": "1.297TRPO2"
+      },
+      {
+        "direction": "up",
+        "value": "1.281TRPS1"
+      },
+      {
+        "direction": "delta",
+        "value": "UMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "VALTA"
+      }
+    ]
+  },
+  {
+    "product": null,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR14769",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": null,
+    "biomass": null,
+    "id": 6.0,
+    "yield": null,
+    "manipulations": [
+      {
+        "direction": "down",
+        "value": "-0.97513GS"
+      },
+      {
+        "direction": "up",
+        "value": "0.3902DDA7Ptm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9772OXOADPtim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9993MOBtm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9996PGLter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977AATA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985ACCOAC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ACGKm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992ACHBSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ACLSm"
+      },
+      {
+        "direction": "up",
+        "value": "0.000ACONT"
+      },
+      {
+        "direction": "up",
+        "value": "0.000ACONTm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ACOTAim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989ACS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ADSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998ADSL1r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988ADSL2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998ADSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997AGAT_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997AGPRim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999AHCi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980AICART"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988AIRCr"
+      },
+      {
+        "direction": "up",
+        "value": "0.766ANPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996ANS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ARGSL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ARGSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985ASADi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996ASNS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989ASPCT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985ASPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992ATPPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C14STR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999C24STRer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STDH1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STDH2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STKR1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STKR2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C4STMO1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C4STMO2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.984CBPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985CHORM"
+      },
+      {
+        "direction": "up",
+        "value": "0.390CHORS"
+      },
+      {
+        "direction": "up",
+        "value": "1.997CHRPL"
+      },
+      {
+        "direction": "up",
+        "value": "0.390CITtbm"
+      },
+      {
+        "direction": "up",
+        "value": "0.000CITtcm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.946CSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DADK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749DB4PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DESAT18_2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994DHAD1m"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992DHAD2m"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DHFR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989DHORTS"
+      },
+      {
+        "direction": "up",
+        "value": "0.390DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "0.390DHQTi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DMATT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DOLPMMer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DOLPMTcer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DOLPt2er"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DPMVD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747DROPPRy"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747DRTPPD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ERGSTter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ERGTETROLter"
+      },
+      {
+        "direction": "up",
+        "value": "1.997FALDH"
+      },
+      {
+        "direction": "up",
+        "value": "0.776FKYNH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997G5SADs"
+      },
+      {
+        "direction": "delta",
+        "value": "G6PDH2er"
+      },
+      {
+        "direction": "delta",
+        "value": "G6Pter"
+      },
+      {
+        "direction": "delta",
+        "value": "GAPD"
+      },
+      {
+        "direction": "delta",
+        "value": "GARFT"
+      },
+      {
+        "direction": "delta",
+        "value": "GLCt1"
+      },
+      {
+        "direction": "delta",
+        "value": "GLNS"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "GMPS2"
+      },
+      {
+        "direction": "delta",
+        "value": "GND"
+      },
+      {
+        "direction": "delta",
+        "value": "GRTT"
+      },
+      {
+        "direction": "delta",
+        "value": "GTPCII"
+      },
+      {
+        "direction": "delta",
+        "value": "H2Ot"
+      },
+      {
+        "direction": "delta",
+        "value": "H2Oter"
+      },
+      {
+        "direction": "delta",
+        "value": "HACNHm"
+      },
+      {
+        "direction": "delta",
+        "value": "HCITSm"
+      },
+      {
+        "direction": "delta",
+        "value": "HICITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTD"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTP"
+      },
+      {
+        "direction": "delta",
+        "value": "HMGCOAR"
+      },
+      {
+        "direction": "delta",
+        "value": "HSK"
+      },
+      {
+        "direction": "delta",
+        "value": "HSTPT"
+      },
+      {
+        "direction": "delta",
+        "value": "ICDHyr"
+      },
+      {
+        "direction": "delta",
+        "value": "IG3PS"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPDH"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPS"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPDDI"
+      },
+      {
+        "direction": "delta",
+        "value": "IPMD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIa"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIb"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA1im"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA2im"
+      },
+      {
+        "direction": "delta",
+        "value": "LEUTA"
+      },
+      {
+        "direction": "delta",
+        "value": "LNSTLS"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN1PT"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN6PI"
+      },
+      {
+        "direction": "delta",
+        "value": "MANNANter"
+      },
+      {
+        "direction": "delta",
+        "value": "MCITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "METAT"
+      },
+      {
+        "direction": "delta",
+        "value": "METS"
+      },
+      {
+        "direction": "delta",
+        "value": "MFAPS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PP"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PS"
+      },
+      {
+        "direction": "delta",
+        "value": "MTHFR3"
+      },
+      {
+        "direction": "delta",
+        "value": "NDPK2"
+      },
+      {
+        "direction": "delta",
+        "value": "NH4t"
+      },
+      {
+        "direction": "delta",
+        "value": "O2t"
+      },
+      {
+        "direction": "delta",
+        "value": "O2ter"
+      },
+      {
+        "direction": "delta",
+        "value": "O2tm"
+      },
+      {
+        "direction": "delta",
+        "value": "OCBT"
+      },
+      {
+        "direction": "delta",
+        "value": "OMCDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OMPDC"
+      },
+      {
+        "direction": "delta",
+        "value": "ORNTACim"
+      },
+      {
+        "direction": "delta",
+        "value": "ORNt3m"
+      },
+      {
+        "direction": "delta",
+        "value": "ORPT"
+      },
+      {
+        "direction": "delta",
+        "value": "OXAGm"
+      },
+      {
+        "direction": "delta",
+        "value": "P5CR"
+      },
+      {
+        "direction": "delta",
+        "value": "PAPSR"
+      },
+      {
+        "direction": "delta",
+        "value": "PETOHM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PGK"
+      },
+      {
+        "direction": "delta",
+        "value": "PGL"
+      },
+      {
+        "direction": "delta",
+        "value": "PGM"
+      },
+      {
+        "direction": "delta",
+        "value": "PGMT"
+      },
+      {
+        "direction": "delta",
+        "value": "PHETA1"
+      },
+      {
+        "direction": "delta",
+        "value": "PINOS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PIt2r"
+      },
+      {
+        "direction": "delta",
+        "value": "PMANM"
+      },
+      {
+        "direction": "delta",
+        "value": "PMDPHT"
+      },
+      {
+        "direction": "delta",
+        "value": "PMETM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PMEVK"
+      },
+      {
+        "direction": "delta",
+        "value": "PPNDH"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAGSr"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "PRASCSi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRATPP"
+      },
+      {
+        "direction": "delta",
+        "value": "PRFGS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRMICI"
+      },
+      {
+        "direction": "delta",
+        "value": "PRPPS"
+      },
+      {
+        "direction": "delta",
+        "value": "PSCVT"
+      },
+      {
+        "direction": "delta",
+        "value": "PYK"
+      },
+      {
+        "direction": "delta",
+        "value": "PYRDC"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSa"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSb"
+      },
+      {
+        "direction": "delta",
+        "value": "RPI"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD1"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD2"
+      },
+      {
+        "direction": "delta",
+        "value": "SHK3Dr"
+      },
+      {
+        "direction": "delta",
+        "value": "SHKK"
+      },
+      {
+        "direction": "delta",
+        "value": "SO4ti"
+      },
+      {
+        "direction": "delta",
+        "value": "SQ23EPXter"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLEr"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLS"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLter"
+      },
+      {
+        "direction": "delta",
+        "value": "SULR"
+      },
+      {
+        "direction": "delta",
+        "value": "THRS"
+      },
+      {
+        "direction": "delta",
+        "value": "TMDS"
+      },
+      {
+        "direction": "delta",
+        "value": "TPI"
+      },
+      {
+        "direction": "delta",
+        "value": "TRDR"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PP"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PS"
+      },
+      {
+        "direction": "delta",
+        "value": "TRPS1"
+      },
+      {
+        "direction": "delta",
+        "value": "UMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "VALTA"
+      }
+    ]
+  },
+  {
+    "product": -0.0,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR14769",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": null,
+    "biomass": 0.0,
+    "id": 7.0,
+    "yield": 0.0,
+    "manipulations": [
+      {
+        "direction": "delta",
+        "value": "13GS"
+      },
+      {
+        "direction": "delta",
+        "value": "2OXOADPtim"
+      },
+      {
+        "direction": "delta",
+        "value": "3MOBtm"
+      },
+      {
+        "direction": "delta",
+        "value": "6PGLter"
+      },
+      {
+        "direction": "delta",
+        "value": "AATA"
+      },
+      {
+        "direction": "delta",
+        "value": "ACCOAC"
+      },
+      {
+        "direction": "delta",
+        "value": "ACGKm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACHBSm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACLSm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACOTAim"
+      },
+      {
+        "direction": "delta",
+        "value": "ACS"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSK"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL1r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL2r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSS"
+      },
+      {
+        "direction": "delta",
+        "value": "AGAT_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "AGPRim"
+      },
+      {
+        "direction": "delta",
+        "value": "AHCi"
+      },
+      {
+        "direction": "delta",
+        "value": "AICART"
+      },
+      {
+        "direction": "delta",
+        "value": "AIRCr"
+      },
+      {
+        "direction": "delta",
+        "value": "ANPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "ANS"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSL"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSS"
+      },
+      {
+        "direction": "delta",
+        "value": "ASADi"
+      },
+      {
+        "direction": "delta",
+        "value": "ASNS1"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPCT"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPK"
+      },
+      {
+        "direction": "delta",
+        "value": "ATPM"
+      },
+      {
+        "direction": "delta",
+        "value": "ATPPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "C14STR"
+      },
+      {
+        "direction": "delta",
+        "value": "C24STRer"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STDH1"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STDH2"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STKR1"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STKR2"
+      },
+      {
+        "direction": "delta",
+        "value": "C4STMO1"
+      },
+      {
+        "direction": "delta",
+        "value": "C4STMO2"
+      },
+      {
+        "direction": "delta",
+        "value": "CBPS"
+      },
+      {
+        "direction": "delta",
+        "value": "CHORM"
+      },
+      {
+        "direction": "delta",
+        "value": "CHORS"
+      },
+      {
+        "direction": "delta",
+        "value": "CO2tm"
+      },
+      {
+        "direction": "delta",
+        "value": "CSm"
+      },
+      {
+        "direction": "delta",
+        "value": "CYOOm"
+      },
+      {
+        "direction": "delta",
+        "value": "CYOR_u6m"
+      },
+      {
+        "direction": "delta",
+        "value": "DADK"
+      },
+      {
+        "direction": "delta",
+        "value": "DB4PS"
+      },
+      {
+        "direction": "delta",
+        "value": "DESAT18_2"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD1m"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD2m"
+      },
+      {
+        "direction": "delta",
+        "value": "DHFR"
+      },
+      {
+        "direction": "delta",
+        "value": "DHORTS"
+      },
+      {
+        "direction": "delta",
+        "value": "DHQS"
+      },
+      {
+        "direction": "delta",
+        "value": "DHQTi"
+      },
+      {
+        "direction": "delta",
+        "value": "DMATT"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPMMer"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPMTcer"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPt2er"
+      },
+      {
+        "direction": "delta",
+        "value": "DPMVD"
+      },
+      {
+        "direction": "delta",
+        "value": "DROPPRy"
+      },
+      {
+        "direction": "delta",
+        "value": "DRTPPD"
+      },
+      {
+        "direction": "delta",
+        "value": "ENO"
+      },
+      {
+        "direction": "delta",
+        "value": "ERGSTter"
+      },
+      {
+        "direction": "delta",
+        "value": "ERGTETROLter"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS100COA"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS120COA"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS80COA_L"
+      },
+      {
+        "direction": "delta",
+        "value": "G5SADs"
+      },
+      {
+        "direction": "delta",
+        "value": "G6PDH2er"
+      },
+      {
+        "direction": "delta",
+        "value": "G6Pter"
+      },
+      {
+        "direction": "delta",
+        "value": "GAPD"
+      },
+      {
+        "direction": "delta",
+        "value": "GARFT"
+      },
+      {
+        "direction": "delta",
+        "value": "GLCt1"
+      },
+      {
+        "direction": "delta",
+        "value": "GLNS"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "GMPS2"
+      },
+      {
+        "direction": "delta",
+        "value": "GND"
+      },
+      {
+        "direction": "delta",
+        "value": "GRTT"
+      },
+      {
+        "direction": "delta",
+        "value": "GTPCII"
+      },
+      {
+        "direction": "delta",
+        "value": "H2Ot"
+      },
+      {
+        "direction": "delta",
+        "value": "H2Oter"
+      },
+      {
+        "direction": "delta",
+        "value": "HACNHm"
+      },
+      {
+        "direction": "delta",
+        "value": "HCITSm"
+      },
+      {
+        "direction": "delta",
+        "value": "HICITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTD"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTP"
+      },
+      {
+        "direction": "delta",
+        "value": "HMGCOAR"
+      },
+      {
+        "direction": "delta",
+        "value": "HSK"
+      },
+      {
+        "direction": "delta",
+        "value": "HSTPT"
+      },
+      {
+        "direction": "delta",
+        "value": "ICDHyr"
+      },
+      {
+        "direction": "delta",
+        "value": "IG3PS"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPDH"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPS"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPDDI"
+      },
+      {
+        "direction": "delta",
+        "value": "IPMD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIa"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIb"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA1im"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA2im"
+      },
+      {
+        "direction": "delta",
+        "value": "LEUTA"
+      },
+      {
+        "direction": "delta",
+        "value": "LNSTLS"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN1PT"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN6PI"
+      },
+      {
+        "direction": "delta",
+        "value": "MANNANter"
+      },
+      {
+        "direction": "delta",
+        "value": "MCITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "METAT"
+      },
+      {
+        "direction": "delta",
+        "value": "METS"
+      },
+      {
+        "direction": "delta",
+        "value": "MFAPS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PP"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PS"
+      },
+      {
+        "direction": "delta",
+        "value": "MTHFR3"
+      },
+      {
+        "direction": "delta",
+        "value": "NDPK2"
+      },
+      {
+        "direction": "delta",
+        "value": "NH4t"
+      },
+      {
+        "direction": "delta",
+        "value": "O2t"
+      },
+      {
+        "direction": "delta",
+        "value": "O2ter"
+      },
+      {
+        "direction": "delta",
+        "value": "O2tm"
+      },
+      {
+        "direction": "delta",
+        "value": "OCBT"
+      },
+      {
+        "direction": "delta",
+        "value": "OMCDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OMPDC"
+      },
+      {
+        "direction": "delta",
+        "value": "ORNTACim"
+      },
+      {
+        "direction": "delta",
+        "value": "ORNt3m"
+      },
+      {
+        "direction": "delta",
+        "value": "ORPT"
+      },
+      {
+        "direction": "delta",
+        "value": "OXAGm"
+      },
+      {
+        "direction": "delta",
+        "value": "P5CR"
+      },
+      {
+        "direction": "delta",
+        "value": "PAPSR"
+      },
+      {
+        "direction": "delta",
+        "value": "PETOHM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PGK"
+      },
+      {
+        "direction": "delta",
+        "value": "PGL"
+      },
+      {
+        "direction": "delta",
+        "value": "PGM"
+      },
+      {
+        "direction": "delta",
+        "value": "PGMT"
+      },
+      {
+        "direction": "delta",
+        "value": "PHETA1"
+      },
+      {
+        "direction": "delta",
+        "value": "PINOS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PIt2r"
+      },
+      {
+        "direction": "delta",
+        "value": "PMANM"
+      },
+      {
+        "direction": "delta",
+        "value": "PMDPHT"
+      },
+      {
+        "direction": "delta",
+        "value": "PMETM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PMEVK"
+      },
+      {
+        "direction": "delta",
+        "value": "PPNDH"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAGSr"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "PRASCSi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRATPP"
+      },
+      {
+        "direction": "delta",
+        "value": "PRFGS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRMICI"
+      },
+      {
+        "direction": "delta",
+        "value": "PRPPS"
+      },
+      {
+        "direction": "delta",
+        "value": "PSCVT"
+      },
+      {
+        "direction": "delta",
+        "value": "PYK"
+      },
+      {
+        "direction": "delta",
+        "value": "PYRDC"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSa"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSb"
+      },
+      {
+        "direction": "delta",
+        "value": "RPI"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD1"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD2"
+      },
+      {
+        "direction": "delta",
+        "value": "SHK3Dr"
+      },
+      {
+        "direction": "delta",
+        "value": "SHKK"
+      },
+      {
+        "direction": "delta",
+        "value": "SO4ti"
+      },
+      {
+        "direction": "delta",
+        "value": "SQ23EPXter"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLEr"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLS"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLter"
+      },
+      {
+        "direction": "delta",
+        "value": "SULR"
+      },
+      {
+        "direction": "delta",
+        "value": "THRS"
+      },
+      {
+        "direction": "delta",
+        "value": "TMDS"
+      },
+      {
+        "direction": "delta",
+        "value": "TPI"
+      },
+      {
+        "direction": "delta",
+        "value": "TRDR"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PP"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PS"
+      },
+      {
+        "direction": "delta",
+        "value": "TRPS1"
+      },
+      {
+        "direction": "delta",
+        "value": "UMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "VALTA"
+      }
+    ]
+  },
+  {
+    "product": -0.0,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR14769",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": 0.0,
+    "biomass": 0.2878657037003343,
+    "id": 8.0,
+    "yield": -0.0,
+    "manipulations": [
+      null
+    ]
+  },
+  {
+    "product": 3.368421,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM126",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": 0.0,
+    "biomass": 5.142099583200603e-09,
+    "id": 9.0,
+    "yield": 0.449123,
+    "manipulations": [
+      {
+        "direction": "delta",
+        "value": "13GS"
+      },
+      {
+        "direction": "delta",
+        "value": "2OXOADPtim"
+      },
+      {
+        "direction": "delta",
+        "value": "3MOBtm"
+      },
+      {
+        "direction": "delta",
+        "value": "6PGLter"
+      },
+      {
+        "direction": "delta",
+        "value": "AATA"
+      },
+      {
+        "direction": "delta",
+        "value": "ACCOAC"
+      },
+      {
+        "direction": "delta",
+        "value": "ACGKm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACHBSm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACLSm"
+      },
+      {
+        "direction": "delta",
+        "value": "ACOTAim"
+      },
+      {
+        "direction": "delta",
+        "value": "ACS"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSK"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL1r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSL2r"
+      },
+      {
+        "direction": "delta",
+        "value": "ADSS"
+      },
+      {
+        "direction": "delta",
+        "value": "AGAT_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "AGPRim"
+      },
+      {
+        "direction": "delta",
+        "value": "AHCi"
+      },
+      {
+        "direction": "delta",
+        "value": "AICART"
+      },
+      {
+        "direction": "delta",
+        "value": "AIRCr"
+      },
+      {
+        "direction": "up",
+        "value": "2.760ANPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "ANS"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSL"
+      },
+      {
+        "direction": "delta",
+        "value": "ARGSS"
+      },
+      {
+        "direction": "delta",
+        "value": "ASADi"
+      },
+      {
+        "direction": "delta",
+        "value": "ASNS1"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPCT"
+      },
+      {
+        "direction": "delta",
+        "value": "ASPK"
+      },
+      {
+        "direction": "delta",
+        "value": "ATPPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "C14STR"
+      },
+      {
+        "direction": "delta",
+        "value": "C24STRer"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STDH1"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STDH2"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STKR1"
+      },
+      {
+        "direction": "delta",
+        "value": "C3STKR2"
+      },
+      {
+        "direction": "delta",
+        "value": "C4STMO1"
+      },
+      {
+        "direction": "delta",
+        "value": "C4STMO2"
+      },
+      {
+        "direction": "delta",
+        "value": "CBPS"
+      },
+      {
+        "direction": "delta",
+        "value": "CHORM"
+      },
+      {
+        "direction": "delta",
+        "value": "CHORS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.951CSm"
+      },
+      {
+        "direction": "delta",
+        "value": "DADK"
+      },
+      {
+        "direction": "delta",
+        "value": "DB4PS"
+      },
+      {
+        "direction": "delta",
+        "value": "DESAT18_2"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD1m"
+      },
+      {
+        "direction": "delta",
+        "value": "DHAD2m"
+      },
+      {
+        "direction": "delta",
+        "value": "DHFR"
+      },
+      {
+        "direction": "delta",
+        "value": "DHORTS"
+      },
+      {
+        "direction": "up",
+        "value": "1.997DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "1.997DHQTi"
+      },
+      {
+        "direction": "delta",
+        "value": "DMATT"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPMMer"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPMTcer"
+      },
+      {
+        "direction": "delta",
+        "value": "DOLPt2er"
+      },
+      {
+        "direction": "delta",
+        "value": "DPMVD"
+      },
+      {
+        "direction": "delta",
+        "value": "DROPPRy"
+      },
+      {
+        "direction": "delta",
+        "value": "DRTPPD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.472ENO"
+      },
+      {
+        "direction": "delta",
+        "value": "ERGSTter"
+      },
+      {
+        "direction": "delta",
+        "value": "ERGTETROLter"
+      },
+      {
+        "direction": "up",
+        "value": "2.989FALDH"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS100COA"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS120COA"
+      },
+      {
+        "direction": "delta",
+        "value": "FAS80COA_L"
+      },
+      {
+        "direction": "up",
+        "value": "2.786FKYNH"
+      },
+      {
+        "direction": "delta",
+        "value": "G5SADs"
+      },
+      {
+        "direction": "delta",
+        "value": "G6PDH2er"
+      },
+      {
+        "direction": "delta",
+        "value": "G6Pter"
+      },
+      {
+        "direction": "delta",
+        "value": "GARFT"
+      },
+      {
+        "direction": "delta",
+        "value": "GLNS"
+      },
+      {
+        "direction": "delta",
+        "value": "GLUPRT"
+      },
+      {
+        "direction": "delta",
+        "value": "GMPS2"
+      },
+      {
+        "direction": "delta",
+        "value": "GND"
+      },
+      {
+        "direction": "delta",
+        "value": "GRTT"
+      },
+      {
+        "direction": "delta",
+        "value": "GTPCII"
+      },
+      {
+        "direction": "up",
+        "value": "0.267H2Ot"
+      },
+      {
+        "direction": "delta",
+        "value": "H2Oter"
+      },
+      {
+        "direction": "delta",
+        "value": "HACNHm"
+      },
+      {
+        "direction": "delta",
+        "value": "HCITSm"
+      },
+      {
+        "direction": "delta",
+        "value": "HICITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTD"
+      },
+      {
+        "direction": "delta",
+        "value": "HISTP"
+      },
+      {
+        "direction": "delta",
+        "value": "HMGCOAR"
+      },
+      {
+        "direction": "delta",
+        "value": "HSK"
+      },
+      {
+        "direction": "delta",
+        "value": "HSTPT"
+      },
+      {
+        "direction": "delta",
+        "value": "IG3PS"
+      },
+      {
+        "direction": "delta",
+        "value": "IGPDH"
+      },
+      {
+        "direction": "up",
+        "value": "2.760IGPS"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "IMPD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPDDI"
+      },
+      {
+        "direction": "delta",
+        "value": "IPMD"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIa"
+      },
+      {
+        "direction": "delta",
+        "value": "IPPMIb"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA1im"
+      },
+      {
+        "direction": "delta",
+        "value": "KARA2im"
+      },
+      {
+        "direction": "up",
+        "value": "2.786KYN"
+      },
+      {
+        "direction": "delta",
+        "value": "LEUTA"
+      },
+      {
+        "direction": "delta",
+        "value": "LNSTLS"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN1PT"
+      },
+      {
+        "direction": "delta",
+        "value": "MAN6PI"
+      },
+      {
+        "direction": "delta",
+        "value": "MANNANter"
+      },
+      {
+        "direction": "delta",
+        "value": "MCITDm"
+      },
+      {
+        "direction": "delta",
+        "value": "METAT"
+      },
+      {
+        "direction": "delta",
+        "value": "METS"
+      },
+      {
+        "direction": "delta",
+        "value": "MFAPS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PP"
+      },
+      {
+        "direction": "delta",
+        "value": "MI1PS"
+      },
+      {
+        "direction": "up",
+        "value": "2.989MNXR5336"
+      },
+      {
+        "direction": "up",
+        "value": "2.989MNXR5340"
+      },
+      {
+        "direction": "up",
+        "value": "2.989MNXR68718"
+      },
+      {
+        "direction": "delta",
+        "value": "MTHFR3"
+      },
+      {
+        "direction": "delta",
+        "value": "NDPK2"
+      },
+      {
+        "direction": "delta",
+        "value": "O2ter"
+      },
+      {
+        "direction": "delta",
+        "value": "OCBT"
+      },
+      {
+        "direction": "delta",
+        "value": "OMCDC"
+      },
+      {
+        "direction": "delta",
+        "value": "OMPDC"
+      },
+      {
+        "direction": "delta",
+        "value": "ORNTACim"
+      },
+      {
+        "direction": "delta",
+        "value": "ORNt3m"
+      },
+      {
+        "direction": "delta",
+        "value": "ORPT"
+      },
+      {
+        "direction": "delta",
+        "value": "OXAGm"
+      },
+      {
+        "direction": "delta",
+        "value": "P5CR"
+      },
+      {
+        "direction": "delta",
+        "value": "PAPSR"
+      },
+      {
+        "direction": "delta",
+        "value": "PETOHM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PGL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.472PGM"
+      },
+      {
+        "direction": "delta",
+        "value": "PGMT"
+      },
+      {
+        "direction": "delta",
+        "value": "PHETA1"
+      },
+      {
+        "direction": "delta",
+        "value": "PINOS_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PIt2r"
+      },
+      {
+        "direction": "delta",
+        "value": "PMANM"
+      },
+      {
+        "direction": "delta",
+        "value": "PMDPHT"
+      },
+      {
+        "direction": "delta",
+        "value": "PMETM_SC"
+      },
+      {
+        "direction": "delta",
+        "value": "PMEVK"
+      },
+      {
+        "direction": "delta",
+        "value": "PPNDH"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAGSr"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAIS"
+      },
+      {
+        "direction": "up",
+        "value": "2.760PRAIi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRAMPC"
+      },
+      {
+        "direction": "delta",
+        "value": "PRASCSi"
+      },
+      {
+        "direction": "delta",
+        "value": "PRATPP"
+      },
+      {
+        "direction": "delta",
+        "value": "PRFGS"
+      },
+      {
+        "direction": "delta",
+        "value": "PRMICI"
+      },
+      {
+        "direction": "up",
+        "value": "0.088PRPPS"
+      },
+      {
+        "direction": "delta",
+        "value": "PSCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.734PYK"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSa"
+      },
+      {
+        "direction": "delta",
+        "value": "RBFSb"
+      },
+      {
+        "direction": "up",
+        "value": "2.771RPE"
+      },
+      {
+        "direction": "up",
+        "value": "1.391RPI"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD1"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD2"
+      },
+      {
+        "direction": "up",
+        "value": "2.989SFGTHi"
+      },
+      {
+        "direction": "delta",
+        "value": "SHK3Dr"
+      },
+      {
+        "direction": "delta",
+        "value": "SHKK"
+      },
+      {
+        "direction": "delta",
+        "value": "SO4ti"
+      },
+      {
+        "direction": "delta",
+        "value": "SQ23EPXter"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLEr"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLS"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLter"
+      },
+      {
+        "direction": "delta",
+        "value": "SULR"
+      },
+      {
+        "direction": "delta",
+        "value": "THRS"
+      },
+      {
+        "direction": "up",
+        "value": "2.781TKT2"
+      },
+      {
+        "direction": "delta",
+        "value": "TMDS"
+      },
+      {
+        "direction": "delta",
+        "value": "TRDR"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PP"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PS"
+      },
+      {
+        "direction": "up",
+        "value": "2.786TRPO2"
+      },
+      {
+        "direction": "up",
+        "value": "2.760TRPS1"
+      },
+      {
+        "direction": "delta",
+        "value": "UMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "VALTA"
+      }
+    ]
+  },
+  {
+    "product": null,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM126",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": null,
+    "biomass": null,
+    "id": 10.0,
+    "yield": null,
+    "manipulations": [
+      {
+        "direction": "down",
+        "value": "-0.97513GS"
+      },
+      {
+        "direction": "up",
+        "value": "1.2682DDA7Ptm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9772OXOADPtim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9993MOBtm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9996PGLter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977AATA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985ACCOAC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ACGKm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992ACHBSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ACLSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ACOTAim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989ACS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ADSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998ADSL1r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988ADSL2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998ADSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997AGAT_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997AGPRim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999AHCi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980AICART"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988AIRCr"
+      },
+      {
+        "direction": "up",
+        "value": "1.827ANPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996ANS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ARGSL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990ARGSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985ASADi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996ASNS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989ASPCT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985ASPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992ATPPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C14STR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999C24STRer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STDH1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STDH2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STKR1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C3STKR2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C4STMO1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998C4STMO2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.984CBPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.985CHORM"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983CHORS"
+      },
+      {
+        "direction": "up",
+        "value": "1.268CITtbm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DADK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749DB4PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DESAT18_2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994DHAD1m"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992DHAD2m"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000DHFR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989DHORTS"
+      },
+      {
+        "direction": "up",
+        "value": "1.268DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "1.268DHQTi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DMATT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DOLPMMer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DOLPMTcer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750DOLPt2er"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DPMVD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747DROPPRy"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747DRTPPD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.365ENO"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ERGSTter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ERGTETROLter"
+      },
+      {
+        "direction": "up",
+        "value": "1.997FALDH"
+      },
+      {
+        "direction": "up",
+        "value": "1.844FKYNH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997G5SADs"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999G6PDH2er"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999G6Pter"
+      },
+      {
+        "direction": "up",
+        "value": "0.000GALT"
+      },
+      {
+        "direction": "up",
+        "value": "0.000GALUi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988GARFT"
+      },
+      {
+        "direction": "up",
+        "value": "0.000GK1"
+      },
+      {
+        "direction": "up",
+        "value": "0.000GK2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.991GLNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988GLUPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997GMPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999GRTT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747GTPCII"
+      },
+      {
+        "direction": "up",
+        "value": "0.056H2Ot"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999H2Oter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977HACNHm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977HCITSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977HICITDm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992HISTD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992HISTP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999HMGCOAR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987HSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992HSTPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992IG3PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992IGPDH"
+      },
+      {
+        "direction": "up",
+        "value": "1.827IGPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980IMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993IMPD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999IPDDI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989IPMD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989IPPMIa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989IPPMIb"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994KARA1im"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992KARA2im"
+      },
+      {
+        "direction": "up",
+        "value": "1.844KYN"
+      },
+      {
+        "direction": "down",
+        "value": "-0.986LEUTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999LNSTLS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MAN1PT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MAN6PI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MANNANter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977MCITDm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999METAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994METS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998MFAPS_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000MI1PP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750MI1PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994MTHFR3"
+      },
+      {
+        "direction": "up",
+        "value": "0.000NDPK1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.981NDPK2"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000NH4t"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999O2ter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.990OCBT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989OMCDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989OMPDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ORNTACim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ORNt3m"
+      },
+      {
+        "direction": "down",
+        "value": "-0.989ORPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977OXAGm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997P5CR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PAPSR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PETOHM_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.365PGM"
+      },
+      {
+        "direction": "down",
+        "value": "-0.964PGMT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.991PHETA1"
+      },
+      {
+        "direction": "down",
+        "value": "-1.000PINOS_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.991PIt2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.750PMANM"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747PMDPHT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PMETM_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PMEVK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.991PPNDH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988PRAGSr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988PRAIS"
+      },
+      {
+        "direction": "up",
+        "value": "1.827PRAIi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992PRAMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988PRASCSi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992PRATPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.988PRFGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992PRMICI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983PSCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.620PYK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.749RBFSa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.747RBFSb"
+      },
+      {
+        "direction": "delta",
+        "value": "RPI"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD1"
+      },
+      {
+        "direction": "delta",
+        "value": "SACCD2"
+      },
+      {
+        "direction": "delta",
+        "value": "SHK3Dr"
+      },
+      {
+        "direction": "delta",
+        "value": "SHKK"
+      },
+      {
+        "direction": "delta",
+        "value": "SO4ti"
+      },
+      {
+        "direction": "delta",
+        "value": "SQ23EPXter"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLEr"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLS"
+      },
+      {
+        "direction": "delta",
+        "value": "SQLter"
+      },
+      {
+        "direction": "delta",
+        "value": "SULR"
+      },
+      {
+        "direction": "delta",
+        "value": "THRS"
+      },
+      {
+        "direction": "delta",
+        "value": "TMDS"
+      },
+      {
+        "direction": "delta",
+        "value": "TPI"
+      },
+      {
+        "direction": "delta",
+        "value": "TRDR"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PP"
+      },
+      {
+        "direction": "delta",
+        "value": "TRE6PS"
+      },
+      {
+        "direction": "delta",
+        "value": "TRPS1"
+      },
+      {
+        "direction": "delta",
+        "value": "UMPK"
+      },
+      {
+        "direction": "delta",
+        "value": "VALTA"
+      }
+    ]
+  },
+  {
+    "product": 1.6874447180032748,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM126",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": 0.0242878877252,
+    "biomass": 0.1439328548162352,
+    "id": 11.0,
+    "yield": 0.224993,
+    "manipulations": [
+      {
+        "direction": "down",
+        "value": "-0.95013GS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9552OXOADPtim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9983MOBtm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.9976PGLter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955AATA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.969ACCOAC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ACGKm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983ACHBSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987ACLSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ACOTAim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978ACS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997ADSK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995ADSL1r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975ADSL2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.995ADSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994AGAT_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994AGPRim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999AHCi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.960AICART"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975AIRCr"
+      },
+      {
+        "direction": "up",
+        "value": "0.888ANPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993ANS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980ARGSL"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980ARGSS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.970ASADi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.993ASNS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977ASPCT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.970ASPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983ATPPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996C14STR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999C24STRer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996C3STDH1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996C3STDH2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996C3STKR1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996C3STKR2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996C4STMO1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996C4STMO2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.967CBPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.970CHORM"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966CHORS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DADK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498DB4PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500DESAT18_2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987DHAD1m"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983DHAD2m"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999DHFR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977DHORTS"
+      },
+      {
+        "direction": "up",
+        "value": "0.535DHQS"
+      },
+      {
+        "direction": "up",
+        "value": "0.535DHQTi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998DMATT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500DOLPMMer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500DOLPMTcer"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500DOLPt2er"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998DPMVD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498DROPPRy"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498DRTPPD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ERGSTter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999ERGTETROLter"
+      },
+      {
+        "direction": "up",
+        "value": "0.998FALDH"
+      },
+      {
+        "direction": "up",
+        "value": "0.896FKYNH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994G5SADs"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997G6PDH2er"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997G6Pter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975GARFT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982GLNS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975GLUPRT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994GMPS2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998GRTT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498GTPCII"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998H2Oter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955HACNHm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955HCITSm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955HICITDm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983HISTD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983HISTP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998HMGCOAR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983HSTPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983IG3PS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983IGPDH"
+      },
+      {
+        "direction": "up",
+        "value": "0.888IGPS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.960IMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987IMPD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998IPDDI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978IPMD"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978IPPMIa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978IPPMIb"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987KARA1im"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983KARA2im"
+      },
+      {
+        "direction": "up",
+        "value": "0.896KYN"
+      },
+      {
+        "direction": "down",
+        "value": "-0.973LEUTA"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998LNSTLS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500MAN1PT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500MAN6PI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500MANNANter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955MCITDm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999METAT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987METS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997MFAPS_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999MI1PP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500MI1PS"
+      },
+      {
+        "direction": "up",
+        "value": "0.998MNXR5336"
+      },
+      {
+        "direction": "up",
+        "value": "0.998MNXR5340"
+      },
+      {
+        "direction": "up",
+        "value": "0.998MNXR68718"
+      },
+      {
+        "direction": "down",
+        "value": "-0.987MTHFR3"
+      },
+      {
+        "direction": "down",
+        "value": "-0.961NDPK2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998O2ter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.980OCBT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.978OMCDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977OMPDC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ORNTACim"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994ORNt3m"
+      },
+      {
+        "direction": "down",
+        "value": "-0.977ORPT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955OXAGm"
+      },
+      {
+        "direction": "down",
+        "value": "-0.994P5CR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997PAPSR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997PETOHM_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.929PGMT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.981PHETA1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999PINOS_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982PIt2r"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500PMANM"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498PMDPHT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.997PMETM_SC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998PMEVK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.982PPNDH"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975PRAGSr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975PRAIS"
+      },
+      {
+        "direction": "up",
+        "value": "0.888PRAIi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983PRAMPC"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975PRASCSi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983PRATPP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.975PRFGS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.983PRMICI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966PSCVT"
+      },
+      {
+        "direction": "down",
+        "value": "-0.506PYK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.500RBFSa"
+      },
+      {
+        "direction": "down",
+        "value": "-0.498RBFSb"
+      },
+      {
+        "direction": "up",
+        "value": "0.659RPE"
+      },
+      {
+        "direction": "up",
+        "value": "0.315RPI"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955SACCD1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.955SACCD2"
+      },
+      {
+        "direction": "up",
+        "value": "0.998SFGTHi"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966SHK3Dr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.966SHKK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996SO4ti"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998SQ23EPXter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998SQLEr"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998SQLS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998SQLter"
+      },
+      {
+        "direction": "down",
+        "value": "-0.992SULR"
+      },
+      {
+        "direction": "up",
+        "value": "0.800TKT2"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999TMDS"
+      },
+      {
+        "direction": "down",
+        "value": "-0.996TRDR"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998TRE6PP"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998TRE6PS"
+      },
+      {
+        "direction": "up",
+        "value": "0.896TRPO2"
+      },
+      {
+        "direction": "up",
+        "value": "0.888TRPS1"
+      },
+      {
+        "direction": "down",
+        "value": "-0.999UMPK"
+      },
+      {
+        "direction": "down",
+        "value": "-0.998VALTA"
+      }
+    ]
+  },
+  {
+    "product": 0.0,
+    "method": "DifferentialFVA+PathwayFinder",
+    "host": "Saccharomyces cerevisiae",
+    "heterologous_pathway": [
+      "MNXR5336",
+      "MNXR5340",
+      "MNXR68718",
+      "DM_MNXM126",
+      "DM_MNXM2887",
+      "DM_MNXM754"
+    ],
+    "model": "iMM904",
+    "fitness": 0.0,
+    "biomass": 0.2878657037040202,
+    "id": 12.0,
+    "yield": 0.0,
+    "manipulations": [
+      null
+    ]
+  }
+]

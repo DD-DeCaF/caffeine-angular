@@ -20,7 +20,6 @@ import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
 import { AppState } from '../../../store/app.reducers';
-import { FetchJobs } from '../../store/jobs.actions';
 
 @Component({
   selector: 'app-job-list',
@@ -46,6 +45,5 @@ export class JobListComponent implements OnInit {
         return jobs;
       }),
     );
-    this.store.dispatch(new FetchJobs());
   }
 }

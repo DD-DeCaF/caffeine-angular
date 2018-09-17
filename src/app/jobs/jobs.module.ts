@@ -14,7 +14,7 @@
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -25,12 +25,18 @@ import { JobListComponent } from './components/job-list/job-list.component';
 import { JobDetailComponent } from './components/job-detail/job-detail.component';
 import { JobsComponent } from './jobs.component';
 import { AppRoutingModule } from '../app-routing.module';
+import { JobResultTableComponent } from './components/job-detail/components/job-result-table/job-results-table.component';
+import { FloatPipe } from '../pipes/float.pipe';
+import { JobResultsDetailRowDirective } from './components/job-detail/components/job-result-table/job-results-table-row-detail.directive';
 
 @NgModule({
   declarations: [
+    FloatPipe,
     JobListComponent,
     JobDetailComponent,
+    JobResultTableComponent,
     JobsComponent,
+    JobResultsDetailRowDirective,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +50,7 @@ import { AppRoutingModule } from '../app-routing.module';
   ],
   providers: [
     JobsService,
+    DecimalPipe,
   ],
   exports: [
     JobsComponent,
