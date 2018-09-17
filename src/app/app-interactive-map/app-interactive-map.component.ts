@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {Observable, Subject} from 'rxjs';
 import {withLatestFrom} from 'rxjs/operators';
 import {select as d3Select} from 'd3';
@@ -27,6 +27,9 @@ import { objectFilter } from '../utils';
 import { getSelectedCard } from './store/interactive-map.selectors';
 import {FetchSpecies} from './store/interactive-map.actions';
 import { selectNotNull } from '../framework-extensions';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {LoaderComponent} from './components/loader/loader.component';
+import {isLoading} from './components/loader/store/loader.selectors';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -54,6 +57,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   constructor(
     private elRef: ElementRef,
     private store: Store<AppState>,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -89,6 +93,25 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new fromActions.Loaded());
         this.loading = false;
       });
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+
+    this.store
+      .pipe(
+        select(isLoading),
+      ).subscribe((loading) => {
+        if (loading) {
+          // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
+          // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
+          // setTimeout(() => ...., 0);
+          setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
+        } else {
+          this.dialog.closeAll();
+        }
+    });
   }
 
   ngAfterViewInit(): void {

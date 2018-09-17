@@ -17,17 +17,20 @@ import {ActionReducerMap} from '@ngrx/store';
 import {SessionState, sessionReducer} from '../session/store/session.reducers';
 import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map/store/interactive-map.reducers';
 import {JobsState, jobsReducer} from '../jobs/store/jobs.reducers';
+import {loaderReducer, LoaderState} from '../app-interactive-map/components/loader/store/loader.reducers';
 
 export interface AppState {
   session: SessionState;
   interactiveMap: InteractiveMapState;
   jobs: JobsState;
+  loader: LoaderState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   session: sessionReducer,
   interactiveMap: interactiveMapReducer,
   jobs: jobsReducer,
+  loader: loaderReducer,
 };
 
 export const initialState: AppState = Object.assign(
