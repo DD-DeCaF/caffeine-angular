@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+set -u
 
 PATTERN="Novo Nordisk Foundation Center for Biosustainability"
 RET=0

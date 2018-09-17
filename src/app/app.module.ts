@@ -24,7 +24,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {CallbackPipe} from './callback.pipe';
+import {CallbackPipe} from './pipes/callback.pipe';
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
@@ -45,6 +45,8 @@ import {environment} from '../environments/environment';
 // Interactive map
 import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
 import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
+import { JobsEffects } from './jobs/store/jobs.effects';
+import { JobsModule } from './jobs/jobs.module';
 // end interactive map
 
 if (environment.sentry) {
@@ -89,10 +91,14 @@ export class RavenErrorHandler implements ErrorHandler {
 
     // Own modules
     AppInteractiveMapModule,
+    JobsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([InteractiveMapEffects]),
+    EffectsModule.forRoot([
+      InteractiveMapEffects,
+      JobsEffects,
+    ]),
   ],
   providers: [
     SessionService,
