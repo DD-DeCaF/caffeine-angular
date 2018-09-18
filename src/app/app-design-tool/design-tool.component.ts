@@ -14,7 +14,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {select, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import * as fromInteractiveMapActions from '../app-interactive-map/store/interactive-map.actions';
 import {Observable} from 'rxjs';
