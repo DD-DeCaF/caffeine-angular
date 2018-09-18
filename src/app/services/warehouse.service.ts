@@ -38,13 +38,22 @@ export class WarehouseService {
 
   getProducts(): Observable<Product[]> {
     const fixtures$ = Observable.create((observer) => {
-      observer.next([{'name': 'menaquinol-10', 'id': 'menaquinol-10'}, {
-        'name': '2,6,10,14-tetramethylpentadecanal',
-        'id': '2,6,10,14-tetramethylpentadecanal',
+      observer.next([{
+        name: 'vanillin',
+        id: '5',
       }, {
-        'name': 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
-        'id': 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
-      }, {'name': '3-oxododecanoyl-CoA', 'id': '3-oxododecanoyl-CoA'}]);
+        name: 'menaquinol-10',
+        id: 'menaquinol-10',
+      }, {
+        name: '2,6,10,14-tetramethylpentadecanal',
+        id: '2,6,10,14-tetramethylpentadecanal',
+      }, {
+        name: 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
+        id: 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
+      }, {
+        name: '3-oxododecanoyl-CoA',
+        id: '3-oxododecanoyl-CoA',
+      }]);
     });
     return fixtures$;
     // TODO:

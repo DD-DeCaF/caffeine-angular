@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
 import {MatButton, MatSelect, MatSelectChange} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {Observable, Subscription} from 'rxjs';
@@ -54,7 +55,8 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+    private router: Router) {
     this.designForm = this.fb.group({
       species: ['', Validators.required],
       product: ['', Validators.required],
@@ -85,8 +87,8 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
             this.designForm.setValue({
               species: data.selectedSpecies,
               product: {
-                'name': 'trans-2-chloro-4-carboxymethylenebut-2-en-1,4-olide',
-                'id': 'trans-2-chloro-4-carboxymethylenebut-2-en-1,4-olide',
+                name: 'vanillin',
+                id: '5',
               },
               bigg: false,
               kegg: false,
@@ -117,6 +119,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
+    this.router.navigateByUrl('/jobs/1');
     this.store.dispatch(new StartDesign(this.designForm.value));
   }
 }
