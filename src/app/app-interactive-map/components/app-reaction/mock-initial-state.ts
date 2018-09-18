@@ -13,11 +13,10 @@
 // limitations under the License.
 
 import { initialState as IMInitialState, InteractiveMapState, emptyCard } from '../../store/interactive-map.reducers';
+import { initialState as originalinitialState, AppState } from '../../../store/app.reducers';
 import { initialState as SInitialState } from '../../../session/store/session.reducers';
 import { initialState as DTInitialState } from '../../../app-design-tool/store/design-tool.reducers';
 import { initialState as LInitialState } from '../loader/store/loader.reducers';
-
-import { AppState } from '../../../store/app.reducers';
 
 const mockedIMInitialState: InteractiveMapState = {
   ...IMInitialState,
@@ -36,6 +35,7 @@ const mockedIMInitialState: InteractiveMapState = {
 };
 
 export const initialState: AppState = {
+  ...originalinitialState,
   interactiveMap: mockedIMInitialState,
   session: SInitialState,
   designTool: DTInitialState,

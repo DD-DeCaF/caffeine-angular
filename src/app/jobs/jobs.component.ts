@@ -13,37 +13,18 @@
 // limitations under the License.
 
 import { Component, OnInit } from '@angular/core';
-
-import { JobService } from './jobs.service';
-import { Job } from './types';
-
+import { Store } from '@ngrx/store';
+import { AppState } from '../store/app.reducers';
+import { FetchJobs } from './store/jobs.actions';
 
 @Component({
   selector: 'app-jobs',
-  templateUrl: './jobs.component.html',
-  styleUrls: ['./jobs.component.scss'],
-  providers: [JobService],
+  template: `<router-outlet></router-outlet>`,
 })
 export class JobsComponent implements OnInit {
-  jobs: Job[] = [];
-
-  isLoading = true;
-  loadError = false;
-  displayedColumns: string[] = ['id', 'type', 'product', 'state', 'details'];
-
-  constructor(public jobService: JobService) {}
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.jobService.getJobs().subscribe(
-      (jobs: Job[]) => {
-        this.isLoading = false;
-        this.loadError = false;
-        this.jobs = jobs;
-      },
-      (error: string) => {
-        this.isLoading = false;
-        this.loadError = true;
-      },
-    );
+    this.store.dispatch(new FetchJobs());
   }
 }

@@ -12,58 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.designCard {
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
+import { createSelector } from '@ngrx/store';
+import {AppState} from '../../store/app.reducers';
+import { Job } from '../types';
 
-mat-form-field {
-  display: inherit;
-}
-
-.design-form {
-  padding: 20px;
-}
-
-mat-label.title {
-  font-size: 14px !important;
-  color: #000;
-  display: block;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-
-.container-button {
-  text-align: center;
-
-  button {
-    text-transform: uppercase;
-  }
-
-  mat-icon {
-    margin-left: 15px;
-  }
-
-}
-
-.checkbox-group {
-  margin-bottom: 2%;
-}
-
-mat-checkbox {
-  margin-right: 20px;
-}
-
-.advanced-button {
-  margin-bottom: 5px;
-}
-
-.grid {
-  display: inline-grid;
-}
-
-.design-button {
-  margin-top: 10px;
-}
-
+export const getJob = createSelector(
+  (state: AppState) => state.jobs.jobs,
+  (jobs: Job[], {jobId}) =>
+    jobs.find((job) => job.id === jobId) || null,
+);

@@ -12,58 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.designCard {
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
+import {Route} from '@angular/router';
+import { JobListComponent } from './components/job-list/job-list.component';
+import { JobDetailComponent } from './components/job-detail/job-detail.component';
+import { JobsComponent } from './jobs.component';
 
-mat-form-field {
-  display: inherit;
-}
-
-.design-form {
-  padding: 20px;
-}
-
-mat-label.title {
-  font-size: 14px !important;
-  color: #000;
-  display: block;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-
-.container-button {
-  text-align: center;
-
-  button {
-    text-transform: uppercase;
-  }
-
-  mat-icon {
-    margin-left: 15px;
-  }
-
-}
-
-.checkbox-group {
-  margin-bottom: 2%;
-}
-
-mat-checkbox {
-  margin-right: 20px;
-}
-
-.advanced-button {
-  margin-bottom: 5px;
-}
-
-.grid {
-  display: inline-grid;
-}
-
-.design-button {
-  margin-top: 10px;
-}
-
+export const jobsRoutes: Route[] = [
+  {
+    path: 'jobs',
+    component: JobsComponent,
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        component: JobListComponent,
+      },
+      {
+        path: ':id',
+        component: JobDetailComponent,
+      },
+    ],
+  },
+];

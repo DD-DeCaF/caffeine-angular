@@ -18,10 +18,9 @@ import {Route, RouterModule} from '@angular/router';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
 import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-map.component';
-import {JobsComponent} from './jobs/jobs.component';
-import {JobComponent} from './jobs/job.component';
 import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {DesignToolComponent} from './app-design-tool/design-tool.component';
+import { jobsRoutes } from './jobs/jobs-routing.module';
 
 
 const appRoutes: Route[] = [
@@ -41,14 +40,7 @@ const appRoutes: Route[] = [
         path: 'interactiveMap',
         component: AppInteractiveMapComponent,
       },
-      {
-        path: 'jobs',
-        component: JobsComponent,
-      },
-      {
-        path: 'jobs/:id',
-        component: JobComponent,
-      },
+      ...jobsRoutes,
       {
         path: '**',
         component: AppNotFoundComponent,
@@ -61,7 +53,6 @@ const appRoutes: Route[] = [
 @NgModule({
   imports: [
     RouterModule.forRoot(appRoutes),
-    // LoginModule
   ],
   exports: [
     RouterModule,

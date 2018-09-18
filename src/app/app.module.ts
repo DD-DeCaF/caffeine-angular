@@ -24,7 +24,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {CallbackPipe} from './callback.pipe';
+import {CallbackPipe} from './pipes/callback.pipe';
 import {AppComponent} from './app.component';
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
@@ -34,8 +34,6 @@ import {AppLoginDialogComponent} from './app-login-dialog/app-login-dialog.compo
 import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
-import {JobsComponent} from './jobs/jobs.component';
-import {JobComponent} from './jobs/job.component';
 
 import {reducers} from './store/app.reducers';
 import {SessionService} from './session/session.service';
@@ -47,10 +45,18 @@ import {environment} from '../environments/environment';
 // Interactive map
 import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
 import {InteractiveMapEffects} from './app-interactive-map/store/interactive-map.effects';
+// end interactive map
+
+// Design tool
 import { DesignToolComponent } from './app-design-tool/design-tool.component';
 import {AppFormDesignComponent} from './app-design-tool/components/app-form-design/app-form-design.component';
 import {DesignToolEffects} from './app-design-tool/store/design-tool.effects';
-// end interactive map
+// End design tool
+
+// Jobs
+import { JobsEffects } from './jobs/store/jobs.effects';
+import { JobsModule } from './jobs/jobs.module';
+// End jobs
 
 if (environment.sentry) {
   Raven
@@ -78,11 +84,8 @@ export class RavenErrorHandler implements ErrorHandler {
     AppLoginDialogComponent,
     OpenLoginDialogDirective,
     AppNotFoundComponent,
-    JobsComponent,
-    JobComponent,
     DesignToolComponent,
     AppFormDesignComponent,
-    JobComponent,
   ],
   imports: [
     // Angular modules
@@ -99,10 +102,15 @@ export class RavenErrorHandler implements ErrorHandler {
 
     // Own modules
     AppInteractiveMapModule,
+    JobsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([InteractiveMapEffects, DesignToolEffects]),
+    EffectsModule.forRoot([
+      InteractiveMapEffects,
+      DesignToolEffects,
+      JobsEffects,
+    ]),
   ],
   providers: [
     SessionService,
