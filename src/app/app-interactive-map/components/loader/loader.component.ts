@@ -12,34 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+import {Component, OnInit} from '@angular/core';
+import {AppState} from '../../../store/app.reducers';
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {isLoading} from './store/loader.selectors';
 
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-}
+@Component({
+  selector: 'app-loader',
+  templateUrl: './loader.component.html',
+  styleUrls: ['./loader.component.scss'],
 
-app-root {
-  display: block;
-  height: 100%;
-}
+})
+export class LoaderComponent implements OnInit {
 
-a {
-  color: rgba(0, 0, 0, 0.54);
-  color: #2196F9;
-  text-decoration: none;
+  constructor(
+    private store: Store<AppState>) { }
 
-  &:active,
-  &:hover,
-  &:focus {
-    color: black;
+  loading: Observable<boolean>;
+
+  ngOnInit(): void {
+    this.loading = this.store.pipe(select(isLoading));
   }
 }
 
-button,html,input,select,textarea {
-  font-family: Roboto,Helvetica Neue,sans-serif
-}

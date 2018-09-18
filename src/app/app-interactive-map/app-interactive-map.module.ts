@@ -28,8 +28,9 @@ import { AppLegendComponent } from './components/app-legend/app-legend.component
 import { AppGlobalSettingsComponent } from './components/app-global-settings/app-global-settings.component';
 import { SimulationService } from './services/simulation.service';
 import { MapService } from './services/map.service';
-import { WarehouseService } from '../services/warehouse.service';
 import { ModelService } from '../services/model.service';
+import { WarehouseService } from '../services/warehouse.service';
+import {LoaderComponent} from './components/loader/loader.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { ModelService } from '../services/model.service';
     AppCardInfoComponent,
     AppLegendComponent,
     AppGlobalSettingsComponent,
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,5 +62,6 @@ import { ModelService } from '../services/model.service';
   exports: [
     AppInteractiveMapComponent,
   ],
+  entryComponents: [LoaderComponent],
 })
 export class AppInteractiveMapModule {}
