@@ -44,7 +44,5 @@ export class DesignToolComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new fromInteractiveMapActions.FetchSpecies());
-    this.designStarted = this.store.pipe(select((store) => store.designTool.designStarted));
   }
-
 }
