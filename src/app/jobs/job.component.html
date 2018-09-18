@@ -1,0 +1,98 @@
+<!--
+Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<div class="container" *ngIf="job">
+  <h1>
+    <a routerLink="/jobs">Jobs</a> / #{{ job.id }}
+  </h1>
+
+  <mat-list>
+    <mat-list-item>
+      <mat-icon mat-list-icon>dashboard</mat-icon>
+      <p>
+        Type:
+        <strong>{{ job.data.type }}</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-icon mat-list-icon>timelapse</mat-icon>
+      <p>
+        Started:
+        <strong>{{ job.started | date : 'd. LLL yyyy HH:mm' }}</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-icon mat-list-icon>timelapse</mat-icon>
+      <p>
+        Completed:
+        <strong *ngIf="job.completed">{{ job.completed | date : 'd. LLL yyyy HH:mm' }}</strong>
+        <strong *ngIf="!job.completed">Still running</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-icon mat-list-icon>pets</mat-icon>
+      <p>
+        Organism:
+        <strong>{{ job.data.organism }}</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-icon mat-list-icon>gavel</mat-icon>
+      <p>
+        Product:
+        <strong>{{ job.data.product }}</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-icon mat-list-icon>rounded_corner</mat-icon>
+      <p>
+        Model:
+        <strong>{{ job.data.model }}</strong>
+      </p>
+    </mat-list-item>
+    <mat-list-item>
+      <mat-icon mat-list-icon>equalizer</mat-icon>
+      <p>
+        Number of pathways:
+        <strong>{{ job.data.numberOfPathways }}</strong>
+      </p>
+    </mat-list-item>
+  </mat-list>
+
+  <h2>Results</h2>
+
+  <p *ngIf="job.state === 'running'">
+    The job is still running.
+    <button mat-button color="warn" (click)="abort(job)">
+      Abort job
+    </button>
+  </p>
+
+  <mat-error *ngIf="job.state === 'errored'">
+    The job errored with the following message: <strong>{{ job.error }}</strong>
+  </mat-error>
+
+  <mat-error *ngIf="job.state === 'aborted'">
+    The job was manually aborted at {{ job.completed | date : 'd. LLL yyyy HH:mm' }}
+  </mat-error>
+
+  <div *ngIf="job.state === 'completed'">
+    Results table goes here.
+  </div>
+
+
+
+</div>

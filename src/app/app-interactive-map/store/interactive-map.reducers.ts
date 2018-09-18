@@ -114,7 +114,7 @@ export function interactiveMapReducer(
   state: InteractiveMapState = initialState,
   action: fromInteractiveMapActions.InteractiveMapActions,
 ): InteractiveMapState {
-  debug('Action:', action);
+  debug('Action map:', action);
   switch (action.type) {
     case fromInteractiveMapActions.SET_SPECIES:
       return {

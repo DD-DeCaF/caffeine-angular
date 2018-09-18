@@ -12,34 +12,59 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
+.designCard {
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
 }
 
-app-root {
+mat-form-field {
+  display: inherit;
+}
+
+.design-form {
+  padding: 20px;
+}
+
+mat-label.title {
+  font-size: 14px !important;
+  color: #000;
   display: block;
-  height: 100%;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
-a {
-  color: rgba(0, 0, 0, 0.54);
-  color: #2196F9;
-  text-decoration: none;
+.container-button {
+  text-align: center;
 
-  &:active,
-  &:hover,
-  &:focus {
-    color: black;
+  button {
+    text-transform: uppercase;
   }
+
+  mat-icon {
+    margin-left: 15px;
+  }
+
 }
 
-button,html,input,select,textarea {
-  font-family: Roboto,Helvetica Neue,sans-serif
+.checkbox-group {
+  margin-bottom: 2%;
 }
+
+mat-checkbox {
+  margin-right: 20px;
+}
+
+.advanced-button {
+  margin-bottom: 5px;
+}
+
+.grid {
+  display: inline-grid;
+}
+
+.design-button {
+  margin-top: 10px;
+}
+
