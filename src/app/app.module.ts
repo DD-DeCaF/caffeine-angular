@@ -20,6 +20,7 @@ import {NgModule, ErrorHandler} from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -111,6 +112,9 @@ export class RavenErrorHandler implements ErrorHandler {
       DesignToolEffects,
       JobsEffects,
     ]),
+    StoreDevtoolsModule.instrument({
+      name: 'Caffeine',
+    }),
   ],
   providers: [
     SessionService,
