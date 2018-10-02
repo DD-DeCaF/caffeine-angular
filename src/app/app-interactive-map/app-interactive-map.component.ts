@@ -19,13 +19,13 @@ import {withLatestFrom} from 'rxjs/operators';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import {Cobra, Card, OperationDirection, Bound} from './types';
+import {Cobra, Card, OperationDirection, ReactionState} from './types';
 import escherSettingsConst from './escherSettings';
 import {AppState} from '../store/app.reducers';
 import * as fromActions from './store/interactive-map.actions';
-import { objectFilter } from '../utils';
-import { getSelectedCard } from './store/interactive-map.selectors';
-import { selectNotNull } from '../framework-extensions';
+import {objectFilter} from '../utils';
+import {getSelectedCard} from './store/interactive-map.selectors';
+import {selectNotNull} from '../framework-extensions';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {isLoading} from './components/loader/store/loader.selectors';
@@ -46,25 +46,32 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   readonly escherSettings = {
     ...escherSettingsConst,
+    reaction_state: (args) => this.reactionState(args),
     tooltip_callbacks: {
-      knockout: (args) => { this.handleKnockout(args); },
-      setAsObjective: (args) => { this.handleSetAsObjective(args); },
-      changeBounds: (args) => { this.handleChangeBounds(args); },
-      resetBounds: (args) => { this.handleResetBounds(args); },
-      objectiveDirection: (args) => { this.handleObjectiveDirection(args); },
-      checkStateObjective: (args) => this.checkStateObjective(args),
-      drawSwitch: (args) => this.drawSwitch(args),
-      lowerBound: (args) => this.lowerBound(args),
-      upperBound: (args) => this.upperBound(args),
-      knockoutText: (args) => this.knockoutText(args),
-      objectiveText: (args) => this.objectiveText(args),
+      knockout: (args) => {
+        this.handleKnockout(args);
+      },
+      setAsObjective: (args) => {
+        this.handleSetAsObjective(args);
+      },
+      changeBounds: (args, lower, upper) => {
+        this.handleChangeBounds(args, lower, upper);
+      },
+      resetBounds: (args) => {
+        this.handleResetBounds(args);
+      },
+      objectiveDirection: (args) => {
+        this.handleObjectiveDirection(args);
+      },
     },
   };
+
   constructor(
     private elRef: ElementRef,
     private store: Store<AppState>,
     private dialog: MatDialog,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(new fromActions.FetchSpecies());
@@ -156,12 +163,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  handleChangeBounds(reactionId: string): void {
+  handleChangeBounds(reactionId: string, lower: string, upper: string): void {
+    console.log('CHANGE BOOOUNDS', reactionId, lower, upper);
     this.store.dispatch(new fromActions.ReactionOperation({
       item: {
         reaction: this.card.model.reactions.find((r) => r.id === reactionId),
-        lowerBound: parseInt(this.elRef.nativeElement.querySelector('#lowerbound').value, 10),
-        upperBound: parseInt(this.elRef.nativeElement.querySelector('#upperbound').value, 10),
+        lowerBound: parseInt(lower, 10),
+        upperBound: parseInt(upper, 10),
       },
       operationTarget: 'bounds',
       direction: OperationDirection.Do,
@@ -170,7 +178,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   handleResetBounds(reactionId: string): void {
     this.store.dispatch(new fromActions.ReactionOperation({
-      item: <Bound>(this.findBoundReaction(reactionId)),
+      item: this.card.bounds.find((r) => r.reaction.id === reactionId),
       operationTarget: 'bounds',
       direction: OperationDirection.Undo,
     }));
@@ -183,41 +191,24 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     }));
   }
 
-  checkStateObjective(reactionId: string): boolean {
-    if (this.card.objectiveReaction) {
-      return (this.card.objectiveReaction.reactionId === reactionId && this.card.objectiveReaction.direction === 'max');
-    } else {
-      return false;
-    }
-  }
-
-  drawSwitch (reactionId: string): string {
-    if (this.card.objectiveReaction) {
-      return this.card.objectiveReaction.reactionId === reactionId ? '' : 'hidden';
-    } else {
-      return 'hidden';
-    }
-  }
-
   upperBound(reactionId: string): number {
-    const reaction = this.findBoundReaction(reactionId);
+    const reaction = this.card.bounds.find((r) => r.reaction.id === reactionId);
     return reaction ? reaction.upperBound : this.card.model.reactions.find((r) => r.id === reactionId).upper_bound;
   }
 
   lowerBound(reactionId: string): number {
-    const reaction = this.findBoundReaction(reactionId);
+    const reaction = this.card.bounds.find((r) => r.reaction.id === reactionId);
     return reaction ? reaction.lowerBound : this.card.model.reactions.find((r) => r.id === reactionId).lower_bound;
   }
 
-  knockoutText(reactionId: string): string {
-    return this.card.knockoutReactions && this.card.knockoutReactions.includes(reactionId) ? 'Undo knockout' : 'Knockout';
-  }
-
-  objectiveText(reactionId: string): string {
-    return this.card.objectiveReaction && this.card.objectiveReaction.reactionId === reactionId ? 'Undo set as objective' : 'Set as objective';
-  }
-
-  findBoundReaction (reactionId: string): Bound {
-    return this.card.bounds.find((r) => r.reaction.id === reactionId);
+  reactionState(reactionId: string): ReactionState {
+    return {
+      knockout: this.card.knockoutReactions.includes(reactionId),
+      objective: this.card.objectiveReaction,
+      bounds: {
+        lowerbound: this.lowerBound(reactionId),
+        upperbound: this.upperBound(reactionId),
+      },
+    };
   }
 }
