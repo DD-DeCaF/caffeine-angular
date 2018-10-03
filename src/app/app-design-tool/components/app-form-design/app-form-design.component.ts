@@ -50,8 +50,8 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   public products: Observable<typesDesign.Product[]>;
 
-  public selectedModel: Observable<types.DeCaF.Model>;
-  public models: Observable<types.DeCaF.Model[]>;
+  public selectedModel: Observable<types.DeCaF.ModelHeader>;
+  public models: Observable<types.DeCaF.ModelHeader[]>;
 
   constructor(
     private fb: FormBuilder,

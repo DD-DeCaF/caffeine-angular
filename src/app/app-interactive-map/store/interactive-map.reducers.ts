@@ -39,8 +39,8 @@ export interface InteractiveMapState {
   selectedCardId: string;
   allSpecies: Species[];
   selectedSpecies: Species;
-  models: DeCaF.Model[];
-  selectedModel: DeCaF.Model;
+  modelHeaders: DeCaF.ModelHeader[];
+  selectedModelHeader: DeCaF.ModelHeader;
   maps: MapItem[];
   selectedMap: MapItem;
   mapData: PathwayMap;
@@ -67,8 +67,8 @@ export const initialState: InteractiveMapState = {
   selectedCardId: '0',
   allSpecies: [],
   selectedSpecies: null,
-  models: [],
-  selectedModel: null,
+  modelHeaders: [],
+  selectedModelHeader: null,
   maps: [],
   selectedMap: null,
   mapData: null,
@@ -129,12 +129,12 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_MODELS:
       return {
         ...state,
-        models: action.payload,
+        modelHeaders: action.payload,
       };
     case fromInteractiveMapActions.SET_MODEL:
       return {
         ...state,
-        selectedModel: action.payload,
+        selectedModelHeader: action.payload,
       };
     case fromInteractiveMapActions.SET_MAPS:
       return {
@@ -174,7 +174,8 @@ export function interactiveMapReducer(
       switch (type) {
         case CardType.WildType: {
           name = 'Wild Type';
-          model = state.selectedModel.model_serialized;
+          // TODO
+          // model = state.selectedModelHeader.model_serialized;
           break;
         }
         case CardType.DataDriven: {

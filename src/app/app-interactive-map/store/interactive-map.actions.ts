@@ -70,12 +70,12 @@ export class FetchModels implements Action {
 
 export class SetModels implements Action {
   readonly type = SET_MODELS;
-  constructor(public payload: types.DeCaF.Model[]) {}
+  constructor(public payload: types.DeCaF.ModelHeader[]) {}
 }
 
 export class SetModel implements Action {
   readonly type = SET_MODEL;
-  constructor(public payload: types.DeCaF.Model) {}
+  constructor(public payload: types.DeCaF.ModelHeader) {}
 }
 
 export class FetchMaps implements Action {
