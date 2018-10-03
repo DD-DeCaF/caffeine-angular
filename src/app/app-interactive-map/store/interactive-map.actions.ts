@@ -182,6 +182,22 @@ export const operationToApply = {
 };
 
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = FetchSpecies | SetSpecies | SetSelectedSpecies | SetModels | SetModel | SetMaps | MapFetched |
-  ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCardFetched | DeleteCard | RenameCard |
-  SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;
+export type InteractiveMapActions =
+  FetchSpecies |
+  SetSpecies |
+  SetSelectedSpecies |
+  SetModels |
+  SetModel |
+  SetMaps |
+  MapFetched |
+  ResetCards |
+  SelectCard |
+  NextCard |
+  PreviousCard |
+  SetPlayState |
+  AddCardFetched |
+  DeleteCard |
+  RenameCard |
+  SetMethodApply |
+  ReactionOperationApply |
+  SetObjectiveReactionApply;
