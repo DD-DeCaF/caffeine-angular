@@ -128,6 +128,14 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
+  fetchFullModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL),
+    switchMap((action: fromActions.SetFullModel) =>
+      this.http.get(`${environment.apis.model_warehouse}/models/${action.payload.id}`)),
+    map((model: types.DeCaF.Model) => new fromActions.SetFullModel(model)),
+  );
+
+  @Effect()
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
     withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModelHeader))),

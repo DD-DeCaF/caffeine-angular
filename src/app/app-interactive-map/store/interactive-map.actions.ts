@@ -23,6 +23,7 @@ export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const FETCH_MODELS = 'FETCH_MODELS';
 export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
+export const SET_FULL_MODEL = 'SET_FULL_MODEL';
 
 export const FETCH_MAPS = 'FETCH_MAPS';
 export const SET_MAPS = 'SET_MAPS';
@@ -76,6 +77,11 @@ export class SetModels implements Action {
 export class SetModel implements Action {
   readonly type = SET_MODEL;
   constructor(public payload: types.DeCaF.ModelHeader) {}
+}
+
+export class SetFullModel implements Action {
+  readonly type = SET_FULL_MODEL;
+  constructor(public payload: types.DeCaF.Model) {}
 }
 
 export class FetchMaps implements Action {
@@ -188,6 +194,7 @@ export type InteractiveMapActions =
   SetSelectedSpecies |
   SetModels |
   SetModel |
+  SetFullModel |
   SetMaps |
   MapFetched |
   ResetCards |
