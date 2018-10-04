@@ -19,7 +19,7 @@ import {withLatestFrom} from 'rxjs/operators';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import {Cobra, Card, OperationDirection, ReactionState} from './types';
+import {Card, OperationDirection, ReactionState} from './types';
 import escherSettingsConst from './escherSettings';
 import {AppState} from '../store/app.reducers';
 import * as fromActions from './store/interactive-map.actions';
@@ -40,7 +40,6 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   private builderSubject = new Subject<escher.BuilderObject>();
   public map: Observable<escher.PathwayMap>;
-  public model: Cobra.Model;
   public loading = true;
   private card: Card;
 
