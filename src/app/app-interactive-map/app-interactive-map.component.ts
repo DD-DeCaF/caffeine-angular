@@ -79,20 +79,18 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new fromActions.FetchModels());
 
     const builderObservable = this.builderSubject.asObservable();
-    this.store
-      .pipe(
-        selectNotNull((store) => store.interactiveMap.mapData),
-        withLatestFrom(builderObservable),
-      ).subscribe(([map, builder]) => {
+    this.store.pipe(
+      selectNotNull((store) => store.interactiveMap.mapData),
+      withLatestFrom(builderObservable),
+    ).subscribe(([map, builder]) => {
       this.loading = true;
       builder.load_map(map);
       this.loading = false;
     });
 
-    const selectedCard = this.store
-      .pipe(
-        selectNotNull(getSelectedCard),
-      );
+    const selectedCard = this.store.pipe(
+      selectNotNull(getSelectedCard),
+    );
 
     // Detect changes in model only..
     selectedCard.pipe(
@@ -113,10 +111,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'loader';
 
-    this.store
-      .pipe(
-        select(isLoading),
-      ).subscribe((loading) => {
+    this.store.pipe(
+      select(isLoading),
+    ).subscribe((loading) => {
       if (loading) {
         // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
         // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
@@ -164,7 +161,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   }
 
   handleChangeBounds(reactionId: string, lower: string, upper: string): void {
-    console.log('CHANGE BOOOUNDS', reactionId, lower, upper);
     this.store.dispatch(new fromActions.ReactionOperation({
       item: {
         reaction: this.card.model.reactions.find((r) => r.id === reactionId),
