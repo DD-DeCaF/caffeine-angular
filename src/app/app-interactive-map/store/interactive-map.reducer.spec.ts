@@ -34,17 +34,21 @@ const addedReaction: types.AddedReaction = {
   model_bigg_id: '',
 };
 
-const testModel: types.DeCaF.Model = {
-  created: 'now',
+const testModelHeader: types.DeCaF.ModelHeader = {
   id: 0,
   name: 'Foo',
+  organism_id: 'asd',
+};
+
+const testModel: types.DeCaF.Model = {
+  ...testModelHeader,
+  created: 'now',
   model_serialized: {
     id: '0',
     reactions: [],
     metabolites: [],
     genes: [],
   },
-  organism_id: 'asd',
   default_biomass_reaction: 'bar',
 };
 
@@ -74,13 +78,15 @@ describe('interactiveMapReducer', () => {
 
   it('should add a new card', () => {
     const actions = [
-      new fromActions.SetModel(testModel),
+      new fromActions.SetModel(testModelHeader),
+      new fromActions.SetFullModel(testModel),
       testAddCard(types.CardType.WildType),
     ];
 
     expect(applyActions(actions))
       .toEqual({
         ...initialState,
+        selectedModelHeader: testModelHeader,
         selectedModel: testModel,
         selectedCardId: '0',
         cards: {
@@ -104,7 +110,8 @@ describe('interactiveMapReducer', () => {
 
   it('should delete card', () => {
     const actions = [
-      new fromActions.SetModel(testModel),
+      new fromActions.SetModel(testModelHeader),
+      new fromActions.SetFullModel(testModel),
       testAddCard(types.CardType.WildType),
       testAddCard(types.CardType.WildType),
       new fromActions.DeleteCard('0'),
@@ -124,7 +131,8 @@ describe('interactiveMapReducer', () => {
     };
 
     const actions = [
-      new fromActions.SetModel(testModel),
+      new fromActions.SetModel(testModelHeader),
+      new fromActions.SetFullModel(testModel),
       testAddCard(types.CardType.WildType),
       new fromActions.ReactionOperationApply(operationPayload),
     ];
@@ -136,7 +144,8 @@ describe('interactiveMapReducer', () => {
 
   it('should remove the added reaction', () => {
     const actions = [
-      new fromActions.SetModel(testModel),
+      new fromActions.SetModel(testModelHeader),
+      new fromActions.SetFullModel(testModel),
       testAddCard(types.CardType.WildType),
       new fromActions.ReactionOperationApply({
         item: {
