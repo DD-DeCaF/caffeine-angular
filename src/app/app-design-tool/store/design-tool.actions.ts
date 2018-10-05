@@ -54,12 +54,12 @@ export class FetchModelsDesign implements Action {
 
 export class SetModelsDesign implements Action {
   readonly type = SET_MODELS_DESIGN;
-  constructor(public payload: types.DeCaF.Model[]) {}
+  constructor(public payload: types.DeCaF.ModelHeader[]) {}
 }
 
 export class SetModelDesign implements Action {
   readonly type = SET_MODEL_DESIGN;
-  constructor(public payload: types.DeCaF.Model) {}
+  constructor(public payload: types.DeCaF.ModelHeader) {}
 }
 
 export class FetchProductsDesign implements Action {

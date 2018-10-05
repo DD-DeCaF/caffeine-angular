@@ -36,8 +36,8 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
   public selectedSpecies: Observable<types.Species>;
   public allSpecies: Observable<types.Species[]>;
 
-  public selectedModel: Observable<types.DeCaF.Model>;
-  public models: Observable<types.DeCaF.Model[]>;
+  public selectedModelHeader: Observable<types.DeCaF.ModelHeader>;
+  public activeModelHeaders: Observable<types.DeCaF.ModelHeader[]>;
 
   public selectedMap: Observable<types.MapItem>;
   public mapItems: Observable<{
@@ -51,8 +51,8 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
     this.selectedSpecies = this.store.pipe(select((store) => store.interactiveMap.selectedSpecies));
     this.allSpecies = this.store.pipe(select((store) => store.interactiveMap.allSpecies));
 
-    this.selectedModel = this.store.pipe(select((store) => store.interactiveMap.selectedModel));
-    this.models = this.store.pipe(select(activeModels));
+    this.selectedModelHeader = this.store.pipe(select((store) => store.interactiveMap.selectedModelHeader));
+    this.activeModelHeaders = this.store.pipe(select(activeModels));
 
     this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
     this.mapItems = this.store.pipe(select(mapItemsByModel));

@@ -20,8 +20,8 @@ import * as typesDesign from '../types';
 export interface DesignToolState {
   allSpecies: types.Species[];
   selectedSpecies: types.Species;
-  models: types.DeCaF.Model[];
-  selectedModel: types.DeCaF.Model;
+  models: types.DeCaF.ModelHeader[];
+  selectedModel: types.DeCaF.ModelHeader;
   products: typesDesign.Product[];
   designStarted: boolean;
   jobs: string[];

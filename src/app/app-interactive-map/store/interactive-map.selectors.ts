@@ -44,12 +44,12 @@ export const getSelectedCard = createSelector(
 
 export const mapItemsByModel = createSelector(
   (state: AppState) => state.interactiveMap.maps,
-  (state: AppState) => state.interactiveMap.selectedModel,
-  (mapItems, selectedModel) => {
+  (state: AppState) => state.interactiveMap.selectedModelHeader,
+  (mapItems, selectedModelHeader) => {
     // Project the map
     const modelIds = firstIfContains(
       unique(mapItems.map(({model}) => model)),
-      selectedModel,
+      selectedModelHeader,
     );
 
     const mapsByModelId = mapItems.reduce(
@@ -69,7 +69,7 @@ export const mapItemsByModel = createSelector(
 );
 
 export const activeModels = createSelector(
-  (state: AppState) => state.interactiveMap.models,
+  (state: AppState) => state.interactiveMap.modelHeaders,
   (state: AppState) => state.interactiveMap.selectedSpecies,
   (models, selectedSpecies) => models
     .filter((m) => m.organism_id === selectedSpecies.id.toString()),

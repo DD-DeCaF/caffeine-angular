@@ -54,7 +54,7 @@ export class DesignToolEffects {
     ofType(fromActions.FETCH_MODELS_DESIGN),
     switchMap(() =>
       this.modelService.loadModels()),
-    map((models: types.DeCaF.Model[]) => new fromActions.SetModelsDesign(models)),
+    map((models: types.DeCaF.ModelHeader[]) => new fromActions.SetModelsDesign(models)),
   );
 
   @Effect()

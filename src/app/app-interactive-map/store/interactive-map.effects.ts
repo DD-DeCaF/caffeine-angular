@@ -85,9 +85,9 @@ export class InteractiveMapEffects {
     this.actions$.pipe(ofType(fromActions.SET_MODELS)),
   ).pipe(
     map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpecies, fromActions.SetModels]) => {
-      const selectedModel = models
+      const selectedModelHeader = models
         .filter((model) => model.organism_id === selectedOrgId.toString())[0];
-      return new fromActions.SetModel(selectedModel);
+      return new fromActions.SetModel(selectedModelHeader);
     }),
   );
 
@@ -128,13 +128,20 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
+  fetchFullModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL),
+    switchMap((action: fromActions.SetFullModel) =>
+      this.http.get(`${environment.apis.model_warehouse}/models/${action.payload.id}`)),
+    map((model: types.DeCaF.Model) => new fromActions.SetFullModel(model)),
+  );
+
+  @Effect()
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
-    withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModel))),
+    withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModelHeader))),
     switchMap(([{payload: type}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
       const payload: types.SimulateRequest = {
-        model: model.model_serialized,
-        biomass_reaction: model.default_biomass_reaction,
+        model_id: model.id,
         method: 'fba',
         objective: null,
         objective_direction: null,
@@ -240,8 +247,7 @@ export class InteractiveMapEffects {
       }));
 
       const payload: types.SimulateRequest = {
-        model: store.interactiveMap.selectedModel.model_serialized,
-        biomass_reaction: store.interactiveMap.selectedModel.default_biomass_reaction,
+        model_id: store.interactiveMap.selectedModelHeader.id,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
         objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,

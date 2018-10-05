@@ -30,7 +30,7 @@ export class ModelService {
     return this.http.get<Cobra.Model>(`${environment.apis.model}/models/${modelId}`);
   }
 
-  loadModels(): Observable <types.DeCaF.Model[]> {
-    return this.http.get<types.DeCaF.Model[]>(`${environment.apis.model_warehouse}/models`);
+  loadModels(): Observable <types.DeCaF.ModelHeader[]> {
+    return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_warehouse}/models`);
   }
 }

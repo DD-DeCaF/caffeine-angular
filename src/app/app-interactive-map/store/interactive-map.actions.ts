@@ -23,6 +23,7 @@ export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const FETCH_MODELS = 'FETCH_MODELS';
 export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
+export const SET_FULL_MODEL = 'SET_FULL_MODEL';
 
 export const FETCH_MAPS = 'FETCH_MAPS';
 export const SET_MAPS = 'SET_MAPS';
@@ -70,11 +71,16 @@ export class FetchModels implements Action {
 
 export class SetModels implements Action {
   readonly type = SET_MODELS;
-  constructor(public payload: types.DeCaF.Model[]) {}
+  constructor(public payload: types.DeCaF.ModelHeader[]) {}
 }
 
 export class SetModel implements Action {
   readonly type = SET_MODEL;
+  constructor(public payload: types.DeCaF.ModelHeader) {}
+}
+
+export class SetFullModel implements Action {
+  readonly type = SET_FULL_MODEL;
   constructor(public payload: types.DeCaF.Model) {}
 }
 
@@ -182,6 +188,23 @@ export const operationToApply = {
 };
 
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
-export type InteractiveMapActions = FetchSpecies | SetSpecies | SetSelectedSpecies | SetModels | SetModel | SetMaps | MapFetched |
-  ResetCards | SelectCard | NextCard | PreviousCard | SetPlayState | AddCardFetched | DeleteCard | RenameCard |
-  SetMethodApply | ReactionOperationApply | SetObjectiveReactionApply;
+export type InteractiveMapActions =
+  FetchSpecies |
+  SetSpecies |
+  SetSelectedSpecies |
+  SetModels |
+  SetModel |
+  SetFullModel |
+  SetMaps |
+  MapFetched |
+  ResetCards |
+  SelectCard |
+  NextCard |
+  PreviousCard |
+  SetPlayState |
+  AddCardFetched |
+  DeleteCard |
+  RenameCard |
+  SetMethodApply |
+  ReactionOperationApply |
+  SetObjectiveReactionApply;
