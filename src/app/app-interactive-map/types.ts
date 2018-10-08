@@ -258,3 +258,12 @@ export interface Species {
   created: string;
   updated: string;
 }
+
+export interface ReactionState {
+  knockout: boolean;
+  objective: ObjectiveReactionPayload;
+  bounds: {
+    lowerbound: number,
+    upperbound: number,
+  };
+}

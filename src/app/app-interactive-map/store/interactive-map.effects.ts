@@ -271,13 +271,14 @@ export class InteractiveMapEffects {
 
   @Effect()
   incrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_SPECIES, fromActions.FETCH_MODELS, fromActions.FETCH_MAPS),
+    ofType(fromActions.FETCH_SPECIES, fromActions.FETCH_MODELS, fromActions.FETCH_MAPS, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION),
     mapTo(new loaderActions.Increment()),
   );
 
   @Effect()
   decrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_SPECIES, fromActions.SET_MODELS, fromActions.SET_MAPS),
+    ofType(fromActions.SET_SPECIES, fromActions.SET_MODELS, fromActions.SET_MAPS, fromActions.REACTION_OPERATION_APPLY,
+      fromActions.SET_OBJECTIVE_REACTION_APPLY),
     mapTo(new loaderActions.Decrement()),
   );
 
