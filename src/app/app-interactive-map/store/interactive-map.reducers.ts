@@ -16,7 +16,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
-import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
+import {appendOrUpdate, appendOrUpdateStringList, mapBiggReactionToCobra} from '../../utils';
 import { debug } from '../../logger';
 
 
@@ -79,7 +79,6 @@ export const initialState: InteractiveMapState = {
     cardsById: {},
   },
 };
-
 
 export const appendUnique = (array, item) => array.includes(item) ? array : [...array, item];
 
@@ -263,6 +262,18 @@ export function interactiveMapReducer(
           const value = card[operationTarget];
           // @ts-ignore
           const result = operationFunction(value, item);
+          if (operationTarget === 'addedReactions') {
+            const addedReaction = mapBiggReactionToCobra(<AddedReaction>item);
+            if (!card.model.reactions.includes(addedReaction)) {
+              card.model.reactions.push(addedReaction);
+            }
+            const metabolitesToAdd = (<AddedReaction>item).metabolites_to_add;
+            for (let i = 0; i < metabolitesToAdd.length; i++) {
+              if (card.model.metabolites.indexOf(metabolitesToAdd[i]) === -1) {
+                card.model.metabolites.push(metabolitesToAdd[i]);
+              }
+            }
+          }
           newCard = {
             ...card,
             [operationTarget]: result,

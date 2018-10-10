@@ -248,6 +248,8 @@ export interface AddedReaction extends BiggReaction {
   reaction_string: string;
   // tslint:disable-next-line
   metabolites: any;
+  // tslint:disable-next-line
+  metabolites_to_add: any;
   database_links: {};
 }
 

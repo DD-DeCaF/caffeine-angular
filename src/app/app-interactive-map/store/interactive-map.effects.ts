@@ -24,35 +24,19 @@ import * as fromActions from './interactive-map.actions';
 import { environment } from '../../../environments/environment.staging';
 import * as types from '../types';
 import { PathwayMap } from '@dd-decaf/escher';
-import { interactiveMapReducer } from './interactive-map.reducers';
+import {interactiveMapReducer} from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
 import { WarehouseService } from '../../services/warehouse.service';
 import {ModelService} from '../../services/model.service';
 import * as loaderActions from '../components/loader/store/loader.actions';
+import {mapBiggReactionToCobra} from '../../utils';
 
 
 const ACTION_OFFSETS = {
   [fromActions.NEXT_CARD]: 1,
   [fromActions.PREVIOUS_CARD]: -1,
 };
-
-const addedReactionToReaction = ({
-  bigg_id,
-  metanetx_id,
-  reaction_string,
-  database_links,
-  model_bigg_id,
-  organism,
-  ...rest}: types.AddedReaction,
-  bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: null, upperBound: null}): types.Cobra.Reaction =>
-  ({
-    ...rest,
-    id: bigg_id,
-    gene_reaction_rule: reaction_string,
-    lower_bound: bounds.lowerBound,
-    upper_bound: bounds.upperBound,
-});
 
 @Injectable()
 export class InteractiveMapEffects {
@@ -120,7 +104,7 @@ export class InteractiveMapEffects {
 
   @Effect()
   resetCards: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_MODEL),
+    ofType(fromActions.SET_FULL_MODEL),
     concatMapTo([
       new fromActions.ResetCards(),
       new fromActions.AddCard(types.CardType.WildType),
@@ -225,7 +209,7 @@ export class InteractiveMapEffects {
         operation: 'add',
         type: 'reaction',
         id: reaction.bigg_id,
-        data: addedReactionToReaction(reaction),
+        data: mapBiggReactionToCobra(reaction),
       }));
 
       const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({

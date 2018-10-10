@@ -13,11 +13,11 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
 import {AddedReaction, BiggSearch, Reaction} from '../../../../../types';
-import { map } from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -37,21 +37,35 @@ export class BiggSearchService {
   }
 
   processReaction(reaction: AddedReaction): AddedReaction {
+    const patt_compartment = new RegExp(/_\w(?=[^_\w]*$)/);
     let metanetx_id: string;
     try {
       metanetx_id = reaction.database_links['MetaNetX (MNX) Equation'][0].id;
     } catch (e) {
       metanetx_id = '';
     }
+
+    const metabolites_to_add = reaction.metabolites.map((m) => {
+      return {
+        id: patt_compartment.test(m.bigg_id) ? m.bigg_id.replace(patt_compartment, '_c') : m.bigg_id + '_c',
+        compartment: m.compartment_bigg_id,
+        name: m.name,
+        charge: m.stoichiometry,
+        formula: '',
+        annotation: {},
+      };
+    });
+
     const metabolites = Object.assign({}, ...reaction.metabolites.map((m) => {
       return {
-        [`${m.bigg_id}_${m.compartment_bigg_id}`]: m.stoichiometry,
+        [patt_compartment.test(m.bigg_id) ? m.bigg_id.replace(patt_compartment, '_c') : m.bigg_id + '_c']: m.stoichiometry,
       };
     }));
     return {
       ...reaction,
       reaction_string: <string> reaction.reaction_string.replace('&#8652;', '<=>'),
       metabolites,
+      metabolites_to_add,
       metanetx_id,
     };
 

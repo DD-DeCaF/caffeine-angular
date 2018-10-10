@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import * as types from './app-interactive-map/types';
+
 export const notNull = (data) => data !== null;
 
 export const appendOrUpdate = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item: T) => {
@@ -54,3 +56,18 @@ const matchSelector = <T>(comparators: ((item: T) => boolean)[]) => (items: T[])
 
 export const objectMatcher = <T>(matchers: Partial<T>[]) => (items: T[]) =>
   matchSelector(matchers.map(createComparator))(items);
+
+export const mapBiggReactionToCobra = ({
+                                         bigg_id,
+                                         reaction_string,
+                                         name,
+                                         metabolites}: types.AddedReaction,
+                                       bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: -1000, upperBound: 1000}): types.Cobra.Reaction =>
+  ({
+    name: name,
+    id: bigg_id,
+    gene_reaction_rule: reaction_string,
+    lower_bound: bounds.lowerBound,
+    upper_bound: bounds.upperBound,
+    metabolites: metabolites,
+  });
