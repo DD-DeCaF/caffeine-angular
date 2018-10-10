@@ -37,7 +37,6 @@ export class BiggSearchService {
   }
 
   processReaction(reaction: AddedReaction): AddedReaction {
-    const patt_compartment = new RegExp(/_\w(?=[^_\w]*$)/);
     let metanetx_id: string;
     try {
       metanetx_id = reaction.database_links['MetaNetX (MNX) Equation'][0].id;
@@ -47,7 +46,7 @@ export class BiggSearchService {
 
     const metabolites_to_add = reaction.metabolites.map((m) => {
       return {
-        id: patt_compartment.test(m.bigg_id) ? m.bigg_id.replace(patt_compartment, '_c') : m.bigg_id + '_c',
+        id: `${m.bigg_id}_c`,
         compartment: m.compartment_bigg_id,
         name: m.name,
         charge: m.stoichiometry,
@@ -58,7 +57,7 @@ export class BiggSearchService {
 
     const metabolites = Object.assign({}, ...reaction.metabolites.map((m) => {
       return {
-        [patt_compartment.test(m.bigg_id) ? m.bigg_id.replace(patt_compartment, '_c') : m.bigg_id + '_c']: m.stoichiometry,
+        [`${m.bigg_id}_c`]: m.stoichiometry,
       };
     }));
     return {
