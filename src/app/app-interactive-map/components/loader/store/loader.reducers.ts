@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import * as fromLoaderActions from './loader.actions';
-import { debug } from '../../../../logger';
 
 
 export interface LoaderState {
@@ -28,7 +27,6 @@ export function loaderReducer(
   state: LoaderState = initialState,
   action: fromLoaderActions.LoaderActions,
 ): LoaderState {
-  debug('Action:', action);
   switch (action.type) {
     case fromLoaderActions.INCREMENT:
       return {

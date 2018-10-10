@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import * as fromDesingToolActions from './design-tool.actions';
-import {debug} from '../../logger';
 import * as types from '../../app-interactive-map/types';
 import * as typesDesign from '../types';
 
@@ -42,7 +41,6 @@ export function designToolReducer(
   state: DesignToolState = initialState,
   action: fromDesingToolActions.DesignToolActions,
 ): DesignToolState {
-  debug('Desing tool reducer:', action);
   switch (action.type) {
     case fromDesingToolActions.SET_SPECIES_DESIGN:
       return {
