@@ -30,6 +30,7 @@ const addedReaction: types.AddedReaction = {
   metanetx_id: null,
   reaction_string: null,
   metabolites: {},
+  metabolites_to_add: {},
   database_links: {},
   model_bigg_id: '',
 };
