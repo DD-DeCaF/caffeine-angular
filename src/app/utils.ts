@@ -66,7 +66,7 @@ export const mapBiggReactionToCobra = ({
   ({
     name: name,
     id: bigg_id,
-    gene_reaction_rule: reaction_string,
+    gene_reaction_rule: '',
     lower_bound: bounds.lowerBound,
     upper_bound: bounds.upperBound,
     metabolites: metabolites,
