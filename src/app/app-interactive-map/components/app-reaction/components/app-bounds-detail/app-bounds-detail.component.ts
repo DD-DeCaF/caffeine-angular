@@ -38,11 +38,12 @@ export class AppBoundsDetailComponent {
     this.remove.emit(item);
   }
 
-  apply(item: Bound, lowerBound: number, upperBound: number): void {
+  apply(item: Bound, lowerBound: string, upperBound: string): void {
+
     this.update.emit({
       ...item,
-      lowerBound,
-      upperBound,
+      lowerBound: parseInt(lowerBound, 10),
+      upperBound: parseInt(upperBound, 10),
     });
   }
 
