@@ -57,7 +57,7 @@
       <mat-tab-group mat-stretch-tabs [selectedIndex]="tabIndex">
         <mat-tab>
           <ng-template mat-tab-label>
-            <mat-icon>info</mat-icon>
+            <mat-icon matTooltip="Information">info</mat-icon>
           </ng-template>
 
           <app-card-info></app-card-info>
@@ -65,7 +65,7 @@
 
         <mat-tab>
           <ng-template mat-tab-label>
-            <mat-icon>edit</mat-icon>
+            <mat-icon matTooltip="Model changes">edit</mat-icon>
           </ng-template>
 
           <app-reaction></app-reaction>
@@ -85,11 +85,11 @@
 
       <div fxLayout="row" fxLayoutAlign="space-around center">
         <button mat-icon-button (click)="grow(card, 0)">
-          <mat-icon>info</mat-icon>
+          <mat-icon matTooltip="Information">info</mat-icon>
         </button>
 
         <button mat-icon-button (click)="grow(card, 1)">
-          <mat-icon>edit</mat-icon>
+          <mat-icon matTooltip="Model changes">edit</mat-icon>
         </button>
       </div>
 
