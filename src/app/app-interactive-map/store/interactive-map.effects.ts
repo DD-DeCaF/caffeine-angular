@@ -61,14 +61,12 @@ export class InteractiveMapEffects {
     map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
   );
 
-// TODO set model according to selectedSpecies
   @Effect()
-  selectFirstModel: Observable<Action> = combineLatest(
-    this.actions$.pipe(ofType(fromActions.FETCH_SPECIES)),
+  selectFirstModel: Observable<Action> = combineLatest<fromActions.SetSelectedSpecies, fromActions.SetModels>(
     this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES)),
     this.actions$.pipe(ofType(fromActions.SET_MODELS)),
   ).pipe(
-    map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpecies, fromActions.SetModels]) => {
+    map(([{payload: {id: selectedOrgId}}, {payload: models}]: [fromActions.SetSelectedSpecies, fromActions.SetModels]) => {
       const selectedModelHeader = models
         .filter((model) => model.organism_id === selectedOrgId.toString())[0];
       return new fromActions.SetModel(selectedModelHeader);
