@@ -26,7 +26,7 @@
         <mat-tab-group mat-stretch-tabs>
           <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon>build</mat-icon>
+              <mat-icon matTooltip="Manage predicted and experimental fluxes">build</mat-icon>
             </ng-template>
 
             <app-build></app-build>
@@ -35,7 +35,8 @@
 
           <mat-tab>
             <ng-template mat-tab-label>
-              <mat-icon class="example-tab-icon">timeline</mat-icon>
+              <mat-icon class="example-tab-icon"
+                        matTooltip="Metabolic Pathways">timeline</mat-icon>
             </ng-template>
 
             <app-global-settings></app-global-settings>
