@@ -19,6 +19,7 @@ import {InteractiveMapState, interactiveMapReducer} from '../app-interactive-map
 import {designToolReducer, DesignToolState} from '../app-design-tool/store/design-tool.reducers';
 import {JobsState, jobsReducer} from '../jobs/store/jobs.reducers';
 import {loaderReducer, LoaderState} from '../app-interactive-map/components/loader/store/loader.reducers';
+import {modelsReducer, ModelsState} from '../app-models/store/models.reducers';
 
 export interface AppState {
   session: SessionState;
@@ -26,6 +27,7 @@ export interface AppState {
   designTool: DesignToolState;
   jobs: JobsState;
   loader: LoaderState;
+  models: ModelsState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -34,6 +36,7 @@ export const reducers: ActionReducerMap<AppState> = {
   designTool: designToolReducer,
   jobs: jobsReducer,
   loader: loaderReducer,
+  models: modelsReducer,
 };
 
 export const initialState: AppState = Object.assign(

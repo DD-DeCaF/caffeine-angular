@@ -57,6 +57,8 @@ import {DesignToolEffects} from './app-design-tool/store/design-tool.effects';
 // Jobs
 import { JobsEffects } from './jobs/store/jobs.effects';
 import { JobsModule } from './jobs/jobs.module';
+import { AppModelsComponent } from './app-models/app-models.component';
+import {ModelsEffects} from './app-models/store/models.effects';
 // End jobs
 
 if (environment.sentry) {
@@ -87,6 +89,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppNotFoundComponent,
     DesignToolComponent,
     AppFormDesignComponent,
+    AppModelsComponent,
   ],
   imports: [
     // Angular modules
@@ -111,6 +114,7 @@ export class RavenErrorHandler implements ErrorHandler {
       InteractiveMapEffects,
       DesignToolEffects,
       JobsEffects,
+      ModelsEffects,
     ]),
     StoreDevtoolsModule.instrument({
       name: 'Caffeine',
