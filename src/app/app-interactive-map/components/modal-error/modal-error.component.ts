@@ -12,24 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Action} from '@ngrx/store';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material';
 
+@Component({
+  selector: 'app-loader',
+  templateUrl: './modal-error.component.html',
+  styleUrls: ['./modal-error.component.scss'],
 
-export const LOADING = 'LOADING';
-export const LOADING_FINISHED = 'LOADING_FINISHED';
-export const LOADING_ERROR = 'LOADING_ERROR';
+})
+export class ModalErrorComponent {
+  constructor(
+    private router: Router,
+    private dialog: MatDialog) {}
+  reload(): void {
+    location.reload();
+  }
 
-
-export class Loading implements Action {
-  readonly type = LOADING;
+  goHome(): void {
+    this.dialog.closeAll();
+    this.router.navigateByUrl('/');
+  }
 }
 
-export class LoadingFinished implements Action {
-  readonly type = LOADING_FINISHED;
-}
-
-export class LoadingError implements Action {
-  readonly type = LOADING_ERROR;
-}
-
-export type LoaderActions = Loading | LoadingFinished | LoadingError;

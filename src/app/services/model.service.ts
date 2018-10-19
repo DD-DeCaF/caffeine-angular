@@ -14,7 +14,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Cobra } from '../app-interactive-map/types';
 import * as types from '../app-interactive-map/types';
@@ -28,6 +28,7 @@ export class ModelService {
 
   loadModel(modelId: string): Observable<Cobra.Model> {
     return this.http.get<Cobra.Model>(`${environment.apis.model}/models/${modelId}`);
+
   }
 
   loadModels(): Observable <types.DeCaF.ModelHeader[]> {
