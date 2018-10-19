@@ -16,8 +16,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store, select} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, combineLatest } from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take} from 'rxjs/operators';
+import {Observable, combineLatest, of} from 'rxjs';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
@@ -43,8 +43,11 @@ export class InteractiveMapEffects {
   @Effect()
   fetchSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES),
-    switchMap(() => this.warehouseService.getOrganisms()),
-    map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
+    switchMap(() => this.warehouseService.getOrganisms().pipe(
+      map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
+      catchError(() => of(new loaderActions.LoadingError())),
+    )),
+
   );
 
   @Effect()
@@ -57,8 +60,10 @@ export class InteractiveMapEffects {
   fetchModels: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MODELS),
     switchMap(() =>
-      this.modelService.loadModels()),
-    map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
+      this.modelService.loadModels().pipe(
+        map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
+        catchError(() => of(new loaderActions.LoadingError())),
+      )),
   );
 
   @Effect()
@@ -96,8 +101,10 @@ export class InteractiveMapEffects {
   fetchMaps: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MAPS),
     switchMap(() =>
-      this.mapService.loadMaps()),
-    map((maps: types.MapItem[]) => new fromActions.SetMaps(maps)),
+      this.mapService.loadMaps().pipe(
+        map((maps: types.MapItem[]) => new fromActions.SetMaps(maps)),
+        catchError(() => of(new loaderActions.LoadingError())),
+      )),
   );
 
   @Effect()
@@ -113,9 +120,10 @@ export class InteractiveMapEffects {
   fetchFullModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetFullModel) =>
-      this.http.get(`${environment.apis.model_warehouse}/models/${action.payload.id}`)),
-    map((model: types.DeCaF.Model) => new fromActions.SetFullModel(model)),
-  );
+      this.http.get(`${environment.apis.model_warehouse}/models/${action.payload.id}`).pipe(
+        map((model: types.DeCaF.Model) => new fromActions.SetFullModel(model)),
+        catchError(() => of(new loaderActions.LoadingError())),
+      )));
 
   @Effect()
   simulateNewCard: Observable<Action> = this.actions$.pipe(
@@ -135,9 +143,10 @@ export class InteractiveMapEffects {
             type,
             solution,
           })),
+          map((data) => new fromActions.AddCardFetched(data)),
+          catchError(() => of(new loaderActions.LoadingError())),
         );
     }),
-    map((data) => new fromActions.AddCardFetched(data)),
   );
 
   @Effect()
@@ -150,9 +159,10 @@ export class InteractiveMapEffects {
           mapData: response,
           mapItem: action.payload,
         })),
+          map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
+          catchError(() => of(new loaderActions.LoadingError())),
       );
     }),
-    map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
   );
 
   // Steps to the previous or the next card depending on the action
@@ -243,25 +253,29 @@ export class InteractiveMapEffects {
         .pipe(map((solution: types.DeCaF.Solution) => ({
           action: newAction,
           solution,
-        })));
+        })),
+          /* tslint:disable */
+          map(({action, solution}) => ({
+            ...action,
+            solution,
+          })),
+          /* tslint:enable */
+          catchError(() => of(new loaderActions.LoadingError())),
+          );
     }),
-    map(({action, solution}) => ({
-        ...action,
-        solution,
-    })),
   );
 
   @Effect()
-  incrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_SPECIES, fromActions.FETCH_MODELS, fromActions.FETCH_MAPS, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION),
-    mapTo(new loaderActions.Increment()),
+  loadingRequest: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_SPECIES, fromActions.FETCH_MODELS, fromActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
+      fromActions.SET_OBJECTIVE_REACTION),
+    mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
-  decrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_SPECIES, fromActions.SET_MODELS, fromActions.SET_MAPS, fromActions.REACTION_OPERATION_APPLY,
-      fromActions.SET_OBJECTIVE_REACTION_APPLY),
-    mapTo(new loaderActions.Decrement()),
+  loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.LOADED),
+    mapTo(new loaderActions.LoadingFinished()),
   );
 
   constructor(

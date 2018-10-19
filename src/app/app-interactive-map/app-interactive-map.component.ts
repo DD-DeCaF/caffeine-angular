@@ -29,6 +29,7 @@ import {selectNotNull} from '../framework-extensions';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {isLoading} from './components/loader/store/loader.selectors';
+import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -110,6 +111,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'loader';
+    dialogConfig.id = 'loader';
+
+    const dialogConfigError = new MatDialogConfig();
+    dialogConfigError.disableClose = true;
+    dialogConfigError.autoFocus = true;
+    dialogConfigError.panelClass = 'loader';
+    dialogConfigError.id = 'error';
 
     this.store.pipe(
       select(isLoading),
@@ -118,9 +126,19 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
         // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
         // setTimeout(() => ...., 0);
-        setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
+        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loader')) {
+          setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
+        }
       } else {
-        this.dialog.closeAll();
+        this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
+          if (loadingError) {
+            if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'error')) {
+              setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
+            }
+          } else {
+            this.dialog.closeAll();
+          }
+        });
       }
     });
   }

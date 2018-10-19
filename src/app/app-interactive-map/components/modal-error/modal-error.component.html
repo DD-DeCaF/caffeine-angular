@@ -13,8 +13,25 @@
 <!--limitations under the License.-->
 <mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
   <div class="map-progress">
-    <mat-spinner class="mat-primary" *ngIf="(loading | async)"></mat-spinner>
-    <h3 class="map-progress-text" *ngIf="(loading | async)">Calculating flux distribution...</h3>
+    <div class="error-box" >
+      <h3 class="map-progress-text-error">
+        <p class="title">Oops, a technical error occurred while handling your request.</p>
+        <br>We've been notified of the problem and we will investigate as soon as possible. <br>
+        Meanwhile, you can try to refresh the page, or give it another shot in a little while.<br>
+        We apologize for the inconvenience.</h3>
+      <div>
+        <button mat-button (click)="goHome()" [mat-dialog-close]="true">
+          <mat-icon mat-list-icon>home</mat-icon>
+          Go home
+        </button>
+      </div>
+      <div>
+        <button mat-button (click)="reload()">
+          <mat-icon mat-list-icon>refresh</mat-icon>
+          Refresh
+        </button>
+      </div>
+    </div>
   </div>
 </mat-dialog-content>
 

@@ -17,10 +17,14 @@ import * as fromLoaderActions from './loader.actions';
 
 export interface LoaderState {
   count: number;
+  loadingError: boolean;
+  loading: boolean;
 }
 
 export const initialState: LoaderState = {
   count: 0,
+  loadingError: false,
+  loading: false,
 };
 
 export function loaderReducer(
@@ -28,15 +32,21 @@ export function loaderReducer(
   action: fromLoaderActions.LoaderActions,
 ): LoaderState {
   switch (action.type) {
-    case fromLoaderActions.INCREMENT:
+    case fromLoaderActions.LOADING:
       return {
         ...state,
-        count: state.count + 1,
+        loading: true,
       };
-    case fromLoaderActions.DECREMENT:
+    case fromLoaderActions.LOADING_FINISHED:
       return {
         ...state,
-        count: state.count - 1,
+        loading: false,
+      };
+    case fromLoaderActions.LOADING_ERROR:
+      return {
+        ...state,
+        loadingError: true,
+        loading: false,
       };
     default:
       return state;

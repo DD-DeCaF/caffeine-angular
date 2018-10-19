@@ -31,6 +31,8 @@ import { MapService } from './services/map.service';
 import { ModelService } from '../services/model.service';
 import { WarehouseService } from '../services/warehouse.service';
 import {LoaderComponent} from './components/loader/loader.component';
+import {AppRoutingModule} from '../app-routing.module';
+import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 
 
 @NgModule({
@@ -41,6 +43,7 @@ import {LoaderComponent} from './components/loader/loader.component';
     AppLegendComponent,
     AppGlobalSettingsComponent,
     LoaderComponent,
+    ModalErrorComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,7 @@ import {LoaderComponent} from './components/loader/loader.component';
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-
+    AppRoutingModule,
     AppMaterialModule,
 
     ReactionModule,
@@ -62,6 +65,6 @@ import {LoaderComponent} from './components/loader/loader.component';
   exports: [
     AppInteractiveMapComponent,
   ],
-  entryComponents: [LoaderComponent],
+  entryComponents: [LoaderComponent, ModalErrorComponent],
 })
 export class AppInteractiveMapModule {}
