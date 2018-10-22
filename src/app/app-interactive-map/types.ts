@@ -269,3 +269,10 @@ export interface ReactionState {
     upperbound: number,
   };
 }
+
+export interface EditModel {
+  id: number;
+  organism_id: number;
+  name: string;
+  default_biomass_reaction: string;
+}

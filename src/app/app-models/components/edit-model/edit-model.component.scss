@@ -12,29 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  margin: 0 20px;
+
+.box {
+  background: white;
+  text-align: center;
+  min-width: 400px;
 }
 
-.table {
-  width: 100%;
+.title {
+  text-align: left;
+  white-space: nowrap;
+  margin-bottom: 0;
 }
 
-.button {
-  cursor: pointer;
+mat-form-field {
+  display: inherit;
 }
 
-.floating-button {
-  z-index: 11;
-  position: absolute;
-  right: 40px;
-  bottom: 50px;
+.model-form {
+  padding: 20px;
+}
+.fill-remaining-space {
+  flex: 1 1 auto;
 }
 
-.edit {
-  color: royalblue;
-}
-
-.delete {
-  color: #f00000;
+.error {
+  color: red;
+  font-weight: lighter;
+  font-size: 18px;
 }

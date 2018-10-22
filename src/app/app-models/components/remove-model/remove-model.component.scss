@@ -12,29 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  margin: 0 20px;
+.box {
+  background: white;
+  text-align: center;
+  min-width: 400px;
 }
 
-.table {
-  width: 100%;
+.error-icon {
+  font-size: 60px;
+  width: 60px;
+  height: 60px;
 }
 
-.button {
-  cursor: pointer;
+.text {
+  font-size: 18px;
 }
 
-.floating-button {
-  z-index: 11;
-  position: absolute;
-  right: 40px;
-  bottom: 50px;
+.section-buttons {
+  margin-top: 20px;
 }
 
-.edit {
-  color: royalblue;
+.error {
+  color: red;
+  font-weight: lighter;
+  font-size: 18px;
 }
 
-.delete {
-  color: #f00000;
-}

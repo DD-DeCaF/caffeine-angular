@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource, MatSort} from '@angular/material';
+import {MatTableDataSource, MatSort, MatDialog} from '@angular/material';
 import {PathwayPredictionResult} from '../jobs/types';
 import {AppState} from '../store/app.reducers';
 import {select, Store} from '@ngrx/store';
 import * as fromActions from './store/models.actions';
 import * as types from '../app-interactive-map/types';
 import {Observable} from 'rxjs';
-import {AUTHORIZATION_TOKEN} from '../session/consts';
-import {HttpResponse} from '@angular/common/http';
+import {EditModelComponent} from './components/edit-model/edit-model.component';
+import {RemoveModelComponent} from './components/remove-model/remove-model.component';
 
 @Component({
   selector: 'app-models',
@@ -28,6 +28,7 @@ export class AppModelsComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -38,4 +39,25 @@ export class AppModelsComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
+  removeModel(model: string): void {
+    const dialogRef = this.dialog.open(RemoveModelComponent, {
+      data: {
+        model: model,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(
+      () => this.store.dispatch(new fromActions.ResetRemovedModelModels()));
+  }
+
+  editModel(model: types.DeCaF.Model): void {
+    const dialogRef = this.dialog.open(EditModelComponent, {
+      data: {
+        model: model,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(
+      () => this.store.dispatch(new fromActions.ResetError()));
+  }
 }
