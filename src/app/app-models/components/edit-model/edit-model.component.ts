@@ -57,7 +57,6 @@ export class EditModelComponent implements OnInit {
     this.error = this.store.pipe(select((store) => store.models.error));
     this.store.pipe(select((store) => store.models.model)).subscribe((model) => {
       if (model && (model.id === this.model.id)) {
-        console.log('MODEL', model);
         this.reactions = model.model_serialized.reactions.map((reaction) => reaction.id);
         this.modelForm.setValue({
           id: model.id,
