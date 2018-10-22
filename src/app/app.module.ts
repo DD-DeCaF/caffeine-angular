@@ -64,6 +64,8 @@ import {AppModelsModule} from './app-models/app-models.module';
 import {SharedEffects} from './store/shared.effects';
 // End models
 
+import { ProjectsModule } from './projects/projects.module';
+
 if (environment.sentry) {
   Raven
     .config(environment.sentry.DSN, {
@@ -111,6 +113,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppInteractiveMapModule,
     AppModelsModule,
     JobsModule,
+    ProjectsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
