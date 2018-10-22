@@ -65,6 +65,7 @@ import {SharedEffects} from './store/shared.effects';
 // End models
 
 import { ProjectsModule } from './projects/projects.module';
+import { ProjectsEffects } from './projects/store/projects.effects';
 
 if (environment.sentry) {
   Raven
@@ -122,6 +123,7 @@ export class RavenErrorHandler implements ErrorHandler {
       DesignToolEffects,
       ModelsEffects,
       SharedEffects,
+      ProjectsEffects,
     ]),
     StoreDevtoolsModule.instrument({
       name: 'Caffeine',

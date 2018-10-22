@@ -20,6 +20,7 @@ import {designToolReducer, DesignToolState} from '../app-design-tool/store/desig
 import {loaderReducer, LoaderState} from '../app-interactive-map/components/loader/store/loader.reducers';
 import {modelsReducer, ModelsState} from '../app-models/store/models.reducers';
 import {sharedReducer, SharedState} from './shared.reducers';
+import {projectsReducer, ProjectState} from '../projects/store/projects.reducers';
 
 export interface AppState {
   session: SessionState;
@@ -28,6 +29,7 @@ export interface AppState {
   loader: LoaderState;
   models: ModelsState;
   shared: SharedState;
+  projects: ProjectState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -37,6 +39,7 @@ export const reducers: ActionReducerMap<AppState> = {
   loader: loaderReducer,
   models: modelsReducer,
   shared: sharedReducer,
+  projects: projectsReducer,
 };
 
 export const initialState: AppState = Object.assign(
