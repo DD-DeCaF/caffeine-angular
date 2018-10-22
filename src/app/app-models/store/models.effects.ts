@@ -21,7 +21,6 @@ import * as types from '../../app-interactive-map/types';
 import {ModelService} from '../../services/model.service';
 import * as fromActions from './models.actions';
 import {WarehouseService} from '../../services/warehouse.service';
-import {environment} from '../../../environments/environment.staging';
 import {SetError} from './models.actions';
 
 

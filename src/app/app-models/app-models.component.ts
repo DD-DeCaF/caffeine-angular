@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatSort, MatDialog} from '@angular/material';
-import {PathwayPredictionResult} from '../jobs/types';
 import {AppState} from '../store/app.reducers';
 import {select, Store} from '@ngrx/store';
 import * as fromActions from './store/models.actions';
