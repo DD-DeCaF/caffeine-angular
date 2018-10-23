@@ -15,7 +15,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {map, share} from 'rxjs/operators';
 import {stringify} from 'query-string';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -84,15 +85,22 @@ export class SessionService {
     return new Date(jwt.exp * 1000) <= new Date();
   }
 
-  public refresh(): Subscription {
+  public refresh(): Observable<string> {
     const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN)).val;
-    return this.http.post(`${environment.apis.iam}/refresh`, `refresh_token=${refreshToken}`, {
+    const refresh$ = this.http.post(`${environment.apis.iam}/refresh`, `refresh_token=${refreshToken}`, {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    }).subscribe((response: HttpResponse<string>) => {
-      localStorage.setItem(AUTHORIZATION_TOKEN, response.body);
+    }).pipe(
+      map((res: {jwt: string}) => res.jwt),
+      share(),
+    );
+
+    refresh$.subscribe((token: string) => {
+      localStorage.setItem(AUTHORIZATION_TOKEN, token);
     }, () => {
       console.log('Session: Token refresh failure');
     });
+
+    return refresh$;
   }
 
   public github = () => this.signInWithSocial(this.githubProvider);
@@ -136,5 +144,9 @@ export class SessionService {
 
   public isTrustedURL(url: string): boolean {
     return environment.trustedURLs.some((trustedURL) => url.startsWith(trustedURL));
+  }
+
+  public isRefreshURL(url: string): boolean {
+    return url === `${environment.apis.iam}/refresh`;
   }
 }
