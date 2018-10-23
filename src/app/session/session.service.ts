@@ -132,10 +132,6 @@ export class SessionService {
     });
   }
 
-  public invalidate(): void {
-    this.logout();
-  }
-
   public logout(next: string = null): void {
     localStorage.removeItem(AUTHORIZATION_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
