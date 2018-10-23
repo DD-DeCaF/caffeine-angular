@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import {Observable, Subscription} from 'rxjs';
 import {map, share} from 'rxjs/operators';
@@ -66,7 +66,7 @@ export class SessionService {
 
   constructor(
     private http: HttpClient,
-    private store: Store<AppState>
+    private store: Store<AppState>,
   ) {
     this.githubProvider.addScope('user:email');
     this.googleProvider.addScope('email');
