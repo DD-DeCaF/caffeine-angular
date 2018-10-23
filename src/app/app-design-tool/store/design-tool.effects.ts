@@ -65,7 +65,7 @@ export class DesignToolEffects {
   ).pipe(
     map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpeciesDesign, fromActions.SetModelsDesign]) => {
       const selectedModel = models
-        .filter((model) => model.organism_id === selectedOrgId.toString())[0];
+        .filter((model) => model.organism_id === selectedOrgId)[0];
       return new fromActions.SetModelDesign(selectedModel);
     }),
   );

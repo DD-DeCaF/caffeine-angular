@@ -73,7 +73,7 @@ export class InteractiveMapEffects {
   ).pipe(
     map(([{payload: {id: selectedOrgId}}, {payload: models}]: [fromActions.SetSelectedSpecies, fromActions.SetModels]) => {
       const selectedModelHeader = models
-        .filter((model) => model.organism_id === selectedOrgId.toString())[0];
+        .filter((model) => model.organism_id === selectedOrgId)[0];
       return new fromActions.SetModel(selectedModelHeader);
     }),
   );

@@ -20,5 +20,5 @@ export const activeModels = createSelector(
   (state: AppState) => state.designTool.models,
   (state: AppState) => state.designTool.selectedSpecies,
   (models, selectedSpecies) => models
-    .filter((m) => m.organism_id === selectedSpecies.id.toString()),
+    .filter((m) => m.organism_id === selectedSpecies.id),
 );

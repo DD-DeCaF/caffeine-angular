@@ -38,7 +38,7 @@ const addedReaction: types.AddedReaction = {
 const testModelHeader: types.DeCaF.ModelHeader = {
   id: 0,
   name: 'Foo',
-  organism_id: 'asd',
+  organism_id: 1,
 };
 
 const testModel: types.DeCaF.Model = {
