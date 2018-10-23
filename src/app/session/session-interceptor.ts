@@ -16,7 +16,7 @@ import {Injectable, Injector} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 
 import {Observable} from 'rxjs';
-import {tap, switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 
 import {SessionService} from './session.service';
 import {AUTHORIZATION_TOKEN} from './consts';
@@ -32,7 +32,7 @@ export class SessionInterceptor implements HttpInterceptor {
     const session = this.injector.get(SessionService);
 
     // Don't intercept the actual JWT refresh request.
-    if(session.isRefreshURL(req.url)) {
+    if (session.isRefreshURL(req.url)) {
       return next.handle(req);
     }
 
@@ -42,9 +42,9 @@ export class SessionInterceptor implements HttpInterceptor {
         const jwt = localStorage.getItem(AUTHORIZATION_TOKEN);
         req = req.clone({headers: req.headers.set('Authorization', `Bearer ${jwt}`)});
         return next.handle(req);
-      }
+      };
 
-      if(this.refresh$ !== undefined) {
+      if (this.refresh$ !== undefined) {
         // If a refresh request is currently in progress, wait for the token to refresh before proceeding with the
         // original request.
         return this.refresh$.pipe(switchMap(authorizedRequest));
@@ -55,7 +55,7 @@ export class SessionInterceptor implements HttpInterceptor {
           complete: () => {
             // On completion, unset the refresh observable so subsequent requests stop attaching to it.
             this.refresh$ = undefined;
-          }
+          },
         });
         // Now wait for the refreshed token to arrive before proceeding with the original request.
         return this.refresh$.pipe(switchMap(authorizedRequest));

@@ -71,7 +71,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.sessionService.hasToken()) {
+    if (this.sessionService.hasToken()) {
       this.store.dispatch(new sessionActions.Login());
     }
   }
