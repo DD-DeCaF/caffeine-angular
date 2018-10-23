@@ -71,21 +71,17 @@ export class SessionService {
     this.googleProvider.addScope('email');
   }
 
-  public expired(): boolean {
-    return !localStorage.getItem(REFRESH_TOKEN) || this.expires() <= new Date();
+  public hasToken(): boolean {
+    return localStorage.getItem(AUTHORIZATION_TOKEN) !== null && localStorage.getItem(REFRESH_TOKEN) !== null;
   }
 
-  public expires(): Date {
-    return new Date(JSON.parse(localStorage.getItem(REFRESH_TOKEN)).exp * 1000);
+  public refreshExpired(): boolean {
+    return new Date(JSON.parse(localStorage.getItem(REFRESH_TOKEN)).exp * 1000) <= new Date();
   }
 
   public authorizationExpired(): boolean {
-    return !localStorage.getItem(AUTHORIZATION_TOKEN) || this.authorizationExpires() <= new Date();
-  }
-
-  public authorizationExpires(): Date {
-    const payload = JSON.parse(atob(localStorage.getItem(AUTHORIZATION_TOKEN).split('.')[1]));
-    return new Date(payload.exp * 1000);
+    const jwt = JSON.parse(atob(localStorage.getItem(AUTHORIZATION_TOKEN).split('.')[1]));
+    return new Date(jwt.exp * 1000) <= new Date();
   }
 
   public refresh(): Subscription {
