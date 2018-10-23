@@ -12,15 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, HostBinding} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {Router, NavigationEnd, Event} from '@angular/router';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
+
+import {Store} from '@ngrx/store';
 
 import MAP_ICON from '../assets/images/map_icon.svg';
 import HOURGLASS_FULL from '../assets/images/hourglass_full.svg';
 import EDIT_ICON from '../assets/images/edit.svg';
 
+import {AppState} from './store/app.reducers';
+import * as sessionActions from './session/store/session.actions';
+import {SessionService} from './session/session.service';
 import {environment} from '../environments/environment';
 
 @Component({
@@ -28,7 +33,7 @@ import {environment} from '../environments/environment';
   template: `<router-outlet></router-outlet>`,
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   @HostBinding('class') componentCssClass;
   public title = 'app';
 
@@ -36,6 +41,8 @@ export class AppComponent {
     router: Router,
     matIconRegistry: MatIconRegistry,
     domSanitizer: DomSanitizer,
+    private store: Store<AppState>,
+    private sessionService: SessionService,
   ) {
     if (environment.GA) {
       ga('create', environment.GA.trackingID, 'auto');
@@ -62,6 +69,13 @@ export class AppComponent {
       domSanitizer.bypassSecurityTrustResourceUrl(EDIT_ICON),
     );
   }
+
+  ngOnInit(): void {
+    if(this.sessionService.hasToken()) {
+      this.store.dispatch(new sessionActions.Login());
+    }
+  }
+
   setTheme(theme: string): void {
     this.componentCssClass = theme;
   }
