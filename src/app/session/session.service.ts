@@ -59,8 +59,6 @@ firebase.initializeApp({
 
 @Injectable()
 export class SessionService {
-  private trustedURLs: Array<string> = environment.trustedURLs;
-
   private googleProvider = new firebase.auth.GoogleAuthProvider();
   private githubProvider = new firebase.auth.GithubAuthProvider();
   private twitterProvider = new firebase.auth.TwitterAuthProvider();
@@ -145,7 +143,6 @@ export class SessionService {
   }
 
   public isTrustedURL(url: string): boolean {
-    return Array.from(this.trustedURLs)
-      .some((trustedURL) => url.startsWith(trustedURL));
+    return environment.trustedURLs.some((trustedURL) => url.startsWith(trustedURL));
   }
 }
