@@ -81,8 +81,11 @@ export class SessionService {
   }
 
   public authorizationExpired(): boolean {
+    // Buffer is the number of seconds before *actual* expiry when the token will be considered expired, to account for
+    // clock skew and service-to-service requests delays.
+    const buffer = 30;
     const jwt = JSON.parse(atob(localStorage.getItem(AUTHORIZATION_TOKEN).split('.')[1]));
-    return new Date(jwt.exp * 1000) <= new Date();
+    return new Date((jwt.exp - buffer) * 1000) <= new Date();
   }
 
   public refresh(): Observable<string> {
