@@ -27,12 +27,11 @@ export class SessionInterceptor implements HttpInterceptor {
   }
   // tslint:disable-next-line:no-any
   public intercept(req: HttpRequest<Request>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const sessionService = this.injector.get(SessionService);
+    const session = this.injector.get(SessionService);
 
-    const sessionJWT = localStorage.getItem(AUTHORIZATION_TOKEN);
-
-    if (sessionJWT && sessionService.isTrustedURL(req.url)) {
-      req = req.clone({headers: req.headers.set('Authorization', `Bearer ${sessionJWT}`)});
+    if (session.hasToken() && session.isTrustedURL(req.url)) {
+      const jwt = localStorage.getItem(AUTHORIZATION_TOKEN);
+      req = req.clone({headers: req.headers.set('Authorization', `Bearer ${jwt}`)});
     }
 
     return next.handle(req).pipe(
@@ -40,7 +39,7 @@ export class SessionInterceptor implements HttpInterceptor {
         () => { /* no-empty */ },
         (response) => {
           if (response.status === 401) {
-            sessionService.logout();
+            session.logout();
           }
         },
       ));
