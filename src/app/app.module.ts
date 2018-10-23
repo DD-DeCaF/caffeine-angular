@@ -37,11 +37,11 @@ import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
 
 import {reducers} from './store/app.reducers';
-import {SessionService} from './session/session.service';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
 
+import {SessionModule} from './session/session.module';
 
 // Interactive map
 import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
@@ -107,6 +107,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppMaterialModule,
 
     // Own modules
+    SessionModule,
     AppInteractiveMapModule,
     AppModelsModule,
     JobsModule,
@@ -124,7 +125,6 @@ export class RavenErrorHandler implements ErrorHandler {
     }),
   ],
   providers: [
-    SessionService,
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],
