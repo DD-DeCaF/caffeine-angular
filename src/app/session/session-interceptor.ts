@@ -14,13 +14,15 @@
 
 import {Injectable, Injector} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+
 import {Observable} from 'rxjs';
 import {tap} from 'rxjs/operators';
+
 import {SessionService} from './session.service';
 import {AUTHORIZATION_TOKEN} from './consts';
 
 @Injectable()
-export class SessionInterceptorService implements HttpInterceptor {
+export class SessionInterceptor implements HttpInterceptor {
   constructor(private injector: Injector) {
   }
   // tslint:disable-next-line:no-any
