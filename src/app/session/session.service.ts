@@ -47,9 +47,6 @@ interface AuthAPIResponse {
   };
 }
 
-// TODO enforce key type somehow
-interface ProviderMap {[key: string]: firebase.auth.AuthProvider; }
-
 const firebaseConfig = environment.firebase;
 firebase.initializeApp({
   apiKey: firebaseConfig.api_key,
@@ -64,19 +61,16 @@ firebase.initializeApp({
 export class SessionService {
   private trustedURLs: Array<string> = environment.trustedURLs;
 
-  public readonly GOOGLE: string = 'google';
-  public readonly GITHUB: string = 'github';
-  public readonly TWITTER: string = 'twitter';
-
-  private providers: ProviderMap = {
-    [this.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
-    [this.GITHUB]: new firebase.auth.GithubAuthProvider(),
-    [this.TWITTER]: new firebase.auth.TwitterAuthProvider(),
-  };
+  private googleProvider = new firebase.auth.GoogleAuthProvider();
+  private githubProvider = new firebase.auth.GithubAuthProvider();
+  private twitterProvider = new firebase.auth.TwitterAuthProvider();
 
   constructor(
     private http: HttpClient,
-    private store: Store<AppState>) {
+    private store: Store<AppState>
+  ) {
+    this.githubProvider.addScope('user:email');
+    this.googleProvider.addScope('email');
   }
 
   public expired(): boolean {
@@ -96,7 +90,6 @@ export class SessionService {
     return new Date(payload.exp * 1000);
   }
 
-
   public refresh(): Subscription {
     const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN)).val;
     return this.http.post(`${environment.apis.iam}/refresh`, `refresh_token=${refreshToken}`, {
@@ -108,18 +101,12 @@ export class SessionService {
     });
   }
 
-  public github = () => this.signInWithSocial(this.GITHUB);
-  public google = () => this.signInWithSocial(this.GOOGLE);
-  public twitter = () => this.signInWithSocial(this.TWITTER);
+  public github = () => this.signInWithSocial(this.githubProvider);
+  public google = () => this.signInWithSocial(this.googleProvider);
+  public twitter = () => this.signInWithSocial(this.twitterProvider);
 
-  private signInWithSocial(providerKey: string): Promise<void | Subscription> {
+  private signInWithSocial(provider: firebase.auth.AuthProvider): Promise<void | Subscription> {
     firebase.auth().signOut();
-    const provider = this.providers[providerKey];
-    if (provider instanceof firebase.auth.GithubAuthProvider) {
-        provider.addScope('user:email');
-    } else if (provider instanceof firebase.auth.GoogleAuthProvider) {
-      provider.addScope('email');
-    }
     return firebase.auth().signInWithPopup(provider).then((result) => {
         return firebase.auth().currentUser.getIdToken(true).then((idToken) => {
             const credentials = new FirebaseCredentials(result.user.uid, idToken);
