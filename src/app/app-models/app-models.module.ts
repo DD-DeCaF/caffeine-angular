@@ -25,7 +25,6 @@ import { ModelService } from '../services/model.service';
 import { WarehouseService } from '../services/warehouse.service';
 import { RemoveModelComponent } from './components/remove-model/remove-model.component';
 import {AddModelComponent} from './components/add-model/add-model.component';
-import {AngularFileUploaderModule} from 'angular-file-uploader';
 import {RemovedModelComponent} from './components/remove-model/removed-model.component';
 import {EditedModelComponent} from './components/edit-model/edited-model.component';
 import {AddedModelComponent} from './components/add-model/added-model.component';
@@ -49,8 +48,6 @@ import {AddedModelComponent} from './components/add-model/added-model.component'
     FlexLayoutModule,
 
     AppMaterialModule,
-    AngularFileUploaderModule,
-
   ],
   providers: [
 
