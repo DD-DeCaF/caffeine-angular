@@ -12,17 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+.container {
+  margin: 0 20px;
+}
 
-import { AppMaterialModule } from '../app-material.module';
-import { ProjectsComponent } from './projects.component';
-
-@NgModule({
-  imports: [
-    CommonModule,
-    AppMaterialModule,
-  ],
-  declarations: [ProjectsComponent]
-})
-export class ProjectsModule { }
+table {
+  width: 100%;
+}

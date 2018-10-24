@@ -13,10 +13,11 @@
 // limitations under the License.
 
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 import { AppState } from '../store/app.reducers';
 import * as actions from './store/projects.actions';
+import * as types from './types';
 
 @Component({
   selector: 'app-projects',
@@ -25,13 +26,20 @@ import * as actions from './store/projects.actions';
 })
 export class ProjectsComponent implements OnInit {
   private projects$;
+  displayedColumns = ['name', 'edit', 'delete'];
 
   constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
     this.store.dispatch(new actions.FetchProjects());
-
-    this.projects$ = this.store.select((state) => state.projects.projects);
+    this.projects$ = this.store.pipe(select((state) => state.projects.projects));
   }
 
+  edit(project: Project) {
+    // TBD
+  }
+
+  delete(project: Project) {
+    // TBD
+  }
 }
