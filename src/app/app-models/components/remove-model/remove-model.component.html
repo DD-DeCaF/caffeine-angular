@@ -16,20 +16,14 @@
   <div class="map-progress">
     <div class="box">
       <span class="error" [hidden]="!(error | async)">An error ocurred removing the model. Please try again later.</span>
-      <div *ngIf="(modelRemoved | async)">
-        <div>
-          <mat-icon class="error-icon">done</mat-icon>
-        </div>
-        <span class="text">The model has been removed</span>
-      </div>
-      <div [hidden]="(error | async) || (modelRemoved | async)">
+      <div [hidden]="(error | async)">
         <div>
           <mat-icon class="error-icon">error_outline</mat-icon>
         </div>
-        <span class="text">Are you sure you want to delete it?</span>
+        <span class="text">Are you sure you want to delete {{model.name}}?</span>
         <div class="section-buttons">
-          <button mat-button class="mat-primary" (click)="removeModel()">Yes</button>
           <button mat-button class="mat-primary" (click)="close()">No</button>
+          <button mat-button class="mat-primary" (click)="removeModel()">Yes</button>
         </div>
       </div>
     </div>

@@ -16,8 +16,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as types from '../app-interactive-map/types';
-import { environment } from '../../environments/environment';
 import {Design, Product} from '../app-design-tool/types';
+import {environment} from '../../environments/environment';
+import {Project} from 'src/app/app-models/types';
 
 const preferredSpecies = 'Escherichia coli';
 
@@ -34,6 +35,12 @@ export class WarehouseService {
 
   getOrganisms(): Observable<types.Species[]> {
     return this.http.get<types.Species[]>(`${environment.apis.warehouse}/organisms`);
+  }
+
+  getProjects(): Observable<Project[]> {
+    return (this.http
+      .get<Project[]>('../../assets/json/projects.json'));
+    // return this.http.get<types.Species[]>(`${environment.apis.warehouse}/projects`);
   }
 
   getProducts(): Observable<Product[]> {
@@ -62,7 +69,6 @@ export class WarehouseService {
   // TODO:
   // Change it for a real function
   startDesign(design: Design): Observable<void> {
-    console.log('START DESIN', design);
     const fixtures$ = Observable.create((observer) => {
       observer.next('OK');
     });

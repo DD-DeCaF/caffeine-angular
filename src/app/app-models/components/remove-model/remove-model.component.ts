@@ -15,10 +15,11 @@
 import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs';
 import * as types from '../../../app-interactive-map/types';
 import * as fromActions from '../../store/models.actions';
+import {RemovedModelComponent} from './removed-model.component';
 
 @Component({
   selector: 'app-remove-model',
@@ -28,7 +29,6 @@ import * as fromActions from '../../store/models.actions';
 export class RemoveModelComponent implements OnInit, AfterViewInit {
 
   public error: Observable<Boolean>;
-  public modelRemoved: Observable<Boolean>;
   public model: types.DeCaF.Model;
 
   constructor(
@@ -36,13 +36,21 @@ export class RemoveModelComponent implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private store: Store<AppState>,
     private dialog: MatDialog,
+    public snackBar: MatSnackBar,
 
   ) { }
 
   ngOnInit(): void {
     this.model = this.data.model;
     this.error = this.store.pipe(select((store) => store.models.error));
-    this.modelRemoved = this.store.pipe(select((store) => store.models.removedModel));
+    this.store.pipe(select((store) => store.models.removedModel)).subscribe((removedModel) => {
+      if (removedModel) {
+        this.dialog.closeAll();
+        this.snackBar.openFromComponent(RemovedModelComponent, {
+          duration: 2000,
+        });
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -51,7 +59,7 @@ export class RemoveModelComponent implements OnInit, AfterViewInit {
   }
 
   removeModel(): void {
-    this.store.dispatch(new fromActions.RemoveModelModels(this.model.id));
+    this.store.dispatch(new fromActions.RemoveModel(this.model.id));
   }
 
   close(): void {

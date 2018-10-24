@@ -22,6 +22,7 @@ import {ModelService} from '../../services/model.service';
 import * as fromActions from './models.actions';
 import {WarehouseService} from '../../services/warehouse.service';
 import {SetError} from './models.actions';
+import {Project} from 'src/app/app-models/types';
 
 
 @Injectable()
@@ -33,8 +34,8 @@ export class ModelsEffects {
     switchMap(() =>
       this.modelService.loadModels()),
     switchMap((models: types.DeCaF.Model[]) => [
-      new fromActions.SetModelsModels(models),
-      new fromActions.FetchSpeciesModels(),
+      new fromActions.SetModels(models),
+      new fromActions.FetchSpecies(),
     ]),
   );
 
@@ -42,22 +43,22 @@ export class ModelsEffects {
   fetchSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES_MODELS),
     switchMap(() => this.warehouseService.getOrganisms()),
-    map((payload: types.Species[]) => new fromActions.SetSpeciesModels(payload)),
+    map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
   );
 
   @Effect()
   fetchModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MODEL_MODELS),
-    switchMap((action: fromActions.FetchModelModels) =>
+    switchMap((action: fromActions.FetchModel) =>
       this.modelService.loadModel(action.payload.id)),
-    map((model: types.DeCaF.Model) => new fromActions.SetModelModels(model)),
+    map((model: types.DeCaF.Model) => new fromActions.SetModel(model)),
   );
 
   @Effect()
   editModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.EDIT_MODEL_MODELS),
-    switchMap((action: fromActions.EditModelModels) => this.modelService.editModel(action.payload).pipe(
-      map((payload: types.DeCaF.Model) => new fromActions.SetModelModels(payload)),
+    switchMap((action: fromActions.EditModel) => this.modelService.editModel(action.payload).pipe(
+      map((payload: types.DeCaF.Model) => new fromActions.SetModel(payload)),
       catchError(() => of(new SetError())),
     )),
   );
@@ -65,11 +66,27 @@ export class ModelsEffects {
   @Effect()
   removeModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.REMOVE_MODEL_MODELS),
-    switchMap((action: fromActions.RemoveModelModels) => this.modelService.removeModel(action.payload).pipe(
+    switchMap((action: fromActions.RemoveModel) => this.modelService.removeModel(action.payload).pipe(
       switchMap((payload: types.DeCaF.Model) => [
-        new fromActions.FetchModelsModels(),
-        new fromActions.RemovedModelModels(),
+        new fromActions.FetchModels(),
+        new fromActions.RemovedModel(),
       ]),
+      catchError(() => of(new SetError())),
+    )),
+  );
+
+  @Effect()
+  fetchProjectsModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_PROJECTS_MODELS),
+    switchMap(() => this.warehouseService.getProjects()),
+    map((payload: Project[]) => new fromActions.SetProjectsModels(payload)),
+  );
+
+  @Effect()
+  addModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.ADD_MODEL),
+    switchMap((action: fromActions.AddModel) => this.modelService.uploadModel(action.payload).pipe(
+      map(() => new fromActions.FetchModels()),
       catchError(() => of(new SetError())),
     )),
   );

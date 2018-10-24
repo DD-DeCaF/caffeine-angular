@@ -7,6 +7,7 @@ import * as types from '../app-interactive-map/types';
 import {Observable} from 'rxjs';
 import {EditModelComponent} from './components/edit-model/edit-model.component';
 import {RemoveModelComponent} from './components/remove-model/remove-model.component';
+import {AddModelComponent} from './components/add-model/add-model.component';
 
 @Component({
   selector: 'app-models',
@@ -31,7 +32,9 @@ export class AppModelsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new fromActions.FetchModelsModels());
+    this.store.dispatch(new fromActions.FetchModels());
+    this.store.dispatch(new fromActions.FetchSpecies());
+    this.store.dispatch(new fromActions.FetchProjects());
     this.store.pipe(select((store) => store.models.models)).subscribe((models) => {
       this.dataSource.data = models;
     });
@@ -46,7 +49,7 @@ export class AppModelsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(
-      () => this.store.dispatch(new fromActions.ResetRemovedModelModels()));
+      () => this.store.dispatch(new fromActions.ResetRemovedModel()));
   }
 
   editModel(model: types.DeCaF.Model): void {
@@ -55,6 +58,13 @@ export class AppModelsComponent implements OnInit {
         model: model,
       },
     });
+
+    dialogRef.afterClosed().subscribe(
+      () => this.store.dispatch(new fromActions.ResetError()));
+  }
+
+  addModel(): void {
+    const dialogRef = this.dialog.open(AddModelComponent);
 
     dialogRef.afterClosed().subscribe(
       () => this.store.dispatch(new fromActions.ResetError()));

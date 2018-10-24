@@ -24,6 +24,11 @@ import { EditModelComponent } from './components/edit-model/edit-model.component
 import { ModelService } from '../services/model.service';
 import { WarehouseService } from '../services/warehouse.service';
 import { RemoveModelComponent } from './components/remove-model/remove-model.component';
+import {AddModelComponent} from './components/add-model/add-model.component';
+import {AngularFileUploaderModule} from 'angular-file-uploader';
+import {RemovedModelComponent} from './components/remove-model/removed-model.component';
+import {EditedModelComponent} from './components/edit-model/edited-model.component';
+import {AddedModelComponent} from './components/add-model/added-model.component';
 
 
 @NgModule({
@@ -31,6 +36,10 @@ import { RemoveModelComponent } from './components/remove-model/remove-model.com
     AppModelsComponent,
     EditModelComponent,
     RemoveModelComponent,
+    AddModelComponent,
+    RemovedModelComponent,
+    EditedModelComponent,
+    AddedModelComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +49,7 @@ import { RemoveModelComponent } from './components/remove-model/remove-model.com
     FlexLayoutModule,
 
     AppMaterialModule,
+    AngularFileUploaderModule,
 
   ],
   providers: [
@@ -50,6 +60,6 @@ import { RemoveModelComponent } from './components/remove-model/remove-model.com
   exports: [
     AppModelsComponent,
   ],
-  entryComponents: [EditModelComponent, RemoveModelComponent],
+  entryComponents: [EditModelComponent, RemoveModelComponent, AddModelComponent, RemovedModelComponent, EditedModelComponent, AddedModelComponent],
 })
 export class AppModelsModule {}

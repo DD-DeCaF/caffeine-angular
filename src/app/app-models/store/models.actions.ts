@@ -14,6 +14,7 @@
 
 import {Action} from '@ngrx/store';
 import * as types from '../../app-interactive-map/types';
+import * as typesModel from 'src/app/app-models/types';
 
 
 export const FETCH_MODELS_MODELS = 'FETCH_MODELS_MODELS';
@@ -28,50 +29,53 @@ export const RESET_ERROR = 'RESET_ERROR';
 export const REMOVE_MODEL_MODELS = 'REMOVE_MODEL_MODELS';
 export const REMOVED_MODEL_MODELS = 'REMOVED_MODEL_MODELS';
 export const RESET_REMOVED_MODEL_MODELS = 'RESET_REMOVED_MODEL_MODELS';
+export const ADD_MODEL = 'ADD_MODEL';
+export const FETCH_PROJECTS_MODELS = 'FETCH_PROJECTS_MODELS';
+export const SET_PROJECTS_MODELS = 'SET_PROJECTS_MODELS';
 
-export class FetchModelsModels implements Action {
+export class FetchModels implements Action {
   readonly type = FETCH_MODELS_MODELS;
 }
 
-export class SetModelsModels implements Action {
+export class SetModels implements Action {
   readonly type = SET_MODELS_MODELS;
   constructor(public payload: types.DeCaF.ModelHeader[]) {}
 }
 
-export class FetchSpeciesModels implements Action {
+export class FetchSpecies implements Action {
   readonly type = FETCH_SPECIES_MODELS;
 }
 
-export class SetSpeciesModels implements Action {
+export class SetSpecies implements Action {
   readonly type = SET_SPECIES_MODELS;
   constructor(public payload: types.Species[]) {}
 }
 
-export class FetchModelModels implements Action {
+export class FetchModel implements Action {
   readonly type = FETCH_MODEL_MODELS;
   constructor(public payload: types.DeCaF.ModelHeader) {}
 }
 
-export class SetModelModels implements Action {
+export class SetModel implements Action {
   readonly type = SET_MODEL_MODELS;
   constructor(public payload: types.DeCaF.Model) {}
 }
 
-export class EditModelModels implements Action {
+export class EditModel implements Action {
   readonly type = EDIT_MODEL_MODELS;
-  constructor(public payload: types.EditModel) {}
+  constructor(public payload: typesModel.EditModel) {}
 }
 
-export class RemoveModelModels implements Action {
+export class RemoveModel implements Action {
   readonly type = REMOVE_MODEL_MODELS;
   constructor(public payload: number) {}
 }
 
-export class RemovedModelModels implements Action {
+export class RemovedModel implements Action {
   readonly type = REMOVED_MODEL_MODELS;
 }
 
-export class ResetRemovedModelModels implements Action {
+export class ResetRemovedModel implements Action {
   readonly type = RESET_REMOVED_MODEL_MODELS;
 }
 
@@ -83,5 +87,19 @@ export class ResetError implements Action {
   readonly type = RESET_ERROR;
 }
 
-export type ModelsActions = FetchModelsModels | SetModelsModels | FetchSpeciesModels | SetSpeciesModels | FetchModelModels | SetModelModels
-  | EditModelModels | SetError| RemoveModelModels | ResetError | RemovedModelModels | ResetRemovedModelModels;
+export class AddModel implements Action {
+  readonly type = ADD_MODEL;
+  constructor(public payload: typesModel.AddModel) {}
+}
+
+export class FetchProjects implements Action {
+  readonly type = FETCH_PROJECTS_MODELS;
+}
+
+export class SetProjectsModels implements Action {
+  readonly type = SET_PROJECTS_MODELS;
+  constructor(public payload: typesModel.Project[]) {}
+}
+
+export type ModelsActions = FetchModels | SetModels | FetchSpecies | SetSpecies | FetchModel | SetModel | EditModel | SetError| RemoveModel | ResetError
+  | RemovedModel | ResetRemovedModel | FetchProjects | SetProjectsModels | AddModel;

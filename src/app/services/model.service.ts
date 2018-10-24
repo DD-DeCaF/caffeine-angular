@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import * as types from '../app-interactive-map/types';
+import {EditModel, AddModel} from 'src/app/app-models/types';
 
 @Injectable()
 export class ModelService {
@@ -33,7 +34,7 @@ export class ModelService {
     return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_warehouse}/models`);
   }
 
-  editModel(modelForm: types.EditModel): Observable <types.DeCaF.Model> {
+  editModel(modelForm: EditModel): Observable <types.DeCaF.Model> {
     return this.http.put<types.DeCaF.Model>(`${environment.apis.model_warehouse}/models/${modelForm.id}`, modelForm);
   }
 
@@ -41,4 +42,7 @@ export class ModelService {
     return this.http.delete<types.DeCaF.Model>(`${environment.apis.model_warehouse}/models/${modelId}`);
   }
 
+  uploadModel(model: AddModel): Observable <types.DeCaF.Model> {
+    return this.http.post<types.DeCaF.Model>(`${environment.apis.model_warehouse}/models`, model);
+  }
 }
