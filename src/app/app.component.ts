@@ -24,13 +24,10 @@ import HOURGLASS_FULL from '../assets/images/hourglass_full.svg';
 import EDIT_ICON from '../assets/images/edit.svg';
 import PLUS_ICON from '../assets/images/plus.svg';
 
-import {AppState} from './store/app.reducers';
 import * as sessionActions from './session/store/session.actions';
 import {SessionService} from './session/session.service';
 import {environment} from '../environments/environment';
 import {AppState} from './store/app.reducers';
-import {Store} from '@ngrx/store';
-import {store} from '@angular/core/src/render3/instructions';
 import * as sharedActions from './store/shared.actions';
 
 @Component({

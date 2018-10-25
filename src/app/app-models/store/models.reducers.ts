@@ -14,7 +14,7 @@
 
 import * as fromModelsActions from './models.actions';
 import * as types from '../../app-interactive-map/types';
-import {Project} from 'src/app/app-models/types';
+import {Project} from 'src/app/projects/types';
 
 export interface ModelsState {
   model: types.DeCaF.Model;

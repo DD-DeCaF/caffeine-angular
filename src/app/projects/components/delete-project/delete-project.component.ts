@@ -19,7 +19,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import * as types from '../../../app-interactive-map/types';
-import * as actions from '../../store/projects.actions';
+import * as actions from '../../../store/shared.actions';
 import { AppState } from '../../../store/app.reducers';
 import { Project } from '../../types';
 import { SessionService } from '../../../session/session.service';

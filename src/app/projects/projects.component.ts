@@ -17,7 +17,7 @@ import { MatDialog } from '@angular/material';
 import { select, Store } from '@ngrx/store';
 
 import { AppState } from '../store/app.reducers';
-import * as actions from './store/projects.actions';
+import * as actions from '../store/shared.actions';
 import * as types from './types';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { DeleteProjectComponent } from './components/delete-project/delete-project.component';
@@ -38,7 +38,7 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new actions.FetchProjects());
-    this.projects$ = this.store.pipe(select((state) => state.projects.projects));
+    this.projects$ = this.store.pipe(select((state) => state.shared.projects));
   }
 
   create() {
