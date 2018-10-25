@@ -43,4 +43,10 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <div class="floating-button">
+    <button mat-fab color="primary" class="circle-icon" (click)="create()">
+      <mat-icon svgIcon="plus"></mat-icon>
+    </button>
+  </div>
 </div>

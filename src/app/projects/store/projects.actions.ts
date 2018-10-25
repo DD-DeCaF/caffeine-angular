@@ -18,6 +18,7 @@ import {Project} from '../types';
 
 export const FETCH_PROJECTS = '[Projects] Trigger HTTP query to fetch projects';
 export const SET_PROJECTS = '[Projects] Set received projects in state';
+export const CREATE_PROJECT = '[Projects] Create new project';
 
 export class FetchProjects implements Action {
   readonly type = FETCH_PROJECTS;
@@ -26,6 +27,11 @@ export class FetchProjects implements Action {
 export class SetProjects implements Action {
   readonly type = SET_PROJECTS;
   constructor(public payload: Project[]) {}
+}
+
+export class CreateProject implements Action {
+  readonly type = CREATE_PROJECT;
+  constructor(public payload: Project) {}
 }
 
 export type ProjectActions = FetchProjects | SetProjects;

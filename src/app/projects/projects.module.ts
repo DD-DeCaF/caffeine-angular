@@ -14,15 +14,25 @@
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppMaterialModule } from '../app-material.module';
 import { ProjectsComponent } from './projects.component';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
 
 @NgModule({
   imports: [
     CommonModule,
     AppMaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
   ],
-  declarations: [ProjectsComponent]
+  declarations: [
+    ProjectsComponent,
+    CreateProjectComponent,
+  ],
+  entryComponents: [ProjectsComponent, CreateProjectComponent],
 })
 export class ProjectsModule { }

@@ -13,11 +13,13 @@
 // limitations under the License.
 
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { select, Store } from '@ngrx/store';
 
 import { AppState } from '../store/app.reducers';
 import * as actions from './store/projects.actions';
 import * as types from './types';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
 
 @Component({
   selector: 'app-projects',
@@ -28,18 +30,26 @@ export class ProjectsComponent implements OnInit {
   private projects$;
   displayedColumns = ['name', 'edit', 'delete'];
 
-  constructor(private store: Store<AppState>) { }
+  constructor(
+    private store: Store<AppState>,
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit() {
     this.store.dispatch(new actions.FetchProjects());
     this.projects$ = this.store.pipe(select((state) => state.projects.projects));
   }
 
-  edit(project: Project) {
+  create() {
+    const dialogRef = this.dialog.open(CreateProjectComponent);
+    // dialogRef.afterClosed().subscribe(() => this.store.dispatch(new fromActions.ResetError()));
+  }
+
+  edit(project: types.Project) {
     // TBD
   }
 
-  delete(project: Project) {
+  delete(project: types.Project) {
     // TBD
   }
 }
