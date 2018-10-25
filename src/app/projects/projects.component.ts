@@ -29,7 +29,7 @@ import { DeleteProjectComponent } from './components/delete-project/delete-proje
 })
 export class ProjectsComponent implements OnInit {
   private projects$;
-  displayedColumns = ['name', 'edit', 'delete'];
+  displayedColumns = ['name', 'delete'];
 
   constructor(
     private store: Store<AppState>,
@@ -43,10 +43,6 @@ export class ProjectsComponent implements OnInit {
 
   create() {
     this.dialog.open(CreateProjectComponent);
-  }
-
-  edit(project: types.Project) {
-    // TBD
   }
 
   delete(project: types.Project) {
