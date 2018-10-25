@@ -30,6 +30,8 @@ import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {isLoading} from './components/loader/store/loader.selectors';
 import * as sharedActions from '../store/shared.actions';
+import {FetchMaps, FetchModels} from '../store/shared.actions';
+import {MapFetched} from './store/interactive-map.actions';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -74,10 +76,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    // just to push my code, I am still working to remove this :)
-    this.store.dispatch(new sharedActions.FetchSpecies());
-    this.store.dispatch(new sharedActions.FetchMaps());
-    this.store.dispatch(new sharedActions.FetchModels());
+    this.store.dispatch(new FetchModels());
     const builderObservable = this.builderSubject.asObservable();
     this.store.pipe(
       selectNotNull((store) => store.interactiveMap.mapData),

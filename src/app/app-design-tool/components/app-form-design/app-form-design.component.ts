@@ -81,7 +81,6 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.subscription = this.store.select('designTool')
       .subscribe(
         (data) => {
-          console.log('DTA', data);
            if (data.selectedSpecies) {
             this.designForm.setValue({
               species: data.selectedSpecies,

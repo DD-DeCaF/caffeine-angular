@@ -230,19 +230,18 @@ export class InteractiveMapEffects {
     })),
   );
 
-  @Effect()
-  incrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.REACTION_OPERATION,
+  /*@Effect()
+  loadingRequest: Observable<Action> = this.actions$.pipe(
+    ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
       fromActions.SET_OBJECTIVE_REACTION),
-    mapTo(new loaderActions.Increment()),
+    mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
-  decrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(sharedActions.SET_SPECIES, sharedActions.SET_MODELS, sharedActions.SET_MAPS, fromActions.REACTION_OPERATION_APPLY,
-      fromActions.SET_OBJECTIVE_REACTION_APPLY),
-    mapTo(new loaderActions.Decrement()),
-  );
+  loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.LOADED),
+    mapTo(new loaderActions.LoadingFinished()),
+  );*/
 
   constructor(
     private actions$: Actions,

@@ -15,5 +15,5 @@
 import {AppState} from '../../../../store/app.reducers';
 
 
-export const isLoading = (state: AppState) => state.loader.count !== 0;
+export const isLoading = (state: AppState) => state.loader.loading;
 
