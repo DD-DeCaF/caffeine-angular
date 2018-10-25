@@ -22,7 +22,7 @@ export const environment: Configuration = {
   apis: {
     iam: 'https://api-staging.dd-decaf.eu/iam',
     model: 'https://api-staging.dd-decaf.eu/mcaffeine',
-    model_warehouse: 'https://api-staging.dd-decaf.eu/mwarehouse',
+    model_storage: 'https://api-staging.dd-decaf.eu/mstorage',
     bigg: 'https://api.dd-decaf.eu/bigg',
     map: 'https://api-staging.dd-decaf.eu/maps',
     warehouse: 'https://api-staging.dd-decaf.eu/warehouse',

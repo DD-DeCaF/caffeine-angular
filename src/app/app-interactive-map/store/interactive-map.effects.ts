@@ -120,7 +120,7 @@ export class InteractiveMapEffects {
   fetchFullModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetFullModel) =>
-      this.http.get(`${environment.apis.model_warehouse}/models/${action.payload.id}`).pipe(
+      this.http.get(`${environment.apis.model_storage}/models/${action.payload.id}`).pipe(
         map((model: types.DeCaF.Model) => new fromActions.SetFullModel(model)),
         catchError(() => of(new loaderActions.LoadingError())),
       )));

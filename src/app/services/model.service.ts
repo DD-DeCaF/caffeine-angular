@@ -32,6 +32,6 @@ export class ModelService {
   }
 
   loadModels(): Observable <types.DeCaF.ModelHeader[]> {
-    return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_warehouse}/models`);
+    return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_storage}/models`);
   }
 }
