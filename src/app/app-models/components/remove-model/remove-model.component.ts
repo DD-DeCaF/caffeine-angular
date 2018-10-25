@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AfterViewInit, Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
@@ -26,7 +26,7 @@ import {RemovedModelComponent} from './removed-model.component';
   templateUrl: './remove-model.component.html',
   styleUrls: ['./remove-model.component.scss'],
 })
-export class RemoveModelComponent implements OnInit, AfterViewInit {
+export class RemoveModelComponent implements OnInit {
 
   public error: Observable<Boolean>;
   public model: types.DeCaF.Model;
@@ -51,11 +51,6 @@ export class RemoveModelComponent implements OnInit, AfterViewInit {
         });
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.model = this.data.model;
-    this.error = this.store.pipe(select((store) => store.models.error));
   }
 
   removeModel(): void {

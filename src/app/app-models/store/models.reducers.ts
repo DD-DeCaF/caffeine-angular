@@ -17,18 +17,12 @@ import * as types from '../../app-interactive-map/types';
 import {Project} from 'src/app/app-models/types';
 
 export interface ModelsState {
-  models: types.DeCaF.ModelHeader[];
-  species: types.Species[];
-  projects: Project[];
   model: types.DeCaF.Model;
   error: boolean;
   removedModel: boolean;
 }
 
 export const initialState: ModelsState = {
-  models: [],
-  species: [],
-  projects: [],
   model: null,
   error: false,
   removedModel: false,
@@ -40,26 +34,6 @@ export function modelsReducer(
   action: fromModelsActions.ModelsActions,
 ): ModelsState {
   switch (action.type) {
-    case fromModelsActions.FETCH_MODELS_MODELS:
-    case fromModelsActions.FETCH_MODEL_MODELS:
-      return {
-        ...state,
-      };
-    case fromModelsActions.SET_MODELS_MODELS:
-      return {
-        ...state,
-        models: action.payload,
-      };
-    case fromModelsActions.SET_SPECIES_MODELS:
-      return {
-        ...state,
-        species: action.payload,
-      };
-    case fromModelsActions.SET_PROJECTS_MODELS:
-      return {
-        ...state,
-        projects: action.payload,
-      };
     case fromModelsActions.SET_MODEL_MODELS:
       return {
         ...state,

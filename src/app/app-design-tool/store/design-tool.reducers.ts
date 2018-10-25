@@ -17,23 +17,17 @@ import * as types from '../../app-interactive-map/types';
 import * as typesDesign from '../types';
 
 export interface DesignToolState {
-  allSpecies: types.Species[];
   selectedSpecies: types.Species;
-  models: types.DeCaF.ModelHeader[];
   selectedModel: types.DeCaF.ModelHeader;
   products: typesDesign.Product[];
   designStarted: boolean;
-  jobs: string[];
 }
 
 export const initialState: DesignToolState = {
-  allSpecies: [],
   selectedSpecies: null,
-  models: [],
   selectedModel: null,
   products: [],
   designStarted: false,
-  jobs: null,
 };
 
 
@@ -42,20 +36,10 @@ export function designToolReducer(
   action: fromDesingToolActions.DesignToolActions,
 ): DesignToolState {
   switch (action.type) {
-    case fromDesingToolActions.SET_SPECIES_DESIGN:
-      return {
-        ...state,
-        allSpecies: action.payload,
-      };
     case fromDesingToolActions.SET_SELECTED_SPECIES_DESIGN:
       return {
         ...state,
         selectedSpecies: action.payload,
-      };
-    case fromDesingToolActions.SET_MODELS_DESIGN:
-      return {
-        ...state,
-        models: action.payload,
       };
     case fromDesingToolActions.SET_MODEL_DESIGN:
       return {
@@ -72,16 +56,11 @@ export function designToolReducer(
         ...state,
         designStarted: true,
       };
-    case fromDesingToolActions.SET_JOBS_DESIGN:
-      return {
-        ...state,
-        jobs: action.payload,
-      };
-    case fromDesingToolActions.ABORT_JOB_DESIGN:
+    /*case fromDesingToolActions.ABORT_JOB_DESIGN:
       return {
         ...state,
         jobs: state.jobs.filter((job) => job !== action.payload),
-      };
+      };*/
     default:
       return state;
   }

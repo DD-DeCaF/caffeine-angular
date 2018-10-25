@@ -23,28 +23,11 @@ import * as fromActions from './models.actions';
 import {WarehouseService} from '../../services/warehouse.service';
 import {SetError} from './models.actions';
 import {Project} from 'src/app/app-models/types';
+import * as sharedActions from '../../store/shared.actions';
 
 
 @Injectable()
 export class ModelsEffects {
-
-  @Effect()
-  fetchModels: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_MODELS_MODELS),
-    switchMap(() =>
-      this.modelService.loadModels()),
-    switchMap((models: types.DeCaF.Model[]) => [
-      new fromActions.SetModels(models),
-      new fromActions.FetchSpecies(),
-    ]),
-  );
-
-  @Effect()
-  fetchSpecies: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_SPECIES_MODELS),
-    switchMap(() => this.warehouseService.getOrganisms()),
-    map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
-  );
 
   @Effect()
   fetchModel: Observable<Action> = this.actions$.pipe(
@@ -68,7 +51,7 @@ export class ModelsEffects {
     ofType(fromActions.REMOVE_MODEL_MODELS),
     switchMap((action: fromActions.RemoveModel) => this.modelService.removeModel(action.payload).pipe(
       switchMap((payload: types.DeCaF.Model) => [
-        new fromActions.FetchModels(),
+        new sharedActions.FetchModels(),
         new fromActions.RemovedModel(),
       ]),
       catchError(() => of(new SetError())),
@@ -76,17 +59,10 @@ export class ModelsEffects {
   );
 
   @Effect()
-  fetchProjectsModel: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_PROJECTS_MODELS),
-    switchMap(() => this.warehouseService.getProjects()),
-    map((payload: Project[]) => new fromActions.SetProjectsModels(payload)),
-  );
-
-  @Effect()
   addModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_MODEL),
     switchMap((action: fromActions.AddModel) => this.modelService.uploadModel(action.payload).pipe(
-      map(() => new fromActions.FetchModels()),
+      map(() => new sharedActions.FetchModels()),
       catchError(() => of(new SetError())),
     )),
   );
@@ -94,6 +70,5 @@ export class ModelsEffects {
   constructor(
     private actions$: Actions,
     private modelService: ModelService,
-    private warehouseService: WarehouseService,
   ) {}
 }

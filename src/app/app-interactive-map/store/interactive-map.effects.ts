@@ -31,6 +31,7 @@ import { WarehouseService } from '../../services/warehouse.service';
 import {ModelService} from '../../services/model.service';
 import * as loaderActions from '../components/loader/store/loader.actions';
 import {mapBiggReactionToCobra} from '../../utils';
+import * as sharedActions from '../../store/shared.actions';
 
 
 const ACTION_OFFSETS = {
@@ -40,33 +41,19 @@ const ACTION_OFFSETS = {
 
 @Injectable()
 export class InteractiveMapEffects {
-  @Effect()
-  fetchSpecies: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_SPECIES),
-    switchMap(() => this.warehouseService.getOrganisms()),
-    map((payload: types.Species[]) => new fromActions.SetSpecies(payload)),
-  );
 
   @Effect()
   setSpecies: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_SPECIES),
-    map((action: fromActions.SetSpecies) =>
+    ofType(sharedActions.SET_SPECIES),
+    map((action: sharedActions.SetSpecies) =>
       new fromActions.SetSelectedSpecies(WarehouseService.preferredSpecies(action.payload))));
 
   @Effect()
-  fetchModels: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_MODELS),
-    switchMap(() =>
-      this.modelService.loadModels()),
-    map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
-  );
-
-  @Effect()
-  selectFirstModel: Observable<Action> = combineLatest<fromActions.SetSelectedSpecies, fromActions.SetModels>(
+  selectFirstModel: Observable<Action> = combineLatest<fromActions.SetSelectedSpecies, sharedActions.SetModels>(
     this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES)),
-    this.actions$.pipe(ofType(fromActions.SET_MODELS)),
+    this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
   ).pipe(
-    map(([{payload: {id: selectedOrgId}}, {payload: models}]: [fromActions.SetSelectedSpecies, fromActions.SetModels]) => {
+    map(([{payload: {id: selectedOrgId}}, {payload: models}]: [fromActions.SetSelectedSpecies, sharedActions.SetModels]) => {
       const selectedModelHeader = models
         .filter((model) => model.organism_id === selectedOrgId.toString())[0];
       return new fromActions.SetModel(selectedModelHeader);
@@ -78,7 +65,7 @@ export class InteractiveMapEffects {
     this.actions$.pipe(
       ofType(fromActions.SET_MODEL)),
     this.actions$.pipe(
-      ofType(fromActions.SET_MAPS),
+      ofType(sharedActions.SET_MAPS),
       take(1),
     ),
   ).pipe(
@@ -86,18 +73,10 @@ export class InteractiveMapEffects {
     withLatestFrom(this.store$),
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload.name;
-      const {maps} = storeState.interactiveMap;
+      const {maps} = storeState.shared;
       const mapSelector = MapService.createMapSelector(model);
       return new fromActions.SetMap(mapSelector(maps));
     }),
-  );
-
-  @Effect()
-  fetchMaps: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_MAPS),
-    switchMap(() =>
-      this.mapService.loadMaps()),
-    map((maps: types.MapItem[]) => new fromActions.SetMaps(maps)),
   );
 
   @Effect()
@@ -253,13 +232,14 @@ export class InteractiveMapEffects {
 
   @Effect()
   incrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_SPECIES, fromActions.FETCH_MODELS, fromActions.FETCH_MAPS, fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION),
+    ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.REACTION_OPERATION,
+      fromActions.SET_OBJECTIVE_REACTION),
     mapTo(new loaderActions.Increment()),
   );
 
   @Effect()
   decrementRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_SPECIES, fromActions.SET_MODELS, fromActions.SET_MAPS, fromActions.REACTION_OPERATION_APPLY,
+    ofType(sharedActions.SET_SPECIES, sharedActions.SET_MODELS, sharedActions.SET_MAPS, fromActions.REACTION_OPERATION_APPLY,
       fromActions.SET_OBJECTIVE_REACTION_APPLY),
     mapTo(new loaderActions.Decrement()),
   );

@@ -17,7 +17,7 @@ import {AppState} from '../../store/app.reducers';
 import { Job } from '../types';
 
 export const getJob = createSelector(
-  (state: AppState) => state.jobs.jobs,
+  (state: AppState) => state.shared.jobs,
   (jobs: Job[], {jobId}) =>
     jobs.find((job) => job.id === jobId) || null,
 );

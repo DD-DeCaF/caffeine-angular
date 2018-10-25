@@ -12,11 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Store} from '@ngrx/store';
-import {AppState} from '../store/app.reducers';
-import * as fromInteractiveMapActions from '../app-interactive-map/store/interactive-map.actions';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -24,13 +21,12 @@ import {Observable} from 'rxjs';
   templateUrl: './design-tool.component.html',
   styleUrls: ['./design-tool.component.scss'],
 })
-export class DesignToolComponent implements OnInit {
+export class DesignToolComponent {
 
   public designForm: FormGroup;
   public designStarted: Observable<boolean>;
 
   constructor(
-    private store: Store<AppState>,
     public fb: FormBuilder,
   ) {
     this.designForm = this.fb.group({
@@ -40,9 +36,5 @@ export class DesignToolComponent implements OnInit {
       model: [''],
       number_pathways: [''],
     });
-  }
-
-  ngOnInit(): void {
-    this.store.dispatch(new fromInteractiveMapActions.FetchSpecies());
   }
 }

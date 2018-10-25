@@ -32,10 +32,7 @@ export class AppModelsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new fromActions.FetchModels());
-    this.store.dispatch(new fromActions.FetchSpecies());
-    this.store.dispatch(new fromActions.FetchProjects());
-    this.store.pipe(select((store) => store.models.models)).subscribe((models) => {
+    this.store.pipe(select((store) => store.shared.modelHeaders)).subscribe((models) => {
       this.dataSource.data = models;
     });
     this.dataSource.sort = this.sort;

@@ -57,7 +57,7 @@ export class EditModelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.model = this.data.model;
     this.store.dispatch(new fromActions.FetchModel(this.model));
-    this.allSpecies = this.store.pipe(select((store) => store.models.species));
+    this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
     this.error = this.store.pipe(select((store) => store.models.error));
     this.store.pipe(select((store) => store.models.model)).subscribe((model) => {
       if (model && (model.id === this.model.id)) {
@@ -67,7 +67,6 @@ export class EditModelComponent implements OnInit, OnDestroy {
             duration: 2000,
           });
         } else {
-          console.log('EDIT MODEL', model);
           this.reactions = model.model_serialized.reactions.map((reaction) => reaction.id);
           this.modelForm.setValue({
             id: model.id,

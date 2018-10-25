@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, HostBinding} from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {Router, NavigationEnd, Event} from '@angular/router';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -23,13 +23,17 @@ import EDIT_ICON from '../assets/images/edit.svg';
 import PLUS_ICON from '../assets/images/plus.svg';
 
 import {environment} from '../environments/environment';
+import {AppState} from './store/app.reducers';
+import {Store} from '@ngrx/store';
+import {store} from '@angular/core/src/render3/instructions';
+import * as sharedActions from './store/shared.actions';
 
 @Component({
   selector: 'app-root',
   template: `<router-outlet></router-outlet>`,
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent  implements OnInit{
   @HostBinding('class') componentCssClass;
   public title = 'app';
 
@@ -37,6 +41,7 @@ export class AppComponent {
     router: Router,
     matIconRegistry: MatIconRegistry,
     domSanitizer: DomSanitizer,
+    private store: Store<AppState>,
   ) {
     if (environment.GA) {
       ga('create', environment.GA.trackingID, 'auto');
@@ -67,6 +72,15 @@ export class AppComponent {
       domSanitizer.bypassSecurityTrustResourceUrl(PLUS_ICON),
     );
   }
+
+  ngOnInit(): void {
+    this.store.dispatch(new sharedActions.FetchSpecies());
+    this.store.dispatch(new sharedActions.FetchMaps());
+    this.store.dispatch(new sharedActions.FetchModels());
+    this.store.dispatch(new sharedActions.FetchProjects());
+    this.store.dispatch(new sharedActions.FetchJobs());
+  }
+
   setTheme(theme: string): void {
     this.componentCssClass = theme;
   }

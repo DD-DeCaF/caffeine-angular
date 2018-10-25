@@ -17,16 +17,10 @@ import {PathwayMap} from '@dd-decaf/escher';
 
 import * as types from '../types';
 
-export const FETCH_SPECIES = 'FETCH_SPECIES';
-export const SET_SPECIES = 'SET_SPECIES';
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
-export const FETCH_MODELS = 'FETCH_MODELS';
-export const SET_MODELS = 'SET_MODELS';
 export const SET_MODEL = 'SET_MODEL';
 export const SET_FULL_MODEL = 'SET_FULL_MODEL';
 
-export const FETCH_MAPS = 'FETCH_MAPS';
-export const SET_MAPS = 'SET_MAPS';
 export const SET_MAP = 'SET_MAP';
 export const MAP_FETCHED = 'MAP_FETCHED';
 
@@ -51,27 +45,9 @@ export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 
-export class FetchSpecies implements Action {
-  readonly type = FETCH_SPECIES;
-}
-
-export class SetSpecies implements Action {
-  readonly type = SET_SPECIES;
-  constructor(public payload: types.Species[]) {}
-}
-
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
   constructor(public payload: types.Species) {}
-}
-
-export class FetchModels implements Action {
-  readonly type = FETCH_MODELS;
-}
-
-export class SetModels implements Action {
-  readonly type = SET_MODELS;
-  constructor(public payload: types.DeCaF.ModelHeader[]) {}
 }
 
 export class SetModel implements Action {
@@ -82,15 +58,6 @@ export class SetModel implements Action {
 export class SetFullModel implements Action {
   readonly type = SET_FULL_MODEL;
   constructor(public payload: types.DeCaF.Model) {}
-}
-
-export class FetchMaps implements Action {
-  readonly type = FETCH_MAPS;
-}
-
-export class SetMaps implements Action {
-  readonly type = SET_MAPS;
-  constructor(public payload: types.MapItem[]) {}
 }
 
 export class SetMap implements Action {
@@ -189,13 +156,9 @@ export const operationToApply = {
 
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions =
-  FetchSpecies |
-  SetSpecies |
   SetSelectedSpecies |
-  SetModels |
   SetModel |
   SetFullModel |
-  SetMaps |
   MapFetched |
   ResetCards |
   SelectCard |

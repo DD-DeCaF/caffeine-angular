@@ -17,10 +17,6 @@ import * as types from '../../app-interactive-map/types';
 import * as typesModel from 'src/app/app-models/types';
 
 
-export const FETCH_MODELS_MODELS = 'FETCH_MODELS_MODELS';
-export const SET_MODELS_MODELS = 'SET_MODELS_MODELS';
-export const FETCH_SPECIES_MODELS = 'FETCH_SPECIES_MODELS';
-export const SET_SPECIES_MODELS = 'SET_SPECIES_MODELS';
 export const FETCH_MODEL_MODELS = 'FETCH_MODEL_MODELS';
 export const SET_MODEL_MODELS = 'SET_MODEL_MODELS';
 export const EDIT_MODEL_MODELS = 'EDIT_MODEL_MODELS';
@@ -30,26 +26,7 @@ export const REMOVE_MODEL_MODELS = 'REMOVE_MODEL_MODELS';
 export const REMOVED_MODEL_MODELS = 'REMOVED_MODEL_MODELS';
 export const RESET_REMOVED_MODEL_MODELS = 'RESET_REMOVED_MODEL_MODELS';
 export const ADD_MODEL = 'ADD_MODEL';
-export const FETCH_PROJECTS_MODELS = 'FETCH_PROJECTS_MODELS';
-export const SET_PROJECTS_MODELS = 'SET_PROJECTS_MODELS';
 
-export class FetchModels implements Action {
-  readonly type = FETCH_MODELS_MODELS;
-}
-
-export class SetModels implements Action {
-  readonly type = SET_MODELS_MODELS;
-  constructor(public payload: types.DeCaF.ModelHeader[]) {}
-}
-
-export class FetchSpecies implements Action {
-  readonly type = FETCH_SPECIES_MODELS;
-}
-
-export class SetSpecies implements Action {
-  readonly type = SET_SPECIES_MODELS;
-  constructor(public payload: types.Species[]) {}
-}
 
 export class FetchModel implements Action {
   readonly type = FETCH_MODEL_MODELS;
@@ -92,14 +69,7 @@ export class AddModel implements Action {
   constructor(public payload: typesModel.AddModel) {}
 }
 
-export class FetchProjects implements Action {
-  readonly type = FETCH_PROJECTS_MODELS;
-}
 
-export class SetProjectsModels implements Action {
-  readonly type = SET_PROJECTS_MODELS;
-  constructor(public payload: typesModel.Project[]) {}
-}
 
-export type ModelsActions = FetchModels | SetModels | FetchSpecies | SetSpecies | FetchModel | SetModel | EditModel | SetError| RemoveModel | ResetError
-  | RemovedModel | ResetRemovedModel | FetchProjects | SetProjectsModels | AddModel;
+export type ModelsActions = FetchModel | SetModel | EditModel | SetError| RemoveModel | ResetError
+  | RemovedModel | ResetRemovedModel | AddModel;

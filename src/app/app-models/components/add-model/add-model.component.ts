@@ -58,10 +58,10 @@ export class AddModelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.allSpecies = this.store.pipe(select((store) => store.models.species));
-    this.allProjects = this.store.pipe(select((store) => store.models.projects));
+    this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
+    this.allProjects = this.store.pipe(select((store) => store.shared.projects));
     this.error = this.store.pipe(select((store) => store.models.error));
-    this.store.pipe(select((store) => store.models.models)).subscribe(() => {
+    this.store.pipe(select((store) => store.shared.modelHeaders)).subscribe(() => {
         if (this.addedModel) {
           this.dialog.closeAll();
           this.snackBar.openFromComponent(AddedModelComponent, {

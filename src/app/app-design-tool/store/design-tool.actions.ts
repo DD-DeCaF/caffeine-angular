@@ -17,16 +17,10 @@ import * as types from '../../app-interactive-map/types';
 import * as typesDesign from '../types';
 
 export const INIT_DESIGN = 'INIT_DESIGN';
-export const FETCH_SPECIES_DESIGN = 'FETCH_SPECIES_DESIGN';
-export const SET_SPECIES_DESIGN = 'SET_SPECIES_DESIGN';
 export const SET_SELECTED_SPECIES_DESIGN = 'SET_SELECTED_SPECIES_DESIGN';
-export const FETCH_MODELS_DESIGN = 'FETCH_MODELS_DESIGN';
-export const SET_MODELS_DESIGN = 'SET_MODELS_DESIGN';
 export const SET_MODEL_DESIGN = 'SET_MODEL_DESIGN';
 export const FETCH_PRODUCTS_DESIGN = 'FETCH_PRODUCTS_DESIGN';
 export const SET_PRODUCTS_DESIGN = 'SET_PRODUCTS_DESIGN';
-export const FETCH_JOBS_DESIGN = 'FETCH_JOBS_DESIGN';
-export const SET_JOBS_DESIGN = 'SET_JOBS_DESIGN';
 export const ABORT_JOB_DESIGN = 'ABORT_JOB_DESIGN';
 export const START_DESIGN = 'START_DESIGN';
 
@@ -34,27 +28,10 @@ export class InitDesign implements Action {
   readonly type = INIT_DESIGN;
 }
 
-export class FetchSpeciesDesign implements Action {
-  readonly type = FETCH_SPECIES_DESIGN;
-}
-
-export class SetSpeciesDesign implements Action {
-  readonly type = SET_SPECIES_DESIGN;
-  constructor(public payload: types.Species[]) {}
-}
 
 export class SetSelectedSpeciesDesign implements Action {
   readonly type = SET_SELECTED_SPECIES_DESIGN;
   constructor(public payload: types.Species) {}
-}
-
-export class FetchModelsDesign implements Action {
-  readonly type = FETCH_MODELS_DESIGN;
-}
-
-export class SetModelsDesign implements Action {
-  readonly type = SET_MODELS_DESIGN;
-  constructor(public payload: types.DeCaF.ModelHeader[]) {}
 }
 
 export class SetModelDesign implements Action {
@@ -71,15 +48,6 @@ export class SetProductsDesign implements Action {
   constructor(public payload: typesDesign.Product[]) {}
 }
 
-export class FetchJobsDesign implements Action {
-  readonly type = FETCH_JOBS_DESIGN;
-}
-
-export class SetJobsDesign implements Action {
-  readonly type = SET_JOBS_DESIGN;
-  constructor(public payload: string[]) {}
-}
-
 export class AbortJobDesign implements Action {
   readonly type = ABORT_JOB_DESIGN;
   constructor(public payload: string) {}
@@ -91,5 +59,4 @@ export class StartDesign implements Action {
   constructor(public payload: typesDesign.Design) {}
 }
 
-export type DesignToolActions = InitDesign | FetchSpeciesDesign | SetSpeciesDesign | SetSelectedSpeciesDesign | FetchModelsDesign | SetModelsDesign |
-  SetModelDesign | FetchProductsDesign | SetProductsDesign | StartDesign | FetchJobsDesign | SetJobsDesign | AbortJobDesign;
+export type DesignToolActions = InitDesign | SetSelectedSpeciesDesign | SetModelDesign | FetchProductsDesign | SetProductsDesign | StartDesign | AbortJobDesign;

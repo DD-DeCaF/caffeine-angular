@@ -22,8 +22,7 @@ import {AppState} from '../../../store/app.reducers';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {
-  InitDesign,
-  SetModelsDesign,
+  InitDesign, SetModelDesign,
   SetSelectedSpeciesDesign,
   StartDesign,
 } from '../../store/design-tool.actions';
@@ -72,7 +71,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new InitDesign());
 
     /* Just to make it works, I am going to change it for a new store*/
-    this.allSpecies = this.store.pipe(select((store) => store.designTool.allSpecies));
+    this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
 
     this.products = this.store.pipe(select((store) => store.designTool.products));
 
@@ -109,7 +108,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
     this.modelSelector.selectionChange
       .subscribe((change: MatSelectChange) => {
-        this.store.dispatch(new SetModelsDesign(change.value));
+        this.store.dispatch(new SetModelDesign(change.value));
       });
   }
 

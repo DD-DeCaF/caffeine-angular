@@ -55,13 +55,13 @@ import {DesignToolEffects} from './app-design-tool/store/design-tool.effects';
 // End design tool
 
 // Jobs
-import { JobsEffects } from './jobs/store/jobs.effects';
 import { JobsModule } from './jobs/jobs.module';
 // End jobs
 
 // Models
 import {ModelsEffects} from './app-models/store/models.effects';
 import {AppModelsModule} from './app-models/app-models.module';
+import {SharedEffects} from './store/shared.effects';
 // End models
 
 if (environment.sentry) {
@@ -116,8 +116,8 @@ export class RavenErrorHandler implements ErrorHandler {
     EffectsModule.forRoot([
       InteractiveMapEffects,
       DesignToolEffects,
-      JobsEffects,
       ModelsEffects,
+      SharedEffects,
     ]),
     StoreDevtoolsModule.instrument({
       name: 'Caffeine',
