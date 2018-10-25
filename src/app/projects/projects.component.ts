@@ -20,6 +20,7 @@ import { AppState } from '../store/app.reducers';
 import * as actions from './store/projects.actions';
 import * as types from './types';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
+import { DeleteProjectComponent } from './components/delete-project/delete-project.component';
 
 @Component({
   selector: 'app-projects',
@@ -41,8 +42,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   create() {
-    const dialogRef = this.dialog.open(CreateProjectComponent);
-    // dialogRef.afterClosed().subscribe(() => this.store.dispatch(new fromActions.ResetError()));
+    this.dialog.open(CreateProjectComponent);
   }
 
   edit(project: types.Project) {
@@ -50,6 +50,8 @@ export class ProjectsComponent implements OnInit {
   }
 
   delete(project: types.Project) {
-    // TBD
+    this.dialog.open(DeleteProjectComponent, {
+      data: project,
+    });
   }
 }

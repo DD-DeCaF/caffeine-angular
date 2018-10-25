@@ -20,6 +20,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from '../app-material.module';
 import { ProjectsComponent } from './projects.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
+import { DeleteProjectComponent } from './components/delete-project/delete-project.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { CreateProjectComponent } from './components/create-project/create-proje
   declarations: [
     ProjectsComponent,
     CreateProjectComponent,
+    DeleteProjectComponent,
   ],
-  entryComponents: [ProjectsComponent, CreateProjectComponent],
+  entryComponents: [ProjectsComponent, CreateProjectComponent, DeleteProjectComponent],
 })
 export class ProjectsModule { }
