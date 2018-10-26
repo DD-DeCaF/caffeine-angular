@@ -14,7 +14,7 @@
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Observable, Subject} from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import {withLatestFrom} from 'rxjs/operators';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -32,6 +32,7 @@ import {isLoading} from './components/loader/store/loader.selectors';
 import * as sharedActions from '../store/shared.actions';
 import {FetchMaps, FetchModels} from '../store/shared.actions';
 import {MapFetched} from './store/interactive-map.actions';
+import {MapService} from './services/map.service';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -42,7 +43,7 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 })
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   private builderSubject = new Subject<escher.BuilderObject>();
-  public map: Observable<escher.PathwayMap>;
+  public map: escher.PathwayMap;
   public loading = true;
   private card: Card;
 
@@ -72,20 +73,28 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     private elRef: ElementRef,
     private store: Store<AppState>,
     private dialog: MatDialog,
+    private mapsService: MapService,
   ) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new FetchModels());
     const builderObservable = this.builderSubject.asObservable();
-    this.store.pipe(
+    combineLatest(
+      this.store.pipe(
+        selectNotNull((store) => store.interactiveMap.mapData)),
+      builderObservable,
+    ).subscribe(([map, builder]) => {
+        builder.load_map(map);
+        console.log('MAP', map);
+    });
+    /*this.store.pipe(
       selectNotNull((store) => store.interactiveMap.mapData),
       withLatestFrom(builderObservable),
     ).subscribe(([map, builder]) => {
       this.loading = true;
-      builder.load_map(map);
+      builder.load_map(this.map);
       this.loading = false;
-    });
+    });*/
 
     const selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
@@ -97,6 +106,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
       this.card = card;
+      console.log('CARD', card);
       builder.load_model(card.model);
       builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
       builder.set_knockout_reactions(card.knockoutReactions);
@@ -126,6 +136,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    console.log('AFTER VIEW INIT');
     const element = d3Select(this.elRef.nativeElement.querySelector('.escher-builder'));
     this.builderSubject.next(
       escher.Builder(
