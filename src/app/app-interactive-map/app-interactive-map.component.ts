@@ -14,7 +14,7 @@
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {combineLatest, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, combineLatest, Observable, Subject} from 'rxjs';
 import {withLatestFrom} from 'rxjs/operators';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -29,9 +29,6 @@ import {selectNotNull} from '../framework-extensions';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {isLoading} from './components/loader/store/loader.selectors';
-import * as sharedActions from '../store/shared.actions';
-import {FetchMaps, FetchModels} from '../store/shared.actions';
-import {MapFetched} from './store/interactive-map.actions';
 import {MapService} from './services/map.service';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
@@ -42,7 +39,10 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
   styleUrls: ['./app-interactive-map.component.scss'],
 })
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
-  private builderSubject = new Subject<escher.BuilderObject>();
+  //private builderSubject = new Subject<escher.BuilderObject>();
+  //private builderSubject = new BehaviorSubject<escher.BuilderObject>(null);
+  private builderSubject: BehaviorSubject<escher.BuilderObject>;
+
   public map: escher.PathwayMap;
   public loading = true;
   private card: Card;
@@ -78,43 +78,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    const builderObservable = this.builderSubject.asObservable();
-    combineLatest(
-      this.store.pipe(
-        selectNotNull((store) => store.interactiveMap.mapData)),
-      builderObservable,
-    ).subscribe(([map, builder]) => {
-        builder.load_map(map);
-        console.log('MAP', map);
-    });
-    /*this.store.pipe(
-      selectNotNull((store) => store.interactiveMap.mapData),
-      withLatestFrom(builderObservable),
-    ).subscribe(([map, builder]) => {
-      this.loading = true;
-      builder.load_map(this.map);
-      this.loading = false;
-    });*/
 
-    const selectedCard = this.store.pipe(
-      selectNotNull(getSelectedCard),
-    );
-
-    // Detect changes in model only..
-    selectedCard.pipe(
-      withLatestFrom(builderObservable),
-    ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
-      this.loading = true;
-      this.card = card;
-      console.log('CARD', card);
-      builder.load_model(card.model);
-      builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-      builder.set_knockout_reactions(card.knockoutReactions);
-      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
-      builder._update_data(true, true);
-      this.store.dispatch(new fromActions.Loaded());
-      this.loading = false;
-    });
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -133,20 +97,60 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.dialog.closeAll();
       }
     });
+    /*this.builderSubject.asObservable().subscribe((b) => {
+      this.store.pipe(
+        selectNotNull((store) => store.interactiveMap.mapData)).subscribe((map) => {
+        console.log('MAAAAAP', map);
+        b.load_map(map);
+      });
+    });*/
   }
 
   ngAfterViewInit(): void {
     console.log('AFTER VIEW INIT');
     const element = d3Select(this.elRef.nativeElement.querySelector('.escher-builder'));
-    this.builderSubject.next(
-      escher.Builder(
+    console.log('BUILDER SUBJECT', this.builderSubject);
+    if (!this.builderSubject) {
+      this.builderSubject = new BehaviorSubject(escher.Builder(
         null,
         null,
         null,
         element,
         this.escherSettings,
-      ),
+      ));
+    }
+    console.log('BUILDER SUBJECT AFTER', this.builderSubject);
+    const builderObservable = this.builderSubject.asObservable();
+
+    this.store.pipe(
+      selectNotNull((store) => store.interactiveMap.mapData),
+      withLatestFrom(builderObservable),
+    ).subscribe(([map, builder]) => {
+      console.log('BUILDER MAP', builder, map);
+      this.loading = true;
+      builder.load_map(map);
+      this.loading = false;
+    });
+
+    const selectedCard = this.store.pipe(
+      selectNotNull(getSelectedCard),
     );
+
+    // Detect changes in model only..
+    selectedCard.pipe(
+      withLatestFrom(builderObservable),
+    ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
+      this.loading = true;
+      this.card = card;
+      console.log('CARD', card, builder);
+      builder.load_model(card.model);
+      builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+      builder.set_knockout_reactions(card.knockoutReactions);
+      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder._update_data(true, true);
+      this.store.dispatch(new fromActions.Loaded());
+      this.loading = false;
+    });
   }
 
   handleKnockout(reactionId: string): void {
