@@ -25,7 +25,6 @@ import PLUS_ICON from '../assets/images/plus.svg';
 import {environment} from '../environments/environment';
 import {AppState} from './store/app.reducers';
 import {Store} from '@ngrx/store';
-import {store} from '@angular/core/src/render3/instructions';
 import * as sharedActions from './store/shared.actions';
 
 @Component({
@@ -33,7 +32,7 @@ import * as sharedActions from './store/shared.actions';
   template: `<router-outlet></router-outlet>`,
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent  implements OnInit{
+export class AppComponent implements OnInit {
   @HostBinding('class') componentCssClass;
   public title = 'app';
 

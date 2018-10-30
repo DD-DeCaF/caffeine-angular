@@ -28,10 +28,9 @@ import {interactiveMapReducer} from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
 import { WarehouseService } from '../../services/warehouse.service';
-import {ModelService} from '../../services/model.service';
-import * as loaderActions from '../components/loader/store/loader.actions';
 import {mapBiggReactionToCobra} from '../../utils';
 import * as sharedActions from '../../store/shared.actions';
+import * as loaderActions from '../components/loader/store/loader.actions';
 
 
 const ACTION_OFFSETS = {
@@ -230,7 +229,7 @@ export class InteractiveMapEffects {
     })),
   );
 
-  /*@Effect()
+  @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
       fromActions.SET_OBJECTIVE_REACTION),
@@ -241,15 +240,12 @@ export class InteractiveMapEffects {
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.LOADED),
     mapTo(new loaderActions.LoadingFinished()),
-  );*/
+  );
 
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
     private http: HttpClient,
-    private mapService: MapService,
-    private warehouseService: WarehouseService,
-    private modelService: ModelService,
     private simulationService: SimulationService,
   ) {}
 }
