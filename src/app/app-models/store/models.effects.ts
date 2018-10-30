@@ -20,9 +20,7 @@ import {Observable, of} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
 import {ModelService} from '../../services/model.service';
 import * as fromActions from './models.actions';
-import {WarehouseService} from '../../services/warehouse.service';
 import {SetError} from './models.actions';
-import {Project} from 'src/app/app-models/types';
 import * as sharedActions from '../../store/shared.actions';
 
 
