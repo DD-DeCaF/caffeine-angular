@@ -17,7 +17,7 @@ export interface Configuration {
   apis: {
     iam: string;
     model: string;
-    model_warehouse: string;
+    model_storage: string;
     map: string;
     bigg: string;
     warehouse: string;

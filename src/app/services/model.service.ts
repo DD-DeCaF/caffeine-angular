@@ -27,22 +27,22 @@ export class ModelService {
   ) {}
 
   loadModel(modelId: number): Observable<types.DeCaF.Model> {
-    return this.http.get<types.DeCaF.Model>(`${environment.apis.model_warehouse}/models/${modelId}`);
+    return this.http.get<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`);
   }
 
   loadModels(): Observable <types.DeCaF.ModelHeader[]> {
-    return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_warehouse}/models`);
+    return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_storage}/models`);
   }
 
   editModel(modelForm: EditModel): Observable <types.DeCaF.Model> {
-    return this.http.put<types.DeCaF.Model>(`${environment.apis.model_warehouse}/models/${modelForm.id}`, modelForm);
+    return this.http.put<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelForm.id}`, modelForm);
   }
 
   removeModel(modelId: number): Observable <types.DeCaF.Model> {
-    return this.http.delete<types.DeCaF.Model>(`${environment.apis.model_warehouse}/models/${modelId}`);
+    return this.http.delete<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`);
   }
 
   uploadModel(model: AddModel): Observable <types.DeCaF.Model> {
-    return this.http.post<types.DeCaF.Model>(`${environment.apis.model_warehouse}/models`, model);
+    return this.http.post<types.DeCaF.Model>(`${environment.apis.model_storage}/models`, model);
   }
 }
