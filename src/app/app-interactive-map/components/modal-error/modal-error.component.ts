@@ -12,19 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { DeCaF, SimulateRequest } from '../types';
-import {Observable} from 'rxjs';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {MatDialog} from '@angular/material';
 
-@Injectable()
-export class SimulationService {
+@Component({
+  selector: 'app-loader',
+  templateUrl: './modal-error.component.html',
+  styleUrls: ['./modal-error.component.scss'],
+
+})
+export class ModalErrorComponent {
   constructor(
-    private http: HttpClient,
-  ) {}
+    private router: Router,
+    private dialog: MatDialog) {}
+  reload(): void {
+    location.reload();
+  }
 
-  simulate(payload: SimulateRequest): Observable<DeCaF.Solution> {
-    return this.http.post<DeCaF.Solution>(`${environment.apis.model}/simulate`, payload);
+  goHome(): void {
+    this.dialog.closeAll();
+    this.router.navigateByUrl('/');
   }
 }
+

@@ -16,8 +16,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store, select} from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable, combineLatest } from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take} from 'rxjs/operators';
+import {Observable, combineLatest, of} from 'rxjs';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError} from 'rxjs/operators';
 import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
@@ -48,7 +48,6 @@ export class InteractiveMapEffects {
       new fromActions.SetSelectedSpecies(WarehouseService.preferredSpecies(action.payload))));
 
   @Effect()
-  selectFirstModel: Observable<Action> = combineLatest<fromActions.SetSelectedSpecies, sharedActions.SetModels>(
     this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES)),
     this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
   ).pipe(
@@ -87,7 +86,7 @@ export class InteractiveMapEffects {
     ]),
   );
 
-  @Effect()
+   @Effect()
   fetchFullModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetFullModel) =>
@@ -113,9 +112,10 @@ export class InteractiveMapEffects {
             type,
             solution,
           })),
+          map((data) => new fromActions.AddCardFetched(data)),
+          catchError(() => of(new loaderActions.LoadingError())),
         );
     }),
-    map((data) => new fromActions.AddCardFetched(data)),
   );
 
   @Effect()
@@ -128,9 +128,10 @@ export class InteractiveMapEffects {
           mapData: response,
           mapItem: action.payload,
         })),
+          map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
+          catchError(() => of(new loaderActions.LoadingError())),
       );
     }),
-    map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
   );
 
   // Steps to the previous or the next card depending on the action
@@ -221,15 +222,19 @@ export class InteractiveMapEffects {
         .pipe(map((solution: types.DeCaF.Solution) => ({
           action: newAction,
           solution,
-        })));
+        })),
+          /* tslint:disable */
+          map(({action, solution}) => ({
+            ...action,
+            solution,
+          })),
+          /* tslint:enable */
+          catchError(() => of(new loaderActions.LoadingError())),
+          );
     }),
-    map(({action, solution}) => ({
-        ...action,
-        solution,
-    })),
   );
 
-  @Effect()
+   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
       fromActions.SET_OBJECTIVE_REACTION),

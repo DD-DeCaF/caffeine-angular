@@ -12,19 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { DeCaF, SimulateRequest } from '../types';
-import {Observable} from 'rxjs';
+.map-progress {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  opacity: 0.9;
+}
 
-@Injectable()
-export class SimulationService {
-  constructor(
-    private http: HttpClient,
-  ) {}
+.error-box {
+  background: white;
+  padding: 5%;
+  text-align: center;
+}
 
-  simulate(payload: SimulateRequest): Observable<DeCaF.Solution> {
-    return this.http.post<DeCaF.Solution>(`${environment.apis.model}/simulate`, payload);
-  }
+.map-progress-text-error {
+  color: red;
+  opacity: 1;
+  font-weight: lighter;
+  font-size: 13px;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
 }

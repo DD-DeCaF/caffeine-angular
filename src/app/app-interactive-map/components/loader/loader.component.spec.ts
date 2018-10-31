@@ -20,7 +20,7 @@ import {reducers} from '../../../store/app.reducers';
 import {StoreModule} from '@ngrx/store';
 import {initialState} from '../app-reaction/mock-initial-state';
 
-describe('LoaderComponent', () => {
+describe('ModalErrorComponent', () => {
   let component: LoaderComponent;
   let fixture: ComponentFixture<LoaderComponent>;
 

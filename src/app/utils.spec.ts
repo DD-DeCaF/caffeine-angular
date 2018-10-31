@@ -17,7 +17,6 @@ import {
   appendOrUpdateStringList,
   notNull,
   objectFilter,
-  firstIfContains,
   unique,
   objectMatcher,
 } from './utils';
@@ -128,7 +127,7 @@ describe('objectFilter', () => {
   });
 });
 
-describe('firstIfContains', () => {
+/*describe('firstIfContains', () => {
   it('should return the original array when there\'s no hit', () => {
     expect(firstIfContains(['foo', 'bar', 'baz'], 'john'))
       .toEqual(['foo', 'bar', 'baz']);
@@ -138,7 +137,7 @@ describe('firstIfContains', () => {
     expect(firstIfContains(['foo', 'bar', 'baz'], 'baz'))
       .toEqual(['baz', 'foo', 'bar']);
   });
-});
+});*/
 
 describe('unique', () => {
   it('should return a uique array', () => {
