@@ -17,11 +17,15 @@ import {Router, NavigationEnd, Event} from '@angular/router';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 
+import {Store} from '@ngrx/store';
+
 import MAP_ICON from '../assets/images/map_icon.svg';
 import HOURGLASS_FULL from '../assets/images/hourglass_full.svg';
 import EDIT_ICON from '../assets/images/edit.svg';
 import PLUS_ICON from '../assets/images/plus.svg';
 
+import * as sessionActions from './session/store/session.actions';
+import {SessionService} from './session/session.service';
 import {environment} from '../environments/environment';
 import {AppState} from './store/app.reducers';
 import {Store} from '@ngrx/store';
@@ -41,6 +45,7 @@ export class AppComponent implements OnInit {
     matIconRegistry: MatIconRegistry,
     domSanitizer: DomSanitizer,
     private store: Store<AppState>,
+    private sessionService: SessionService,
   ) {
     if (environment.GA) {
       ga('create', environment.GA.trackingID, 'auto');
@@ -73,6 +78,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.sessionService.hasToken()) {
+      this.store.dispatch(new sessionActions.Login());
+    }
+
     this.store.dispatch(new sharedActions.FetchSpecies());
     this.store.dispatch(new sharedActions.FetchMaps());
     this.store.dispatch(new sharedActions.FetchModels());

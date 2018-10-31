@@ -12,25 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SessionService} from './session.service';
-import {SessionInterceptor} from './session-interceptor';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-
-@NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [],
-  providers: [
-    SessionService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: SessionInterceptor,
-      multi: true,
-    },
-  ],
-})
-export class SessionModule {
+.box {
+  background: white;
+  text-align: center;
+  min-width: 400px;
 }
+
+.error-icon {
+  font-size: 60px;
+  width: 60px;
+  height: 60px;
+}
+
+.text {
+  font-size: 18px;
+}
+
+.section-buttons {
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+  font-weight: lighter;
+  font-size: 18px;
+}
+

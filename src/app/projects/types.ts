@@ -12,25 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {SessionService} from './session.service';
-import {SessionInterceptor} from './session-interceptor';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
-
-@NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [],
-  providers: [
-    SessionService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: SessionInterceptor,
-      multi: true,
-    },
-  ],
-})
-export class SessionModule {
+export interface Project {
+  id: number;
+  name: string;
 }

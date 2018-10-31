@@ -15,7 +15,7 @@
 import {Action} from '@ngrx/store';
 import * as types from '../app-interactive-map/types';
 import {FetchModel} from '../app-models/store/models.actions';
-import * as typesModel from '../app-models/types';
+import * as projectTypes from '../projects/types';
 import {Job} from '../jobs/types';
 
 
@@ -59,7 +59,7 @@ export class FetchProjects implements Action {
 
 export class SetProjects implements Action {
   readonly type = SET_PROJECTS;
-  constructor(public payload: typesModel.Project[]) {}
+  constructor(public payload: projectTypes.Project[]) {}
 }
 
 export class FetchMaps implements Action {
