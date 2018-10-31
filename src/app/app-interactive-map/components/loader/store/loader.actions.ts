@@ -15,16 +15,21 @@
 import {Action} from '@ngrx/store';
 
 
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
+export const LOADING = 'LOADING';
+export const LOADING_FINISHED = 'LOADING_FINISHED';
+export const LOADING_ERROR = 'LOADING_ERROR';
 
 
-export class Increment implements Action {
-  readonly type = INCREMENT;
+export class Loading implements Action {
+  readonly type = LOADING;
 }
 
-export class Decrement implements Action {
-  readonly type = DECREMENT;
+export class LoadingFinished implements Action {
+  readonly type = LOADING_FINISHED;
 }
 
-export type LoaderActions = Increment | Decrement;
+export class LoadingError implements Action {
+  readonly type = LOADING_ERROR;
+}
+
+export type LoaderActions = Loading | LoadingFinished | LoadingError;

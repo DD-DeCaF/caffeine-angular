@@ -17,6 +17,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList, mapBiggReactionToCobra} from '../../utils';
+import {debug} from '../../logger';
 
 
 class IdGen {
@@ -108,6 +109,7 @@ export function interactiveMapReducer(
   state: InteractiveMapState = initialState,
   action: fromInteractiveMapActions.InteractiveMapActions,
 ): InteractiveMapState {
+  debug('Action map:', action);
   switch (action.type) {
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {

@@ -19,7 +19,6 @@ import {concatMapTo, map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
 import {combineLatest, Observable} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
-import {ModelService} from '../../services/model.service';
 import {WarehouseService} from '../../services/warehouse.service';
 import * as sharedActions from '../../store/shared.actions';
 
@@ -72,7 +71,6 @@ export class DesignToolEffects {
 
   constructor(
     private actions$: Actions,
-    private modelService: ModelService,
     private warehouseService: WarehouseService,
   ) {}
 }

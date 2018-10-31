@@ -28,6 +28,7 @@ import * as sessionActions from './session/store/session.actions';
 import {SessionService} from './session/session.service';
 import {environment} from '../environments/environment';
 import {AppState} from './store/app.reducers';
+import {Store} from '@ngrx/store';
 import * as sharedActions from './store/shared.actions';
 
 @Component({

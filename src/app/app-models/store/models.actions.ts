@@ -70,6 +70,5 @@ export class AddModel implements Action {
 }
 
 
-
 export type ModelsActions = FetchModel | SetModel | EditModel | SetError| RemoveModel | ResetError
   | RemovedModel | ResetRemovedModel | AddModel;
