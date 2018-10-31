@@ -27,6 +27,8 @@ import {isLoading} from './components/loader/store/loader.selectors';
 import {objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
+import {combineLatest, Subject} from 'rxjs';
+import {withLatestFrom} from 'rxjs/operators';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -38,6 +40,7 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   private builder: escher.BuilderObject;
+  private builderSubject = new Subject<escher.BuilderObject>();
   public map: escher.PathwayMap;
   public loading = true;
   private card: Card;
@@ -62,6 +65,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.handleObjectiveDirection(args);
       },
     },
+    first_load_callback: () => this.firstLoadEscher(),
   };
 
   constructor(
@@ -72,6 +76,36 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    const builderObservable = this.builderSubject.asObservable();
+
+    combineLatest(
+      this.store.pipe(
+        selectNotNull((store) => store.interactiveMap.mapData)),
+      builderObservable,
+    ).subscribe(([map, builder]) => {
+      builder.load_map(map);
+    });
+
+    const selectedCard = this.store.pipe(
+      selectNotNull(getSelectedCard),
+    );
+
+    // Detect changes in model only..
+    combineLatest(
+      selectedCard,
+      builderObservable,
+    ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
+      this.loading = true;
+      this.card = card;
+      builder.load_model(card.model);
+      builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+      builder.set_knockout_reactions(card.knockoutReactions);
+      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder._update_data(true, true);
+      this.store.dispatch(new fromActions.Loaded());
+      this.loading = false;
+    });
+
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -100,30 +134,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       element,
       this.escherSettings,
     );
-    this.store.pipe(
-      selectNotNull((store) => store.interactiveMap.mapData),
-    ).subscribe((map) => {
-      setTimeout(() => this.builder.load_map(map), 0);
-    });
-
-    const selectedCard = this.store.pipe(
-      selectNotNull(getSelectedCard),
-    );
-
-    // Detect changes in model only..
-    selectedCard.subscribe((card: Card) => {
-      this.loading = true;
-      this.card = card;
-      setTimeout(() => {
-        this.builder.load_model(card.model);
-        this.builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-        this.builder.set_knockout_reactions(card.knockoutReactions);
-        this.builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
-        this.builder._update_data(true, true);
-        this.store.dispatch(new fromActions.Loaded());
-        this.loading = false;
-      }, 0);
-    });
   }
 
   handleKnockout(reactionId: string): void {
@@ -194,5 +204,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         upperbound: this.upperBound(reactionId),
       },
     };
+  }
+
+  firstLoadEscher(): void {
+    this.builderSubject.next(this.builder);
   }
 }
