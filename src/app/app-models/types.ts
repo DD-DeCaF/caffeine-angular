@@ -28,8 +28,3 @@ export interface AddModel {
   default_biomass_reaction: string;
   model_serialized: types.Cobra.Model;
 }
-
-export interface Project {
-  name: string;
-  id: string;
-}

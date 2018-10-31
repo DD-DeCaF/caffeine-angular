@@ -14,7 +14,7 @@
 
 import * as fromModelsActions from './shared.actions';
 import * as types from '../app-interactive-map/types';
-import {Project} from 'src/app/app-models/types';
+import {Project} from 'src/app/projects/types';
 import {Job} from 'src/app/jobs/types';
 
 export interface SharedState {

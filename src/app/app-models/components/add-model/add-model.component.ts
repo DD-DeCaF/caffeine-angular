@@ -19,7 +19,7 @@ import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AddModel} from '../../store/models.actions';
-import {Project} from 'src/app/app-models/types';
+import {Project} from 'src/app/projects/types';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AddedModelComponent} from './added-model.component';
 

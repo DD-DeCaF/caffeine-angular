@@ -21,6 +21,7 @@ import * as types from '../../app-interactive-map/types';
 import {ModelService} from '../../services/model.service';
 import * as fromActions from './models.actions';
 import {SetError} from './models.actions';
+import {Project} from 'src/app/projects/types';
 import * as sharedActions from '../../store/shared.actions';
 
 

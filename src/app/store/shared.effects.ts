@@ -13,15 +13,18 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, map, switchMap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
+
+import {environment} from '../../environments/environment';
 import * as types from '../app-interactive-map/types';
 import {ModelService} from '../services/model.service';
 import * as fromActions from './shared.actions';
 import {WarehouseService} from '../services/warehouse.service';
-import {Project} from 'src/app/app-models/types';
+import {Project} from 'src/app/projects/types';
 import {JobsService} from '../jobs/jobs.service';
 import {MapService} from '../app-interactive-map/services/map.service';
 import {Job} from 'src/app/jobs/types';
@@ -53,9 +56,9 @@ export class SharedEffects {
 
 
   @Effect()
-  fetchProjectsModel: Observable<Action> = this.actions$.pipe(
+  fetchProjects: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_PROJECTS),
-    switchMap(() => this.warehouseService.getProjects().pipe(
+    switchMap(() => this.http.get<Project[]>(`${environment.apis.iam}/projects`).pipe(
       map((payload: Project[]) => new fromActions.SetProjects(payload)),
       catchError(() => of(new fromActions.SetProjectsError())),
     )),
@@ -87,5 +90,6 @@ export class SharedEffects {
     private warehouseService: WarehouseService,
     private jobsService: JobsService,
     private mapService: MapService,
+    private http: HttpClient,
   ) {}
 }

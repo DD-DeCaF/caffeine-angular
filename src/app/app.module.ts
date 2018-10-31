@@ -37,11 +37,11 @@ import {AppMaterialModule} from './app-material.module';
 import {AppRoutingModule} from './app-routing.module';
 
 import {reducers} from './store/app.reducers';
-import {SessionService} from './session/session.service';
 import {OpenLoginDialogDirective} from './session/open-login-dialog.directive';
 
 import {environment} from '../environments/environment';
 
+import {SessionModule} from './session/session.module';
 
 // Interactive map
 import {AppInteractiveMapModule} from './app-interactive-map/app-interactive-map.module';
@@ -63,6 +63,8 @@ import {ModelsEffects} from './app-models/store/models.effects';
 import {AppModelsModule} from './app-models/app-models.module';
 import {SharedEffects} from './store/shared.effects';
 // End models
+
+import { ProjectsModule } from './projects/projects.module';
 
 if (environment.sentry) {
   Raven
@@ -107,9 +109,11 @@ export class RavenErrorHandler implements ErrorHandler {
     AppMaterialModule,
 
     // Own modules
+    SessionModule,
     AppInteractiveMapModule,
     AppModelsModule,
     JobsModule,
+    ProjectsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
@@ -124,7 +128,6 @@ export class RavenErrorHandler implements ErrorHandler {
     }),
   ],
   providers: [
-    SessionService,
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],
