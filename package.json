@@ -24,7 +24,7 @@
     "@angular/platform-browser": "^6.0.2",
     "@angular/platform-browser-dynamic": "^6.0.2",
     "@angular/router": "^6.0.2",
-    "@dd-decaf/escher": "^1.7.4-decaf",
+    "@dd-decaf/escher": "^1.7.6-decaf",
     "@ngrx/effects": "^6.1.0",
     "@ngrx/store": "^6.1.0",
     "@ngrx/store-devtools": "^6.1.0",
