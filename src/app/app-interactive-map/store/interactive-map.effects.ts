@@ -48,6 +48,7 @@ export class InteractiveMapEffects {
       new fromActions.SetSelectedSpecies(WarehouseService.preferredSpecies(action.payload))));
 
   @Effect()
+  selectFirstModel: Observable<Action> = combineLatest<fromActions.SetSelectedSpecies, sharedActions.SetModels>(
     this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES)),
     this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
   ).pipe(
