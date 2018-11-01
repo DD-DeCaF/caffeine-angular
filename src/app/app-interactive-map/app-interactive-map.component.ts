@@ -207,16 +207,19 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   upperBound(reactionId: string): number {
     const reaction = this.card.bounds.find((r) => r.reaction.id === reactionId);
-    return reaction ? reaction.upperBound : this.card.model.reactions.find((r) => r.id === reactionId).upper_bound;
+    const reactionModel = this.card.model.reactions.find((r) => r.id === reactionId);
+    return reaction ? reaction.upperBound : reactionModel ? reactionModel.upper_bound : null;
   }
 
   lowerBound(reactionId: string): number {
     const reaction = this.card.bounds.find((r) => r.reaction.id === reactionId);
-    return reaction ? reaction.lowerBound : this.card.model.reactions.find((r) => r.id === reactionId).lower_bound;
+    const reactionModel = this.card.model.reactions.find((r) => r.id === reactionId);
+    return reaction ? reaction.lowerBound : reactionModel ? reactionModel.lower_bound : null;
   }
 
   reactionState(reactionId: string): ReactionState {
     return {
+      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
       knockout: this.card.knockoutReactions.includes(reactionId),
       objective: this.card.objectiveReaction,
       bounds: {

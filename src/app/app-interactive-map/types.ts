@@ -262,6 +262,7 @@ export interface Species {
 }
 
 export interface ReactionState {
+  includedInModel: boolean;
   knockout: boolean;
   objective: ObjectiveReactionPayload;
   bounds: {
