@@ -28,7 +28,6 @@ import {objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Subject} from 'rxjs';
-import {withLatestFrom} from 'rxjs/operators';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);

@@ -15,10 +15,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import * as types from '../../../app-interactive-map/types';
 import * as actions from '../../../store/shared.actions';
 import { AppState } from '../../../store/app.reducers';
 import { Project } from '../../types';
@@ -26,7 +24,7 @@ import { SessionService } from '../../../session/session.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'create-project',
+  selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
 })
@@ -34,7 +32,7 @@ import { environment } from '../../../../environments/environment';
 export class CreateProjectComponent {
   private project: Project = {
     id: null,
-    name: ""
+    name: '',
   };
 
   constructor(
@@ -45,7 +43,7 @@ export class CreateProjectComponent {
     private http: HttpClient,
   ) {}
 
-  submit() {
+  submit(): void {
     this.dialogRef.close();
 
     this.http.post(`${environment.apis.iam}/projects`, this.project).subscribe(
@@ -56,12 +54,12 @@ export class CreateProjectComponent {
             duration: 2000,
           });
           this.store.dispatch(new actions.FetchProjects());
-        }
-      )
+        },
+      ),
     );
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close();
   }
 }

@@ -25,10 +25,10 @@ import { DeleteProjectComponent } from './components/delete-project/delete-proje
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html',
-  styleUrls: ['./projects.component.scss']
+  styleUrls: ['./projects.component.scss'],
 })
 export class ProjectsComponent implements OnInit {
-  private projects$;
+  public projects$;
   displayedColumns = ['name', 'delete'];
 
   constructor(
@@ -36,16 +36,16 @@ export class ProjectsComponent implements OnInit {
     private dialog: MatDialog,
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.store.dispatch(new actions.FetchProjects());
     this.projects$ = this.store.pipe(select((state) => state.shared.projects));
   }
 
-  create() {
+  create(): void {
     this.dialog.open(CreateProjectComponent);
   }
 
-  delete(project: types.Project) {
+  delete(project: types.Project): void {
     this.dialog.open(DeleteProjectComponent, {
       data: project,
     });

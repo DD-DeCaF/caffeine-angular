@@ -15,10 +15,8 @@
 import { Component, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
-import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-import * as types from '../../../app-interactive-map/types';
 import * as actions from '../../../store/shared.actions';
 import { AppState } from '../../../store/app.reducers';
 import { Project } from '../../types';
@@ -26,7 +24,7 @@ import { SessionService } from '../../../session/session.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'delete-project',
+  selector: 'app-delete-project',
   templateUrl: './delete-project.component.html',
   styleUrls: ['./delete-project.component.scss'],
 })
@@ -39,10 +37,10 @@ export class DeleteProjectComponent {
     public snackBar: MatSnackBar,
     private session: SessionService,
     private http: HttpClient,
-    @Inject(MAT_DIALOG_DATA) public project: Project
+    @Inject(MAT_DIALOG_DATA) public project: Project,
   ) {}
 
-  submit() {
+  submit(): void {
     this.dialogRef.close();
 
     this.http.delete(`${environment.apis.iam}/projects/${this.project.id}`).subscribe(
@@ -53,12 +51,12 @@ export class DeleteProjectComponent {
             duration: 2000,
           });
           this.store.dispatch(new actions.FetchProjects());
-        }
-      )
+        },
+      ),
     );
   }
 
-  close() {
+  close(): void {
     this.dialogRef.close();
   }
 }
