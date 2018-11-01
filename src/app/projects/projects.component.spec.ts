@@ -15,6 +15,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectsComponent } from './projects.component';
+import {AppMaterialModule} from '../app-material.module';
+import {reducers} from '../store/app.reducers';
+import {StoreModule} from '@ngrx/store';
 
 describe('ProjectsComponent', () => {
   let component: ProjectsComponent;
@@ -22,6 +25,10 @@ describe('ProjectsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        AppMaterialModule,
+        StoreModule.forRoot(reducers),
+      ],
       declarations: [ ProjectsComponent ],
     })
     .compileComponents();

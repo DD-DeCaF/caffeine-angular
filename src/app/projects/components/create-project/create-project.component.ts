@@ -30,7 +30,7 @@ import { environment } from '../../../../environments/environment';
 })
 
 export class CreateProjectComponent {
-  private project: Project = {
+  public project: Project = {
     id: null,
     name: '',
   };

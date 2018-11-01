@@ -72,8 +72,7 @@
                    matInput
                    formControlName="default_biomass_reaction"
                    [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete"
-                              [displayWith]="displayFn">
+            <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let reaction of filterReactions(this.addModelForm.value.default_biomass_reaction)"
                           [value]="reaction">{{reaction}}
               </mat-option>
