@@ -219,7 +219,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   reactionState(reactionId: string): ReactionState {
     return {
-      includedInModel: !!this.card.model.reactions.find((r) => r.id === reactionId),
+      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
       knockout: this.card.knockoutReactions.includes(reactionId),
       objective: this.card.objectiveReaction,
       bounds: {
