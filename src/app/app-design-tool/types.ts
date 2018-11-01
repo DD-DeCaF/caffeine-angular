@@ -29,3 +29,8 @@ export interface Design {
   model: types.DeCaF.Model;
   number_pathways: 10;
 }
+
+export interface State{
+  id: string;
+  state: string;
+}

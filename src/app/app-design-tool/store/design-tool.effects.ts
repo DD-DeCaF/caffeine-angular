@@ -21,6 +21,7 @@ import {combineLatest, Observable} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
 import {ModelService} from '../../services/model.service';
 import {WarehouseService} from '../../services/warehouse.service';
+import {NinjaService} from '../../services/ninja-service';
 
 
 @Injectable()
@@ -82,7 +83,7 @@ export class DesignToolEffects {
   startDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.START_DESIGN),
     switchMap((action: fromActions.StartDesign) =>
-      this.warehouseService.startDesign(action.payload)),
+      this.ninjaService.postPredict(action.payload)),
     map(() => new fromActions.FetchJobsDesign()));
 
  /* @Effect()
@@ -97,5 +98,6 @@ export class DesignToolEffects {
     private actions$: Actions,
     private modelService: ModelService,
     private warehouseService: WarehouseService,
+    private ninjaService: NinjaService,
   ) {}
 }

@@ -20,6 +20,7 @@ export interface Configuration {
     model_storage: string;
     map: string;
     bigg: string;
+    metabolic_ninja: string;
     warehouse: string;
   };
   GA?: {
