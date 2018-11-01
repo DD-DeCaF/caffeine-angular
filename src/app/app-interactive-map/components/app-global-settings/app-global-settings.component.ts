@@ -49,7 +49,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.selectedSpecies = this.store.pipe(select((store) => store.interactiveMap.selectedSpecies));
-    this.allSpecies = this.store.pipe(select((store) => store.interactiveMap.allSpecies));
+    this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
 
     this.selectedModelHeader = this.store.pipe(select((store) => store.interactiveMap.selectedModelHeader));
     this.activeModelHeaders = this.store.pipe(select(activeModels));

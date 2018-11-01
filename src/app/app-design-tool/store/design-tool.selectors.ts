@@ -17,7 +17,7 @@ import {AppState} from '../../store/app.reducers';
 
 
 export const activeModels = createSelector(
-  (state: AppState) => state.designTool.models,
+  (state: AppState) => state.shared.modelHeaders,
   (state: AppState) => state.designTool.selectedSpecies,
   (models, selectedSpecies) => models
     .filter((m) => m.organism_id === selectedSpecies.id.toString()),

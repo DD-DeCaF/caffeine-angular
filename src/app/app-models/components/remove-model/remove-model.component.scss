@@ -12,24 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Action } from '@ngrx/store';
-import { Job } from '../types';
-
-export const FETCH_JOBS = 'FETCH_JOBS';
-export const FETCH_JOBS_SUCCESS = 'FETCH_JOBS_SUCCESS';
-export const FETCH_JOBS_FAILED = 'FETCH_JOBS_FAILED';
-
-export class FetchJobs implements Action {
-  readonly type = FETCH_JOBS;
+.box {
+  background: white;
+  text-align: center;
+  min-width: 400px;
 }
 
-export class FetchJobsSuccess implements Action {
-  readonly type = FETCH_JOBS_SUCCESS;
-  constructor(public payload: Job[]) {}
+.error-icon {
+  font-size: 60px;
+  width: 60px;
+  height: 60px;
 }
 
-export class FetchJobsFailed implements Action {
-  readonly type = FETCH_JOBS_FAILED;
+.text {
+  font-size: 18px;
 }
 
-export type JobsActions = FetchJobs | FetchJobsSuccess | FetchJobsFailed;
+.section-buttons {
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+  font-weight: lighter;
+  font-size: 18px;
+}
+

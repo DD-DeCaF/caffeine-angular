@@ -18,7 +18,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { AppMaterialModule } from '../app-material.module';
 
 import { AppInteractiveMapComponent } from './app-interactive-map.component';
 import { ReactionModule } from './components/app-reaction/app-reaction.module';
@@ -28,9 +27,10 @@ import { AppLegendComponent } from './components/app-legend/app-legend.component
 import { AppGlobalSettingsComponent } from './components/app-global-settings/app-global-settings.component';
 import { SimulationService } from './services/simulation.service';
 import { MapService } from './services/map.service';
-import { ModelService } from '../services/model.service';
-import { WarehouseService } from '../services/warehouse.service';
 import {LoaderComponent} from './components/loader/loader.component';
+import {AppMaterialModule} from '../app-material.module';
+import {ModelService} from '../services/model.service';
+import {WarehouseService} from '../services/warehouse.service';
 import {AppRoutingModule} from '../app-routing.module';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 

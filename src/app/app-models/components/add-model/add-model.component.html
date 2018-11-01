@@ -1,0 +1,97 @@
+<!--Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.-->
+
+<!--Licensed under the Apache License, Version 2.0 (the "License");-->
+<!--you may not use this file except in compliance with the License.-->
+<!--You may obtain a copy of the License at-->
+
+<!--http://www.apache.org/licenses/LICENSE-2.0-->
+
+<!--Unless required by applicable law or agreed to in writing, software-->
+<!--distributed under the License is distributed on an "AS IS" BASIS,-->
+<!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
+<!--See the License for the specific language governing permissions and-->
+<!--limitations under the License.-->
+
+<mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
+  <div class="map-progress">
+    <div class="box">
+      <span class="error" [hidden]="!(error | async)">An error ocurred adding the model. Please try again later.</span>
+      <mat-spinner style="margin:0 auto;" color="primary" *ngIf="loading && !(error | async)"></mat-spinner>
+      <div [hidden]="(error | async) || loading">
+        <h3 class="title">Add new model</h3>
+        <span class="recommend">We recommend that you visit
+          <a href="https://memote.io" target="_blank">memote.io</a>
+          and validate your model.</span>
+        <form class="model-form" [formGroup]="addModelForm" (ngSubmit)="onSubmit()">
+          <mat-form-field color="primary">
+            <mat-label class="title">Name*</mat-label>
+            <input color="primary" id="name" type="text" class="form-control" formControlName="name" matInput>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label class="title">Organism*</mat-label>
+            <mat-select type="text"
+                        id="organism_id"
+                        color="primary"
+                        class="form-control"
+                        formControlName="organism_id">
+              <mat-option color="primary"
+                          class="mat-primary"
+                          [value]="species.id"
+                          *ngFor="let species of (allSpecies | async)">{{species.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label class="title">Project*</mat-label>
+            <mat-select type="text"
+                        color="primary"
+                        class="form-control"
+                        formControlName="project_id">
+              <mat-option color="primary"
+                          class="mat-primary"
+                          [value]="project.id"
+                          *ngFor="let project of (allProjects | async)">{{project.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="upload-file">
+          <mat-label class="label-title">Upload model*</mat-label>
+          </div>
+          <div class="upload-file">
+            <input #inputFile type="file" (change)="fileChange($event)" placeholder="Upload file"
+                   accept={{fileType}} class="form-control">
+            <input type="text"  name="model_serialized" id="model_serialized"
+                   class="form-control hidden-input" formControlName="model_serialized">
+          </div>
+          <p class="error" [hidden]="!modelError">The file is not valid.</p>
+          <mat-form-field>
+            <mat-label class="title">Default Biomass Reaction*</mat-label>
+            <input type="text"
+                   placeholder="Pick one"
+                   aria-label="Number"
+                   matInput
+                   formControlName="default_biomass_reaction"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let reaction of filterReactions(this.addModelForm.value.default_biomass_reaction)"
+                          [value]="reaction">{{reaction}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <div mat-dialog-actions align="end">
+            <button
+              mat-button
+              class="design-button mat-primary"
+              type="submit"
+              color="primary"
+              [disabled]="!addModelForm.valid"
+              #design>Add
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+

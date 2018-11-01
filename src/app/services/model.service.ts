@@ -16,8 +16,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Cobra } from '../app-interactive-map/types';
 import * as types from '../app-interactive-map/types';
+import {EditModel, AddModel} from 'src/app/app-models/types';
 
 @Injectable()
 export class ModelService {
@@ -26,12 +26,23 @@ export class ModelService {
     private http: HttpClient,
   ) {}
 
-  loadModel(modelId: string): Observable<Cobra.Model> {
-    return this.http.get<Cobra.Model>(`${environment.apis.model}/models/${modelId}`);
-
+  loadModel(modelId: number): Observable<types.DeCaF.Model> {
+    return this.http.get<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`);
   }
 
   loadModels(): Observable <types.DeCaF.ModelHeader[]> {
     return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_storage}/models`);
+  }
+
+  editModel(modelForm: EditModel): Observable <types.DeCaF.Model> {
+    return this.http.put<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelForm.id}`, modelForm);
+  }
+
+  removeModel(modelId: number): Observable <types.DeCaF.Model> {
+    return this.http.delete<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`);
+  }
+
+  uploadModel(model: AddModel): Observable <types.DeCaF.Model> {
+    return this.http.post<types.DeCaF.Model>(`${environment.apis.model_storage}/models`, model);
   }
 }

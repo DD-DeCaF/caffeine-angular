@@ -39,7 +39,7 @@ export class JobListComponent implements OnInit {
 
   ngOnInit(): void {
     this.jobs = this.store.pipe(
-      select((state) => state.jobs.jobs),
+      select((state) => state.shared.jobs),
       map((jobs) => {
         console.log(jobs);
         return jobs;
