@@ -25,6 +25,7 @@ import {environment} from '../../environments/environment';
 import {AppState} from '../store/app.reducers';
 import {Logout, Login} from './store/session.actions';
 import {AUTHORIZATION_TOKEN, REFRESH_TOKEN} from './consts';
+import {FetchModels, FetchProjects} from '../store/shared.actions';
 
 class UserCredentials {
   constructor(
@@ -132,6 +133,8 @@ export class SessionService {
         this.store.dispatch(new Login());
         localStorage.setItem(AUTHORIZATION_TOKEN, response.jwt);
         localStorage.setItem(REFRESH_TOKEN, JSON.stringify(response.refresh_token));
+        this.store.dispatch(new FetchProjects());
+        this.store.dispatch(new FetchModels());
         resolve();
       }, (error) => {
         reject(error);
