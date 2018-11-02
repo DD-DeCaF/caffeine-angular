@@ -18,7 +18,7 @@ import { Store } from '@ngrx/store';
 
 import { AppState } from '../../../../../store/app.reducers';
 import { ReactionOperation } from '../../../../store/interactive-map.actions';
-import { HydratedCard, Cobra, Bound, OperationDirection } from '../../../../types';
+import { HydratedCard, Cobra, BoundedReaction, OperationDirection } from '../../../../types';
 
 import { AppBoundsDetailComponent } from '../app-bounds-detail/app-bounds-detail.component';
 import { AppPanelComponent } from '../app-panel/app-panel.component';
@@ -65,7 +65,7 @@ export class AppBoundsComponent implements AfterViewInit {
         }));
     });
 
-    this.detail.remove.subscribe((item: Bound) => {
+    this.detail.remove.subscribe((item: BoundedReaction) => {
       this.store.dispatch(new ReactionOperation({
         item: item,
         operationTarget: 'bounds',
