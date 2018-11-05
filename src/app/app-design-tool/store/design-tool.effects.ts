@@ -21,6 +21,7 @@ import {combineLatest, Observable} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
 import {WarehouseService} from '../../services/warehouse.service';
 import * as sharedActions from '../../store/shared.actions';
+import {NinjaService} from '../../services/ninja-service';
 
 
 @Injectable()
@@ -66,11 +67,20 @@ export class DesignToolEffects {
   startDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.START_DESIGN),
     switchMap((action: fromActions.StartDesign) =>
-      this.warehouseService.startDesign(action.payload)),
-    map(() => new sharedActions.FetchJobs()));
+      this.ninjaService.postPredict(action.payload)),
+    map(() => new fromActions.FetchJobsDesign()));
+
+ /* @Effect()
+  fetchJobsDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_PRODUCTS_DESIGN),
+    switchMap(() =>
+      this.speciesService.loadJobs()),
+    map((payload: string[]) => new SetJobsDesign(payload)),
+  );*/
 
   constructor(
     private actions$: Actions,
     private warehouseService: WarehouseService,
+    private ninjaService: NinjaService,
   ) {}
 }

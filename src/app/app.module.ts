@@ -56,6 +56,7 @@ import {DesignToolEffects} from './app-design-tool/store/design-tool.effects';
 
 // Jobs
 import { JobsModule } from './jobs/jobs.module';
+import {NinjaService} from './services/ninja-service';
 // End jobs
 
 // Models
@@ -128,6 +129,8 @@ export class RavenErrorHandler implements ErrorHandler {
     }),
   ],
   providers: [
+    SessionService,
+    NinjaService,
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],
