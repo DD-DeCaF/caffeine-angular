@@ -17,6 +17,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList, mapBiggReactionToCobra} from '../../utils';
+import {debug} from '../../logger';
 
 
 class IdGen {
@@ -36,12 +37,9 @@ export const idGen = new IdGen();
 export interface InteractiveMapState {
   playing: boolean;
   selectedCardId: string;
-  allSpecies: Species[];
   selectedSpecies: Species;
-  modelHeaders: DeCaF.ModelHeader[];
   selectedModelHeader: DeCaF.ModelHeader;
   selectedModel: DeCaF.Model;
-  maps: MapItem[];
   selectedMap: MapItem;
   mapData: PathwayMap;
   cards: {
@@ -65,12 +63,9 @@ export const emptyCard: Card = {
 export const initialState: InteractiveMapState = {
   playing: false,
   selectedCardId: '0',
-  allSpecies: [],
   selectedSpecies: null,
-  modelHeaders: [],
   selectedModelHeader: null,
   selectedModel: null,
-  maps: [],
   selectedMap: null,
   mapData: null,
   cards: {
@@ -114,21 +109,12 @@ export function interactiveMapReducer(
   state: InteractiveMapState = initialState,
   action: fromInteractiveMapActions.InteractiveMapActions,
 ): InteractiveMapState {
+  debug('Action map:', action);
   switch (action.type) {
-    case fromInteractiveMapActions.SET_SPECIES:
-      return {
-        ...state,
-        allSpecies: action.payload,
-      };
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
         ...state,
         selectedSpecies: action.payload,
-      };
-    case fromInteractiveMapActions.SET_MODELS:
-      return {
-        ...state,
-        modelHeaders: action.payload,
       };
     case fromInteractiveMapActions.SET_MODEL:
       return {
@@ -139,11 +125,6 @@ export function interactiveMapReducer(
       return {
         ...state,
         selectedModel: action.payload,
-      };
-    case fromInteractiveMapActions.SET_MAPS:
-      return {
-        ...state,
-        maps: action.payload,
       };
     case fromInteractiveMapActions.MAP_FETCHED:
       return {

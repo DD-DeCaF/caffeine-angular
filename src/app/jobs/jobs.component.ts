@@ -12,19 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../store/app.reducers';
-import { FetchJobs } from './store/jobs.actions';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-jobs',
   template: `<router-outlet></router-outlet>`,
 })
-export class JobsComponent implements OnInit {
-  constructor(private store: Store<AppState>) {}
-
-  ngOnInit(): void {
-    this.store.dispatch(new FetchJobs());
-  }
+export class JobsComponent {
 }

@@ -43,7 +43,7 @@ export const getSelectedCard = createSelector(
 );
 
 export const mapItemsByModel = createSelector(
-  (state: AppState) => state.interactiveMap.maps,
+  (state: AppState) => state.shared.maps,
   (state: AppState) => state.interactiveMap.selectedModelHeader,
   (mapItems, selectedModelHeader) => {
     // Project the map
@@ -69,7 +69,7 @@ export const mapItemsByModel = createSelector(
 );
 
 export const activeModels = createSelector(
-  (state: AppState) => state.interactiveMap.modelHeaders,
+  (state: AppState) => state.shared.modelHeaders,
   (state: AppState) => state.interactiveMap.selectedSpecies,
   (models, selectedSpecies) => models
     .filter((m) => selectedSpecies && (m.organism_id === selectedSpecies.id.toString())),

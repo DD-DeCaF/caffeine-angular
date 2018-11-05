@@ -19,8 +19,8 @@ import {catchError, concatMapTo, map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
 import {combineLatest, Observable, of} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
-import {ModelService} from '../../services/model.service';
 import {WarehouseService} from '../../services/warehouse.service';
+import * as sharedActions from '../../store/shared.actions';
 import {NinjaService} from '../../services/ninja-service';
 import {StatePrediction} from '../types';
 import {SetLastJobDesign} from './design-tool.actions';
@@ -37,40 +37,24 @@ export class DesignToolEffects {
   initDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.INIT_DESIGN),
     concatMapTo([
-      new fromActions.FetchSpeciesDesign(),
-      new fromActions.FetchModelsDesign(),
+      new sharedActions.FetchSpecies(),
+      new sharedActions.FetchModels(),
       new fromActions.FetchProductsDesign(),
     ]),
   );
 
   @Effect()
-  fetchSpeciesDesign: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_SPECIES_DESIGN),
-    switchMap(() =>
-      this.warehouseService.getOrganisms()),
-    map((payload: types.Species[]) => new fromActions.SetSpeciesDesign(payload)),
-  );
-
-  @Effect()
   setSpeciesDesign: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SET_SPECIES_DESIGN),
-    map((action: fromActions.SetSpeciesDesign) => new fromActions.SetSelectedSpeciesDesign(WarehouseService.preferredSpecies(action.payload))));
-
-  @Effect()
-  fetchModelsDesign: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_MODELS_DESIGN),
-    switchMap(() =>
-      this.modelService.loadModels()),
-    map((models: types.DeCaF.ModelHeader[]) => new fromActions.SetModelsDesign(models)),
-  );
+    ofType(sharedActions.SET_SPECIES),
+    map((action: sharedActions.SetSpecies) => new fromActions.SetSelectedSpeciesDesign(WarehouseService.preferredSpecies(action.payload))));
 
   @Effect()
   selectFirstModel: Observable<Action> = combineLatest(
-    this.actions$.pipe(ofType(fromActions.FETCH_SPECIES_DESIGN)),
+    this.actions$.pipe(ofType(sharedActions.FETCH_SPECIES)),
     this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES_DESIGN)),
-    this.actions$.pipe(ofType(fromActions.SET_MODELS_DESIGN)),
+    this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
   ).pipe(
-    map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpeciesDesign, fromActions.SetModelsDesign]) => {
+    map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpeciesDesign, sharedActions.SetModels]) => {
       const selectedModel = models
         .filter((model) => model.organism_id === selectedOrgId.toString())[0];
       return new fromActions.SetModelDesign(selectedModel);
@@ -109,7 +93,6 @@ export class DesignToolEffects {
 
   constructor(
     private actions$: Actions,
-    private modelService: ModelService,
     private warehouseService: WarehouseService,
     private ninjaService: NinjaService,
   ) {}

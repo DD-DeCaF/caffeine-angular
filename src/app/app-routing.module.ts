@@ -17,10 +17,12 @@ import {Route, RouterModule} from '@angular/router';
 
 import {AppHomeComponent} from './app-home/app-home.component';
 import {AppWelcomeComponent} from './app-welcome/app-welcome.component';
+import {ProjectsComponent} from './projects/projects.component';
 import {AppInteractiveMapComponent} from './app-interactive-map/app-interactive-map.component';
 import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {DesignToolComponent} from './app-design-tool/design-tool.component';
 import { jobsRoutes } from './jobs/jobs-routing.module';
+import {AppModelsComponent} from './app-models/app-models.component';
 
 
 const appRoutes: Route[] = [
@@ -33,6 +35,10 @@ const appRoutes: Route[] = [
         component: AppWelcomeComponent,
       },
       {
+        path: 'projects',
+        component: ProjectsComponent,
+      },
+      {
         path: 'pathways',
         component: DesignToolComponent,
       },
@@ -41,6 +47,10 @@ const appRoutes: Route[] = [
         component: AppInteractiveMapComponent,
       },
       ...jobsRoutes,
+      {
+        path: 'models',
+        component: AppModelsComponent,
+      },
       {
         path: '**',
         component: AppNotFoundComponent,

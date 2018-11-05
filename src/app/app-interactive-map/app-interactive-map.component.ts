@@ -14,21 +14,20 @@
 
 import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {Observable, Subject} from 'rxjs';
-import {withLatestFrom} from 'rxjs/operators';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
 import {Card, OperationDirection, ReactionState} from './types';
 import escherSettingsConst from './escherSettings';
-import {AppState} from '../store/app.reducers';
 import * as fromActions from './store/interactive-map.actions';
-import {objectFilter} from '../utils';
 import {getSelectedCard} from './store/interactive-map.selectors';
-import {selectNotNull} from '../framework-extensions';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {isLoading} from './components/loader/store/loader.selectors';
+import {objectFilter} from '../utils';
+import {AppState} from '../store/app.reducers';
+import {selectNotNull} from '../framework-extensions';
+import {combineLatest, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
@@ -39,8 +38,10 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
   styleUrls: ['./app-interactive-map.component.scss'],
 })
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
+
+  private builder: escher.BuilderObject;
   private builderSubject = new Subject<escher.BuilderObject>();
-  public map: Observable<escher.PathwayMap>;
+  public map: escher.PathwayMap;
   public loading = true;
   private card: Card;
 
@@ -64,6 +65,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         this.handleObjectiveDirection(args);
       },
     },
+    first_load_callback: () => this.firstLoadEscher(),
   };
 
   constructor(
@@ -74,18 +76,14 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new fromActions.FetchSpecies());
-    this.store.dispatch(new fromActions.FetchMaps());
-    this.store.dispatch(new fromActions.FetchModels());
-
     const builderObservable = this.builderSubject.asObservable();
-    this.store.pipe(
-      selectNotNull((store) => store.interactiveMap.mapData),
-      withLatestFrom(builderObservable),
+
+    combineLatest(
+      this.store.pipe(
+        selectNotNull((store) => store.interactiveMap.mapData)),
+      builderObservable,
     ).subscribe(([map, builder]) => {
-      this.loading = true;
       builder.load_map(map);
-      this.loading = false;
     });
 
     const selectedCard = this.store.pipe(
@@ -93,8 +91,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     );
 
     // Detect changes in model only..
-    selectedCard.pipe(
-      withLatestFrom(builderObservable),
+    combineLatest(
+      selectedCard,
+      builderObservable,
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
       this.card = card;
@@ -145,14 +144,12 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     const element = d3Select(this.elRef.nativeElement.querySelector('.escher-builder'));
-    this.builderSubject.next(
-      escher.Builder(
-        null,
-        null,
-        null,
-        element,
-        this.escherSettings,
-      ),
+    this.builder = escher.Builder(
+      null,
+      null,
+      null,
+      element,
+      this.escherSettings,
     );
   }
 
@@ -207,16 +204,19 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   upperBound(reactionId: string): number {
     const reaction = this.card.bounds.find((r) => r.reaction.id === reactionId);
-    return reaction ? reaction.upperBound : this.card.model.reactions.find((r) => r.id === reactionId).upper_bound;
+    const reactionModel = this.card.model.reactions.find((r) => r.id === reactionId);
+    return reaction ? reaction.upperBound : reactionModel ? reactionModel.upper_bound : null;
   }
 
   lowerBound(reactionId: string): number {
     const reaction = this.card.bounds.find((r) => r.reaction.id === reactionId);
-    return reaction ? reaction.lowerBound : this.card.model.reactions.find((r) => r.id === reactionId).lower_bound;
+    const reactionModel = this.card.model.reactions.find((r) => r.id === reactionId);
+    return reaction ? reaction.lowerBound : reactionModel ? reactionModel.lower_bound : null;
   }
 
   reactionState(reactionId: string): ReactionState {
     return {
+      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
       knockout: this.card.knockoutReactions.includes(reactionId),
       objective: this.card.objectiveReaction,
       bounds: {
@@ -224,5 +224,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         upperbound: this.upperBound(reactionId),
       },
     };
+  }
+
+  firstLoadEscher(): void {
+    this.builderSubject.next(this.builder);
   }
 }

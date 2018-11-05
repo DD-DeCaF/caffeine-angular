@@ -13,9 +13,10 @@
 // limitations under the License.
 
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {map, share} from 'rxjs/operators';
 import {stringify} from 'query-string';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -24,6 +25,7 @@ import {environment} from '../../environments/environment';
 import {AppState} from '../store/app.reducers';
 import {Logout, Login} from './store/session.actions';
 import {AUTHORIZATION_TOKEN, REFRESH_TOKEN} from './consts';
+import {FetchModels, FetchProjects} from '../store/shared.actions';
 
 class UserCredentials {
   constructor(
@@ -47,9 +49,6 @@ interface AuthAPIResponse {
   };
 }
 
-// TODO enforce key type somehow
-interface ProviderMap {[key: string]: firebase.auth.AuthProvider; }
-
 const firebaseConfig = environment.firebase;
 firebase.initializeApp({
   apiKey: firebaseConfig.api_key,
@@ -62,64 +61,58 @@ firebase.initializeApp({
 
 @Injectable()
 export class SessionService {
-  private trustedURLs: Array<string> = environment.trustedURLs;
-
-  public readonly GOOGLE: string = 'google';
-  public readonly GITHUB: string = 'github';
-  public readonly TWITTER: string = 'twitter';
-
-  private providers: ProviderMap = {
-    [this.GOOGLE]: new firebase.auth.GoogleAuthProvider(),
-    [this.GITHUB]: new firebase.auth.GithubAuthProvider(),
-    [this.TWITTER]: new firebase.auth.TwitterAuthProvider(),
-  };
+  private googleProvider = new firebase.auth.GoogleAuthProvider();
+  private githubProvider = new firebase.auth.GithubAuthProvider();
+  private twitterProvider = new firebase.auth.TwitterAuthProvider();
 
   constructor(
     private http: HttpClient,
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+  ) {
+    this.githubProvider.addScope('user:email');
+    this.googleProvider.addScope('email');
   }
 
-  public expired(): boolean {
-    return !localStorage.getItem(REFRESH_TOKEN) || this.expires() <= new Date();
+  public hasToken(): boolean {
+    return localStorage.getItem(AUTHORIZATION_TOKEN) !== null && localStorage.getItem(REFRESH_TOKEN) !== null;
   }
 
-  public expires(): Date {
-    return new Date(JSON.parse(localStorage.getItem(REFRESH_TOKEN)).exp * 1000);
+  public refreshExpired(): boolean {
+    return new Date(JSON.parse(localStorage.getItem(REFRESH_TOKEN)).exp * 1000) <= new Date();
   }
 
   public authorizationExpired(): boolean {
-    return !localStorage.getItem(AUTHORIZATION_TOKEN) || this.authorizationExpires() <= new Date();
+    // Buffer is the number of seconds before *actual* expiry when the token will be considered expired, to account for
+    // clock skew and service-to-service requests delays.
+    const buffer = 30;
+    const jwt = JSON.parse(atob(localStorage.getItem(AUTHORIZATION_TOKEN).split('.')[1]));
+    return new Date((jwt.exp - buffer) * 1000) <= new Date();
   }
 
-  public authorizationExpires(): Date {
-    const payload = JSON.parse(atob(localStorage.getItem(AUTHORIZATION_TOKEN).split('.')[1]));
-    return new Date(payload.exp * 1000);
-  }
-
-
-  public refresh(): Subscription {
+  public refresh(): Observable<string> {
     const refreshToken = JSON.parse(localStorage.getItem(REFRESH_TOKEN)).val;
-    return this.http.post(`${environment.apis.iam}/refresh`, `refresh_token=${refreshToken}`, {
+    const refresh$ = this.http.post(`${environment.apis.iam}/refresh`, `refresh_token=${refreshToken}`, {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    }).subscribe((response: HttpResponse<string>) => {
-      localStorage.setItem(AUTHORIZATION_TOKEN, response.body);
+    }).pipe(
+      map((res: {jwt: string}) => res.jwt),
+      share(),
+    );
+
+    refresh$.subscribe((token: string) => {
+      localStorage.setItem(AUTHORIZATION_TOKEN, token);
     }, () => {
       console.log('Session: Token refresh failure');
     });
+
+    return refresh$;
   }
 
-  public github = () => this.signInWithSocial(this.GITHUB);
-  public google = () => this.signInWithSocial(this.GOOGLE);
-  public twitter = () => this.signInWithSocial(this.TWITTER);
+  public github = () => this.signInWithSocial(this.githubProvider);
+  public google = () => this.signInWithSocial(this.googleProvider);
+  public twitter = () => this.signInWithSocial(this.twitterProvider);
 
-  private signInWithSocial(providerKey: string): Promise<void | Subscription> {
+  private signInWithSocial(provider: firebase.auth.AuthProvider): Promise<void | Subscription> {
     firebase.auth().signOut();
-    const provider = this.providers[providerKey];
-    if (provider instanceof firebase.auth.GithubAuthProvider) {
-        provider.addScope('user:email');
-    } else if (provider instanceof firebase.auth.GoogleAuthProvider) {
-      provider.addScope('email');
-    }
     return firebase.auth().signInWithPopup(provider).then((result) => {
         return firebase.auth().currentUser.getIdToken(true).then((idToken) => {
             const credentials = new FirebaseCredentials(result.user.uid, idToken);
@@ -140,15 +133,13 @@ export class SessionService {
         this.store.dispatch(new Login());
         localStorage.setItem(AUTHORIZATION_TOKEN, response.jwt);
         localStorage.setItem(REFRESH_TOKEN, JSON.stringify(response.refresh_token));
+        this.store.dispatch(new FetchProjects());
+        this.store.dispatch(new FetchModels());
         resolve();
       }, (error) => {
         reject(error);
       });
     });
-  }
-
-  public invalidate(): void {
-    this.logout();
   }
 
   public logout(next: string = null): void {
@@ -158,7 +149,10 @@ export class SessionService {
   }
 
   public isTrustedURL(url: string): boolean {
-    return Array.from(this.trustedURLs)
-      .some((trustedURL) => url.startsWith(trustedURL));
+    return environment.trustedURLs.some((trustedURL) => url.startsWith(trustedURL));
+  }
+
+  public isRefreshURL(url: string): boolean {
+    return url === `${environment.apis.iam}/refresh`;
   }
 }
