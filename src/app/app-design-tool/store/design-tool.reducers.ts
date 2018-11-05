@@ -24,6 +24,7 @@ export interface DesignToolState {
   products: typesDesign.Product[];
   designStarted: boolean;
   jobs: string[];
+  lastJobId: string;
 }
 
 export const initialState: DesignToolState = {
@@ -34,6 +35,7 @@ export const initialState: DesignToolState = {
   products: [],
   designStarted: false,
   jobs: null,
+  lastJobId: null,
 };
 
 
@@ -77,6 +79,12 @@ export function designToolReducer(
         ...state,
         jobs: action.payload,
       };
+    case fromDesingToolActions.SET_LAST_JOB_DESIGN:
+      return {
+        ...state,
+        lastJobId: action.payload.id,
+      };
+
     case fromDesingToolActions.ABORT_JOB_DESIGN:
       return {
         ...state,

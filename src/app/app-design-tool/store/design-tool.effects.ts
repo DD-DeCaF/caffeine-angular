@@ -15,13 +15,19 @@
 import { Injectable } from '@angular/core';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {concatMapTo, map, switchMap} from 'rxjs/operators';
+import {catchError, concatMapTo, map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
-import {combineLatest, Observable} from 'rxjs';
+import {combineLatest, Observable, of} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
 import {ModelService} from '../../services/model.service';
 import {WarehouseService} from '../../services/warehouse.service';
 import {NinjaService} from '../../services/ninja-service';
+import {StatePrediction} from '../types';
+import {SetLastJobDesign} from './design-tool.actions';
+import * as loaderActions from '../../app-interactive-map/components/loader/store/loader.actions';
+import {environment} from '../../../environments/environment.staging';
+import {PathwayMap} from "@dd-decaf/escher";
+import {FetchJobs} from '../../jobs/store/jobs.actions';
 
 
 @Injectable()
@@ -84,7 +90,14 @@ export class DesignToolEffects {
     ofType(fromActions.START_DESIGN),
     switchMap((action: fromActions.StartDesign) =>
       this.ninjaService.postPredict(action.payload)),
-    map(() => new fromActions.FetchJobsDesign()));
+    map((payload: StatePrediction) => new SetLastJobDesign(payload),
+    ));
+
+  @Effect()
+  setLastJobDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_LAST_JOB_DESIGN),
+    map (() => new FetchJobs()),
+  );
 
  /* @Effect()
   fetchJobsDesign: Observable<Action> = this.actions$.pipe(
