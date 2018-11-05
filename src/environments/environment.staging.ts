@@ -22,7 +22,7 @@ export const environment: Configuration = {
     model_storage: 'https://api-staging.dd-decaf.eu/mstorage',
     map: 'https://api-staging.dd-decaf.eu/maps',
     bigg: 'https://api.dd-decaf.eu/bigg',
-    metabolic_ninja: 'http://0.0.0.0:8000/',
+    metabolic_ninja: 'http://0.0.0.0:8000',
     warehouse: 'https://api-staging.dd-decaf.eu/warehouse',
   },
   GA: {

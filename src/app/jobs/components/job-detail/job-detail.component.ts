@@ -42,7 +42,7 @@ export class JobDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const jobId = Number(this.route.snapshot.params['id']);
+    const jobId = this.route.snapshot.params.id;
     this.job$ = this.store.pipe(
       selectNotNull(getJob, {jobId}),
       map((a) => {

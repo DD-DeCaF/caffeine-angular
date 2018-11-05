@@ -24,10 +24,6 @@ import * as sharedActions from '../../store/shared.actions';
 import {NinjaService} from '../../services/ninja-service';
 import {StatePrediction} from '../types';
 import {SetLastJobDesign} from './design-tool.actions';
-import * as loaderActions from '../../app-interactive-map/components/loader/store/loader.actions';
-import {environment} from '../../../environments/environment.staging';
-import {PathwayMap} from "@dd-decaf/escher";
-import {FetchJobs} from '../../jobs/store/jobs.actions';
 
 
 @Injectable()
@@ -80,7 +76,7 @@ export class DesignToolEffects {
   @Effect()
   setLastJobDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_LAST_JOB_DESIGN),
-    map (() => new FetchJobs()),
+    map (() => new sharedActions.FetchJobs()),
   );
 
  /* @Effect()

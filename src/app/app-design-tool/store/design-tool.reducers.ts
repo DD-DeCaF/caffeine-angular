@@ -60,23 +60,11 @@ export function designToolReducer(
         ...state,
         designStarted: true,
       };
-    /*case fromDesingToolActions.ABORT_JOB_DESIGN:
-    case fromDesingToolActions.SET_JOBS_DESIGN:
-      return {
-        ...state,
-        jobs: action.payload,
-      };
-    
-    case fromDesingToolActions.ABORT_JOB_DESIGN:
-      return {
-        ...state,
-        jobs: state.jobs.filter((job) => job !== action.payload),
-      };*/
     case fromDesingToolActions.SET_LAST_JOB_DESIGN:
       return {
         ...state,
         lastJobId: action.payload.id,
-      };  
+      };
     default:
       return state;
   }

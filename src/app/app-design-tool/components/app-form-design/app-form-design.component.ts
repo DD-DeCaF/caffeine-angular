@@ -30,6 +30,7 @@ import {activeModels} from '../../store/design-tool.selectors';
 import * as typesDesign from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {withLatestFrom} from 'rxjs/operators';
+import {Project} from '../../../projects/types';
 
 
 @Component({
@@ -53,6 +54,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   public selectedModel: Observable<types.DeCaF.ModelHeader>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
+  public allProjects: Observable<Project[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -61,11 +63,12 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.designForm = this.fb.group({
       species: ['', Validators.required],
       product: ['', Validators.required],
+      project_id: ['', Validators.required],
       bigg: [''],
       kegg: [''],
       rhea: [''],
       model: [''],
-      number_pathways: [''],
+      max_predictions: [''],
     });
   }
 
@@ -80,6 +83,8 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.selectedModel = this.store.pipe(select((store) => store.designTool.selectedModel));
     this.models = this.store.pipe(select(activeModels));
 
+    this.allProjects = this.store.pipe(select((store) => store.shared.projects));
+
     this.subscription = this.store.select('designTool')
       .subscribe(
         (data) => {
@@ -90,11 +95,12 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
                 name: 'vanillin',
                 id: '5',
               },
+              project_id: 0,
               bigg: false,
               kegg: false,
               rhea: false,
               model: data.selectedModel,
-              number_pathways: 10,
+              max_predictions: 10,
             });
           }
         },

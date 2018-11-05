@@ -28,9 +28,10 @@ export class NinjaService {
 
   postPredict(design: typesDesign.Design): Observable<typesDesign.StatePrediction> {
     const desingPredict = {
-      max_predictions: design.number_pathways,
       model_name: design.model.name,
       product_name: design.product.name,
+      project_id: design.project_id || null,
+      ...design,
     };
     return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict`, desingPredict);
   }

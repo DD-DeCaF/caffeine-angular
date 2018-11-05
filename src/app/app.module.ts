@@ -66,6 +66,7 @@ import {SharedEffects} from './store/shared.effects';
 // End models
 
 import { ProjectsModule } from './projects/projects.module';
+import {SessionService} from './session/session.service';
 
 if (environment.sentry) {
   Raven

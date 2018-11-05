@@ -28,6 +28,7 @@ export interface Design {
   rhea: boolean;
   model: types.DeCaF.Model;
   number_pathways: 10;
+  project_id: number;
 }
 
 export interface StatePrediction{
