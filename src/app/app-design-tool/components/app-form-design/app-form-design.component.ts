@@ -28,6 +28,8 @@ import {
 } from '../../store/design-tool.actions';
 import {activeModels} from '../../store/design-tool.selectors';
 import * as typesDesign from '../../types';
+import {selectNotNull} from '../../../framework-extensions';
+import {withLatestFrom} from 'rxjs/operators';
 
 
 @Component({
@@ -117,7 +119,11 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    this.router.navigateByUrl('/jobs/1');
     this.store.dispatch(new StartDesign(this.designForm.value));
+    this.store.pipe(
+      selectNotNull((store) => store.designTool.lastJobId),
+    ).subscribe((id) => {
+      this.router.navigateByUrl(`/jobs/${id}`);
+    });
   }
 }

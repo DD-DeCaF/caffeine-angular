@@ -26,17 +26,17 @@ export class NinjaService {
     private http: HttpClient,
   ) {}
 
-  postPredict(design: typesDesign.Design): Observable<void> {
+  postPredict(design: typesDesign.Design): Observable<typesDesign.StatePrediction> {
     const desingPredict = {
       max_predictions: design.number_pathways,
       model_name: design.model.name,
       product_name: design.product.name,
     };
-    return this.http.post<void>(`${environment.apis.metabolic_ninja}/predict`, desingPredict);
+    return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict`, desingPredict);
   }
 
 
-  getPredict(task_id: number): Observable<typesDesign.State> {
-    return this.http.get<typesDesign.State>(`${environment.apis.warehouse}/predict/${task_id}`);
+  getPredict(task_id: number): Observable<typesDesign.StatePrediction> {
+    return this.http.get<typesDesign.StatePrediction>(`${environment.apis.warehouse}/predict/${task_id}`);
   }
 }

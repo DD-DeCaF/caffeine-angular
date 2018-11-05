@@ -30,7 +30,7 @@ export interface Design {
   number_pathways: 10;
 }
 
-export interface State{
+export interface StatePrediction{
   id: string;
   state: string;
 }
