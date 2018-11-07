@@ -16,9 +16,11 @@ import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 
 import { Job } from './types';
-import { delay, concatMap } from 'rxjs/operators';
+import {delay, concatMap, map} from 'rxjs/operators';
+import {NinjaService} from '../services/ninja-service';
+import {StatePrediction} from '../app-design-tool/types';
 
-const data: Job[] = [{
+/*const data: Job[] = [{
   id: 1,
   started: new Date('2018-09-18T12:10:06'),
   completed: null,
@@ -79,9 +81,9 @@ const data: Job[] = [{
     model: 'iJO1366',
     numberOfPathways: 10,
   },
-}];
+}];*/
 
-const [firstJob, ...restjobs] = data;
+const [firstJob, ...restjobs] = JSON.parse(localStorage.getItem('jobs')) || [];
 const newData: Job[] = [{
   ...firstJob,
   state: 'completed',
@@ -97,18 +99,33 @@ const getDelay = (() => {
 
 @Injectable()
 export class JobsService {
-  constructor() {}
+  constructor(public ninjaService: NinjaService) {}
 
   getJobs(): Observable<Job[]> {
     return from([
-        data,
-        newData,
+      JSON.parse(localStorage.getItem('jobs')) || [],
     ])
     .pipe(
-      concatMap((x) => of(x)
-        .pipe(
-          delay(getDelay()),
-          )),
+      map((jobs) => this.checkJobs(jobs)),
+      concatMap((x) => of(x),
+      ),
     );
+  }
+
+  // tslint:disable-next-line:no-any
+  checkJobs(jobs: Job[]): Job[] {
+    console.log('CHECK JOBS', jobs);
+    const jobsLocalStorage = <Job[]> JSON.parse(localStorage.getItem('jobs'));
+    for (let i = 0; i < jobs.length; i++) {
+    // tslint:disable-next-line:no-any
+      this.ninjaService.getPredict(jobs[i].id).subscribe((jobPrediction: StatePrediction) => {
+        const jobIndex = jobsLocalStorage.findIndex(((job) => job.id === jobs[i].id));
+        // tslint:disable-next-line
+        jobs[jobIndex].state = jobPrediction.state;
+        localStorage.setItem('jobs', JSON.stringify(jobsLocalStorage));
+      });
+    }
+    return jobs;
+
   }
 }

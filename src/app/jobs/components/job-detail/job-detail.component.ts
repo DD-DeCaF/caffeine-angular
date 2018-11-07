@@ -23,6 +23,8 @@ import { getJob } from '../../store/jobs.selectors';
 import { selectNotNull } from '../../../framework-extensions';
 import tableData from './designTable.json';
 import { map } from 'rxjs/operators';
+import {JobsService} from '../../jobs.service';
+import {NinjaService} from '../../../services/ninja-service';
 
 
 @Component({
@@ -34,18 +36,31 @@ export class JobDetailComponent implements OnInit {
   job$: Observable<Job>;
   loadError = false;
   // @ts-ignore
-  tableData: PathwayPredictionResult[] = <PathwayPredictionResult[]>tableData;
+  public tableData: PathwayPredictionResult[] = <PathwayPredictionResult[]>tableData;
 
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
+    private ninjaService: NinjaService,
   ) {}
 
   ngOnInit(): void {
     const jobId = this.route.snapshot.params.id;
+    console.log('JOB ID', jobId);
     this.job$ = this.store.pipe(
       selectNotNull(getJob, {jobId}),
       map((a) => {
+        // tslint:disable-next-line:no-any
+        this.ninjaService.getPredict(jobId).subscribe((jobPrediction) => {
+          this.tableData = (<any>jobPrediction).result || [];
+            const jobs = JSON.parse(localStorage.getItem('jobs'));
+            // Find index of specific object using findIndex method.
+            const jobIndex = jobs.findIndex(((job) => job.id === jobId));
+            console.log('Before update: ', jobs[jobIndex]);
+            jobs[jobIndex].state = (<any>jobPrediction).state;
+            localStorage.setItem('jobs', JSON.stringify(jobs));
+          console.log('TABLE DATA THIS', JSON.stringify(this.tableData));
+        });
         console.log('AAAAA', a);
         return a;
       }),
@@ -65,7 +80,7 @@ export class JobDetailComponent implements OnInit {
     if (!confirm(`Are you sure you wish to abort job ${job.id}: ${job.data.type}?`)) {
       return;
     }
-    job.state = 'aborted';
+    job.state = 'REVOKED';
     job.completed = new Date();
     console.log(`Cancel job: ${job.id}`);
   }

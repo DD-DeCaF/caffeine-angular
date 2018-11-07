@@ -16,7 +16,7 @@ export interface Job {
   id: number;
   started: Date;
   completed?: Date;
-  state: 'running' | 'errored' | 'completed' | 'aborted';
+  state: string;
   error?: string;
   data: PathwayPrediction;
 }

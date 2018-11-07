@@ -20,6 +20,7 @@ import { Store, select } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 
 import { AppState } from '../../../store/app.reducers';
+import {FetchJobs} from '../../../store/shared.actions';
 
 @Component({
   selector: 'app-job-list',
@@ -38,6 +39,7 @@ export class JobListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.store.dispatch(new FetchJobs());
     this.jobs = this.store.pipe(
       select((state) => state.shared.jobs),
       map((jobs) => {

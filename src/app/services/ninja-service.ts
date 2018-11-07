@@ -38,6 +38,6 @@ export class NinjaService {
 
 
   getPredict(task_id: number): Observable<typesDesign.StatePrediction> {
-    return this.http.get<typesDesign.StatePrediction>(`${environment.apis.warehouse}/predict/${task_id}`);
+    return this.http.get<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict/${task_id}`);
   }
 }

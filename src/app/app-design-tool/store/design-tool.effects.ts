@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, concatMapTo, map, switchMap} from 'rxjs/operators';
@@ -70,26 +70,55 @@ export class DesignToolEffects {
     ofType(fromActions.START_DESIGN),
     switchMap((action: fromActions.StartDesign) =>
       this.ninjaService.postPredict(action.payload)),
-    map((payload: StatePrediction) => new SetLastJobDesign(payload),
-    ));
+    map((payload: StatePrediction) => {
+      const jobs = JSON.parse(localStorage.getItem('jobs'));
+      if (jobs) {
+        jobs.push({
+          id: payload.id,
+          started: new Date(),
+          completed: null,
+          state: payload.state,
+          data: {
+            type: 'Pathway prediction',
+            ...payload.configuration,
+          },
+        });
+        localStorage.setItem('jobs', JSON.stringify(jobs));
+      } else {
+        localStorage.setItem('jobs', JSON.stringify([{
+          id: payload.id,
+          started: new Date(),
+          completed: null,
+          state: payload.state,
+          data: {
+            type: 'Pathway prediction',
+            ...payload.configuration,
+          },
+        }]));
+      }
+      return new SetLastJobDesign(payload);
+    }));
 
   @Effect()
   setLastJobDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_LAST_JOB_DESIGN),
-    map (() => new sharedActions.FetchJobs()),
+    map(() => {
+      return new sharedActions.FetchJobs();
+    }),
   );
 
- /* @Effect()
-  fetchJobsDesign: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.FETCH_PRODUCTS_DESIGN),
-    switchMap(() =>
-      this.speciesService.loadJobs()),
-    map((payload: string[]) => new SetJobsDesign(payload)),
-  );*/
+  /* @Effect()
+   fetchJobsDesign: Observable<Action> = this.actions$.pipe(
+     ofType(fromActions.FETCH_PRODUCTS_DESIGN),
+     switchMap(() =>
+       this.speciesService.loadJobs()),
+     map((payload: string[]) => new SetJobsDesign(payload)),
+   );*/
 
   constructor(
     private actions$: Actions,
     private warehouseService: WarehouseService,
     private ninjaService: NinjaService,
-  ) {}
+  ) {
+  }
 }

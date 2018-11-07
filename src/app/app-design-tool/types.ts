@@ -34,4 +34,5 @@ export interface Design {
 export interface StatePrediction{
   id: string;
   state: string;
+  configuration?: any;
 }
