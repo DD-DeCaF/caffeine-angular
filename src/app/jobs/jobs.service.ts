@@ -112,15 +112,11 @@ export class JobsService {
     );
   }
 
-  // tslint:disable-next-line:no-any
   checkJobs(jobs: Job[]): Job[] {
-    console.log('CHECK JOBS', jobs);
     const jobsLocalStorage = <Job[]> JSON.parse(localStorage.getItem('jobs'));
     for (let i = 0; i < jobs.length; i++) {
-    // tslint:disable-next-line:no-any
       this.ninjaService.getPredict(jobs[i].id).subscribe((jobPrediction: StatePrediction) => {
         const jobIndex = jobsLocalStorage.findIndex(((job) => job.id === jobs[i].id));
-        // tslint:disable-next-line
         jobs[jobIndex].state = jobPrediction.state;
         localStorage.setItem('jobs', JSON.stringify(jobsLocalStorage));
       });

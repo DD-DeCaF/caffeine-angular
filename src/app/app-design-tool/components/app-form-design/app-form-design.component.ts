@@ -126,10 +126,5 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     this.store.dispatch(new StartDesign(this.designForm.value));
-    this.store.pipe(
-      selectNotNull((store) => store.designTool.lastJobId),
-    ).subscribe((id) => {
-      this.router.navigateByUrl(`/jobs/${id}`);
-    });
   }
 }

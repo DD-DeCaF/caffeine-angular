@@ -24,6 +24,7 @@ import * as sharedActions from '../../store/shared.actions';
 import {NinjaService} from '../../services/ninja-service';
 import {StatePrediction} from '../types';
 import {SetLastJobDesign} from './design-tool.actions';
+import {Router} from '@angular/router';
 
 
 @Injectable()
@@ -96,6 +97,7 @@ export class DesignToolEffects {
           },
         }]));
       }
+      this.router.navigateByUrl(`/jobs/${payload.id}`);
       return new SetLastJobDesign(payload);
     }));
 
@@ -119,6 +121,7 @@ export class DesignToolEffects {
     private actions$: Actions,
     private warehouseService: WarehouseService,
     private ninjaService: NinjaService,
+    private router: Router
   ) {
   }
 }

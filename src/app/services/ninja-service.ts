@@ -18,6 +18,7 @@ import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Cobra } from '../app-interactive-map/types';
 import * as typesDesign from '../app-design-tool/types';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class NinjaService {
@@ -33,11 +34,19 @@ export class NinjaService {
       project_id: design.project_id || null,
       ...design,
     };
-    return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict`, desingPredict);
+    return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict`, desingPredict).pipe(map((predict) =>
+      this.processPrediction(predict, design)));
   }
 
 
   getPredict(task_id: number): Observable<typesDesign.StatePrediction> {
     return this.http.get<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict/${task_id}`);
+  }
+
+  processPrediction(predict: typesDesign.StatePrediction, design: typesDesign.Design): typesDesign.StatePrediction {
+    return {
+      ...predict,
+      configuration: design,
+    };
   }
 }
