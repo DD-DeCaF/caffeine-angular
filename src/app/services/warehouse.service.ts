@@ -37,7 +37,8 @@ export class WarehouseService {
   }
 
   getProducts(): Observable<Product[]> {
-    const fixtures$ = Observable.create((observer) => {
+    return this.http.get<Product[]>(`${environment.apis.metabolic_ninja}/products`);
+    /*const fixtures$ = Observable.create((observer) => {
       observer.next([{
         name: 'vanillin',
         id: '5',
@@ -55,7 +56,7 @@ export class WarehouseService {
         id: '3-oxododecanoyl-CoA',
       }]);
     });
-    return fixtures$;
+    return fixtures$;*/
     // TODO:
     // return this.http.get<Job[]>(`${environment.apis.job}/jobs`);
   }

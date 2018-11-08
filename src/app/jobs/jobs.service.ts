@@ -113,14 +113,17 @@ export class JobsService {
   }
 
   checkJobs(jobs: Job[]): Job[] {
-    const jobsLocalStorage = <Job[]> JSON.parse(localStorage.getItem('jobs'));
+    console.log('CHECK JOBS BEFORE', jobs);
+    /*const jobsLocalStorage = <Job[]> JSON.parse(localStorage.getItem('jobs'));
     for (let i = 0; i < jobs.length; i++) {
       this.ninjaService.getPredict(jobs[i].id).subscribe((jobPrediction: StatePrediction) => {
         const jobIndex = jobsLocalStorage.findIndex(((job) => job.id === jobs[i].id));
         jobs[jobIndex].state = jobPrediction.state;
-        localStorage.setItem('jobs', JSON.stringify(jobsLocalStorage));
+        localStorage.setItem('jobs', JSON.stringify(jobs));
       });
-    }
+    }*/
+    console.log('CHECK JOBS AFTER', jobs);
+
     return jobs;
 
   }

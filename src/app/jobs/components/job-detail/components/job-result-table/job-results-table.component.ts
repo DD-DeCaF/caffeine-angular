@@ -17,6 +17,8 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 
 import { PathwayPredictionResult } from '../../../../types';
 import { JobResultsDetailRowDirective } from './job-results-table-row-detail.directive';
+import {Observable} from 'rxjs';
+import {Species} from '../../../../../app-interactive-map/types';
 
 const indicators = {
   delta: 'Δ',
@@ -31,15 +33,16 @@ const indicators = {
 })
 export class JobResultTableComponent implements AfterViewInit {
   @Input() tableData: PathwayPredictionResult[];
+  @Input() reactions;
   @ViewChild(MatSort) sort: MatSort;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
   private collapseClicked = new EventEmitter<PathwayPredictionResult>();
   public expandedId: string = null;
+  public allSpecies: Observable<Species[]>;
 
   displayedColumns: string[] = [
     'select',
-    'id',
     'host',
     'model',
     'manipulations',
@@ -115,4 +118,9 @@ export class JobResultTableComponent implements AfterViewInit {
       return '-';
     }
   }
+
+  ecLink(ec: string): string {
+    return `https://www.uniprot.org/uniprot/?query=ec:${ec}`;
+  }
+
 }

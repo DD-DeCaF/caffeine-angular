@@ -31,16 +31,20 @@ export class NinjaService {
     const desingPredict = {
       model_name: design.model.name,
       product_name: design.product.name,
+      model_id: design.model.id,
       project_id: design.project_id || null,
-      ...design,
+      organism_id: design.species.id,
+      max_predictions: design.max_predictions,
+      bigg: design.bigg,
+      rhea: design.rhea,
     };
-    return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict`, desingPredict).pipe(map((predict) =>
+    return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predictions`, desingPredict).pipe(map((predict) =>
       this.processPrediction(predict, design)));
   }
 
 
   getPredict(task_id: number): Observable<typesDesign.StatePrediction> {
-    return this.http.get<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict/${task_id}`);
+    return this.http.get<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predictions/${task_id}`);
   }
 
   processPrediction(predict: typesDesign.StatePrediction, design: typesDesign.Design): typesDesign.StatePrediction {

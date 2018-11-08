@@ -121,7 +121,7 @@ export class DesignToolEffects {
     private actions$: Actions,
     private warehouseService: WarehouseService,
     private ninjaService: NinjaService,
-    private router: Router
+    private router: Router,
   ) {
   }
 }

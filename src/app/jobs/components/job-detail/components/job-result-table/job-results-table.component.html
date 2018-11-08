@@ -28,13 +28,8 @@ limitations under the License.
     </td>
   </ng-container>
 
-  <ng-container  matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-  </ng-container>
-
   <ng-container  matColumnDef="host">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Host</th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Organism</th>
     <td mat-cell *matCellDef="let element"> {{element.host}} </td>
   </ng-container>
 
@@ -112,6 +107,13 @@ limitations under the License.
     <td class="linkList">
       <div *ngFor="let hp of element.heterologous_pathway">
         <a
+           [hidden]="!reactions[hp]?.annotation.EC"
+           [attr.href]="ecLink(reactions[hp]?.annotation.EC)"
+           target="_blank">
+            {{reactions[hp]?.annotation.EC}}
+        </a>
+        <a
+          [hidden]="reactions[hp]?.annotation.EC"
           [attr.href]="hpLink(hp)"
           target="_blank">
             {{hp}}

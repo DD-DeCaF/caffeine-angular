@@ -22,6 +22,7 @@ import { AppState } from '../../../store/app.reducers';
 import { getJob } from '../../store/jobs.selectors';
 import { selectNotNull } from '../../../framework-extensions';
 import tableData from './designTable.json';
+import reactions from './reactions.json';
 import { map } from 'rxjs/operators';
 import {JobsService} from '../../jobs.service';
 import {NinjaService} from '../../../services/ninja-service';
@@ -37,6 +38,7 @@ export class JobDetailComponent implements OnInit {
   loadError = false;
   // @ts-ignore
   public tableData: PathwayPredictionResult[] = <PathwayPredictionResult[]>tableData;
+  public reactionsData = reactions;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,7 +54,7 @@ export class JobDetailComponent implements OnInit {
       map((a) => {
         // tslint:disable-next-line:no-any
         this.ninjaService.getPredict(jobId).subscribe((jobPrediction) => {
-          this.tableData = (<any>jobPrediction).result || [];
+          // this.tableData = (<any>jobPrediction).result || [];
             const jobs = JSON.parse(localStorage.getItem('jobs'));
             // Find index of specific object using findIndex method.
             const jobIndex = jobs.findIndex(((job) => job.id === jobId));

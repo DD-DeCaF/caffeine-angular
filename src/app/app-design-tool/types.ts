@@ -24,10 +24,9 @@ export interface Design {
   species: types.Species;
   product: Product;
   bigg: boolean;
-  kegg: boolean;
   rhea: boolean;
   model: types.DeCaF.Model;
-  number_pathways: 10;
+  max_predictions: 10;
   project_id: number;
 }
 
