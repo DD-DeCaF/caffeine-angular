@@ -52,9 +52,10 @@ export class JobDetailComponent implements OnInit {
     this.job$ = this.store.pipe(
       selectNotNull(getJob, {jobId}),
       map((a) => {
-        // tslint:disable-next-line:no-any
         this.ninjaService.getPredict(jobId).subscribe((jobPrediction) => {
-          // this.tableData = (<any>jobPrediction).result || [];
+          // tslint:disable-next-line:no-any
+          this.tableData = (<any>jobPrediction).table || [];
+          this.reactionsData = (<any>jobPrediction).reactions || [];
             const jobs = JSON.parse(localStorage.getItem('jobs'));
             // Find index of specific object using findIndex method.
             const jobIndex = jobs.findIndex(((job) => job.id === jobId));

@@ -32,7 +32,7 @@ export class NinjaService {
       model_name: design.model.name,
       product_name: design.product.name,
       model_id: design.model.id,
-      project_id: design.project_id || null,
+      project_id: design.project_id,
       organism_id: design.species.id,
       max_predictions: design.max_predictions,
       bigg: design.bigg,

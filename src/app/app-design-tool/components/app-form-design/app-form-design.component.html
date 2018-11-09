@@ -51,11 +51,6 @@
                     [value]="project.id"
                     *ngFor="let project of (allProjects | async)">{{project.name}}
         </mat-option>
-        <mat-option color="primary"
-                    class="mat-primary"
-                    [value]="0"
-                    >Public
-        </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-accordion>
@@ -82,7 +77,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field>
-          <mat-label class="title">Number of pathways</mat-label>
+          <mat-label class="title">Maximum predictions</mat-label>
           <input formControlName="max_predictions"
                   type="number"
                   placeholder="10"
