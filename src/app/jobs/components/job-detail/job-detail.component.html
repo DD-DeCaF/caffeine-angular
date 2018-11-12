@@ -85,7 +85,7 @@ limitations under the License.
   <mat-card class="card">
     <h3>Results</h3>
 
-    <p *ngIf="job?.state === 'PENDING'">
+    <p *ngIf="job?.state === 'PENDING' || job?.state === 'STARTED'">
       The job is still running.
       <button mat-button color="warn" (click)="abort(job)">
         Abort job

@@ -78,7 +78,7 @@ export class DesignToolEffects {
           id: payload.id,
           started: new Date(),
           completed: null,
-          state: payload.state,
+          state: payload.status,
           data: {
             type: 'Pathway prediction',
             ...payload.configuration,
@@ -90,7 +90,7 @@ export class DesignToolEffects {
           id: payload.id,
           started: new Date(),
           completed: null,
-          state: payload.state,
+          state: payload.status,
           data: {
             type: 'Pathway prediction',
             ...payload.configuration,

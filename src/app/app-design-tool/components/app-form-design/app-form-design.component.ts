@@ -68,6 +68,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
       rhea: [''],
       model: [''],
       max_predictions: [''],
+      aerobic: ['', Validators.required],
     });
   }
 
@@ -94,9 +95,10 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
                 name: 'vanillin',
                 id: '5',
               },
-              project_id: 0,
+              project_id: '',
               bigg: true,
               rhea: true,
+              aerobic: false,
               model: data.selectedModel,
               max_predictions: 10,
             });

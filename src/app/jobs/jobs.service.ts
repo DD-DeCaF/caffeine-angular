@@ -118,7 +118,7 @@ export class JobsService {
     for (let i = 0; i < jobs.length; i++) {
       this.ninjaService.getPredict(jobs[i].id).subscribe((jobPrediction: StatePrediction) => {
         const jobIndex = jobsLocalStorage.findIndex(((job) => job.id === jobs[i].id));
-        jobs[jobIndex].state = jobPrediction.state;
+        jobs[jobIndex].state = jobPrediction.status;
         localStorage.setItem('jobs', JSON.stringify(jobs));
       });
     }

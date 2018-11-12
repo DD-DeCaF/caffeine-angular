@@ -37,6 +37,7 @@ export class NinjaService {
       max_predictions: design.max_predictions,
       bigg: design.bigg,
       rhea: design.rhea,
+      aerobic: design.aerobic,
     };
     return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predictions`, desingPredict).pipe(map((predict) =>
       this.processPrediction(predict, design)));
@@ -44,6 +45,7 @@ export class NinjaService {
 
 
   getPredict(task_id: number): Observable<typesDesign.StatePrediction> {
+    console.log('GET PREDICT');
     return this.http.get<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predictions/${task_id}`);
   }
 

@@ -53,8 +53,13 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-label class="title">Aerobic</mat-label>
+    <mat-checkbox
+              formControlName="aerobic"
+              color="primary">
+    </mat-checkbox>
     <mat-accordion>
-      <mat-expansion-panel>
+      <mat-expansion-panel class="expansion-panel">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Advanced
@@ -90,6 +95,7 @@
       class="design-button"
       type="submit"
       color="primary"
-      #design>DESIGN</button>
+      [disabled]="!designForm.valid"
+      #design>DESIGN {{designForm.valid}}</button>
   </form>
 </mat-card>

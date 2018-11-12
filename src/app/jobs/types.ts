@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import {Cobra} from '../app-interactive-map/types';
+import Metabolite = Cobra.Metabolite;
+
 export interface Job {
   id: number;
   started: Date;
@@ -27,11 +30,10 @@ export interface PathwayPrediction {
   product: string;
   model: string;
   numberOfPathways: number;
-  // results: PathwayPredictionResult[];
 }
 
 export interface PathwayPredictionResult {
-  id: string;
+  id: number;
   host: string;
   model: string;
   manipulations: {
@@ -44,4 +46,17 @@ export interface PathwayPredictionResult {
   product: number;
   biomass: number;
   method: string;
+}
+
+export interface PathwayPredictionReactions {
+  annotation: {
+  Description: string;
+   EC: string;
+   };
+gene_reaction_rule: string;
+id: string;
+lower_bound: number;
+metabolites: Metabolite[];
+name: string;
+upper_bound: number;
 }

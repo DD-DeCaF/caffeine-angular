@@ -28,10 +28,11 @@ export interface Design {
   model: types.DeCaF.Model;
   max_predictions: 10;
   project_id: number;
+  aerobic: boolean;
 }
 
 export interface StatePrediction{
   id: string;
-  state: string;
+  status: string;
   configuration?: any;
 }
