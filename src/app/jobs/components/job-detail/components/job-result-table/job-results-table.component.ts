@@ -109,9 +109,8 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
 
 
   toggleChange(val: JobResultsDetailRowDirective): void {
-    console.log('VAL', val);
     // @ts-ignore
-    this.collapseClicked.emit(val.row);
+    this.collapseClicked.emit(val);
   }
 
   dispHP(hp: string[]): string {

@@ -106,7 +106,6 @@ limitations under the License.
 
     <td class="linkList">
       <div *ngFor="let hp of element.heterologous_pathway">
-        <span>RR{{checkAnnotation(hp, reactions)}}</span>
         <a
            [hidden]="!reactions[hp]?.annotation.EC"
            [attr.href]="ecLink(reactions[hp]?.annotation.EC)"
