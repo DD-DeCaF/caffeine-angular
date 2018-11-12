@@ -101,7 +101,7 @@ limitations under the License.
     </mat-error>
 
     <div *ngIf="job?.state === 'SUCCESS'">
-      <app-job-results-table [tableData]="tableData" [reactionsData]="reactionsData"></app-job-results-table>
+      <app-job-results-table *ngIf="tableData" [tableData]="tableData" [reactions]="reactionsData"></app-job-results-table>
     </div>
   </mat-card>
 </div>

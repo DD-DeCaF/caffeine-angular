@@ -15,15 +15,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Job, PathwayPredictionResult } from '../../types';
+import {Job, PathwayPredictionReactions, PathwayPredictionResult, PathwayResponse} from '../../types';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/app.reducers';
 import { getJob } from '../../store/jobs.selectors';
 import { selectNotNull } from '../../../framework-extensions';
-import tableData from './designTable.json';
 
-import reactions from './reactions.json';
 import { map } from 'rxjs/operators';
 import {NinjaService} from '../../../services/ninja-service';
 
@@ -37,8 +35,8 @@ export class JobDetailComponent implements OnInit {
   job$: Observable<Job>;
   loadError = false;
   // @ts-ignore
-  public tableData: PathwayPredictionResult[] = <PathwayPredictionResult[]>tableData;
-  public reactionsData = reactions;
+  public tableData: PathwayPredictionResult[];
+  public reactionsData: PathwayPredictionReactions[];
 
   constructor(
     private route: ActivatedRoute,
@@ -52,20 +50,16 @@ export class JobDetailComponent implements OnInit {
     this.job$ = this.store.pipe(
       selectNotNull(getJob, {jobId}),
       map((a) => {
-        this.ninjaService.getPredict(jobId).subscribe((jobPrediction) => {
-          // tslint:disable-next-line:no-any
-          this.tableData = (<any>jobPrediction).table || [];
-          // tslint:disable-next-line:no-any
-          this.reactionsData = (<any>jobPrediction).reactions || [];
-            const jobs = JSON.parse(localStorage.getItem('jobs'));
-            // Find index of specific object using findIndex method.
-            const jobIndex = jobs.findIndex(((job) => job.id === parseInt(jobId, 10)));
-            console.log('Before update: ', jobs[jobIndex]);
-          // tslint:disable-next-line:no-any
-          jobs[jobIndex].state = (<any>jobPrediction).status;
-            localStorage.setItem('jobs', JSON.stringify(jobs));
+        this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
+          if (jobPrediction.result) {
+          this.tableData = jobPrediction.result.table || [];
+          this.reactionsData = jobPrediction.result.reactions || [];
+        }
+          const jobs = JSON.parse(localStorage.getItem('jobs'));
+          const jobIndex = jobs.findIndex(((job) => job.id === parseInt(jobId, 10)));
+          jobs[jobIndex].state = jobPrediction.status;
+          localStorage.setItem('jobs', JSON.stringify(jobs));
         });
-        console.log('AAAAA', a);
         return a;
       }),
     );

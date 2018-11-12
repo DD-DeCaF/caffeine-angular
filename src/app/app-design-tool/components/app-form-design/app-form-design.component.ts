@@ -84,7 +84,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.subscription = this.store.select('designTool')
       .subscribe(
         (data) => {
-           if (data.selectedSpecies) {
+           if (data.selectedSpecies && !this.designForm.dirty) {
             this.designForm.setValue({
               species: data.selectedSpecies,
               product: {

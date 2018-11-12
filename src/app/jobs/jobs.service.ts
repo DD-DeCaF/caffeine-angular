@@ -15,7 +15,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 
-import { Job } from './types';
+import {Job, PathwayResponse} from './types';
 import {concatMap, map} from 'rxjs/operators';
 import {NinjaService} from '../services/ninja-service';
 import {StatePrediction} from '../app-design-tool/types';
@@ -39,7 +39,7 @@ export class JobsService {
     console.log('CHECK JOBS BEFORE', jobs);
     const jobsLocalStorage = <Job[]> JSON.parse(localStorage.getItem('jobs'));
     for (let i = 0; i < jobs.length; i++) {
-      this.ninjaService.getPredict(jobs[i].id).subscribe((jobPrediction: StatePrediction) => {
+      this.ninjaService.getPredict(jobs[i].id).subscribe((jobPrediction: PathwayResponse) => {
         const jobIndex = jobsLocalStorage.findIndex(((job) => job.id === jobs[i].id));
         jobs[jobIndex].state = jobPrediction.status;
         localStorage.setItem('jobs', JSON.stringify(jobs));

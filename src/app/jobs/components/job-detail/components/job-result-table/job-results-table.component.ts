@@ -33,13 +33,12 @@ const indicators = {
 })
 export class JobResultTableComponent implements AfterViewInit, OnInit {
   @Input() tableData: PathwayPredictionResult[];
-  @Input() reactionsData: PathwayPredictionReactions[];
+  @Input() reactions: PathwayPredictionReactions[];
   @ViewChild(MatSort) sort: MatSort;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
   private collapseClicked = new EventEmitter<PathwayPredictionResult>();
   public expandedId: string = null;
-  public reactions: PathwayPredictionReactions[];
   public allSpecies: Observable<Species[]>;
 
   displayedColumns: string[] = [
@@ -47,7 +46,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
     'host',
     'model',
     'manipulations',
-    'heterologous_pathway',
+    'heterologous_reactions',
     'fitness',
     'yield',
     'product',
@@ -56,7 +55,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
   ];
 
   ngOnInit(): void {
-    this.reactions = this.reactionsData;
     console.log('REACTIONS', this.reactions);
   }
   ngAfterViewInit(): void {

@@ -45,10 +45,10 @@ limitations under the License.
     </td>
   </ng-container>
 
-  <ng-container  matColumnDef="heterologous_pathway">
+  <ng-container  matColumnDef="heterologous_reactions">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Heterologous Pathways</th>
     <td mat-cell *matCellDef="let element">
-      <a>{{countPathways(element.heterologous_pathway)}}</a>
+      <a>{{element.heterologous_reactions.length}}</a>
     </td>
   </ng-container>
 
@@ -98,14 +98,14 @@ limitations under the License.
             <a
               [attr.href]="geneLink(manipulation)"
               target="_blank">
-              {{dispManipulation(manipulation)}}
+              {{manipulation}}
             </a>
         </div>
       </div>
     </td>
 
     <td class="linkList">
-      <div *ngFor="let hp of element.heterologous_pathway">
+      <div *ngFor="let hp of element.heterologous_reactions">
         <a
            [hidden]="!reactions[hp]?.annotation.EC"
            [attr.href]="ecLink(reactions[hp]?.annotation.EC)"

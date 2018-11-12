@@ -60,3 +60,15 @@ metabolites: Metabolite[];
 name: string;
 upper_bound: number;
 }
+
+export interface PathwayResponse {
+  id: number;
+  model_id: number;
+  organism_id: number;
+  status: string;
+  task_id: string;
+  result: {
+    table: PathwayPredictionResult[];
+    reactions: PathwayPredictionReactions[];
+  };
+}
