@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
 import {MatButton, MatSelect, MatSelectChange} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {Observable, Subscription} from 'rxjs';
@@ -28,8 +27,7 @@ import {
 } from '../../store/design-tool.actions';
 import {activeModels} from '../../store/design-tool.selectors';
 import * as typesDesign from '../../types';
-import {selectNotNull} from '../../../framework-extensions';
-import {withLatestFrom} from 'rxjs/operators';
+import {Project} from '../../../projects/types';
 
 
 @Component({
@@ -53,19 +51,20 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   public selectedModel: Observable<types.DeCaF.ModelHeader>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
+  public allProjects: Observable<Project[]>;
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<AppState>,
-    private router: Router) {
+    private store: Store<AppState>) {
     this.designForm = this.fb.group({
       species: ['', Validators.required],
       product: ['', Validators.required],
+      project_id: ['', Validators.required],
       bigg: [''],
-      kegg: [''],
       rhea: [''],
       model: [''],
-      number_pathways: [''],
+      max_predictions: [''],
+      aerobic: ['', Validators.required],
     });
   }
 
@@ -80,6 +79,8 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.selectedModel = this.store.pipe(select((store) => store.designTool.selectedModel));
     this.models = this.store.pipe(select(activeModels));
 
+    this.allProjects = this.store.pipe(select((store) => store.shared.projects));
+
     this.subscription = this.store.select('designTool')
       .subscribe(
         (data) => {
@@ -90,11 +91,12 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
                 name: 'vanillin',
                 id: '5',
               },
-              bigg: false,
-              kegg: false,
-              rhea: false,
+              project_id: '',
+              bigg: true,
+              rhea: true,
+              aerobic: false,
               model: data.selectedModel,
-              number_pathways: 10,
+              max_predictions: 10,
             });
           }
         },
@@ -120,10 +122,5 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     this.store.dispatch(new StartDesign(this.designForm.value));
-    this.store.pipe(
-      selectNotNull((store) => store.designTool.lastJobId),
-    ).subscribe((id) => {
-      this.router.navigateByUrl(`/jobs/${id}`);
-    });
   }
 }

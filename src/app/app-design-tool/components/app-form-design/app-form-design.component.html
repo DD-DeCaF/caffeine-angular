@@ -40,8 +40,26 @@
       </mat-autocomplete>
       <mat-hint>*Required</mat-hint>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label class="title">Project*</mat-label>
+      <mat-select type="text"
+                  color="primary"
+                  class="form-control"
+                  formControlName="project_id">
+        <mat-option color="primary"
+                    class="mat-primary"
+                    [value]="project.id"
+                    *ngFor="let project of (allProjects | async)">{{project.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-label class="title">Aerobic</mat-label>
+    <mat-checkbox
+              formControlName="aerobic"
+              color="primary">
+    </mat-checkbox>
     <mat-accordion>
-      <mat-expansion-panel>
+      <mat-expansion-panel class="expansion-panel">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Advanced
@@ -50,11 +68,7 @@
         <div class="checkbox-group" [ngClass]="{'grid': gridView==true}">
           <mat-label class="title">Select Databases</mat-label>
           <mat-checkbox formControlName="bigg"
-                        value="false"
                         color="primary">BIGG
-          </mat-checkbox>
-          <mat-checkbox formControlName="kegg"
-                        color="primary">KEGG
           </mat-checkbox>
           <mat-checkbox formControlName="rhea"
                         color="primary">RHEA
@@ -68,8 +82,8 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field>
-          <mat-label class="title">Number of pathways</mat-label>
-          <input formControlName="number_pathways"
+          <mat-label class="title">Maximum predictions</mat-label>
+          <input formControlName="max_predictions"
                   type="number"
                   placeholder="10"
                   matInput>
@@ -81,6 +95,7 @@
       class="design-button"
       type="submit"
       color="primary"
-      #design>DESIGN</button>
+      [disabled]="!designForm.valid"
+      #design>DESIGN {{designForm.valid}}</button>
   </form>
 </mat-card>

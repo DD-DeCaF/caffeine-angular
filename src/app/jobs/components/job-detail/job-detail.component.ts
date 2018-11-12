@@ -22,7 +22,10 @@ import { AppState } from '../../../store/app.reducers';
 import { getJob } from '../../store/jobs.selectors';
 import { selectNotNull } from '../../../framework-extensions';
 import tableData from './designTable.json';
+
+import reactions from './reactions.json';
 import { map } from 'rxjs/operators';
+import {NinjaService} from '../../../services/ninja-service';
 
 
 @Component({
@@ -34,18 +37,34 @@ export class JobDetailComponent implements OnInit {
   job$: Observable<Job>;
   loadError = false;
   // @ts-ignore
-  tableData: PathwayPredictionResult[] = <PathwayPredictionResult[]>tableData;
+  public tableData: PathwayPredictionResult[] = <PathwayPredictionResult[]>tableData;
+  public reactionsData = reactions;
 
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
+    private ninjaService: NinjaService,
   ) {}
 
   ngOnInit(): void {
-    const jobId = Number(this.route.snapshot.params['id']);
+    const jobId = this.route.snapshot.params.id;
+    console.log('JOB ID', jobId);
     this.job$ = this.store.pipe(
       selectNotNull(getJob, {jobId}),
       map((a) => {
+        this.ninjaService.getPredict(jobId).subscribe((jobPrediction) => {
+          // tslint:disable-next-line:no-any
+          this.tableData = (<any>jobPrediction).table || [];
+          // tslint:disable-next-line:no-any
+          this.reactionsData = (<any>jobPrediction).reactions || [];
+            const jobs = JSON.parse(localStorage.getItem('jobs'));
+            // Find index of specific object using findIndex method.
+            const jobIndex = jobs.findIndex(((job) => job.id === parseInt(jobId, 10)));
+            console.log('Before update: ', jobs[jobIndex]);
+          // tslint:disable-next-line:no-any
+          jobs[jobIndex].state = (<any>jobPrediction).status;
+            localStorage.setItem('jobs', JSON.stringify(jobs));
+        });
         console.log('AAAAA', a);
         return a;
       }),
@@ -65,7 +84,7 @@ export class JobDetailComponent implements OnInit {
     if (!confirm(`Are you sure you wish to abort job ${job.id}: ${job.data.type}?`)) {
       return;
     }
-    job.state = 'aborted';
+    job.state = 'REVOKED';
     job.completed = new Date();
     console.log(`Cancel job: ${job.id}`);
   }

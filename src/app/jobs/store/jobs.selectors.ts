@@ -19,5 +19,5 @@ import { Job } from '../types';
 export const getJob = createSelector(
   (state: AppState) => state.shared.jobs,
   (jobs: Job[], {jobId}) =>
-    jobs.find((job) => job.id === jobId) || null,
+    jobs.find((job) => job.id === parseInt(jobId, 10)) || null,
 );

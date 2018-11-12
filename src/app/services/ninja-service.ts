@@ -16,8 +16,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Cobra } from '../app-interactive-map/types';
 import * as typesDesign from '../app-design-tool/types';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class NinjaService {
@@ -28,15 +28,30 @@ export class NinjaService {
 
   postPredict(design: typesDesign.Design): Observable<typesDesign.StatePrediction> {
     const desingPredict = {
-      max_predictions: design.number_pathways,
       model_name: design.model.name,
       product_name: design.product.name,
+      model_id: design.model.id,
+      project_id: design.project_id,
+      organism_id: design.species.id,
+      max_predictions: design.max_predictions,
+      bigg: design.bigg,
+      rhea: design.rhea,
+      aerobic: design.aerobic,
     };
-    return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predict`, desingPredict);
+    return this.http.post<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predictions`, desingPredict).pipe(map((predict) =>
+      this.processPrediction(predict, design)));
   }
 
 
   getPredict(task_id: number): Observable<typesDesign.StatePrediction> {
-    return this.http.get<typesDesign.StatePrediction>(`${environment.apis.warehouse}/predict/${task_id}`);
+    console.log('GET PREDICT');
+    return this.http.get<typesDesign.StatePrediction>(`${environment.apis.metabolic_ninja}/predictions/${task_id}`);
+  }
+
+  processPrediction(predict: typesDesign.StatePrediction, design: typesDesign.Design): typesDesign.StatePrediction {
+    return {
+      ...predict,
+      configuration: design,
+    };
   }
 }

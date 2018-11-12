@@ -1,0 +1,42 @@
+{
+  "MNXR5340": {
+    "annotation": {
+      "Description": "1 `H(+)` + 1 `NADH` + 1 `O2` + 1 `vanillate` = 1 `H2O` + 1 `3,4-dihydroxybenzoate` + 1 `formaldehyde` + 1 `NAD(+)`",
+      "EC": "1.14.13.82"
+    },
+    "gene_reaction_rule": "",
+    "id": "MNXR5340",
+    "lower_bound": -1000,
+    "metabolites": {
+      "MNXM1": -1,
+      "MNXM10": -1,
+      "MNXM2": 1,
+      "MNXM204": 1,
+      "MNXM4": -1,
+      "MNXM56": 1,
+      "MNXM8": 1,
+      "MNXM982": -1
+    },
+    "name": "rhea:13021",
+    "upper_bound": 1000
+  },
+  "MNXR5336": {
+    "annotation": {
+      "Description": "2 `H(+)` + 1 `NADH` + 1 `vanillate` = 1 `H2O` + 1 `vanillin` + 1 `NAD(+)`",
+      "EC": "1.2.1.67"
+    },
+    "gene_reaction_rule": "",
+    "id": "MNXR5336",
+    "lower_bound": -1000,
+    "metabolites": {
+      "MNXM1": -2,
+      "MNXM10": -1,
+      "MNXM2": 1,
+      "MNXM754": 1,
+      "MNXM8": 1,
+      "MNXM982": -1
+    },
+    "name": "rhea:13309",
+    "upper_bound": 1000
+  }
+}

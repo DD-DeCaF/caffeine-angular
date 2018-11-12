@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, Input, ViewChild, AfterViewInit, EventEmitter } from '@angular/core';
+import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit} from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 
-import { PathwayPredictionResult } from '../../../../types';
+import {PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
 import { JobResultsDetailRowDirective } from './job-results-table-row-detail.directive';
+import {Observable} from 'rxjs';
+import {Species} from '../../../../../app-interactive-map/types';
 
 const indicators = {
   delta: 'Δ',
@@ -29,17 +31,19 @@ const indicators = {
   templateUrl: './job-results-table.component.html',
   styleUrls: ['./job-results-table.component.scss'],
 })
-export class JobResultTableComponent implements AfterViewInit {
+export class JobResultTableComponent implements AfterViewInit, OnInit {
   @Input() tableData: PathwayPredictionResult[];
+  @Input() reactionsData: PathwayPredictionReactions[];
   @ViewChild(MatSort) sort: MatSort;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
   private collapseClicked = new EventEmitter<PathwayPredictionResult>();
   public expandedId: string = null;
+  public reactions: PathwayPredictionReactions[];
+  public allSpecies: Observable<Species[]>;
 
   displayedColumns: string[] = [
     'select',
-    'id',
     'host',
     'model',
     'manipulations',
@@ -51,6 +55,10 @@ export class JobResultTableComponent implements AfterViewInit {
     'method',
   ];
 
+  ngOnInit(): void {
+    this.reactions = this.reactionsData;
+    console.log('REACTIONS', this.reactions);
+  }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
 
@@ -104,7 +112,7 @@ export class JobResultTableComponent implements AfterViewInit {
 
   toggleChange(val: JobResultsDetailRowDirective): void {
     // @ts-ignore
-    this.collapseClicked.emit(val.row);
+    this.collapseClicked.emit(val);
   }
 
   dispHP(hp: string[]): string {
@@ -114,5 +122,13 @@ export class JobResultTableComponent implements AfterViewInit {
     } else {
       return '-';
     }
+  }
+
+  ecLink(ec: string): string {
+    return `https://www.uniprot.org/uniprot/?query=ec:${ec}`;
+  }
+
+  countPathways (hps: string[]): number {
+    return hps.filter((hp) => !hp.startsWith('DM')).length;
   }
 }

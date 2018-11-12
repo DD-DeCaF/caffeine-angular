@@ -50,28 +50,28 @@ limitations under the License.
           <mat-icon mat-list-icon>pets</mat-icon>
           <p>
             Organism:
-            <strong>{{ job.data.organism }}</strong>
+            <strong>{{ job.data.species.name }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>gavel</mat-icon>
           <p>
             Product:
-            <strong>{{ job.data.product }}</strong>
+            <strong>{{ job.data.product.name }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>rounded_corner</mat-icon>
           <p>
             Model:
-            <strong>{{ job.data.model }}</strong>
+            <strong>{{ job.data.model.name }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>equalizer</mat-icon>
           <p>
             Number of pathways:
-            <strong>{{ job.data.numberOfPathways }}</strong>
+            <strong>{{ job.data.max_predictions }}</strong>
           </p>
         </mat-list-item>
       </mat-list>
@@ -85,23 +85,23 @@ limitations under the License.
   <mat-card class="card">
     <h3>Results</h3>
 
-    <p *ngIf="job?.state === 'running'">
+    <p *ngIf="job?.state === 'PENDING' || job?.state === 'STARTED'">
       The job is still running.
       <button mat-button color="warn" (click)="abort(job)">
         Abort job
       </button>
     </p>
 
-    <mat-error *ngIf="job?.state === 'errored'">
+    <mat-error *ngIf="job?.state === 'FAILURE'">
       The job errored with the following message: <strong>{{ job.error }}</strong>
     </mat-error>
 
-    <mat-error *ngIf="job?.state === 'aborted'">
+    <mat-error *ngIf="job?.state === 'REVOKED'">
       The job was manually aborted at {{ job.completed | date : 'd. LLL yyyy HH:mm' }}
     </mat-error>
 
-    <div *ngIf="job?.state === 'completed'">
-      <app-job-results-table [tableData]="tableData"></app-job-results-table>
+    <div *ngIf="job?.state === 'SUCCESS'">
+      <app-job-results-table [tableData]="tableData" [reactionsData]="reactionsData"></app-job-results-table>
     </div>
   </mat-card>
 </div>

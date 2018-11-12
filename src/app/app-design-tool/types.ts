@@ -24,13 +24,16 @@ export interface Design {
   species: types.Species;
   product: Product;
   bigg: boolean;
-  kegg: boolean;
   rhea: boolean;
   model: types.DeCaF.Model;
-  number_pathways: 10;
+  max_predictions: 10;
+  project_id: number;
+  aerobic: boolean;
 }
 
-export interface StatePrediction{
+export interface StatePrediction {
   id: string;
-  state: string;
+  status: string;
+  // tslint:disable-next-line:no-any
+  configuration?: any;
 }
