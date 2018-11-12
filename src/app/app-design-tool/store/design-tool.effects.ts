@@ -15,9 +15,9 @@
 import {Injectable} from '@angular/core';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {catchError, concatMapTo, map, switchMap} from 'rxjs/operators';
+import {concatMapTo, map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import * as types from '../../app-interactive-map/types';
 import {WarehouseService} from '../../services/warehouse.service';
 import * as sharedActions from '../../store/shared.actions';

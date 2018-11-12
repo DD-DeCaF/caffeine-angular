@@ -33,12 +33,13 @@ const indicators = {
 })
 export class JobResultTableComponent implements AfterViewInit, OnInit {
   @Input() tableData: PathwayPredictionResult[];
-  @Input() reactions: PathwayPredictionReactions[];
+  @Input() reactionsData: PathwayPredictionReactions[];
   @ViewChild(MatSort) sort: MatSort;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
   private collapseClicked = new EventEmitter<PathwayPredictionResult>();
   public expandedId: string = null;
+  public reactions: PathwayPredictionReactions[];
   public allSpecies: Observable<Species[]>;
 
   displayedColumns: string[] = [
@@ -55,6 +56,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
   ];
 
   ngOnInit(): void {
+    this.reactions = this.reactionsData;
     console.log('REACTIONS', this.reactions);
   }
   ngAfterViewInit(): void {
@@ -128,11 +130,5 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
 
   countPathways (hps: string[]): number {
     return hps.filter((hp) => !hp.startsWith('DM')).length;
-  }
-
-  checkAnnotation(hp: string, reactions): boolean {
-    console.log('CHECK ANNOTATION', reactions);
-    this.reactions.find((reaction) => reaction.id === hp);
-    return this.reactions[hp] && this.reactions[hp].annotation.EC;
   }
 }

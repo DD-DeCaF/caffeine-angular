@@ -31,8 +31,9 @@ export interface Design {
   aerobic: boolean;
 }
 
-export interface StatePrediction{
+export interface StatePrediction {
   id: string;
   status: string;
+  // tslint:disable-next-line:no-any
   configuration?: any;
 }

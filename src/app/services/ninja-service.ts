@@ -16,7 +16,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Cobra } from '../app-interactive-map/types';
 import * as typesDesign from '../app-design-tool/types';
 import {map} from 'rxjs/operators';
 

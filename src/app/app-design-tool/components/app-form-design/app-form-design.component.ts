@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';
 import {MatButton, MatSelect, MatSelectChange} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {Observable, Subscription} from 'rxjs';
@@ -28,8 +27,6 @@ import {
 } from '../../store/design-tool.actions';
 import {activeModels} from '../../store/design-tool.selectors';
 import * as typesDesign from '../../types';
-import {selectNotNull} from '../../../framework-extensions';
-import {withLatestFrom} from 'rxjs/operators';
 import {Project} from '../../../projects/types';
 
 
@@ -58,8 +55,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<AppState>,
-    private router: Router) {
+    private store: Store<AppState>) {
     this.designForm = this.fb.group({
       species: ['', Validators.required],
       product: ['', Validators.required],
