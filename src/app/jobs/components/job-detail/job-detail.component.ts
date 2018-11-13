@@ -70,14 +70,6 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           }),
         );
       });
-    // this.jobSservice.getJobs().subscribe(
-    //   (jobs: Job[]) => {
-    //     this.job = jobs.filter((job) => job.id === Number(this.route.snapshot.params['id']))[0];
-    //   },
-    //   (error: string) => {
-    //     this.loadError = true;
-    //   },
-    // );
   }
 
   public abort(job: Job): void {
