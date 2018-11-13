@@ -30,7 +30,7 @@ export class NinjaService {
   postPredict(design: typesDesign.Design): Observable<typesDesign.StatePrediction> {
     const desingPredict = {
       model_name: design.model.name,
-      product_name: design.product.name,
+      product_name: design.product,
       model_id: design.model.id,
       project_id: design.project_id,
       organism_id: design.species.id,
@@ -45,7 +45,6 @@ export class NinjaService {
 
 
   getPredict(task_id: number): Observable<PathwayResponse> {
-    console.log('GET PREDICT');
     return this.http.get<PathwayResponse>(`${environment.apis.metabolic_ninja}/predictions/${task_id}`);
   }
 

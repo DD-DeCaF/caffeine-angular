@@ -70,3 +70,9 @@ mat-checkbox {
 .expansion-panel {
   margin-top: 10px !important;
 }
+
+mat-select.ng-valid.ng-touched {
+  .mat-select-placeholder {
+    transform: translateY(-100%) scale(.75);
+  }
+}

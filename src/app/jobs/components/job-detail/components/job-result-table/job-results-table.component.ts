@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit} from '@angular/core';
+import {Component, Input, ViewChild, AfterViewInit, EventEmitter} from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 
 import {PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
@@ -31,9 +31,11 @@ const indicators = {
   templateUrl: './job-results-table.component.html',
   styleUrls: ['./job-results-table.component.scss'],
 })
-export class JobResultTableComponent implements AfterViewInit, OnInit {
+export class JobResultTableComponent implements AfterViewInit {
   @Input() tableData: PathwayPredictionResult[];
   @Input() reactions: PathwayPredictionReactions[];
+  @Input() model: string;
+  @Input() organism: string;
   @ViewChild(MatSort) sort: MatSort;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
@@ -54,9 +56,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
     'method',
   ];
 
-  ngOnInit(): void {
-    console.log('REACTIONS', this.reactions);
-  }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
 

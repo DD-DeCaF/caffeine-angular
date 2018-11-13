@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MatButton, MatSelect, MatSelectChange} from '@angular/material';
+import {MatButton, MatSelect, MatSelectChange, MatAutocomplete} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {Observable, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
@@ -28,6 +28,8 @@ import {
 import {activeModels} from '../../store/design-tool.selectors';
 import * as typesDesign from '../../types';
 import {Project} from '../../../projects/types';
+import {debounceTime, switchMap} from 'rxjs/operators';
+import {WarehouseService} from '../../../services/warehouse.service';
 
 
 @Component({
@@ -38,6 +40,8 @@ import {Project} from '../../../projects/types';
 export class AppFormDesignComponent implements OnInit, AfterViewInit {
   designForm: FormGroup;
   @ViewChild('species') speciesSelector: MatSelect;
+  @ViewChild('auto') productSelector: MatAutocomplete;
+  @ViewChild('projects') projectSelector: MatSelect;
   @ViewChild('model') modelSelector: MatSelect;
   subscription: Subscription;
   @ViewChild('design') designButton: MatButton;
@@ -49,64 +53,63 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   public products: Observable<typesDesign.Product[]>;
 
-  public selectedModel: Observable<types.DeCaF.ModelHeader>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public allProjects: Observable<Project[]>;
+  public product_placeholder = 'vanillate';
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+    private warehouseService: WarehouseService) {
     this.designForm = this.fb.group({
       species: ['', Validators.required],
       product: ['', Validators.required],
       project_id: ['', Validators.required],
-      bigg: [''],
-      rhea: [''],
+      bigg: [true],
+      rhea: [true],
       model: [''],
-      max_predictions: [''],
-      aerobic: ['', Validators.required],
+      max_predictions: [10],
+      aerobic: [false, Validators.required],
     });
   }
 
   ngOnInit(): void {
     this.store.dispatch(new InitDesign());
 
-    /* Just to make it works, I am going to change it for a new store*/
     this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
+    this.selectedSpecies = this.store.pipe(select((store) => store.designTool.selectedSpecies));
 
-    this.products = this.store.pipe(select((store) => store.designTool.products));
-
-    this.selectedModel = this.store.pipe(select((store) => store.designTool.selectedModel));
     this.models = this.store.pipe(select(activeModels));
 
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
-
-    this.subscription = this.store.select('designTool')
-      .subscribe(
-        (data) => {
-           if (data.selectedSpecies && !this.designForm.dirty) {
-            this.designForm.setValue({
-              species: data.selectedSpecies,
-              product: {
-                name: 'vanillin',
-                id: '5',
-              },
-              project_id: '',
-              bigg: true,
-              rhea: true,
-              aerobic: false,
-              model: data.selectedModel,
-              max_predictions: 10,
-            });
-          }
-        },
-      );
+    this.store.pipe(select((store) => store.designTool.selectedModel)).subscribe((selectedModel) => {
+      this.designForm.patchValue({
+        model: selectedModel,
+      });
+    });
+    this.products = this.designForm
+      .get('product')
+      .valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((value) => this.warehouseService.getProducts(value)));
   }
 
   ngAfterViewInit(): void {
     this.speciesSelector.selectionChange
       .subscribe((change: MatSelectChange) => {
+        this.speciesSelector.placeholder = null;
         this.store.dispatch(new SetSelectedSpeciesDesign(change.value));
+      });
+
+    this.projectSelector.selectionChange
+      .subscribe(() => {
+        this.projectSelector.placeholder = null;
+      });
+
+    this.productSelector.optionSelected
+      .subscribe(() => {
+        this.product_placeholder = null;
       });
 
     this.modelSelector.selectionChange
