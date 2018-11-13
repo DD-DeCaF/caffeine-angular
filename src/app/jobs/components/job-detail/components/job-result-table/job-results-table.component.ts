@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit} from '@angular/core';
+import {Component, Input, ViewChild, AfterViewInit, EventEmitter} from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 
 import {PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
@@ -31,15 +31,16 @@ const indicators = {
   templateUrl: './job-results-table.component.html',
   styleUrls: ['./job-results-table.component.scss'],
 })
-export class JobResultTableComponent implements AfterViewInit, OnInit {
+export class JobResultTableComponent implements AfterViewInit {
   @Input() tableData: PathwayPredictionResult[];
-  @Input() reactionsData: PathwayPredictionReactions[];
+  @Input() reactions: PathwayPredictionReactions[];
+  @Input() model: string;
+  @Input() organism: string;
   @ViewChild(MatSort) sort: MatSort;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
   private collapseClicked = new EventEmitter<PathwayPredictionResult>();
   public expandedId: string = null;
-  public reactions: PathwayPredictionReactions[];
   public allSpecies: Observable<Species[]>;
 
   displayedColumns: string[] = [
@@ -47,7 +48,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
     'host',
     'model',
     'manipulations',
-    'heterologous_pathway',
+    'heterologous_reactions',
     'fitness',
     'yield',
     'product',
@@ -55,10 +56,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
     'method',
   ];
 
-  ngOnInit(): void {
-    this.reactions = this.reactionsData;
-    console.log('REACTIONS', this.reactions);
-  }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
 

@@ -57,7 +57,7 @@ limitations under the License.
           <mat-icon mat-list-icon>gavel</mat-icon>
           <p>
             Product:
-            <strong>{{ job.data.product.name }}</strong>
+            <strong>{{ job.data.product }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
@@ -100,8 +100,11 @@ limitations under the License.
       The job was manually aborted at {{ job.completed | date : 'd. LLL yyyy HH:mm' }}
     </mat-error>
 
-    <div *ngIf="job?.state === 'SUCCESS'">
-      <app-job-results-table [tableData]="tableData" [reactionsData]="reactionsData"></app-job-results-table>
+    <div *ngIf="job?.state === 'SUCCESS' && tableData">
+      <app-job-results-table [model]="job.data.model.name"
+                             [organism]="job.data.species.name"
+                             [tableData]="tableData"
+                             [reactions]="reactionsData"></app-job-results-table>
     </div>
   </mat-card>
 </div>

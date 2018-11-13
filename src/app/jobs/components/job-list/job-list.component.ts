@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import { Job } from '../../types';
-import { Observable } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import { Store, select } from '@ngrx/store';
-import { map } from 'rxjs/operators';
-
+import {map} from 'rxjs/operators';
+import { timer } from 'rxjs';
 import { AppState } from '../../../store/app.reducers';
 import {FetchJobs} from '../../../store/shared.actions';
 
@@ -27,9 +27,9 @@ import {FetchJobs} from '../../../store/shared.actions';
   templateUrl: './job-list.component.html',
   styleUrls: ['./job-list.component.scss'],
 })
-export class JobListComponent implements OnInit {
+export class JobListComponent implements OnInit, OnDestroy {
   jobs: Observable<Job[]>;
-
+  polling: Subscription;
   // isLoading = true;
   // loadError = false;
   displayedColumns: string[] = ['id', 'type', 'product', 'state', 'details'];
@@ -39,13 +39,29 @@ export class JobListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new FetchJobs());
-    this.jobs = this.store.pipe(
-      select((state) => state.shared.jobs),
-      map((jobs) => {
-        console.log(jobs);
-        return jobs;
-      }),
-    );
+    let jobsFinished = true;
+    this.polling = timer(0, 20000)
+      .subscribe(() => {
+        this.store.dispatch(new FetchJobs());
+        this.jobs = this.store.pipe(
+          select((state) => state.shared.jobs),
+          map((jobs) => {
+            for (let i = 0; i < jobs.length; i++) {
+              if (jobs[i].state === 'STARTED' || jobs[i].state === 'PENDING') {
+                jobsFinished = false;
+                continue;
+              }
+            }
+            if (jobsFinished) {
+              this.polling.unsubscribe();
+            }
+            return jobs;
+          }),
+        );
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.polling.unsubscribe();
   }
 }

@@ -14,38 +14,41 @@
 
 <mat-card class="designCard">
   <form class="design-form" [formGroup]="designForm" (ngSubmit)="onSubmit()">
+    <mat-label class="title">Organism*</mat-label>
     <mat-form-field>
-      <mat-label class="title">Organism*</mat-label>
       <mat-select type="text"
                   id="species"
+                  placeholder="Escheria ecoli"
                   class="form-control"
                   formControlName="species"
                   #species>
-        <mat-option [value]="species" *ngFor="let species of (allSpecies | async)">{{species.name}}</mat-option>
+        <mat-option [value]="species" *ngFor="let species of (allSpecies | async)">{{species.name}}
+        </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-label class="title">Product*</mat-label>
     <mat-form-field class="example-full-width">
-      <mat-label class="title">Product*</mat-label>
       <input type="text"
-              placeholder="Pick one"
-              aria-label="Number"
-              matInput
-              formControlName="product"
-              [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete"
-                        [displayWith]="displayFn">
-        <mat-option *ngFor="let product of (products | async)" [value]="product">
+             placeholder="{{product_placeholder}}"
+             aria-label="Number"
+             matInput
+             formControlName="product"
+             [matAutocomplete]="auto"
+             >
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let product of (products | async)" [value]="product.name">
           {{product.name}}
         </mat-option>
       </mat-autocomplete>
-      <mat-hint>*Required</mat-hint>
     </mat-form-field>
+    <mat-label class="title">Project*</mat-label>
     <mat-form-field>
-      <mat-label class="title">Project*</mat-label>
       <mat-select type="text"
                   color="primary"
                   class="form-control"
-                  formControlName="project_id">
+                  placeholder="Your project"
+                  formControlName="project_id"
+                  #projects>
         <mat-option color="primary"
                     class="mat-primary"
                     [value]="project.id"
@@ -55,8 +58,8 @@
     </mat-form-field>
     <mat-label class="title">Aerobic</mat-label>
     <mat-checkbox
-              formControlName="aerobic"
-              color="primary">
+      formControlName="aerobic"
+      color="primary">
     </mat-checkbox>
     <mat-accordion>
       <mat-expansion-panel class="expansion-panel">
@@ -74,19 +77,18 @@
                         color="primary">RHEA
           </mat-checkbox>
         </div>
+        <mat-label class="title">Model</mat-label>
         <mat-form-field>
-          <mat-label class="title">Model</mat-label>
           <mat-select formControlName="model"
-                      [value]="selectedModel | async" #model>
+                      #model>
             <mat-option [value]="model" *ngFor="let model of (models | async)">{{model.name}}</mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-label class="title">Maximum predictions</mat-label>
         <mat-form-field>
-          <mat-label class="title">Maximum predictions</mat-label>
           <input formControlName="max_predictions"
-                  type="number"
-                  placeholder="10"
-                  matInput>
+                 type="number"
+                 matInput>
         </mat-form-field>
       </mat-expansion-panel>
     </mat-accordion>
@@ -96,6 +98,7 @@
       type="submit"
       color="primary"
       [disabled]="!designForm.valid"
-      #design>DESIGN</button>
+      #design>DESIGN
+    </button>
   </form>
 </mat-card>

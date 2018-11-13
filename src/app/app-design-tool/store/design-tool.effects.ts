@@ -26,6 +26,9 @@ import {StatePrediction} from '../types';
 import {SetLastJobDesign} from './design-tool.actions';
 import {Router} from '@angular/router';
 
+const preferredModelBySpecies = {
+  2: 'iJO1366',
+};
 
 @Injectable()
 export class DesignToolEffects {
@@ -34,8 +37,6 @@ export class DesignToolEffects {
   initDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.INIT_DESIGN),
     concatMapTo([
-      new sharedActions.FetchSpecies(),
-      new sharedActions.FetchModels(),
       new fromActions.FetchProductsDesign(),
     ]),
   );
@@ -52,8 +53,8 @@ export class DesignToolEffects {
     this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
   ).pipe(
     map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpeciesDesign, sharedActions.SetModels]) => {
-      const selectedModel = models
-        .filter((model) => model.organism_id === selectedOrgId.toString())[0];
+      const selectedModel = preferredModelBySpecies[selectedOrgId] ? models.find((model) => model.name === preferredModelBySpecies[selectedOrgId]) :
+        models.filter((model) => model.organism_id === selectedOrgId.toString())[0];
       return new fromActions.SetModelDesign(selectedModel);
     }),
   );

@@ -18,6 +18,7 @@ import { Observable } from 'rxjs';
 import * as types from '../app-interactive-map/types';
 import {Design, Product} from '../app-design-tool/types';
 import {environment} from '../../environments/environment';
+import {map} from 'rxjs/operators';
 
 const preferredSpecies = 'Escherichia coli';
 
@@ -36,29 +37,17 @@ export class WarehouseService {
     return this.http.get<types.Species[]>(`${environment.apis.warehouse}/organisms`);
   }
 
-  getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${environment.apis.metabolic_ninja}/products`);
-    /*const fixtures$ = Observable.create((observer) => {
-      observer.next([{
-        name: 'vanillin',
-        id: '5',
-      }, {
-        name: 'menaquinol-10',
-        id: 'menaquinol-10',
-      }, {
-        name: '2,6,10,14-tetramethylpentadecanal',
-        id: '2,6,10,14-tetramethylpentadecanal',
-      }, {
-        name: 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
-        id: 'alpha-N-acetylneuraminyl-(2->3)-beta-D-galactosyl-(1->3)-N-acetyl-alpha-D-galactosaminyl group',
-      }, {
-        name: '3-oxododecanoyl-CoA',
-        id: '3-oxododecanoyl-CoA',
-      }]);
-    });
-    return fixtures$;*/
-    // TODO:
-    // return this.http.get<Job[]>(`${environment.apis.job}/jobs`);
+  getProducts(name: string = null): Observable<Product[]> {
+    return this.http.get<Product[]>(`${environment.apis.metabolic_ninja}/products`).pipe(map((products: Product[]) =>
+      this.processProducts(products, name)));
+  }
+
+  processProducts(products: Product[], name: string): Product[] {
+    if (name) {
+      return products.filter((product) => new RegExp(name.toLowerCase()).test(product.name.toLowerCase())).slice(0, 10);
+    } else {
+      return products.slice(0, 10);
+    }
   }
   // TODO:
   // Change it for a real function

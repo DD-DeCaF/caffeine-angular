@@ -30,12 +30,12 @@ limitations under the License.
 
   <ng-container  matColumnDef="host">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Organism</th>
-    <td mat-cell *matCellDef="let element"> {{element.host}} </td>
+    <td mat-cell *matCellDef="let element"> {{organism}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="model">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
-    <td mat-cell *matCellDef="let element"> {{element.model}} </td>
+    <td mat-cell *matCellDef="let element"> {{model}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="manipulations">
@@ -45,10 +45,10 @@ limitations under the License.
     </td>
   </ng-container>
 
-  <ng-container  matColumnDef="heterologous_pathway">
+  <ng-container  matColumnDef="heterologous_reactions">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Heterologous Pathways</th>
     <td mat-cell *matCellDef="let element">
-      <a>{{countPathways(element.heterologous_pathway)}}</a>
+      <a>{{element.heterologous_reactions.length}}</a>
     </td>
   </ng-container>
 
@@ -105,7 +105,7 @@ limitations under the License.
     </td>
 
     <td class="linkList">
-      <div *ngFor="let hp of element.heterologous_pathway">
+      <div *ngFor="let hp of element.heterologous_reactions">
         <a
            [hidden]="!reactions[hp]?.annotation.EC"
            [attr.href]="ecLink(reactions[hp]?.annotation.EC)"
