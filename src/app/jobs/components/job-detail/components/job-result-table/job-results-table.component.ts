@@ -81,8 +81,8 @@ export class JobResultTableComponent implements AfterViewInit {
     });
   }
 
-  geneLink(manipulation: {value: string}): string {
-    return `http://bigg.ucsd.edu/search?query=${manipulation.value}`;
+  geneLink(manipulation: {id: string}): string {
+    return `http://bigg.ucsd.edu/search?query=${manipulation.id}`;
   }
 
   hpLink(hp: string): string {
@@ -90,13 +90,13 @@ export class JobResultTableComponent implements AfterViewInit {
   }
 
   dispManipulation(
-    {direction, value}: {direction: string, value: string},
+    {direction, id}: {direction: string, id: string},
     ): string {
-      return `${indicators[direction]} ${value}`;
+      return `${indicators[direction]} ${id}`;
   }
 
   dispManipulations(
-    manipulations: {direction: string, value: string}[],
+    manipulations: {direction: string, id: string}[],
     ): string {
       const [firstManipulation] = manipulations;
       if (firstManipulation) {
