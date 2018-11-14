@@ -14,7 +14,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatDialogRef} from '@angular/material';
+import {MatDialog, MatDialogRef} from '@angular/material';
 import {SessionService} from '../session/session.service';
 import {ActivatedRoute, Params} from '@angular/router';
 import {SessionState} from '../session/store/session.reducers';
@@ -40,6 +40,7 @@ export class AppLoginDialogComponent implements OnInit {
 
   constructor(
     public fb: FormBuilder,
+    private dialog: MatDialog,
     public dialogRef: MatDialogRef<AppLoginDialogComponent>,
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
@@ -53,21 +54,24 @@ export class AppLoginDialogComponent implements OnInit {
       this.uiStatus = 'loading';
       sessionService.github()
         .then(() => {
-          this.dialogRef.close();
+          console.log('THEN GITHUB', this.dialogRef);
+          this.dialog.closeAll();
         });
     };
     this.google = () => {
       this.uiStatus = 'loading';
       sessionService.google()
         .then(() => {
-          this.dialogRef.close();
+          console.log('THEN GOOGLE', this.dialogRef);
+          this.dialog.closeAll();
         });
     };
     this.twitter = () => {
       this.uiStatus = 'loading';
       sessionService.twitter()
         .then(() => {
-          this.dialogRef.close();
+          console.log('THEN TWITTER', this.dialogRef);
+          this.dialog.closeAll();
         });
     };
   }

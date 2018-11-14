@@ -19,11 +19,14 @@ import * as types from '../app-interactive-map/types';
 import {Design, Product} from '../app-design-tool/types';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
+import { of } from 'rxjs';
 
 const preferredSpecies = 'Escherichia coli';
 
 @Injectable()
 export class WarehouseService {
+
+  private products: Product[];
 
   constructor(
     private http: HttpClient,
@@ -38,15 +41,21 @@ export class WarehouseService {
   }
 
   getProducts(name: string = null): Observable<Product[]> {
-    return this.http.get<Product[]>(`${environment.apis.metabolic_ninja}/products`).pipe(map((products: Product[]) =>
-      this.processProducts(products, name)));
+    return this.products ? of(this.searchProducts(name)) :
+      this.http.get<Product[]>(`${environment.apis.metabolic_ninja}/products`).pipe(map((products: Product[]) =>
+      this.processProducts(products)));
   }
 
-  processProducts(products: Product[], name: string): Product[] {
+  processProducts(products: Product[]): Product[] {
+    this.products = products;
+    return products.slice(0, 10);
+  }
+
+  searchProducts(name: string): Product[] {
     if (name) {
-      return products.filter((product) => new RegExp(name.toLowerCase()).test(product.name.toLowerCase())).slice(0, 10);
+      return this.products.filter((product) => new RegExp(name.toLowerCase()).test(product.name.toLowerCase())).slice(0, 10);
     } else {
-      return products.slice(0, 10);
+      return this.products.slice(0, 10);
     }
   }
   // TODO:
