@@ -35,6 +35,7 @@ export class OpenLoginDialogDirective {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.id = 'login';
     this.dialog.open(AppLoginDialogComponent, dialogConfig);
   }
 }

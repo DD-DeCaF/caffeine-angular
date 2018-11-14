@@ -54,24 +54,24 @@ export class AppLoginDialogComponent implements OnInit {
       this.uiStatus = 'loading';
       sessionService.github()
         .then(() => {
-          console.log('THEN GITHUB', this.dialogRef);
-          this.dialog.closeAll();
+          console.log('THEN GITHUB', this.dialog.openDialogs.find((d) => d.id === 'login'));
+          this.dialog.openDialogs.find((d) => d.id === 'login').close();
         });
     };
     this.google = () => {
       this.uiStatus = 'loading';
       sessionService.google()
         .then(() => {
-          console.log('THEN GOOGLE', this.dialogRef);
-          this.dialog.closeAll();
+          console.log('THEN GOOGLE', this.dialog.openDialogs.find((d) => d.id === 'login'));
+          this.dialog.openDialogs.find((d) => d.id === 'login').close();
         });
     };
     this.twitter = () => {
       this.uiStatus = 'loading';
       sessionService.twitter()
         .then(() => {
-          console.log('THEN TWITTER', this.dialogRef);
-          this.dialog.closeAll();
+          console.log('THEN TWITTER', this.dialog.openDialogs.find((d) => d.id === 'login'));
+          this.dialog.openDialogs.find((d) => d.id === 'login').close();
         });
     };
   }
