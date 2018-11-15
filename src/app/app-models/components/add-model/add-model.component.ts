@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as types from '../../../app-interactive-map/types';
 import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
@@ -20,7 +20,7 @@ import {Observable} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AddModel} from '../../store/models.actions';
 import {Project} from 'src/app/projects/types';
-import {MatDialog, MatSelect, MatSelectChange, MatSnackBar} from '@angular/material';
+import {MatDialog, MatSelect, MatSnackBar} from '@angular/material';
 import {AddedModelComponent} from './added-model.component';
 import * as actions from '../../../store/shared.actions';
 import {SessionService} from '../../../session/session.service';

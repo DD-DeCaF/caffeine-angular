@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 
@@ -21,7 +20,6 @@ import * as actions from '../../../store/shared.actions';
 import { AppState } from '../../../store/app.reducers';
 import { Project } from '../../types';
 import { SessionService } from '../../../session/session.service';
-import { environment } from '../../../../environments/environment';
 import {IamService} from '../../../services/iam.service';
 
 @Component({
@@ -41,7 +39,6 @@ export class CreateProjectComponent {
     private dialogRef: MatDialogRef<CreateProjectComponent>,
     public snackBar: MatSnackBar,
     private session: SessionService,
-    private http: HttpClient,
     private iamService: IamService,
   ) {}
 
