@@ -22,6 +22,7 @@ import { AppState } from '../../../store/app.reducers';
 import { Project } from '../../types';
 import { SessionService } from '../../../session/session.service';
 import { environment } from '../../../../environments/environment';
+import {IamService} from '../../../services/iam.service';
 
 @Component({
   selector: 'app-create-project',
@@ -41,12 +42,13 @@ export class CreateProjectComponent {
     public snackBar: MatSnackBar,
     private session: SessionService,
     private http: HttpClient,
+    private iamService: IamService,
   ) {}
 
   submit(): void {
     this.dialogRef.close();
 
-    this.http.post(`${environment.apis.iam}/projects`, this.project).subscribe(
+    this.iamService.createProject(this.project).subscribe(
       // Refresh the token to include the newly created project when fetching new projects
       () => this.session.refresh().subscribe(
         () => {
