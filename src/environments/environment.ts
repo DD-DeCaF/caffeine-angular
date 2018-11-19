@@ -39,7 +39,7 @@ export const environment: Configuration = {
     sender_id: '972933293195',
   },
   trustedURLs: ['https://api-staging.dd-decaf.eu/iam', 'https://api-staging.dd-decaf.eu/mstorage', 'https://api-staging.dd-decaf.eu/mcaffeine',
-  'https://api-staging.dd-decaf.eu/pathways-caffeine'],
+  'https://api-staging.dd-decaf.eu/pathways-caffeine', 'https://api-staging.dd-decaf.eu/warehouse'],
 };
 
 /*

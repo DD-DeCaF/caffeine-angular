@@ -67,6 +67,7 @@ import {SharedEffects} from './store/shared.effects';
 
 import { ProjectsModule } from './projects/projects.module';
 import {SessionService} from './session/session.service';
+import {IamService} from './services/iam.service';
 
 if (environment.sentry) {
   Raven
@@ -132,6 +133,7 @@ export class RavenErrorHandler implements ErrorHandler {
   providers: [
     SessionService,
     NinjaService,
+    IamService,
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],

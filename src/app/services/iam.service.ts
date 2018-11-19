@@ -12,24 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as types from '../app-interactive-map/types';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {Observable} from 'rxjs';
+import { environment } from '../../environments/environment';
+import {Project} from '../projects/types';
 
-export interface EditModel {
-  id: number;
-  organism_id: number;
-  name: string;
-  default_biomass_reaction: string;
-}
+@Injectable()
+export class IamService {
 
-export interface AddModel {
-  name: string;
-  organism_id: number;
-  project_id: number;
-  default_biomass_reaction: string;
-  model_serialized: types.Cobra.Model;
-}
+  constructor(
+    private http: HttpClient,
+  ) {}
 
-export interface NewSpecies {
-  name: string;
-  project_id: number;
+  createProject(project: Project): Observable<Project> {
+    return this.http.post<Project>(`${environment.apis.iam}/projects`, project);
+  }
 }
