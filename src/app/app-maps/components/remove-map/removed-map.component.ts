@@ -12,32 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export interface Configuration {
-  production: boolean;
-  apis: {
-    iam: string;
-    model: string;
-    model_storage: string;
-    map: string;
-    bigg: string;
-    metabolic_ninja: string;
-    warehouse: string;
-    maps: string;
-  };
-  GA?: {
-    trackingID: string;
-  };
-  sentry?: {
-    DSN: string,
-    release: string,
-  };
-  firebase: {
-    api_key: string;
-    auth_domain: string;
-    database_url: string;
-    project_id: string;
-    storage_bucket: string;
-    sender_id: string;
-  };
-  trustedURLs: string[];
-}
+import {Component} from '@angular/core';
+
+@Component({
+  selector: 'app-removed-model',
+  template: `<span>The model has been removed</span>`,
+})
+export class RemovedMapComponent {}

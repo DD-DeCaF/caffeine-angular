@@ -129,7 +129,8 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.MAP_FETCHED:
       return {
         ...state,
-        mapData: action.payload.mapData,
+        // tslint:disable-next-line:no-any
+        mapData: (<any> action.payload.mapData).map as PathwayMap,
         selectedMap: action.payload.mapItem,
       };
     case fromInteractiveMapActions.RESET_CARDS:

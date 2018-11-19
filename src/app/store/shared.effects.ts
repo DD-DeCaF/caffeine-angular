@@ -26,8 +26,8 @@ import * as fromActions from './shared.actions';
 import {WarehouseService} from '../services/warehouse.service';
 import {Project} from 'src/app/projects/types';
 import {JobsService} from '../jobs/jobs.service';
-import {MapService} from '../app-interactive-map/services/map.service';
 import {Job} from 'src/app/jobs/types';
+import {MapsService} from '../services/maps.service';
 
 
 @Injectable()
@@ -68,7 +68,7 @@ export class SharedEffects {
   fetchMaps: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MAPS),
     switchMap(() =>
-      this.mapService.loadMaps().pipe(
+      this.mapsService.loadMaps().pipe(
         map((maps: types.MapItem[]) => new fromActions.SetMaps(maps)),
         catchError(() => of(new fromActions.SetMapsError())),
       )),
@@ -89,7 +89,7 @@ export class SharedEffects {
     private modelService: ModelService,
     private warehouseService: WarehouseService,
     private jobsService: JobsService,
-    private mapService: MapService,
+    private mapsService: MapsService,
     private http: HttpClient,
   ) {}
 }

@@ -27,6 +27,7 @@ export const environment: Configuration = {
     map: 'https://api-staging.dd-decaf.eu/maps',
     metabolic_ninja: 'https://api-staging.dd-decaf.eu/pathways-caffeine',
     warehouse: 'https://api-staging.dd-decaf.eu/warehouse',
+    maps: 'https://api-staging.dd-decaf.eu/maps',
   },
   GA: null,
   sentry: null,
@@ -39,7 +40,7 @@ export const environment: Configuration = {
     sender_id: '972933293195',
   },
   trustedURLs: ['https://api-staging.dd-decaf.eu/iam', 'https://api-staging.dd-decaf.eu/mstorage', 'https://api-staging.dd-decaf.eu/mcaffeine',
-  'https://api-staging.dd-decaf.eu/pathways-caffeine', 'https://api-staging.dd-decaf.eu/warehouse'],
+  'https://api-staging.dd-decaf.eu/pathways-caffeine', 'https://api-staging.dd-decaf.eu/warehouse', 'https://api-staging.dd-decaf.eu/maps'],
 };
 
 /*

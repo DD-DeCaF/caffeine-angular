@@ -13,14 +13,11 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import * as types from '../types';
-import { environment } from '../../../environments/environment';
 import { objectMatcher } from '../../utils';
 
 const preferredMapItem = {
-  model: 'iJO1366',
+  model_id: 10,
   name: 'Central metabolism',
 };
 
@@ -29,26 +26,17 @@ const preferredMapsByModel = {
   'e_coli_core': 'Central metabolism',
   'iJN746': 'Central metabolism',
   'iMM904': 'Central metabolism',
+  'carveme-ecoli': 'Central metabolism',
 };
 
 @Injectable()
 export class MapService {
 
-  constructor(
-    private http: HttpClient,
-  ) {}
-
-  public static createMapSelector(model: string): (items: types.MapItem[]) => types.MapItem {
+  public static createMapSelector(model: types.DeCaF.ModelHeader): (items: types.MapItem[]) => types.MapItem {
     return objectMatcher<types.MapItem>([
-      {model, name: preferredMapsByModel[model]},
-      {model},
+      {model_id: model.id, name: preferredMapsByModel[model.name]},
+      {model_id: model.id},
       preferredMapItem,
     ]);
   }
-
-  loadMaps(): Observable<types.MapItem[]> {
-    return this.http.get<types.MapItem[]>(`${environment.apis.map}/list`);
-  }
-
-
 }

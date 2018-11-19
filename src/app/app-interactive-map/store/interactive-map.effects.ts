@@ -71,7 +71,7 @@ export class InteractiveMapEffects {
     map(([action]) => action),
     withLatestFrom(this.store$),
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
-      const model = action.payload.name;
+      const model = action.payload;
       const {maps} = storeState.shared;
       const mapSelector = MapService.createMapSelector(model);
       return new fromActions.SetMap(mapSelector(maps));
@@ -124,7 +124,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.SET_MAP),
     switchMap((action: fromActions.SetMap) => {
       return this
-        .http.get(`${environment.apis.map}/map?map=${action.payload.map}`)
+        .http.get(`${environment.apis.maps}/maps/${action.payload.id}`)
         .pipe(map((response: PathwayMap) => ({
           mapData: response,
           mapItem: action.payload,

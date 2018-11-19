@@ -23,6 +23,7 @@ import {AppNotFoundComponent} from './app-not-found/app-not-found.component';
 import {DesignToolComponent} from './app-design-tool/design-tool.component';
 import { jobsRoutes } from './jobs/jobs-routing.module';
 import {AppModelsComponent} from './app-models/app-models.component';
+import {AppMapsComponent} from './app-maps/app-maps.component';
 
 
 const appRoutes: Route[] = [
@@ -50,6 +51,10 @@ const appRoutes: Route[] = [
       {
         path: 'models',
         component: AppModelsComponent,
+      },
+      {
+        path: 'maps',
+        component: AppMapsComponent,
       },
       {
         path: '**',
