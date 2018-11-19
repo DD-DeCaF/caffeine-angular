@@ -54,8 +54,9 @@ const matchSelector = <T>(comparators: ((item: T) => boolean)[]) => (items: T[])
     undefined,
   );
 
-export const objectMatcher = <T>(matchers: Partial<T>[]) => (items: T[]) =>
-  matchSelector(matchers.map(createComparator))(items);
+export const objectMatcher = <T>(matchers: Partial<T>[]) => (items: T[]) => {
+  return matchSelector(matchers.map(createComparator))(items);
+};
 
 export const mapBiggReactionToCobra = ({
                                          bigg_id,

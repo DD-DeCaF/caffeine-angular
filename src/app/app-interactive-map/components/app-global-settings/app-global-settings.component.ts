@@ -38,8 +38,9 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
 
   public selectedModelHeader: Observable<types.DeCaF.ModelHeader>;
   public activeModelHeaders: Observable<types.DeCaF.ModelHeader[]>;
-
+  public models: Observable<types.DeCaF.ModelHeader[]>;
   public selectedMap: Observable<types.MapItem>;
+
   public mapItems: Observable<{
     modelIds: string[],
     mapsByModelId: {[key: string]: types.MapItem[] },
@@ -53,7 +54,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
 
     this.selectedModelHeader = this.store.pipe(select((store) => store.interactiveMap.selectedModelHeader));
     this.activeModelHeaders = this.store.pipe(select(activeModels));
-
+    this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
     this.mapItems = this.store.pipe(select(mapItemsByModel));
   }
@@ -76,5 +77,14 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
       .subscribe((mapItem: types.MapItem) => {
         this.store.dispatch(new SetMap(mapItem));
       });
+  }
+
+  getModelName(id: string, models: types.DeCaF.ModelHeader[]): string {
+   if (models.length > 0 && id) {
+     const model = models.find((m) => m.id === parseInt(id, 10));
+     return model ? model.name : '';
+   } else {
+     return '';
+   }
   }
 }

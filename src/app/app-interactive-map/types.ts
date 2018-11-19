@@ -85,9 +85,11 @@ export interface HydratedCard extends Card {
 
 // Used in the map selector
 export interface MapItem {
+  id: number;
   name: string;
-  map: string;
-  model: string;
+  model_id: number;
+  project_id: number;
+  map?: string;
 }
 
 export type Methods = 'fba' | 'pfba' | 'fva' | 'pfba-fva';

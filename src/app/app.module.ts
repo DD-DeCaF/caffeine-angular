@@ -67,6 +67,10 @@ import {SharedEffects} from './store/shared.effects';
 
 import { ProjectsModule } from './projects/projects.module';
 import {SessionService} from './session/session.service';
+import {AppMapsModule} from './app-maps/app-maps.module';
+import {IamService} from './services/iam.service';
+import {MapsService} from './services/maps.service';
+import {MapsEffects} from './app-maps/store/maps.effects';
 
 if (environment.sentry) {
   Raven
@@ -116,6 +120,7 @@ export class RavenErrorHandler implements ErrorHandler {
     AppModelsModule,
     JobsModule,
     ProjectsModule,
+    AppMapsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
@@ -124,6 +129,7 @@ export class RavenErrorHandler implements ErrorHandler {
       DesignToolEffects,
       ModelsEffects,
       SharedEffects,
+      MapsEffects,
     ]),
     StoreDevtoolsModule.instrument({
       name: 'Caffeine',
@@ -132,6 +138,8 @@ export class RavenErrorHandler implements ErrorHandler {
   providers: [
     SessionService,
     NinjaService,
+    IamService,
+    MapsService,
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],

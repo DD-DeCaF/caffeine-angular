@@ -48,15 +48,15 @@ export const mapItemsByModel = createSelector(
   (mapItems, selectedModelHeader) => {
     // Project the map
     const modelIds = firstIfContains(
-      unique(mapItems.map(({model}) => model)),
+      unique(mapItems.map(({model_id}) => model_id.toString())),
       selectedModelHeader,
     );
 
     const mapsByModelId = mapItems.reduce(
       (accumulator: {[key: string]: MapItem[] }, mapItem: MapItem) => ({
         ...accumulator,
-        [mapItem.model]: [
-          ...(accumulator[mapItem.model] || []),
+        [mapItem.model_id]: [
+          ...(accumulator[mapItem.model_id] || []),
           mapItem,
         ],
       }), {});
