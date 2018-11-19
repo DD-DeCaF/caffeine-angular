@@ -20,6 +20,7 @@ import {Design, Product} from '../app-design-tool/types';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
 import { of } from 'rxjs';
+import {NewSpecies} from '../app-models/types';
 
 const preferredSpecies = 'Escherichia coli';
 
@@ -57,6 +58,10 @@ export class WarehouseService {
     } else {
       return this.products.slice(0, 10);
     }
+  }
+
+  createOrganisms(organism: NewSpecies): Observable<NewSpecies> {
+    return this.http.post<NewSpecies>(`${environment.apis.warehouse}/organisms`, organism);
   }
   // TODO:
   // Change it for a real function

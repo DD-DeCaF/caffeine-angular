@@ -72,6 +72,7 @@ import {IamService} from './services/iam.service';
 import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
 
+
 if (environment.sentry) {
   Raven
     .config(environment.sentry.DSN, {
@@ -140,6 +141,7 @@ export class RavenErrorHandler implements ErrorHandler {
     NinjaService,
     IamService,
     MapsService,
+
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],
