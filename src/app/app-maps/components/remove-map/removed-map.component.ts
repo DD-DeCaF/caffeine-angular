@@ -16,6 +16,6 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-removed-model',
-  template: `<span>The model has been removed</span>`,
+  template: `<span>The map has been removed</span>`,
 })
 export class RemovedMapComponent {}
