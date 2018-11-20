@@ -12,6 +12,7 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
+<<<<<<< HEAD
 <mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
   <div class="map-progress">
     <div class="box">
@@ -108,51 +109,219 @@
               mat-button
               class="design-button mat-primary"
               type="submit"
+=======
+<div class="map-progress">
+  <div class="box">
+    <span class="error" [hidden]="!(error | async)"
+      >An error ocurred adding the model. Please try again later.</span
+    >
+    <mat-spinner
+      style="margin:0 auto;"
+      color="primary"
+      *ngIf="loading && !(error | async)"
+    ></mat-spinner>
+    <div
+      [hidden]="(error | async) || loading"
+      *ngIf="
+        addModelForm.value.project_id !== 'add' &&
+        addModelForm.value.organism_id !== 'add'
+      "
+    >
+      <h3 class="title">Add new model</h3>
+      <span class="recommend"
+        >We recommend that you visit
+        <a href="https://memote.io" target="_blank">memote.io</a> and validate
+        your model.</span
+      >
+      <form
+        class="model-form"
+        [formGroup]="addModelForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <mat-form-field color="primary">
+          <mat-label class="title">Name*</mat-label>
+          <input
+            color="primary"
+            id="name"
+            type="text"
+            class="form-control"
+            formControlName="name"
+            matInput
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label class="title">Organism*</mat-label>
+          <mat-select
+            type="text"
+            id="organism_id"
+            color="primary"
+            class="form-control"
+            formControlName="organism_id"
+            #species
+          >
+            <mat-option
               color="primary"
-              [disabled]="!addModelForm.valid"
-              #design>Add
-            </button>
-          </div>
-        </form>
-      </div>
+              class="mat-primary"
+              [value]="species.id"
+              *ngFor="let species of (allSpecies | async)"
+              >{{ species.name }}
+            </mat-option>
+            <mat-option value="add">
+              <mat-icon>add_circle</mat-icon>
+              Add organism
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label class="title">Project*</mat-label>
+          <mat-select
+            type="text"
+            color="primary"
+            class="form-control"
+            formControlName="project_id"
+          >
+            <mat-option
+>>>>>>> chore: redesign parts of models
+              color="primary"
+              class="mat-primary"
+              [value]="project.id"
+              *ngFor="let project of (allProjects | async)"
+              >{{ project.name }}
+            </mat-option>
+            <mat-option value="add">
+              <mat-icon>add_circle</mat-icon>
+              Add project
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="upload-file">
+          <mat-label class="label-title">Upload model*</mat-label>
+        </div>
+        <div class="upload-file">
+          <input
+            #inputFile
+            type="file"
+            (change)="fileChange($event)"
+            placeholder="Upload file"
+            accept="{{fileType}}"
+            class="form-control"
+          />
+          <input
+            type="text"
+            name="model_serialized"
+            id="model_serialized"
+            class="form-control hidden-input"
+            formControlName="model_serialized"
+          />
+        </div>
+        <p class="error" [hidden]="!modelError">The file is not valid.</p>
+        <mat-form-field>
+          <mat-label class="title">Default Biomass Reaction*</mat-label>
+          <input
+            type="text"
+            placeholder="Pick one"
+            aria-label="Number"
+            matInput
+            formControlName="default_biomass_reaction"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="
+                let reaction of filterReactions(
+                  this.addModelForm.value.default_biomass_reaction
+                )
+              "
+              [value]="reaction"
+              >{{ reaction }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <div mat-dialog-actions align="end">
+          <button
+            mat-flat-button
+            type="submit"
+            color="primary"
+            [disabled]="!addModelForm.valid"
+            #design
+          >
+            Add
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="create-organism" *ngIf="addModelForm.value.organism_id === 'add'">
+    <div
+      class="create-organism"
+      *ngIf="addModelForm.value.organism_id === 'add'"
+    >
       <h3 class="title">Add new organism</h3>
       <mat-form-field>
         <mat-label class="title">Organism name*</mat-label>
-        <input matInput cdkFocusInitial #neworganism>
+        <input matInput cdkFocusInitial #neworganism />
       </mat-form-field>
       <mat-form-field>
         <mat-label class="title">Project*</mat-label>
-        <mat-select type="text"
-                    color="primary"
-                    class="form-control"
-                    #neworganism_project>
-          <mat-option color="primary"
-                      class="mat-primary"
-                      [value]="project.id"
-                      *ngFor="let project of (allProjects | async)">{{project.name}}
+        <mat-select
+          type="text"
+          color="primary"
+          class="form-control"
+          #neworganism_project
+        >
+          <mat-option
+            color="primary"
+            class="mat-primary"
+            [value]="project.id"
+            *ngFor="let project of (allProjects | async)"
+            >{{ project.name }}
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-card-actions align="end">
+      <mat-card-actions>
         <div fxFlex></div>
-        <button type="button" mat-button (click)="cancelOrganism()">Cancel</button>
-        <button type="button" mat-button (click)="submitOrganism()" [disabled]="!isValidOrganism()">Create</button>
+        <div fxFlex fxLayoutAlign="space-between center">
+          <button
+            type="button"
+            mat-flat-button
+            color="accent"
+            (click)="cancelOrganism()"
+          >Cancel
+          </button>
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            (click)="submitOrganism()"
+            [disabled]="!isValidOrganism()"
+          >
+            Create
+          </button>
+        </div>
       </mat-card-actions>
     </div>
     <div class="create-project" *ngIf="addModelForm.value.project_id === 'add'">
       <h3 class="title">Add new project</h3>
       <mat-form-field>
         <mat-label class="title">Project name*</mat-label>
-        <input matInput cdkFocusInitial #newproject>
+        <input matInput cdkFocusInitial #newproject />
       </mat-form-field>
       <mat-card-actions align="end">
         <div fxFlex></div>
-        <button type="button" mat-button (click)="cancelProject()">Cancel</button>
-      <button type="button" mat-button (click)="submitProject()" [disabled]="!isValidProject()">Create</button>
+        <div fxFlex fxLayoutAlign="space-between center">
+          <button type="button" mat-flat-button (click)="cancelProject()">
+            Cancel
+          </button>
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            (click)="submitProject()"
+            [disabled]="!isValidProject()"
+          >
+            Create
+          </button>
+        </div>
       </mat-card-actions>
     </div>
   </div>
-</mat-dialog-content>
-
+</div>
