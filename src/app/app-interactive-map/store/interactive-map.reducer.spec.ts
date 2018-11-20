@@ -51,6 +51,7 @@ const testModel: types.DeCaF.Model = {
     genes: [],
   },
   default_biomass_reaction: 'bar',
+  preferred_map_id: 1,
 };
 
 const testSolution: types.DeCaF.Solution = {
