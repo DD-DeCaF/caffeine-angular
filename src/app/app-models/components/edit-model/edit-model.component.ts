@@ -21,6 +21,7 @@ import {Observable} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as fromActions from '../../store/models.actions';
 import {EditedModelComponent} from './edited-model.component';
+import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
 
 @Component({
   selector: 'app-loader',
@@ -38,6 +39,11 @@ export class EditModelComponent implements OnInit, OnDestroy {
   public loading = true;
   public error: Observable<Boolean>;
   private edited = false;
+  public maps: Observable<{
+    modelIds: string[],
+    mapsByModelId: {[key: string]: types.MapItem[] },
+  }>;
+  public models: Observable<types.DeCaF.ModelHeader[]>;
 
   constructor(
     // tslint:disable-next-line:no-any
@@ -51,6 +57,7 @@ export class EditModelComponent implements OnInit, OnDestroy {
       name: ['', Validators.required],
       organism_id: ['', Validators.required],
       default_biomass_reaction: ['', Validators.required],
+      preferred_map_id: [''],
     });
   }
 
@@ -58,6 +65,8 @@ export class EditModelComponent implements OnInit, OnDestroy {
     this.model = this.data.model;
     this.store.dispatch(new fromActions.FetchModel(this.model));
     this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
+    this.maps = this.store.pipe(select(mapItemsByModel));
+    this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.error = this.store.pipe(select((store) => store.models.error));
     this.store.pipe(select((store) => store.models.model)).subscribe((model) => {
       if (model && (model.id === this.model.id)) {
@@ -73,6 +82,8 @@ export class EditModelComponent implements OnInit, OnDestroy {
             organism_id: parseInt(model.organism_id, 10),
             name: model.name,
             default_biomass_reaction: model.default_biomass_reaction,
+            preferred_map_id: model.preferred_map_id,
+
           });
           this.loading = false;
         }
@@ -96,6 +107,15 @@ export class EditModelComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.edited = false;
+  }
+
+  getModelName(id: string, models: types.DeCaF.ModelHeader[]): string {
+    if (models.length > 0 && id) {
+      const model = models.find((m) => m.id === parseInt(id, 10));
+      return model ? model.name : '';
+    } else {
+      return '';
+    }
   }
 }
 

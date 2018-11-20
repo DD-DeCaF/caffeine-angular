@@ -39,6 +39,19 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
+            <mat-label class="title">Preferred map</mat-label>
+            <mat-select placeholder="Map"
+                        *ngIf="(maps | async) && (models |async)"
+                        formControlName="preferred_map_id">
+              <mat-optgroup *ngFor="let modelforMaps of (maps | async).modelIds"
+                            [label]="getModelName(maps, models | async)">
+                <mat-option [value]="mapItem.id" *ngFor="let mapItem of (maps | async).mapsByModelId[modelforMaps]">
+                  {{mapItem.name}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
             <mat-label class="title">Default Biomass Reaction*</mat-label>
             <input type="text"
                    placeholder="Pick one"

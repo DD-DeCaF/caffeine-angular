@@ -205,6 +205,7 @@ export declare namespace DeCaF {
     updated?: string;
     model_serialized: Cobra.Model;
     default_biomass_reaction: string;
+    preferred_map_id: number;
   }
 }
 
