@@ -1,24 +1,6 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: caffeine-production
-  annotations:
-    prometheus.io/probe: "true"
-spec:
-  selector:
-    app: caffeine
-    env: production
-  ports:
-  - name: web
-    protocol: TCP
-    port: 80
-    targetPort: 80
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
   name: caffeine-staging
   annotations:
     prometheus.io/probe: "true"

@@ -1,35 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: caffeine-production
-spec:
-  selector:
-    matchLabels:
-      app: caffeine
-      env: production
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: caffeine
-        env: production
-    spec:
-      containers:
-      - name: web
-        image: gcr.io/dd-decaf-cfbf6/caffeine:master
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            cpu: "100m"
-          limits:
-            cpu: "1000m"
-
----
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: caffeine-staging
 spec:
   selector:
