@@ -23,7 +23,7 @@ export interface EditModel {
 
 export interface AddModel {
   name: string;
-  organism_id: number;
+  organism_id: string;
   project_id: number;
   default_biomass_reaction: string;
   model_serialized: types.Cobra.Model;
