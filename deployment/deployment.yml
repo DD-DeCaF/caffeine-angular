@@ -50,6 +50,6 @@ spec:
         - containerPort: 80
         resources:
           requests:
-            cpu: "10m"
-          limits:
             cpu: "100m"
+          limits:
+            cpu: "2000m"
