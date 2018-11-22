@@ -70,7 +70,7 @@ export class EditModelComponent implements OnInit, OnDestroy {
           this.reactions = model.model_serialized.reactions.map((reaction) => reaction.id);
           this.modelForm.setValue({
             id: model.id,
-            organism_id: parseInt(model.organism_id, 10),
+            organism_id: model.organism_id,
             name: model.name,
             default_biomass_reaction: model.default_biomass_reaction,
           });

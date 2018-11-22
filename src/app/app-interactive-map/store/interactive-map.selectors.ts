@@ -72,5 +72,5 @@ export const activeModels = createSelector(
   (state: AppState) => state.shared.modelHeaders,
   (state: AppState) => state.interactiveMap.selectedSpecies,
   (models, selectedSpecies) => models
-    .filter((m) => selectedSpecies && (m.organism_id === selectedSpecies.id.toString())),
+    .filter((m) => selectedSpecies && (m.organism_id === selectedSpecies.id)),
 );

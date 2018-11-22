@@ -18,11 +18,10 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {concatMapTo, map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
 import {combineLatest, Observable} from 'rxjs';
-import * as types from '../../app-interactive-map/types';
 import {WarehouseService} from '../../services/warehouse.service';
 import * as sharedActions from '../../store/shared.actions';
 import {NinjaService} from '../../services/ninja-service';
-import {StatePrediction} from '../types';
+import {Product, StatePrediction} from '../types';
 import {SetLastJobDesign} from './design-tool.actions';
 import {Router} from '@angular/router';
 
@@ -54,7 +53,7 @@ export class DesignToolEffects {
   ).pipe(
     map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpeciesDesign, sharedActions.SetModels]) => {
       const selectedModel = preferredModelBySpecies[selectedOrgId] ? models.find((model) => model.name === preferredModelBySpecies[selectedOrgId]) :
-        models.filter((model) => model.organism_id === selectedOrgId.toString())[0];
+        models.filter((model) => model.organism_id === selectedOrgId)[0];
       return new fromActions.SetModelDesign(selectedModel);
     }),
   );
@@ -64,7 +63,7 @@ export class DesignToolEffects {
     ofType(fromActions.FETCH_PRODUCTS_DESIGN),
     switchMap(() =>
       this.warehouseService.getProducts()),
-    map((payload: types.Species[]) => new fromActions.SetProductsDesign(payload)),
+    map((payload: Product[]) => new fromActions.SetProductsDesign(payload)),
   );
 
   @Effect()
