@@ -20,7 +20,9 @@ import {Job} from '../jobs/types';
 
 
 export const FETCH_MODELS = 'FETCH_MODELS';
+export const FETCH_MODELS_UPLOAD = 'FETCH_MODELS_UPLOAD';
 export const SET_MODELS = 'SET_MODELS';
+export const SET_MODELS_UPLOAD = 'SET_MODELS_UPLOAD';
 export const SET_MODELS_ERROR = 'SET_MODELS_ERROR';
 export const FETCH_SPECIES = 'FETCH_SPECIES';
 export const SET_SPECIES = 'SET_SPECIES';
@@ -41,6 +43,15 @@ export class FetchModels implements Action {
 
 export class SetModels implements Action {
   readonly type = SET_MODELS;
+  constructor(public payload: types.DeCaF.ModelHeader[]) {}
+}
+
+export class FetchModelsUpload implements Action {
+  readonly type = FETCH_MODELS_UPLOAD;
+}
+
+export class SetModelsUpload implements Action {
+  readonly type = SET_MODELS_UPLOAD;
   constructor(public payload: types.DeCaF.ModelHeader[]) {}
 }
 
@@ -100,4 +111,4 @@ export class SetJobsError implements Action {
 }
 
 export type SharedActions = FetchModels | SetModels | FetchSpecies | SetSpecies | FetchModel | FetchProjects | SetProjects | FetchMaps | SetMaps | FetchJobs |
-  SetJobs | SetModelsError | SetSpeciesError | SetProjectsError | SetMapsError | SetJobsError;
+  SetJobs | SetModelsError | SetSpeciesError | SetProjectsError | SetMapsError | SetJobsError | FetchModelsUpload | SetModelsUpload;

@@ -54,6 +54,11 @@ export function sharedReducer(
         ...state,
         modelHeaders: action.payload,
       };
+    case fromModelsActions.SET_MODELS_UPLOAD:
+      return {
+        ...state,
+        modelHeaders: action.payload,
+      };
     case fromModelsActions.SET_MODELS_ERROR:
       return {
         ...state,

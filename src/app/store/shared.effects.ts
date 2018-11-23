@@ -46,6 +46,17 @@ export class SharedEffects {
   );
 
   @Effect()
+  fetchModelsUpload: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_MODELS_UPLOAD),
+    switchMap(() => this.modelService.loadModels().pipe(
+      switchMap((models: types.DeCaF.Model[]) => [
+        new fromActions.SetModelsUpload(models),
+      ]),
+      catchError(() => of(new fromActions.SetModelsError())),
+    )),
+  );
+
+  @Effect()
   fetchSpecies: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_SPECIES),
     switchMap(() => this.warehouseService.getOrganisms().pipe(
