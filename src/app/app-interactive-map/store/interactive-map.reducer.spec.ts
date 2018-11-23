@@ -38,7 +38,7 @@ const addedReaction: types.AddedReaction = {
 const testModelHeader: types.DeCaF.ModelHeader = {
   id: 0,
   name: 'Foo',
-  organism_id: 'asd',
+  organism_id: null,
 };
 
 const testModel: types.DeCaF.Model = {
@@ -194,8 +194,8 @@ describe('interactiveMapReducer', () => {
   it('should set the selected specie', () => {
     const state = interactiveMapReducer(
       undefined,
-      new fromActions.SetSelectedSpecies({project_id: null, id: '2', name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null}),
+      new fromActions.SetSelectedSpecies({project_id: null, id: 2, name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null}),
     );
-    expect(state.selectedSpecies).toEqual({project_id: null, id: '2', name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null});
+    expect(state.selectedSpecies).toEqual({project_id: null, id: 2, name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null});
   });
 });

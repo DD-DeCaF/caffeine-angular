@@ -54,7 +54,7 @@ export class InteractiveMapEffects {
   ).pipe(
     map(([{payload: {id: selectedOrgId}}, {payload: models}]: [fromActions.SetSelectedSpecies, sharedActions.SetModels]) => {
       const selectedModelHeader = models
-        .filter((model) => model.organism_id === selectedOrgId.toString())[0];
+        .find((model) => model.organism_id === selectedOrgId);
       return new fromActions.SetModel(selectedModelHeader);
     }),
   );

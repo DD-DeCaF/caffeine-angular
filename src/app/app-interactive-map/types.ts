@@ -197,7 +197,7 @@ export declare namespace DeCaF {
     id: number;
     project_id?: number;
     name: string;
-    organism_id: string;
+    organism_id: number;
   }
 
   export interface Model extends ModelHeader {
@@ -257,7 +257,7 @@ export interface AddedReaction extends BiggReaction {
 
 export interface Species {
   project_id: string;
-  id: string;
+  id: number;
   name: string;
   created: string;
   updated: string;
