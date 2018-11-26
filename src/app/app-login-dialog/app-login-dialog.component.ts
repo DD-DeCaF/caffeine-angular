@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {SessionService} from '../session/session.service';
@@ -44,7 +44,8 @@ export class AppLoginDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AppLoginDialogComponent>,
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
-    private store: Store<AppState>) {
+    private store: Store<AppState>,
+    private ngZoneService: NgZone) {
     this.uiStatus = 'ideal';
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -54,24 +55,21 @@ export class AppLoginDialogComponent implements OnInit {
       this.uiStatus = 'loading';
       sessionService.github()
         .then(() => {
-          console.log('THEN GITHUB', this.dialogRef);
-          this.dialog.closeAll();
+          this.closeDialogs();
         });
     };
     this.google = () => {
       this.uiStatus = 'loading';
       sessionService.google()
         .then(() => {
-          console.log('THEN GOOGLE', this.dialogRef);
-          this.dialog.closeAll();
+          this.closeDialogs();
         });
     };
     this.twitter = () => {
       this.uiStatus = 'loading';
       sessionService.twitter()
         .then(() => {
-          console.log('THEN TWITTER', this.dialogRef);
-          this.dialog.closeAll();
+          this.closeDialogs();
         });
     };
   }
@@ -81,10 +79,6 @@ export class AppLoginDialogComponent implements OnInit {
       this.nextUrl = params.next;
     });
     this.sessionState = this.store.select('session');
-  }
-
-  public save(): void {
-    this.dialogRef.close(this.loginForm.value);
   }
 
   public close(): void {
@@ -105,5 +99,13 @@ export class AppLoginDialogComponent implements OnInit {
 
   public logout(): void {
     this.sessionService.logout();
+  }
+
+  public closeDialogs(): void {
+    this.ngZoneService.runOutsideAngular(() => {
+      this.ngZoneService.run(() => {
+        this.dialog.closeAll();
+      });
+    });
   }
 }
