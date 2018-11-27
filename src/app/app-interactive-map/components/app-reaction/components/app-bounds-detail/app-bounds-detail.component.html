@@ -30,11 +30,11 @@
       </div>
       <div class="box-bounds" [hidden]="!showItem(bound)">
         <div class="input-container">
-          <input mat-input class="bound-input" type="number" #lowerBound/>
+          <input value="{{bound.lowerBound}}" mat-input class="bound-input" type="number" #lowerBound/>
           <span class="item-display-box">
-            &nbsp;&#8804;<span>&nbsp;{{bound.reactionId}}&nbsp;</span>&#8804;&nbsp;
+            &nbsp;&#8804;<span>&nbsp;{{bound.reaction.id}}&nbsp;</span>&#8804;&nbsp;
           </span>
-          <input mat-input class="bound-input" type="number" #upperBound/>
+          <input value="{{bound.upperBound}}" mat-input class="bound-input" type="number" #upperBound/>
         </div>
         <div class="button-container">
           <button class="change-button" (click)="apply(bound, lowerBound.value, upperBound.value)">

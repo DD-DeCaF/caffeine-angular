@@ -50,8 +50,8 @@ export class AppBoundsDetailComponent {
   reset(item: Bound): void {
     this.update.emit({
       ...item,
-      lowerBound: null,
-      upperBound: null,
+      lowerBound: item.reaction.lower_bound,
+      upperBound: item.reaction.upper_bound,
     });
   }
 
