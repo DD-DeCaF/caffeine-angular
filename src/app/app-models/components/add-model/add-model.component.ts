@@ -27,6 +27,7 @@ import {SessionService} from '../../../session/session.service';
 import {IamService} from '../../../services/iam.service';
 import {WarehouseService} from '../../../services/warehouse.service';
 import {NewSpecies} from '../../types';
+import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
 
 @Component({
   selector: 'app-loader',
@@ -44,6 +45,7 @@ export class AddModelComponent implements OnInit, OnDestroy {
   public allSpecies: Observable<types.Species[]>;
   public allProjects: Observable<Project[]>;
   public model: types.DeCaF.Model;
+  public models: Observable<types.DeCaF.ModelHeader[]>;
   public addModelForm: FormGroup;
   public error: Observable<Boolean>;
   public fileType = '.json';
@@ -55,6 +57,10 @@ export class AddModelComponent implements OnInit, OnDestroy {
     id: null,
     name: '',
   };
+  public maps: Observable<{
+    modelIds: string[],
+    mapsByModelId: {[key: string]: types.MapItem[] },
+  }>;
 
   constructor(
     private store: Store<AppState>,
@@ -69,6 +75,8 @@ export class AddModelComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
+    this.maps = this.store.pipe(select(mapItemsByModel));
+    this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.error = this.store.pipe(select((store) => store.models.error));
     this.store.pipe(select((store) => store.shared.modelHeaders)).subscribe(() => {
       if (this.addedModel) {
@@ -84,6 +92,7 @@ export class AddModelComponent implements OnInit, OnDestroy {
       project_id: ['', Validators.required],
       model_serialized: ['', Validators.required],
       default_biomass_reaction: ['', Validators.required],
+      preferred_map_id: [''],
     });
   }
 
@@ -198,6 +207,15 @@ export class AddModelComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.addedModel = false;
     this.loading = false;
+  }
+
+  getModelName(id: string, models: types.DeCaF.ModelHeader[]): string {
+    if (models.length > 0 && id) {
+      const model = models.find((m) => m.id === parseInt(id, 10));
+      return model ? model.name : '';
+    } else {
+      return '';
+    }
   }
 }
 
