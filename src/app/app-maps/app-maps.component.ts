@@ -22,6 +22,7 @@ import {Observable} from 'rxjs';
 import {EditMapComponent} from './components/edit-map/edit-map.component';
 import {RemoveMapComponent} from './components/remove-map/remove-map.component';
 import {AddMapComponent} from './components/add-map/add-map.component';
+import {ModelService} from '../services/model.service';
 
 @Component({
   selector: 'app-models',
@@ -44,6 +45,7 @@ export class AppMapsComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
+    private modelService: ModelService,
   ) { }
 
   ngOnInit(): void {
@@ -83,12 +85,7 @@ export class AppMapsComponent implements OnInit {
       () => this.store.dispatch(new fromActions.ResetError()));
   }
 
-  getModelName(id: string, models: types.DeCaF.ModelHeader[]): string {
-    if (models.length > 0 && id) {
-      const model = models.find((m) => m.id === parseInt(id, 10));
-      return model ? model.name : '';
-    } else {
-      return '';
-    }
+  getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
+    return this.modelService.getModel(id, models);
   }
 }

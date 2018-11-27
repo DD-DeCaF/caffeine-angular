@@ -22,6 +22,7 @@ import { MatSelect, MatSelectChange } from '@angular/material';
 import { SetSelectedSpecies, SetModel, SetMap } from '../../store/interactive-map.actions';
 import { mapItemsByModel, activeModels } from '../../store/interactive-map.selectors';
 import * as types from '../../types';
+import {ModelService} from '../../../services/model.service';
 
 @Component({
   selector: 'app-global-settings',
@@ -46,7 +47,8 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
     mapsByModelId: {[key: string]: types.MapItem[] },
   }>;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>,
+              private modelService: ModelService) {}
 
   ngOnInit(): void {
     this.selectedSpecies = this.store.pipe(select((store) => store.interactiveMap.selectedSpecies));
@@ -79,12 +81,7 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getModelName(id: string, models: types.DeCaF.ModelHeader[]): string {
-   if (models.length > 0 && id) {
-     const model = models.find((m) => m.id === parseInt(id, 10));
-     return model ? model.name : '';
-   } else {
-     return '';
-   }
+  getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
+   return this.modelService.getModel(id, models);
   }
 }

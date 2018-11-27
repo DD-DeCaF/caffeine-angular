@@ -71,7 +71,7 @@
                         *ngIf="(maps | async) && (models |async)"
                         formControlName="preferred_map_id">
               <mat-optgroup *ngFor="let modelforMaps of (maps | async).modelIds"
-                            [label]="getModelName(maps, models | async)">
+                            [label]="getModel(modelforMaps, models | async).name">
                 <mat-option [value]="mapItem.id" *ngFor="let mapItem of (maps | async).mapsByModelId[modelforMaps]">
                   {{mapItem.name}}
                 </mat-option>
