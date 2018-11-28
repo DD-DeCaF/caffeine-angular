@@ -22,6 +22,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as fromActions from '../../store/models.actions';
 import {EditedModelComponent} from './edited-model.component';
 import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
+import {ModelService} from '../../../services/model.service';
 
 @Component({
   selector: 'app-loader',
@@ -51,6 +52,7 @@ export class EditModelComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     public fb: FormBuilder,
     private dialog: MatDialog,
+    private modelService: ModelService,
     public snackBar: MatSnackBar) {
     this.modelForm = this.fb.group({
       id: ['', Validators.required],
@@ -109,13 +111,8 @@ export class EditModelComponent implements OnInit, OnDestroy {
     this.edited = false;
   }
 
-  getModelName(id: string, models: types.DeCaF.ModelHeader[]): string {
-    if (models.length > 0 && id) {
-      const model = models.find((m) => m.id === parseInt(id, 10));
-      return model ? model.name : '';
-    } else {
-      return '';
-    }
+  getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
+    return this.modelService.getModel(id, models);
   }
 }
 

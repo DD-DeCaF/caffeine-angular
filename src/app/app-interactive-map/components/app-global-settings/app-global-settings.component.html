@@ -29,7 +29,7 @@
     <mat-select placeholder="Map" [value]="selectedMap | async"
                 *ngIf="(mapItems | async) && (models |async)" #map>
       <mat-optgroup *ngFor="let modelforMaps of (mapItems | async).modelIds"
-                    [label]="getModelName(modelforMaps, models | async)">
+                    [label]="getModel(modelforMaps, models | async).name">
         <mat-option [value]="mapItem" *ngFor="let mapItem of (mapItems | async).mapsByModelId[modelforMaps]">
           {{mapItem.name}}
         </mat-option>
