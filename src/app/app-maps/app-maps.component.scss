@@ -26,15 +26,7 @@
 
 .floating-button {
   z-index: 11;
-  position: absolute;
+  position: fixed;
   right: 40px;
   bottom: 50px;
-}
-
-.edit {
-  color: royalblue;
-}
-
-.delete {
-  color: #f00000;
 }

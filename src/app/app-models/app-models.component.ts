@@ -22,6 +22,7 @@ import {Observable} from 'rxjs';
 import {EditModelComponent} from './components/edit-model/edit-model.component';
 import {RemoveModelComponent} from './components/remove-model/remove-model.component';
 import {AddModelComponent} from './components/add-model/add-model.component';
+import {SessionState} from '../session/store/session.reducers';
 
 @Component({
   selector: 'app-models',
@@ -31,6 +32,8 @@ import {AddModelComponent} from './components/add-model/add-model.component';
 export class AppModelsComponent implements OnInit {
   public dataSource = new MatTableDataSource<types.DeCaF.ModelHeader>([]);
   public models: Observable<types.DeCaF.ModelHeader[]>;
+  public sessionState: Observable<SessionState>;
+
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = [
@@ -50,6 +53,7 @@ export class AppModelsComponent implements OnInit {
       this.dataSource.data = models;
     });
     this.dataSource.sort = this.sort;
+    this.sessionState = this.store.select('session');
   }
 
   removeModel(model: string): void {
