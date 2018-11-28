@@ -99,7 +99,7 @@ describe('interactiveMapReducer', () => {
               type: types.CardType.WildType,
               model: testModel.model_serialized,
               solution: testSolution,
-              method: 'fba',
+              method: 'pfba',
               addedReactions: [],
               knockoutReactions: [],
               bounds: [],
