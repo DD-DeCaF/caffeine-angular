@@ -17,7 +17,6 @@ import {Observable} from 'rxjs';
 import {SessionState} from '../session/store/session.reducers';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
-import {Params} from '@angular/router';
 
 @Component({
   selector: 'app-app-home',
