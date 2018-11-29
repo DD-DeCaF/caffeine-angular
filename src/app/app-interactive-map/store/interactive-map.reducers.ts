@@ -53,7 +53,7 @@ export const emptyCard: Card = {
   type: CardType.WildType,
   model: null,
   solution: null,
-  method: 'fba',
+  method: 'pfba',
   addedReactions: [],
   knockoutReactions: [],
   bounds: [],

@@ -28,6 +28,7 @@ import {IamService} from '../../../services/iam.service';
 import {WarehouseService} from '../../../services/warehouse.service';
 import {NewSpecies} from '../../types';
 import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
+import {ModelService} from '../../../services/model.service';
 
 @Component({
   selector: 'app-loader',
@@ -68,6 +69,7 @@ export class AddModelComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private session: SessionService,
     private iamService: IamService,
+    private modelService: ModelService,
     private warehouseService: WarehouseService,
     public snackBar: MatSnackBar) {
   }
@@ -209,13 +211,8 @@ export class AddModelComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  getModelName(id: string, models: types.DeCaF.ModelHeader[]): string {
-    if (models.length > 0 && id) {
-      const model = models.find((m) => m.id === parseInt(id, 10));
-      return model ? model.name : '';
-    } else {
-      return '';
-    }
+  getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
+    return this.modelService.getModel(id, models);
   }
 }
 

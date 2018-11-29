@@ -102,7 +102,7 @@ export class InteractiveMapEffects {
     switchMap(([{payload: type}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
       const payload: types.SimulateRequest = {
         model_id: model.id,
-        method: 'fba',
+        method: 'pfba',
         objective: null,
         objective_direction: null,
         operations: [],

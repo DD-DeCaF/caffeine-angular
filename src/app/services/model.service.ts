@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import { environment } from '../../environments/environment';
+import {environment} from '../../environments/environment';
 import * as types from '../app-interactive-map/types';
 import {EditModel, AddModel} from 'src/app/app-models/types';
 
@@ -24,25 +24,41 @@ export class ModelService {
 
   constructor(
     private http: HttpClient,
-  ) {}
+  ) {
+  }
 
   loadModel(modelId: number): Observable<types.DeCaF.Model> {
     return this.http.get<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`);
   }
 
-  loadModels(): Observable <types.DeCaF.ModelHeader[]> {
+  loadModels(): Observable<types.DeCaF.ModelHeader[]> {
     return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_storage}/models`);
   }
 
-  editModel(modelForm: EditModel): Observable <types.DeCaF.Model> {
+  editModel(modelForm: EditModel): Observable<types.DeCaF.Model> {
     return this.http.put<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelForm.id}`, modelForm);
   }
 
-  removeModel(modelId: number): Observable <types.DeCaF.Model> {
+  removeModel(modelId: number): Observable<types.DeCaF.Model> {
     return this.http.delete<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`);
   }
 
-  uploadModel(model: AddModel): Observable <types.DeCaF.Model> {
+  uploadModel(model: AddModel): Observable<types.DeCaF.Model> {
     return this.http.post<types.DeCaF.Model>(`${environment.apis.model_storage}/models`, model);
+  }
+
+  getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
+    const emptyModel = <types.DeCaF.ModelHeader>{
+      id: null,
+      project_id: null,
+      name: '',
+      organism_id: null,
+    };
+    if (models.length > 0 && id) {
+      const model = models.find((m) => m.id === parseInt(id, 10));
+      return model ? model : emptyModel;
+    } else {
+      return emptyModel;
+    }
   }
 }
