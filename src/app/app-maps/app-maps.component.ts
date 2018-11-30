@@ -22,6 +22,7 @@ import {Observable} from 'rxjs';
 import {EditMapComponent} from './components/edit-map/edit-map.component';
 import {RemoveMapComponent} from './components/remove-map/remove-map.component';
 import {AddMapComponent} from './components/add-map/add-map.component';
+import {SessionState} from '../session/store/session.reducers';
 import {ModelService} from '../services/model.service';
 
 @Component({
@@ -33,6 +34,7 @@ export class AppMapsComponent implements OnInit {
   public dataSource = new MatTableDataSource<types.MapItem>([]);
   public maps: Observable<types.MapItem[]>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
+  public sessionState: Observable<SessionState>;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = [
@@ -54,6 +56,7 @@ export class AppMapsComponent implements OnInit {
     });
     this.dataSource.sort = this.sort;
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
+    this.sessionState = this.store.select('session');
   }
 
   removeMap(map: string): void {

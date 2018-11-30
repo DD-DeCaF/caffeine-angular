@@ -12,13 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {SessionState} from '../session/store/session.reducers';
+import {Store} from '@ngrx/store';
+import {AppState} from '../store/app.reducers';
 
 @Component({
   selector: 'app-app-home',
   templateUrl: './app-home.component.html',
   styleUrls: ['./app-home.component.scss'],
 })
-export class AppHomeComponent {
+export class AppHomeComponent implements OnInit {
+  public sessionState: Observable<SessionState>;
   public title = 'app';
+
+  constructor(
+    private store: Store<AppState>) {
+  }
+
+  public ngOnInit(): void {
+    this.sessionState = this.store.select('session');
+  }
 }
