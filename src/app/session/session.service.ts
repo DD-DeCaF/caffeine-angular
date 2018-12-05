@@ -134,7 +134,7 @@ export class SessionService {
         localStorage.setItem(AUTHORIZATION_TOKEN, response.jwt);
         localStorage.setItem(REFRESH_TOKEN, JSON.stringify(response.refresh_token));
         this.store.dispatch(new FetchProjects());
-        this.store.dispatch(new FetchModels());
+        this.store.dispatch(new FetchModels(false));
         resolve();
       }, (error) => {
         reject(error);

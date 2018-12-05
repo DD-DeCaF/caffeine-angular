@@ -49,7 +49,7 @@ export class ModelsEffects {
     ofType(fromActions.REMOVE_MODEL_MODELS),
     switchMap((action: fromActions.RemoveModel) => this.modelService.removeModel(action.payload).pipe(
       switchMap((payload: types.DeCaF.Model) => [
-        new sharedActions.FetchModels(),
+        new sharedActions.FetchModels(true),
         new fromActions.RemovedModel(),
       ]),
       catchError(() => of(new SetError())),
@@ -60,7 +60,7 @@ export class ModelsEffects {
   addModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_MODEL),
     switchMap((action: fromActions.AddModel) => this.modelService.uploadModel(action.payload).pipe(
-      map(() => new sharedActions.FetchModels()),
+      map(() => new sharedActions.FetchModels(true)),
       catchError(() => of(new SetError())),
     )),
   );

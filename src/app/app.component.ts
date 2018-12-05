@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
 
     this.store.dispatch(new sharedActions.FetchSpecies());
     this.store.dispatch(new sharedActions.FetchMaps());
-    this.store.dispatch(new sharedActions.FetchModels());
+    this.store.dispatch(new sharedActions.FetchModels(false));
     this.store.dispatch(new sharedActions.FetchProjects());
     this.store.dispatch(new sharedActions.FetchJobs());
   }

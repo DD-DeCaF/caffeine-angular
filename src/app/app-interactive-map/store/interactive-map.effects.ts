@@ -31,6 +31,7 @@ import { WarehouseService } from '../../services/warehouse.service';
 import {mapBiggReactionToCobra} from '../../utils';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
+import {Empty} from './interactive-map.actions';
 
 
 const ACTION_OFFSETS = {
@@ -47,7 +48,7 @@ export class InteractiveMapEffects {
     map((action: sharedActions.SetSpecies) =>
       new fromActions.SetSelectedSpecies(WarehouseService.preferredSpecies(action.payload))));
 
-  @Effect()
+/*  @Effect()
   selectFirstModel: Observable<Action> = combineLatest<fromActions.SetSelectedSpecies, sharedActions.SetModels>(
     this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES)),
     this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
@@ -57,6 +58,21 @@ export class InteractiveMapEffects {
         .find((model) => model.organism_id === selectedOrgId);
       return new fromActions.SetModel(selectedModelHeader);
     }),
+  );*/
+  @Effect()
+  selectFirstModel = this.actions$.pipe(
+    ofType(fromActions.SET_SELECTED_SPECIES),
+    withLatestFrom(this.store$.pipe(select((store) => store.shared.modelHeaders))),
+    map(([action, models]) => {
+      if (models.length > 0) {
+        const selectedModelHeader = models
+        // tslint:disable-next-line:no-any
+          .find((model) => model.organism_id === (<any>action).payload.id);
+        return new fromActions.SetModel(selectedModelHeader);
+      } else {
+        return new Empty();
+      }
+}),
   );
 
   @Effect()

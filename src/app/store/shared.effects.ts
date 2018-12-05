@@ -36,13 +36,20 @@ export class SharedEffects {
   @Effect()
   fetchModels: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MODELS),
-    switchMap(() => this.modelService.loadModels().pipe(
-      switchMap((models: types.DeCaF.Model[]) => [
-        new fromActions.SetModels(models),
-        new fromActions.FetchSpecies(),
-      ]),
-      catchError(() => of(new fromActions.SetModelsError())),
-    )),
+    switchMap((action: fromActions.FetchModels) => {
+      if (action.payload) {
+        return this.modelService.loadModels().pipe(
+          map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
+          catchError(() => of(new fromActions.SetModelsError())));
+      } else {
+        return this.modelService.loadModels().pipe(
+          switchMap((models: types.DeCaF.Model[]) => [
+            new fromActions.SetModels(models),
+            new fromActions.FetchSpecies(),
+          ]),
+          catchError(() => of(new fromActions.SetModelsError())));
+      }
+    }),
   );
 
   @Effect()

@@ -37,6 +37,7 @@ export const SET_JOBS_ERROR = 'SET_JOBS_ERROR';
 
 export class FetchModels implements Action {
   readonly type = FETCH_MODELS;
+  constructor(public payload: boolean) {}
 }
 
 export class SetModels implements Action {
