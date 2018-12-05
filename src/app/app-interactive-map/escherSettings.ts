@@ -34,4 +34,5 @@ export default {
   tooltip: 'custom',
   tooltip_callbacks: null,
   enable_editing: false,
+  zoom_extent_canvas: true,
 };

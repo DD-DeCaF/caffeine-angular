@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Cobra} from '../app-interactive-map/types';
+import {Cobra, DeCaF, Species} from '../app-interactive-map/types';
 import Metabolite = Cobra.Metabolite;
+import {Observable} from 'rxjs';
+import ModelHeader = DeCaF.ModelHeader;
 
 export interface Job {
   id: number;
@@ -21,6 +23,7 @@ export interface Job {
   completed?: Date;
   state: string;
   error?: string;
+  type?: string;
   data: PathwayPrediction;
 }
 
@@ -67,6 +70,7 @@ export interface PathwayResponse {
   organism_id: number;
   status: string;
   task_id: string;
+  type?: string;
   result: {
     table: PathwayPredictionResult[];
     reactions: PathwayPredictionReactions[];

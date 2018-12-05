@@ -12,28 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { Observable, from, of } from 'rxjs';
+import {createSelector} from '@ngrx/store';
+import {AppState} from './app.reducers';
 
-import { Job, PathwayResponse } from './types';
-import { concatMap, map } from 'rxjs/operators';
-import { NinjaService } from '../services/ninja-service';
+export const getModelName = (model_id: number) => createSelector(
+  (state: AppState) => state.shared.modelHeaders,
+  (models) => models
+    .find((m) => m.id === model_id).name,
+);
 
-@Injectable()
-export class JobsService {
-  constructor(public ninjaService: NinjaService) { }
-
-  getJobs(): Observable<Job[]> {
-    return this.ninjaService.getPredictions()
-      .pipe(
-        map((jobs) => this.checkJobs(jobs)));
-  }
-
-  checkJobs(jobs: Job[]): Job[] {
-    for (let i = 0; i < jobs.length; i++) {
-      jobs[i].type = 'Pathway prediction';
-    }
-    return jobs;
-
-  }
-}
+export const getOrganismName = (organism_id: number) => createSelector(
+  (state: AppState) => state.shared.allSpecies,
+  (species) => species
+    .find((s) => s.id === organism_id).name,
+);

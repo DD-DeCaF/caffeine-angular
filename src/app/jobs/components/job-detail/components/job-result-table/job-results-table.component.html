@@ -30,50 +30,84 @@ limitations under the License.
 
   <ng-container  matColumnDef="host">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Organism</th>
-    <td mat-cell *matCellDef="let element"> {{organism}} </td>
+    <td mat-cell *matCellDef="let element"> {{organism_name | async}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="model">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
-    <td mat-cell *matCellDef="let element"> {{model}} </td>
+    <td mat-cell *matCellDef="let element"> {{model_name | async}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="manipulations">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Manipulations</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <span mat-sort-header>Manipulations</span>
+      <div class="custom-slider">
+        <ng5-slider [options]="options['manipulations']" [formControl]="manipulationsFilter"></ng5-slider>
+      </div>
+    </th>
     <td mat-cell *matCellDef="let element">
       <a>{{element.manipulations.length}}</a>
     </td>
   </ng-container>
 
   <ng-container  matColumnDef="heterologous_reactions">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Heterologous Pathways</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <span mat-sort-header>Heterologous Reactions</span>
+      <div class="custom-slider">
+        <ng5-slider [options]="options['reactions']" [formControl]="reactionsFilter"></ng5-slider>
+      </div>
+    </th>
     <td mat-cell *matCellDef="let element">
       <a>{{element.heterologous_reactions.length}}</a>
     </td>
   </ng-container>
 
   <ng-container  matColumnDef="product">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Product</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <span mat-sort-header>Product</span>
+      <div class="custom-slider">
+        <ng5-slider [options]="options['product']" [formControl]="productFilter"></ng5-slider>
+      </div>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.product | float}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="biomass">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Biomass</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <span mat-sort-header>Biomass</span>
+      <div class="custom-slider">
+        <ng5-slider [options]="options['biomass']" [formControl]="biomassFilter"></ng5-slider>
+      </div>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.biomass | float}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="yield">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Yield</th>
+    <th mat-header-cell *matHeaderCellDef ><span mat-sort-header>Yield</span>
+      <div class="custom-slider">
+        <ng5-slider [options]="options['yield']" [formControl]="yieldFilter"></ng5-slider>
+      </div>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.yield | float}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="fitness">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fitness</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <span mat-sort-header>Fitness</span>
+      <div class="custom-slider">
+        <ng5-slider [options]="options['fitness']" [formControl]="fitnessFilter"></ng5-slider>
+      </div>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.fitness | float}} </td>
   </ng-container>
 
   <ng-container  matColumnDef="method">
-    <th mat-header-cell *matHeaderCellDef>Method</th>
+    <th mat-header-cell *matHeaderCellDef>
+      <span mat-sort-header>Method</span>
+      <mat-form-field class="example-full-width">
+        <input class="method-input" matInput [formControl]="methodFilter">
+      </mat-form-field>
+    </th>
     <td mat-cell *matCellDef="let element"> {{element.method}} </td>
   </ng-container>
 
