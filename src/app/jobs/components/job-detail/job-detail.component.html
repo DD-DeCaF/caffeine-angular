@@ -101,10 +101,18 @@ limitations under the License.
     </mat-error>
 
     <div *ngIf="job?.status === 'SUCCESS' && tableData">
-      <app-job-results-table [model]="job.model_id"
-                             [organism]="job.organism_id"
-                             [tableData]="tableData"
-                             [reactions]="reactionsData"></app-job-results-table>
+      <app-job-results-table
+        *ngIf="!cofactorSwap"
+        [model]="job.model_id"
+        [organism]="job.organism_id"
+        [tableData]="tableData"
+        [reactions]="reactionsData"></app-job-results-table>
+      <app-job-results-table-cofactor
+        *ngIf="cofactorSwap"
+        [model]="job.model_id"
+        [organism]="job.organism_id"
+        [tableData]="tableData"
+        [reactions]="reactionsData"></app-job-results-table-cofactor>
     </div>
   </mat-card>
 </div>

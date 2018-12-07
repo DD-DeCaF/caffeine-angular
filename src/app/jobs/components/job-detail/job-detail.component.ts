@@ -40,6 +40,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   // @ts-ignore
   public tableData: PathwayPredictionResult[];
   public reactionsData: PathwayPredictionReactions[];
+  public cofactorSwap = false;
   polling: Subscription;
 
   constructor(
@@ -64,7 +65,9 @@ export class JobDetailComponent implements OnInit, OnDestroy {
               console.log('JOB PREDICTION', jobPrediction);
 
               if (jobPrediction.result) {
-                console.log('JOB PREDICTION', jobPrediction);
+                if (jobPrediction.result.table[0].method === 'PathwayPredictor+CofactorSwap') {
+                  this.cofactorSwap = true;
+                }
                 this.tableData = jobPrediction.result.table || [];
                 this.reactionsData = jobPrediction.result.reactions || [];
                 this.polling.unsubscribe();
