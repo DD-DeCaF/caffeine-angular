@@ -55,13 +55,10 @@ export class AppMapsComponent implements OnInit {
     this.store.pipe(select((store) => store.shared.maps)).subscribe((maps) => {
       this.dataSource.data = maps;
     });
-    this.dataSource.sort = this.sort; 
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.sessionState = this.store.select('session');
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
   }
 
   removeMap(map: string): void {

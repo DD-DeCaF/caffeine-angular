@@ -54,11 +54,8 @@ export class AppModelsComponent implements OnInit {
       this.dataSource.data = models;
     });
     this.dataSource.sort = this.sort;
-    this.sessionState = this.store.select('session');
-  }
-
-  ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+    this.sessionState = this.store.select('session');
   }
 
   removeModel(model: string): void {
