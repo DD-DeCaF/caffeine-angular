@@ -16,12 +16,12 @@ import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit} from '
 import {MatSort, MatTableDataSource} from '@angular/material';
 
 import {PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
-import { JobResultsDetailRowDirective } from './job-results-table-row-detail.directive';
 import { FormControl } from '@angular/forms';
 import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getModelName, getOrganismName} from '../../../../../store/shared.selectors';
 import {AppState} from '../../../../../store/app.reducers';
+import {JobResultsDetailRowDirective} from '../job-result-table/job-results-table-row-detail.directive';
 
 
 @Component({
