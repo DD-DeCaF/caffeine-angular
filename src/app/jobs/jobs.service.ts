@@ -13,10 +13,10 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { Observable, from, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { Job, PathwayResponse } from './types';
-import { concatMap, map } from 'rxjs/operators';
+import { Job } from './types';
+import { map } from 'rxjs/operators';
 import { NinjaService } from '../services/ninja-service';
 
 @Injectable()

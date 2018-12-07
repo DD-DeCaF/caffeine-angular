@@ -30,7 +30,7 @@ import {AppState} from '../../../../../store/app.reducers';
   styleUrls: ['./job-results-table-cofactor.component.scss'],
 })
 
-export class JobResultTableComponentCofactor implements AfterViewInit, OnInit {
+export class JobResultTableCofactorComponent implements AfterViewInit, OnInit {
   @Input() tableData: PathwayPredictionResult[];
   @Input() reactions: PathwayPredictionReactions[];
   @Input() model: number;
@@ -210,6 +210,7 @@ export class JobResultTableComponentCofactor implements AfterViewInit, OnInit {
 
   // tslint:disable-next-line:no-any
   createFilter(): (data: any, filter: string) => boolean {
+    /* tslint:disable */
     const filterFunction = function(data, filter): boolean {
       const searchTerms = JSON.parse(filter);
       return data.yield >= searchTerms.yieldNum[0] && data.yield <= searchTerms.yieldNum[1]
@@ -220,6 +221,7 @@ export class JobResultTableComponentCofactor implements AfterViewInit, OnInit {
         && data.manipulations.length >= searchTerms.manipulations[0] && data.manipulations.length <= searchTerms.manipulations[1]
         && data.method.toLowerCase().includes(searchTerms.method.toLowerCase());
     };
+    /* tslint:enable */
     return filterFunction;
   }
 }

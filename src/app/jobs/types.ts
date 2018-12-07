@@ -12,10 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Cobra, DeCaF, Species} from '../app-interactive-map/types';
+import {Cobra} from '../app-interactive-map/types';
 import Metabolite = Cobra.Metabolite;
-import {Observable} from 'rxjs';
-import ModelHeader = DeCaF.ModelHeader;
 
 export interface Job {
   id: number;
