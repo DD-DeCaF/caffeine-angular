@@ -16,6 +16,8 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
+@import '~@angular/material/theming';
+
 html, body {
   margin: 0;
   padding: 0;
@@ -56,5 +58,9 @@ mat-sidenav-container {
 
 .table {
   width: 100%;
-  z-index: auto
+  @include mat-elevation(2);
+}
+
+.table-paginator {
+  @include mat-elevation(2);
 }
