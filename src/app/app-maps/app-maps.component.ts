@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource, MatSort, MatDialog} from '@angular/material';
+import {MatTableDataSource, MatSort, MatDialog, MatPaginator} from '@angular/material';
 import {AppState} from '../store/app.reducers';
 import {select, Store} from '@ngrx/store';
 import * as fromActions from './store/maps.actions';
@@ -36,6 +36,7 @@ export class AppMapsComponent implements OnInit {
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public sessionState: Observable<SessionState>;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns: string[] = [
     'name',
@@ -55,6 +56,7 @@ export class AppMapsComponent implements OnInit {
       this.dataSource.data = maps;
     });
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.sessionState = this.store.select('session');
   }
