@@ -19,39 +19,41 @@
 
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.id}}</td>
       </ng-container>
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let element">
-          <button  mat-icon-button
-                   (click)="editModel(element)"
-                   *ngIf="(sessionState | async).authenticated">
+        <td mat-cell *matCellDef="let element" align="center">
+          <a
+             class="inline-button"
+             (click)="editModel(element)"
+             *ngIf="(sessionState | async).authenticated">
             <mat-icon class="button">edit</mat-icon>
-          </button>
-          <button  mat-icon-button
-                   class="disabled"
-                   matTooltip="Please log in or register to use this functionality!"
-                   *ngIf="!(sessionState | async).authenticated">
+          </a>
+          <a
+             class="disabled inline-button"
+             matTooltip="Please log in or register to use this functionality!"
+             *ngIf="!(sessionState | async).authenticated">
             <mat-icon class="button">edit</mat-icon>
-          </button>
-          <button  mat-icon-button
-                 (click)="removeModel(element)"
-                 *ngIf="(sessionState | async).authenticated">
-          <mat-icon class="button">delete</mat-icon>
-        </button>
-        <button  mat-icon-button
-                 class="disabled"
-                 matTooltip="Please log in or register to use this functionality!"
-                 *ngIf="!(sessionState | async).authenticated">
-          <mat-icon class="button">delete</mat-icon>
-        </button>
+          </a>
+          <a
+             class="inline-button"
+             (click)="removeModel(element)"
+             *ngIf="(sessionState | async).authenticated">
+            <mat-icon class="button">delete</mat-icon>
+          </a>
+          <a
+             class="disabled inline-button"
+             matTooltip="Please log in or register to use this functionality!"
+             *ngIf="!(sessionState | async).authenticated">
+            <mat-icon class="button">delete</mat-icon>
+          </a>
         </td>
       </ng-container>
 
@@ -59,16 +61,15 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    <div class="gradient"></div>
   </div>
 </div>
 <div class="floating-button"
-       matTooltip="Please log in or register to use this functionality!"
-       [matTooltipDisabled]="(sessionState | async).authenticated">
-    <button [disabled]="!(sessionState | async).authenticated"
-            mat-fab color="primary"
-            class="circle-icon"
-            (click)="addModel()">
-      <mat-icon svgIcon="plus"></mat-icon>
-    </button>
+     matTooltip="Please log in or register to use this functionality!"
+     [matTooltipDisabled]="(sessionState | async).authenticated">
+  <button [disabled]="!(sessionState | async).authenticated"
+          mat-fab color="primary"
+          class="circle-icon"
+          (click)="addModel()">
+    <mat-icon svgIcon="plus"></mat-icon>
+  </button>
 </div>
