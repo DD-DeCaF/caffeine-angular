@@ -15,13 +15,13 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatButton, MatSelect, MatSelectChange, MatAutocomplete} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
-import {Observable, Subscription} from 'rxjs';
+import {combineLatest, Observable, Subscription} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {
-  InitDesign, SetModelDesign,
+  InitDesign, SelectFirstModel, SetModelDesign,
   SetSelectedSpeciesDesign,
   StartDesign,
 } from '../../store/design-tool.actions';
@@ -81,6 +81,11 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
     this.models = this.store.pipe(select(activeModels));
 
+    combineLatest(this.selectedSpecies, this.models).subscribe(([species, models]) => {
+      if (species && models) {
+        this.store.dispatch(new SelectFirstModel(species, models));
+      }
+    });
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
     this.store.pipe(select((store) => store.designTool.selectedModel)).subscribe((selectedModel) => {
       this.designForm.patchValue({

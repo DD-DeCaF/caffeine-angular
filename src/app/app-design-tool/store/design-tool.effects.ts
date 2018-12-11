@@ -17,7 +17,7 @@ import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {concatMapTo, map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {WarehouseService} from '../../services/warehouse.service';
 import * as sharedActions from '../../store/shared.actions';
 import {NinjaService} from '../../services/ninja-service';
@@ -25,7 +25,7 @@ import {Product, StatePrediction} from '../types';
 import {SetLastJobDesign} from './design-tool.actions';
 import {Router} from '@angular/router';
 
-const preferredModelBySpecies = {
+export const preferredModelBySpecies = {
   2: 'iJO1366',
 };
 
@@ -44,19 +44,6 @@ export class DesignToolEffects {
   setSpeciesDesign: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.SET_SPECIES),
     map((action: sharedActions.SetSpecies) => new fromActions.SetSelectedSpeciesDesign(WarehouseService.preferredSpecies(action.payload))));
-
-  @Effect()
-  selectFirstModel: Observable<Action> = combineLatest(
-    this.actions$.pipe(ofType(sharedActions.FETCH_SPECIES)),
-    this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES_DESIGN)),
-    this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
-  ).pipe(
-    map(([a, {payload: {id: selectedOrgId}}, {payload: models}]: [never, fromActions.SetSelectedSpeciesDesign, sharedActions.SetModels]) => {
-      const selectedModel = preferredModelBySpecies[selectedOrgId] ? models.find((model) => model.name === preferredModelBySpecies[selectedOrgId]) :
-        models.filter((model) => model.organism_id === selectedOrgId)[0];
-      return new fromActions.SetModelDesign(selectedModel);
-    }),
-  );
 
   @Effect()
   fetchProductsDesign: Observable<Action> = this.actions$.pipe(
@@ -109,13 +96,16 @@ export class DesignToolEffects {
     }),
   );
 
-  /* @Effect()
-   fetchJobsDesign: Observable<Action> = this.actions$.pipe(
-     ofType(fromActions.FETCH_PRODUCTS_DESIGN),
-     switchMap(() =>
-       this.speciesService.loadJobs()),
-     map((payload: string[]) => new SetJobsDesign(payload)),
-   );*/
+  @Effect()
+  selectFirstModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SELECT_FIRST_MODEL),
+    map((payload: fromActions.SelectFirstModel) => {
+      const selectedModel = preferredModelBySpecies[payload.species.id] ? payload.models.find((model) =>
+        model.name === preferredModelBySpecies[payload.species.id]) :
+        payload.models.filter((model) => model.organism_id === payload.species.id)[0];
+      return new fromActions.SetModelDesign(selectedModel);
+    }),
+  );
 
   constructor(
     private actions$: Actions,

@@ -14,12 +14,12 @@
 
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import { AppState } from '../../../store/app.reducers';
 import { MatSelect, MatSelectChange } from '@angular/material';
-import { SetSelectedSpecies, SetModel, SetMap } from '../../store/interactive-map.actions';
+import { SetSelectedSpecies, SetModel, SetMap, SelectFirstModel } from '../../store/interactive-map.actions';
 import { mapItemsByModel, activeModels } from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
@@ -59,6 +59,11 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
     this.mapItems = this.store.pipe(select(mapItemsByModel));
+    combineLatest(this.selectedSpecies, this.models).subscribe(([species, models]) => {
+      if (species && models.length > 0) {
+        this.store.dispatch(new SelectFirstModel(species, models));
+      }
+    });
   }
 
   ngAfterViewInit(): void {
