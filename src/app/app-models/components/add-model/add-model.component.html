@@ -12,7 +12,6 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<<<<<<< HEAD
 <mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
   <div class="map-progress">
     <div class="box">
@@ -109,79 +108,6 @@
               mat-button
               class="design-button mat-primary"
               type="submit"
-=======
-<div class="map-progress">
-  <div class="box">
-    <span class="error" [hidden]="!(error | async)"
-      >An error ocurred adding the model. Please try again later.</span
-    >
-    <mat-spinner
-      style="margin:0 auto;"
-      color="primary"
-      *ngIf="loading && !(error | async)"
-    ></mat-spinner>
-    <div
-      [hidden]="(error | async) || loading"
-      *ngIf="
-        addModelForm.value.project_id !== 'add' &&
-        addModelForm.value.organism_id !== 'add'
-      "
-    >
-      <h3 class="title">Add new model</h3>
-      <span class="recommend"
-        >We recommend that you visit
-        <a href="https://memote.io" target="_blank">memote.io</a> and validate
-        your model.</span
-      >
-      <form
-        class="model-form"
-        [formGroup]="addModelForm"
-        (ngSubmit)="onSubmit()"
-      >
-        <mat-form-field color="primary">
-          <mat-label class="title">Name*</mat-label>
-          <input
-            color="primary"
-            id="name"
-            type="text"
-            class="form-control"
-            formControlName="name"
-            matInput
-          />
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label class="title">Organism*</mat-label>
-          <mat-select
-            type="text"
-            id="organism_id"
-            color="primary"
-            class="form-control"
-            formControlName="organism_id"
-            #species
-          >
-            <mat-option
-              color="primary"
-              class="mat-primary"
-              [value]="species.id"
-              *ngFor="let species of (allSpecies | async)"
-              >{{ species.name }}
-            </mat-option>
-            <mat-option value="add">
-              <mat-icon>add_circle</mat-icon>
-              Add organism
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label class="title">Project*</mat-label>
-          <mat-select
-            type="text"
-            color="primary"
-            class="form-control"
-            formControlName="project_id"
-          >
-            <mat-option
->>>>>>> chore: redesign parts of models
               color="primary"
               class="mat-primary"
               [value]="project.id"
