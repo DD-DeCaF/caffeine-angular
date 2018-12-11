@@ -14,7 +14,7 @@
 
 import {Component, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 
-import {Bound} from '../../../../types';
+import {BoundedReaction} from '../../../../types';
 
 @Component({
   selector: 'app-bounds-detail',
@@ -25,20 +25,20 @@ export class AppBoundsDetailComponent {
   @ViewChild('lowerBound') lowerBound: ElementRef;
   @ViewChild('upperBound') upperBound: ElementRef;
 
-  @Input() public bounds: Bound[];
-  @Output() public remove = new EventEmitter<Bound>();
-  @Output() public update = new EventEmitter<Bound>();
+  @Input() public bounds: BoundedReaction[];
+  @Output() public remove = new EventEmitter<BoundedReaction>();
+  @Output() public update = new EventEmitter<BoundedReaction>();
 
   public selectedId: string = null;
 
-  removeItem(item: Bound): void {
+  removeItem(item: BoundedReaction): void {
     if (this.selectedId === item.reaction.id) {
       this.selectedId = null;
     }
     this.remove.emit(item);
   }
 
-  apply(item: Bound, lowerBound: string, upperBound: string): void {
+  apply(item: BoundedReaction, lowerBound: string, upperBound: string): void {
 
     this.update.emit({
       ...item,
@@ -47,7 +47,7 @@ export class AppBoundsDetailComponent {
     });
   }
 
-  reset(item: Bound): void {
+  reset(item: BoundedReaction): void {
     this.update.emit({
       ...item,
       lowerBound: item.reaction.lower_bound,
@@ -61,11 +61,11 @@ export class AppBoundsDetailComponent {
     this.selectedId = null;
   }
 
-  select(bound: Bound): void {
+  select(bound: BoundedReaction): void {
     this.selectedId = bound.reaction.id;
   }
 
-  showItem(bound: Bound): boolean {
+  showItem(bound: BoundedReaction): boolean {
     return this.selectedId === bound.reaction.id;
   }
 }

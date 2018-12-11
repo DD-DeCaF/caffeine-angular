@@ -94,7 +94,7 @@ export class AddModelComponent implements OnInit, OnDestroy {
       project_id: ['', Validators.required],
       model_serialized: ['', Validators.required],
       default_biomass_reaction: ['', Validators.required],
-      preferred_map_id: [''],
+      preferred_map_id: ['', Validators.required],
     });
   }
 

@@ -24,10 +24,12 @@ export interface Reaction {
   organism: string;
 }
 
-export interface Bound {
-  reaction: Cobra.Reaction;
+export interface Bounds {
   lowerBound: number;
   upperBound: number;
+}
+export interface BoundedReaction extends Bounds {
+  reaction: Cobra.Reaction;
 }
 
 export enum OperationDirection {
@@ -53,7 +55,7 @@ export interface AddedReactionPayload {
 }
 
 export interface BoundOperationPayload {
-  item: Bound;
+  item: BoundedReaction;
   operationTarget: BoundOperationTarget;
   direction: OperationDirection;
 }
@@ -75,7 +77,7 @@ export interface Card {
   addedReactions: AddedReaction[];
   knockoutReactions: string[];
   objectiveReaction: ObjectiveReaction;
-  bounds: Bound[];
+  bounds: BoundedReaction[];
 }
 
 export interface HydratedCard extends Card {

@@ -28,7 +28,7 @@ import {interactiveMapReducer} from './interactive-map.reducers';
 import { SimulationService } from '../services/simulation.service';
 import { MapService } from '../services/map.service';
 import { WarehouseService } from '../../services/warehouse.service';
-import {mapBiggReactionToCobra} from '../../utils';
+import { mapBiggReactionToCobra } from '../../lib';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
 
@@ -197,7 +197,7 @@ export class InteractiveMapEffects {
         data: null,
       }));
 
-      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.Bound): types.DeCaF.Operation => ({
+      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.BoundedReaction): types.DeCaF.Operation => ({
         operation: 'modify',
         type: 'reaction',
         id: reaction.id,

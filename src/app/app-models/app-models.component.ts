@@ -40,8 +40,7 @@ export class AppModelsComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'name',
-    'edit',
-    'remove',
+    'actions',
   ];
 
   constructor(

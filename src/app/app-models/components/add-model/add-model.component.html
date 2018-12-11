@@ -102,15 +102,15 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-
           <div mat-dialog-actions align="end">
             <button
-              mat-button
-              class="design-button mat-primary"
+              mat-flat-button
               type="submit"
               color="primary"
               [disabled]="!addModelForm.valid"
-              #design>Add
+              #design
+            >
+              Add
             </button>
           </div>
         </form>
@@ -120,7 +120,7 @@
       <h3 class="title">Add new organism</h3>
       <mat-form-field>
         <mat-label class="title">Organism name*</mat-label>
-        <input matInput cdkFocusInitial #neworganism>
+        <input matInput cdkFocusInitial #neworganism/>
       </mat-form-field>
       <mat-form-field>
         <mat-label class="title">Project*</mat-label>
@@ -137,22 +137,53 @@
       </mat-form-field>
       <mat-card-actions align="end">
         <div fxFlex></div>
-        <button type="button" mat-button (click)="cancelOrganism()">Cancel</button>
-        <button type="button" mat-button (click)="submitOrganism()" [disabled]="!isValidOrganism()">Create</button>
+        <div fxFlex fxLayoutAlign="space-between">
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            (click)="cancelOrganism()"
+          >Cancel
+          </button>
+          <button
+            type="button"
+            mat-flat-button
+            color="accent"
+            (click)="submitOrganism()"
+            [disabled]="!isValidOrganism()"
+          >
+            Create
+          </button>
+        </div>
       </mat-card-actions>
     </div>
     <div class="create-project" *ngIf="addModelForm.value.project_id === 'add'">
       <h3 class="title">Add new project</h3>
       <mat-form-field>
         <mat-label class="title">Project name*</mat-label>
-        <input matInput cdkFocusInitial #newproject>
+        <input matInput cdkFocusInitial #newproject/>
       </mat-form-field>
       <mat-card-actions align="end">
         <div fxFlex></div>
-        <button type="button" mat-button (click)="cancelProject()">Cancel</button>
-      <button type="button" mat-button (click)="submitProject()" [disabled]="!isValidProject()">Create</button>
+        <div fxFlex fxLayoutAlign="space-between">
+          <button
+            type="button"
+            mat-flat-button
+            color="primary"
+            (click)="cancelProject()"
+          >Cancel
+          </button>
+          <button
+            type="button"
+            mat-flat-button
+            color="accent"
+            (click)="submitProject()"
+            [disabled]="!isValidProject()"
+          >
+            Create
+          </button>
+        </div>
       </mat-card-actions>
     </div>
   </div>
 </mat-dialog-content>
-
