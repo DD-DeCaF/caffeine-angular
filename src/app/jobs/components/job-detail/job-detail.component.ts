@@ -13,16 +13,16 @@
 // limitations under the License.
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 
 import {Job, PathwayPredictionReactions, PathwayPredictionResult, PathwayResponse} from '../../types';
 import {Observable, Subscription, timer} from 'rxjs';
 import {select, Store} from '@ngrx/store';
-import { AppState } from '../../../store/app.reducers';
-import { getJob } from '../../store/jobs.selectors';
-import { selectNotNull } from '../../../framework-extensions';
+import {AppState} from '../../../store/app.reducers';
+import {getJob} from '../../store/jobs.selectors';
+import {selectNotNull} from '../../../framework-extensions';
 
-import { map } from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {NinjaService} from '../../../services/ninja-service';
 import {getModelName, getOrganismName} from '../../../store/shared.selectors';
 
@@ -47,7 +47,8 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private ninjaService: NinjaService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.polling = timer(0, 20000)
@@ -67,6 +68,8 @@ export class JobDetailComponent implements OnInit, OnDestroy {
                 }
                 this.tableData = jobPrediction.result.table || [];
                 this.reactionsData = jobPrediction.result.reactions || [];
+                this.polling.unsubscribe();
+              } else if (jobPrediction.status === 'FAILURE') {
                 this.polling.unsubscribe();
               }
             });
