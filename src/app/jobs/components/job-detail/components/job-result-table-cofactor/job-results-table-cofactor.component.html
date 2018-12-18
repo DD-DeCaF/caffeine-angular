@@ -28,11 +28,6 @@ limitations under the License.
     </td>
   </ng-container>
 
-  <ng-container  matColumnDef="host" >
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="title-without-filter">Organism</th>
-    <td mat-cell *matCellDef="let element"> {{organism_name | async}} </td>
-  </ng-container>
-
   <ng-container  matColumnDef="model" >
     <th mat-header-cell *matHeaderCellDef mat-sort-header class="title-without-filter">Model</th>
     <td mat-cell *matCellDef="let element"> {{model_name | async}} </td>

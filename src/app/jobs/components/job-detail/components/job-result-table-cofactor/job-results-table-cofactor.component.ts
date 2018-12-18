@@ -101,7 +101,6 @@ export class JobResultTableCofactorComponent implements AfterViewInit, OnInit {
 
   displayedColumns: string[] = [
     'select',
-    'host',
     'model',
     'manipulations',
     'heterologous_reactions',

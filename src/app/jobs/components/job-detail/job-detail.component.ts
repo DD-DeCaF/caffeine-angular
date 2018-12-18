@@ -62,14 +62,16 @@ export class JobDetailComponent implements OnInit, OnDestroy {
                 select(getModelName(jobPrediction.model_id)));
               this.organism = this.store.pipe(
                 select(getOrganismName(jobPrediction.organism_id)));
-              if (jobPrediction.result) {
-                if (jobPrediction.result.table[0].method === 'PathwayPredictor+CofactorSwap') {
+                
+              if (jobPrediction.result) {                
+                if (jobPrediction.result.cofactor_swap.length > 0 )  {
                   this.cofactorSwap = true;
                 }
                 this.tableData = jobPrediction.result.table || [];
                 this.reactionsData = jobPrediction.result.reactions || [];
                 this.polling.unsubscribe();
-              } else if (jobPrediction.status === 'FAILURE') {
+              }
+               else if (jobPrediction.status === 'FAILURE') {
                 this.polling.unsubscribe();
               }
             });
