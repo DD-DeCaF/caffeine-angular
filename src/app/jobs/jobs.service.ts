@@ -24,16 +24,6 @@ export class JobsService {
   constructor(public ninjaService: NinjaService) { }
 
   getJobs(): Observable<Job[]> {
-    return this.ninjaService.getPredictions()
-      .pipe(
-        map((jobs) => this.checkJobs(jobs)));
-  }
-
-  checkJobs(jobs: Job[]): Job[] {
-    for (let i = 0; i < jobs.length; i++) {
-      jobs[i].type = 'Pathway prediction';
-    }
-    return jobs;
-
+    return this.ninjaService.getPredictions();
   }
 }

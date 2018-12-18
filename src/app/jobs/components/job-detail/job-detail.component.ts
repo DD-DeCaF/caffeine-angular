@@ -57,12 +57,10 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           selectNotNull(getJob, {jobId}),
           map((j) => {
             this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
-              jobPrediction.type = 'Pathway prediction';
               this.model = this.store.pipe(
                 select(getModelName(jobPrediction.model_id)));
               this.organism = this.store.pipe(
                 select(getOrganismName(jobPrediction.organism_id)));
-              console.log('JOB PREDICTION', jobPrediction);
 
               if (jobPrediction.result) {
                 if (jobPrediction.result.table[0].method === 'PathwayPredictor+CofactorSwap') {
