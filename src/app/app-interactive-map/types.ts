@@ -271,10 +271,16 @@ export interface Species {
 export interface ReactionState {
   includedInModel: boolean;
   knockout: boolean;
+  knockoutGenes: boolean;
   objective: ObjectiveReactionPayload;
   bounds: {
     lowerbound: number,
     upperbound: number,
   };
+}
+
+export interface Gene {
+  id: string;
+  name: string;
 }
 

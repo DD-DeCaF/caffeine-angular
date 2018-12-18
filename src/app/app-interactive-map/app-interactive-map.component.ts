@@ -64,6 +64,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       objectiveDirection: (args) => {
         this.handleObjectiveDirection(args);
       },
+      knockoutGenes: (args) => {
+        this.handleKnockoutGenes(args);
+      },
     },
     first_load_callback: () => this.firstLoadEscher(),
   };
@@ -162,6 +165,14 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     }));
   }
 
+  handleKnockoutGenes(reactionId: string): void {
+    this.store.dispatch(new fromActions.ReactionOperation({
+      item: reactionId,
+      operationTarget: 'knockoutGenes',
+      direction: this.card.knockoutGenes.includes(reactionId) ? OperationDirection.Undo : OperationDirection.Do,
+    }));
+  }
+
   handleSetAsObjective(reactionId: string): void {
     if (this.card.objectiveReaction && this.card.objectiveReaction.reactionId === reactionId) {
       this.store.dispatch(new fromActions.SetObjectiveReaction({
@@ -215,14 +226,15 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     return reaction ? reaction.lowerBound : reactionModel ? reactionModel.lower_bound : null;
   }
 
-  reactionState(reactionId: string): ReactionState {
+  reactionState(id: string): ReactionState {
     return {
-      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
-      knockout: this.card.knockoutReactions.includes(reactionId),
+      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === id)),
+      knockout: this.card.knockoutReactions.includes(id),
+      knockoutGenes: this.card.knockoutGenes.includes(id),
       objective: this.card.objectiveReaction,
       bounds: {
-        lowerbound: this.lowerBound(reactionId),
-        upperbound: this.upperBound(reactionId),
+        lowerbound: this.lowerBound(id),
+        upperbound: this.upperBound(id),
       },
     };
   }
