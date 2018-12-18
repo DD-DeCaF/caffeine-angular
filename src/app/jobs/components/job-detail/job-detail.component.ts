@@ -61,7 +61,6 @@ export class JobDetailComponent implements OnInit, OnDestroy {
                 select(getModelName(jobPrediction.model_id)));
               this.organism = this.store.pipe(
                 select(getOrganismName(jobPrediction.organism_id)));
-
               if (jobPrediction.result) {
                 if (jobPrediction.result.table[0].method === 'PathwayPredictor+CofactorSwap') {
                   this.cofactorSwap = true;

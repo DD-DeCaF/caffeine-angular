@@ -16,7 +16,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Job } from './types';
-import { map } from 'rxjs/operators';
 import { NinjaService } from '../services/ninja-service';
 
 @Injectable()
