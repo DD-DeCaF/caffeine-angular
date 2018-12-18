@@ -51,14 +51,16 @@ export interface InteractiveMapState {
 
 export const emptyCard: Card = {
   name: 'foo',
-  type: CardType.WildType,
+  type: CardType.Design,
   model: null,
   solution: null,
   method: 'pfba',
   addedReactions: [],
   knockoutReactions: [],
+  knockoutGenes: [],
   bounds: [],
   objectiveReaction: null,
+  saved: null,
 };
 
 export const initialState: InteractiveMapState = {
@@ -87,6 +89,7 @@ export const boundEquality = (item: BoundedReaction) => (arrayItem: BoundedReact
 const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
   addedReactions: appendOrUpdate(addedReactionEquality),
   knockoutReactions: appendOrUpdateStringList,
+  knockoutGenes: appendOrUpdateStringList,
   bounds: appendOrUpdate(boundEquality),
 };
 
@@ -98,6 +101,7 @@ type OperationFunction<T> = (array: T[], item: T) => T[];
 const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
   addedReactions: filter((a: AddedReaction) => (b: AddedReaction) => a.bigg_id !== b.bigg_id),
   knockoutReactions: filter<string>(stringFilter),
+  knockoutGenes: filter<string>(stringFilter),
   bounds: filter((a: BoundedReaction) => (b: BoundedReaction) => a.reaction.id !== b.reaction.id),
 };
 
@@ -159,8 +163,8 @@ export function interactiveMapReducer(
       let name: string;
       let model: Cobra.Model;
       switch (type) {
-        case CardType.WildType: {
-          name = 'Wild Type';
+        case CardType.Design: {
+          name = 'Design';
           model = state.selectedModel.model_serialized;
           break;
         }
@@ -223,9 +227,11 @@ export function interactiveMapReducer(
           },
         },
       };
+
     case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
-    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
+    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY:
+    case fromInteractiveMapActions.SAVE_DESIGN: {
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
@@ -234,6 +240,13 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             method: action.payload,
+          };
+          break;
+        }
+        case fromInteractiveMapActions.SAVE_DESIGN: {
+          newCard = {
+            ...card,
+            saved: true,
           };
           break;
         }
@@ -257,10 +270,12 @@ export function interactiveMapReducer(
           }
           newCard = {
             ...card,
+            saved: false,
             [operationTarget]: result,
           };
           break;
         }
+
         case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
           const {reactionId, direction} = action.payload;
           newCard = {

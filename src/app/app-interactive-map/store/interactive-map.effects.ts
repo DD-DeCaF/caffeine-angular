@@ -31,6 +31,8 @@ import { WarehouseService } from '../../services/warehouse.service';
 import { mapBiggReactionToCobra } from '../../lib';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
+import {DesignService} from '../services/design.service';
+import {HydratedCard} from '../types';
 
 
 const ACTION_OFFSETS = {
@@ -83,7 +85,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.SET_FULL_MODEL),
     concatMapTo([
       new fromActions.ResetCards(),
-      new fromActions.AddCard(types.CardType.WildType),
+      new fromActions.AddCard(types.CardType.Design),
     ]),
   );
 
@@ -197,6 +199,13 @@ export class InteractiveMapEffects {
         data: null,
       }));
 
+      const knockoutsGenes = selectedCard.knockoutGenes.map((geneId: string): types.DeCaF.Operation => ({
+        operation: 'knockout',
+        type: 'gene',
+        id: geneId,
+        data: null,
+      }));
+
       const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.BoundedReaction): types.DeCaF.Operation => ({
         operation: 'modify',
         type: 'reaction',
@@ -216,6 +225,7 @@ export class InteractiveMapEffects {
         operations: [
           ...addedReactions,
           ...knockouts,
+          ...knockoutsGenes,
           ...bounds,
         ],
       };
@@ -248,10 +258,20 @@ export class InteractiveMapEffects {
     mapTo(new loaderActions.LoadingFinished()),
   );
 
+  @Effect()
+  saveDesign: Observable<void> = this.actions$.pipe(
+    ofType(fromActions.SAVE_DESIGN),
+    switchMap((action: fromActions.SaveDesign) =>
+      this.designService.saveDesign(action.payload)),
+    map((payload: HydratedCard) => {
+      console.log('PAYLOAD', payload);
+    }));
+
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
     private http: HttpClient,
     private simulationService: SimulationService,
+    private designService: DesignService,
   ) {}
 }

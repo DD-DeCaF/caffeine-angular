@@ -33,6 +33,7 @@ import {ModelService} from '../services/model.service';
 import {WarehouseService} from '../services/warehouse.service';
 import {AppRoutingModule} from '../app-routing.module';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
+import {DesignService} from './services/design.service';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import {ModalErrorComponent} from './components/modal-error/modal-error.componen
     MapService,
     ModelService,
     WarehouseService,
+    DesignService,
   ],
   exports: [
     AppInteractiveMapComponent,

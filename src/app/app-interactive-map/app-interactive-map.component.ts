@@ -83,6 +83,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         selectNotNull((store) => store.interactiveMap.mapData)),
       builderObservable,
     ).subscribe(([map, builder]) => {
+      console.log('MAAAAAAP', map);
       builder.load_map(map);
     });
 

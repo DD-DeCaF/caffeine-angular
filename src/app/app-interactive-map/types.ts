@@ -13,7 +13,7 @@
 // limitations under the License.
 
 export enum CardType {
-  WildType,
+  Design,
   DataDriven,
 }
 
@@ -37,7 +37,7 @@ export enum OperationDirection {
   Undo = 'UNDO',
 }
 
-export type SimpleOperationTarget = 'addedReactions' | 'knockoutReactions';
+export type SimpleOperationTarget = 'addedReactions' | 'knockoutReactions' | 'knockoutGenes';
 export type BoundOperationTarget = 'bounds';
 
 export type OperationTarget = SimpleOperationTarget| BoundOperationTarget;
@@ -76,8 +76,10 @@ export interface Card {
   method: Methods;
   addedReactions: AddedReaction[];
   knockoutReactions: string[];
+  knockoutGenes: string[];
   objectiveReaction: ObjectiveReaction;
   bounds: BoundedReaction[];
+  saved: boolean;
 }
 
 export interface HydratedCard extends Card {

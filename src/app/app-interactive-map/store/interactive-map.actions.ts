@@ -44,6 +44,7 @@ export const REACTION_OPERATION = 'REACTION_OPERATION';
 export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
+export const SAVE_DESIGN = 'SAVE_DESIGN';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -148,6 +149,11 @@ export class SetObjectiveReactionApply implements Action {
   constructor(public payload: types.ObjectiveReactionPayload) {}
 }
 
+export class SaveDesign implements Action {
+  readonly type = SAVE_DESIGN;
+  constructor(public payload: types.HydratedCard) {}
+}
+
 export const operationToApply = {
   [REACTION_OPERATION]: ReactionOperationApply,
   [SET_METHOD]: SetMethodApply,
@@ -170,4 +176,5 @@ export type InteractiveMapActions =
   RenameCard |
   SetMethodApply |
   ReactionOperationApply |
-  SetObjectiveReactionApply;
+  SetObjectiveReactionApply |
+  SaveDesign;

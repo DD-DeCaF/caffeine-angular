@@ -17,8 +17,15 @@
     <div fxLayout="row" fxLayoutAlign="space-around center">
       <div>
         <mat-menu #addMenu="matMenu">
-          <button mat-menu-item (click)="addWildtypeCard()">Wild type</button>
-          <button mat-menu-item (click)="addDataDrivenCard()">Data driven</button>
+          <button mat-menu-item
+                  (click)="addDesignCard()"
+                  matTooltip="Manipulate and simulate models."
+                  [matTooltipPosition]="'after'">Design
+          </button>
+          <button mat-menu-item
+                  matTooltip="Integrate experimental data with models."
+                  [matTooltipPosition]="'after'">Data driven
+          </button>
         </mat-menu>
 
         <button mat-icon-button [matMenuTriggerFor]="addMenu">
@@ -50,8 +57,11 @@
           <button mat-icon-button (click)="shrink()">
             <mat-icon>chevron_left</mat-icon>
           </button>
-          <h4>{{expandedCard.name}}</h4>
+          <h4 [ngClass]="{'unsaved': expandedCard.saved === false}">{{expandedCard.name}}<span
+            matTooltip="Unsaved strain" *ngIf="expandedCard.saved === false">*</span>
+          </h4>
         </div>
+        <button mat-button *ngIf="expandedCard.saved === false" (click)="save(expandedCard)">SAVE</button>
       </div>
 
       <mat-tab-group mat-stretch-tabs [selectedIndex]="tabIndex">
@@ -71,16 +81,20 @@
           <app-reaction></app-reaction>
         </mat-tab>
       </mat-tab-group>
-      </div>
+    </div>
   </div>
 
   <div *ngIf="!expandedCard">
     <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async)">
       <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
         <div class="left-section">
-          <h4>{{card.name}}</h4>
+          <h4 [ngClass]="{'unsaved': card.saved === false}">{{card.name}}<span matTooltip="Unsaved strain"
+                                                                               *ngIf="card.saved === false">*</span>
+          </h4>
         </div>
-        <button mat-icon-button (click)="delete(card)"><mat-icon>close</mat-icon></button>
+        <button mat-icon-button (click)="delete(card)">
+          <mat-icon>close</mat-icon>
+        </button>
       </div>
 
       <div fxLayout="row" fxLayoutAlign="space-around center">
@@ -98,10 +112,14 @@
           <label>Method:</label>
           <label>{{card.method}}</label>
         </div>
-        <div class="displayRow" *ngIf="card.solution" [ngStyle]="{'background-color': growthRateBackground(card.solution.growth_rate)}">
+        <div class="displayRow" *ngIf="card.solution"
+             [ngStyle]="{'background-color': growthRateBackground(card.solution.growth_rate)}">
           <label>Growth rate:</label>
           <label>{{formatGrowthRate(card.solution.growth_rate)}} <i>h<sup>-1</sup></i></label>
         </div>
+      </div>
+      <div fxLayoutAlign="end space-around" *ngIf="card.saved === false" class="save-button">
+        <button mat-flat-button class="save-button" style="color: white" (click)="save(card)">SAVE</button>
       </div>
     </div>
   </div>

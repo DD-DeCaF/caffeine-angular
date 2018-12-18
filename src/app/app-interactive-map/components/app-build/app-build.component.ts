@@ -18,11 +18,13 @@ import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import { withLatestFrom } from 'rxjs/operators';
 
-import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import { AppState } from '../../../store/app.reducers';
 import { CardType, HydratedCard } from '../../types';
+import {selectNotNull} from '../../../framework-extensions';
+import {getSelectedCard} from '../../store/interactive-map.selectors';
 
 @Component({
   selector: 'app-build',
@@ -44,6 +46,12 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
+    this.store.pipe(
+      selectNotNull(getSelectedCard)).subscribe((card) => {
+        if (this.expandedCard) {
+          this.expandedCard = card;
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -58,8 +66,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new SelectCard(card.id));
   }
 
-  public addWildtypeCard(): void {
-    this.store.dispatch(new AddCard(CardType.WildType));
+  public addDesignCard(): void {
+    this.store.dispatch(new AddCard(CardType.Design));
   }
 
   public addDataDrivenCard(): void {
@@ -101,5 +109,10 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     return this.growthRateMeaningful(growthRate) ?
       growthRate.toPrecision(3) :
       '0';
+  }
+
+  public save(card: HydratedCard): void {
+    this.store.dispatch(new SaveDesign(card));
+    console.log('SAVE', card);
   }
 }

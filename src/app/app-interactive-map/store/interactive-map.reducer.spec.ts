@@ -82,7 +82,7 @@ describe('interactiveMapReducer', () => {
     const actions = [
       new fromActions.SetModel(testModelHeader),
       new fromActions.SetFullModel(testModel),
-      testAddCard(types.CardType.WildType),
+      testAddCard(types.CardType.Design),
     ];
 
     expect(applyActions(actions))
@@ -95,8 +95,8 @@ describe('interactiveMapReducer', () => {
           ids: ['0'],
           cardsById: {
             '0': {
-              name: 'Wild Type',
-              type: types.CardType.WildType,
+              name: 'Design',
+              type: types.CardType.Design,
               model: testModel.model_serialized,
               solution: testSolution,
               method: 'pfba',
@@ -114,8 +114,8 @@ describe('interactiveMapReducer', () => {
     const actions = [
       new fromActions.SetModel(testModelHeader),
       new fromActions.SetFullModel(testModel),
-      testAddCard(types.CardType.WildType),
-      testAddCard(types.CardType.WildType),
+      testAddCard(types.CardType.Design),
+      testAddCard(types.CardType.Design),
       new fromActions.DeleteCard('0'),
     ];
     const state = applyActions(actions);
@@ -135,7 +135,7 @@ describe('interactiveMapReducer', () => {
     const actions = [
       new fromActions.SetModel(testModelHeader),
       new fromActions.SetFullModel(testModel),
-      testAddCard(types.CardType.WildType),
+      testAddCard(types.CardType.Design),
       new fromActions.ReactionOperationApply(operationPayload),
     ];
 
@@ -148,7 +148,7 @@ describe('interactiveMapReducer', () => {
     const actions = [
       new fromActions.SetModel(testModelHeader),
       new fromActions.SetFullModel(testModel),
-      testAddCard(types.CardType.WildType),
+      testAddCard(types.CardType.Design),
       new fromActions.ReactionOperationApply({
         item: {
           ...addedReaction,
