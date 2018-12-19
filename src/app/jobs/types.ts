@@ -72,7 +72,7 @@ export interface PathwayResponse {
   result: {
     table: PathwayPredictionResult[];
     reactions: PathwayPredictionReactions[];
-    diff_fva: [];
-    cofactor_swap: [];
+    diff_fva: PathwayPredictionResult[];
+    cofactor_swap: PathwayPredictionResult[];
   };
 }

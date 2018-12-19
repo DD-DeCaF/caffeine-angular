@@ -29,7 +29,6 @@ import { JobResultTableComponent } from './components/job-detail/components/job-
 import { FloatPipe } from '../pipes/float.pipe';
 import { JobResultsDetailRowDirective } from './components/job-detail/components/job-result-table/job-results-table-row-detail.directive';
 import { Ng5SliderModule } from 'ng5-slider';
-import {JobResultTableCofactorComponent} from './components/job-detail/components/job-result-table-cofactor/job-results-table-cofactor.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,6 @@ import {JobResultTableCofactorComponent} from './components/job-detail/component
     JobListComponent,
     JobDetailComponent,
     JobResultTableComponent,
-    JobResultTableCofactorComponent,
     JobsComponent,
     JobResultsDetailRowDirective,
   ],

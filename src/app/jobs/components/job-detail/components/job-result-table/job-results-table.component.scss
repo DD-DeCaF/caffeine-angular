@@ -89,3 +89,13 @@ tr.expanded > td {
 .title-without-filter {
   padding-bottom: 57px;
 }
+
+.aligned-with-icon {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.arrow-icon {
+  margin-right: 5px;
+  margin-left: 5px;
+}

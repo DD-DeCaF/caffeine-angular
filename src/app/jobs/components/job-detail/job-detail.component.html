@@ -17,53 +17,53 @@ limitations under the License.
 <div class="container" *ngIf="(job$ | async) as job; else loadingTemplate">
   <mat-card class="card">
     <div fxLayout="row">
-        <h2>
-            <a routerLink="/jobs">Jobs</a> / #{{ job.id }}
-          </h2>
-          <mat-list>
-            <mat-list-item>
-              <mat-icon mat-list-icon>timelapse</mat-icon>
-              <p>
-                Started:
-                <strong>{{ job.created | date : 'd. LLL yyyy HH:mm' }}</strong>
-              </p>
-            </mat-list-item>
-            <mat-list-item>
-              <mat-icon mat-list-icon>timelapse</mat-icon>
-              <p>
-                Completed:
-                <strong *ngIf="job?.status !== 'PENDING' && job?.status !== 'STARTED'">
-                  {{ job.updated | date : 'd. LLL yyyyHH:mm' }}
-                </strong>
-                <strong *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'">Still running</strong>
-              </p>
-            </mat-list-item>
-            <mat-list-item>
-              <mat-icon mat-list-icon>bug_report</mat-icon>
-              <p>
-                Organism:
-                <strong>{{ organism | async }}</strong>
-              </p>
-            </mat-list-item>
-            <mat-list-item>
-              <mat-icon mat-list-icon>attach_money</mat-icon>
-              <p>
-                Product:
-                <strong>{{ job.product_name }}</strong>
-              </p>
-            </mat-list-item>
-            <mat-list-item>
-              <mat-icon mat-list-icon>rounded_corner</mat-icon>
-              <p>
-                Model:
-                <strong>{{ model | async }}</strong>
-              </p>
-            </mat-list-item>
-          </mat-list>
-      </div>
+      <h2>
+        <a routerLink="/jobs">Jobs</a> / #{{ job.id }}
+      </h2>
+      <span class="fill-remaining-space"></span>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon mat-list-icon>timelapse</mat-icon>
+          <p>
+            Completed:
+            <strong *ngIf="job?.status !== 'PENDING' && job?.status !== 'STARTED'">
+              {{ job.updated | date : 'd. LLL yyyyHH:mm' }}
+            </strong>
+            <strong *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'">Still running</strong>
+          </p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>timelapse</mat-icon>
+          <p>
+            Started:
+            <strong>{{ job.created | date : 'd. LLL yyyy HH:mm' }}</strong>
+          </p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>attach_money</mat-icon>
+          <p>
+            Product:
+            <strong>{{ job.product_name }}</strong>
+          </p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>rounded_corner</mat-icon>
+          <p>
+            Model:
+            <strong>{{ model | async }}</strong>
+          </p>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>bug_report</mat-icon>
+          <p>
+            Organism:
+            <strong>{{ organism | async }}</strong>
+          </p>
+        </mat-list-item>
+      </mat-list>
+    </div>
   </mat-card>
 
-  
 
   <mat-card class="card">
     <h3>Results</h3>
@@ -85,15 +85,9 @@ limitations under the License.
 
     <div *ngIf="job?.status === 'SUCCESS' && tableData">
       <app-job-results-table
-        *ngIf="!cofactorSwap"
         [model]="job.model_id"
         [tableData]="tableData"
         [reactions]="reactionsData"></app-job-results-table>
-      <app-job-results-table-cofactor
-        *ngIf="cofactorSwap"
-        [model]="job.model_id"
-        [tableData]="tableData"
-        [reactions]="reactionsData"></app-job-results-table-cofactor>
     </div>
   </mat-card>
 </div>

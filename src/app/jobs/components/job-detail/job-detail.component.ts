@@ -21,7 +21,6 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {getJob} from '../../store/jobs.selectors';
 import {selectNotNull} from '../../../framework-extensions';
-
 import {map} from 'rxjs/operators';
 import {NinjaService} from '../../../services/ninja-service';
 import {getModelName, getOrganismName} from '../../../store/shared.selectors';
@@ -40,7 +39,6 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   // @ts-ignore
   public tableData: PathwayPredictionResult[];
   public reactionsData: PathwayPredictionReactions[];
-  public cofactorSwap = false;
   polling: Subscription;
 
   constructor(
@@ -62,16 +60,12 @@ export class JobDetailComponent implements OnInit, OnDestroy {
                 select(getModelName(jobPrediction.model_id)));
               this.organism = this.store.pipe(
                 select(getOrganismName(jobPrediction.organism_id)));
-                
-              if (jobPrediction.result) {                
-                if (jobPrediction.result.cofactor_swap.length > 0 )  {
-                  this.cofactorSwap = true;
-                }
+
+              if (jobPrediction.result) {
                 this.tableData = jobPrediction.result.table || [];
                 this.reactionsData = jobPrediction.result.reactions || [];
                 this.polling.unsubscribe();
-              }
-               else if (jobPrediction.status === 'FAILURE') {
+              } else if (jobPrediction.status === 'FAILURE') {
                 this.polling.unsubscribe();
               }
             });
