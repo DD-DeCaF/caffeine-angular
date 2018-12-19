@@ -41,8 +41,7 @@ export class AppMapsComponent implements OnInit {
   displayedColumns: string[] = [
     'name',
     'model_id',
-    'edit',
-    'remove',
+    'actions',
   ];
 
   constructor(
