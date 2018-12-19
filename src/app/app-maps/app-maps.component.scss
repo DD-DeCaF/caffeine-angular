@@ -13,11 +13,34 @@
 // limitations under the License.
 
 .container {
-  margin: 20px;
+  max-width: 700px;
+  max-height: 100%;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-container {
+  margin-bottom: 40px;
 }
 
 .table {
   width: 100%;
+}
+
+.mat-column-id {
+  width: 45px;
+}
+
+.mat-column-actions {
+  text-align: center;
+  width: 60px;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: space-around;
 }
 
 .button {
@@ -26,15 +49,16 @@
 
 .floating-button {
   z-index: 11;
-  position: absolute;
+  position: fixed;
   right: 40px;
   bottom: 50px;
 }
 
-.edit {
-  color: royalblue;
+.inline-button {
+  display: inline;
+  color: black;
 }
 
-.delete {
-  color: #f00000;
+.disabled {
+  color: rgba(0, 0, 0, 0.26)
 }

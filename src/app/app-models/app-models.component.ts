@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource, MatSort, MatDialog} from '@angular/material';
+import {MatTableDataSource, MatSort, MatDialog, MatPaginator} from '@angular/material';
 import {AppState} from '../store/app.reducers';
 import {select, Store} from '@ngrx/store';
 import * as fromActions from './store/models.actions';
@@ -22,6 +22,7 @@ import {Observable} from 'rxjs';
 import {EditModelComponent} from './components/edit-model/edit-model.component';
 import {RemoveModelComponent} from './components/remove-model/remove-model.component';
 import {AddModelComponent} from './components/add-model/add-model.component';
+import {SessionState} from '../session/store/session.reducers';
 
 @Component({
   selector: 'app-models',
@@ -31,13 +32,15 @@ import {AddModelComponent} from './components/add-model/add-model.component';
 export class AppModelsComponent implements OnInit {
   public dataSource = new MatTableDataSource<types.DeCaF.ModelHeader>([]);
   public models: Observable<types.DeCaF.ModelHeader[]>;
+  public sessionState: Observable<SessionState>;
+
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns: string[] = [
     'id',
     'name',
-    'edit',
-    'remove',
+    'actions',
   ];
 
   constructor(
@@ -50,6 +53,8 @@ export class AppModelsComponent implements OnInit {
       this.dataSource.data = models;
     });
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.sessionState = this.store.select('session');
   }
 
   removeModel(model: string): void {

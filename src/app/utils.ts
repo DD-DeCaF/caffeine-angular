@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as types from './app-interactive-map/types';
+// This file contains the most generic extensions to javascript
+// It should preferably not depend on any other code, just the standard javascipt
+// If in doubt about where to put a certain helper, think about if it could be published.
+// If it's too specific to this application, place it in lib, else utils.
 
 export const notNull = (data) => data !== null;
 
@@ -54,21 +57,5 @@ const matchSelector = <T>(comparators: ((item: T) => boolean)[]) => (items: T[])
     undefined,
   );
 
-export const objectMatcher = <T>(matchers: Partial<T>[]) => (items: T[]) => {
-  return matchSelector(matchers.map(createComparator))(items);
-};
-
-export const mapBiggReactionToCobra = ({
-                                         bigg_id,
-                                         reaction_string,
-                                         name,
-                                         metabolites}: types.AddedReaction,
-                                       bounds: {lowerBound?: number, upperBound?: number}= {lowerBound: -1000, upperBound: 1000}): types.Cobra.Reaction =>
-  ({
-    name: name,
-    id: bigg_id,
-    gene_reaction_rule: '',
-    lower_bound: bounds.lowerBound,
-    upper_bound: bounds.upperBound,
-    metabolites: metabolites,
-  });
+export const objectMatcher = <T>(matchers: Partial<T>[]) => (items: T[]) =>
+  matchSelector(matchers.map(createComparator))(items);

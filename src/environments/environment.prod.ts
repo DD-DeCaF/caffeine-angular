@@ -29,10 +29,7 @@ export const environment: Configuration = {
   GA: {
     trackingID: 'UA-106144097-2',
   },
-  sentry: {
-    DSN: 'https://4f2d0b394b5a4215806fc38ae2424502@sentry.io/1233163',
-    release: 'SENTRY_PROJECT',
-  },
+  sentry: null,
   firebase: {
     api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
     auth_domain: 'dd-decaf-cfbf6.firebaseapp.com',

@@ -15,8 +15,9 @@
 import {PathwayMap} from '@dd-decaf/escher';
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {Card, CardType, OperationDirection, Bound, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
-import {appendOrUpdate, appendOrUpdateStringList, mapBiggReactionToCobra} from '../../utils';
+import {Card, CardType, OperationDirection, BoundedReaction, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
+import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
+import { mapBiggReactionToCobra } from '../../lib';
 import {debug} from '../../logger';
 
 
@@ -80,7 +81,7 @@ export const appendUnique = (array, item) => array.includes(item) ? array : [...
 export const addedReactionEquality = (item: AddedReaction) => (arrayItem: AddedReaction) =>
   arrayItem.bigg_id === item.bigg_id;
 
-export const boundEquality = (item: Bound) => (arrayItem: Bound) =>
+export const boundEquality = (item: BoundedReaction) => (arrayItem: BoundedReaction) =>
   arrayItem.reaction.id === item.reaction.id;
 
 const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
@@ -97,7 +98,7 @@ type OperationFunction<T> = (array: T[], item: T) => T[];
 const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
   addedReactions: filter((a: AddedReaction) => (b: AddedReaction) => a.bigg_id !== b.bigg_id),
   knockoutReactions: filter<string>(stringFilter),
-  bounds: filter((a: Bound) => (b: Bound) => a.reaction.id !== b.reaction.id),
+  bounds: filter((a: BoundedReaction) => (b: BoundedReaction) => a.reaction.id !== b.reaction.id),
 };
 
 const operations: {[key in OperationDirection]: {[tKey in OperationTarget]: OperationFunction<Card[tKey][0]>}} = {

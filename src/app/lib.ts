@@ -12,55 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  max-width: 700px;
-  max-height: 100%;
-  margin: 0 auto;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
+// This file contains all application specific helper functions
+// It can depend on third parties, typings
 
-.table-container {
-  margin-bottom: 40px;
-}
+import * as types from './app-interactive-map/types';
 
-.table {
-  width: 100%;
-}
+const defaultBounds = {
+  lowerBound: -1000,
+  upperBound: 1000,
+};
 
-.mat-column-id {
-  width: 45px;
-}
-
-.mat-column-actions {
-  text-align: center;
-  width: 60px;
-}
-
-.button-wrapper {
-  display: flex;
-  justify-content: space-around;
-}
-
-.button {
-  cursor: pointer;
-}
-
-.floating-button {
-  z-index: 11;
-  position: fixed;
-  right: 40px;
-  bottom: 50px;
-}
-
-.inline-button {
-  display: inline;
-  color: black;
-}
-
-.disabled {
-  color: rgba(0, 0, 0, 0.26)
-}
-
-
+export const mapBiggReactionToCobra = (
+  { bigg_id, name, metabolites}: types.AddedReaction,
+  bounds: types.Bounds= defaultBounds): types.Cobra.Reaction => ({
+  name: name,
+  id: bigg_id,
+  gene_reaction_rule: '',
+  lower_bound: bounds.lowerBound,
+  upper_bound: bounds.upperBound,
+  metabolites: metabolites,
+});
