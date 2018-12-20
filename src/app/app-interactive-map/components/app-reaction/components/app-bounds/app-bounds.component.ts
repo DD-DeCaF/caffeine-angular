@@ -45,7 +45,7 @@ export class AppBoundsComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.panel.query
       .subscribe((query: string) => {
-        const queryString = query.toLocaleLowerCase();
+        const queryString = query.toString().toLowerCase();
         const results = this.card.model.reactions
           .filter((reaction: Cobra.Reaction) =>
             reaction.id.toLowerCase().includes(queryString));

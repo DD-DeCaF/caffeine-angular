@@ -12,34 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export interface Configuration {
-  production: boolean;
-  apis: {
-    iam: string;
-    model: string;
-    model_storage: string;
-    map: string;
-    bigg: string;
-    metabolic_ninja: string;
-    warehouse: string;
-    maps: string;
-    design_storage: string,
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
-  };
-  GA?: {
-    trackingID: string;
-  };
-  sentry?: {
-    DSN: string,
-    release: string,
-  };
-  firebase: {
-    api_key: string;
-    auth_domain: string;
-    database_url: string;
-    project_id: string;
-    storage_bucket: string;
-    sender_id: string;
-  };
-  trustedURLs: string[];
-}
+import { AppMaterialModule } from '../app-material.module';
+import {AppDesignsComponent} from './app-designs.component';
+import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    AppMaterialModule,
+
+    FlexLayoutModule,
+  ],
+  declarations: [
+    AppDesignsComponent,
+    DeleteDesignComponent,
+  ],
+  entryComponents: [AppDesignsComponent, DeleteDesignComponent],
+})
+export class AppDesignsModule { }

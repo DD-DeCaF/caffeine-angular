@@ -31,8 +31,9 @@ import { WarehouseService } from '../../services/warehouse.service';
 import { mapBiggReactionToCobra } from '../../lib';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
-import {DesignService} from '../services/design.service';
+import {DesignService} from '../../services/design.service';
 import {HydratedCard} from '../types';
+import {SetError} from '../../app-models/store/models.actions';
 
 
 const ACTION_OFFSETS = {
@@ -259,13 +260,12 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
-  saveDesign: Observable<void> = this.actions$.pipe(
+  saveDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SAVE_DESIGN),
-    switchMap((action: fromActions.SaveDesign) =>
-      this.designService.saveDesign(action.payload)),
-    map((payload: HydratedCard) => {
-      console.log('PAYLOAD', payload);
-    }));
+    switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload).pipe(
+      map(() => new sharedActions.FetchDesigns()),
+    )),
+  );
 
   constructor(
     private actions$: Actions,

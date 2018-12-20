@@ -113,6 +113,5 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
   public save(card: HydratedCard): void {
     this.store.dispatch(new SaveDesign(card));
-    console.log('SAVE', card);
   }
 }

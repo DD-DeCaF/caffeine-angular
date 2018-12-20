@@ -24,6 +24,7 @@ import {DesignToolComponent} from './app-design-tool/design-tool.component';
 import { jobsRoutes } from './jobs/jobs-routing.module';
 import {AppModelsComponent} from './app-models/app-models.component';
 import {AppMapsComponent} from './app-maps/app-maps.component';
+import {AppDesignsComponent} from './app-designs/app-designs.component';
 
 
 const appRoutes: Route[] = [
@@ -55,6 +56,10 @@ const appRoutes: Route[] = [
       {
         path: 'maps',
         component: AppMapsComponent,
+      },
+      {
+        path: 'designs',
+        component: AppDesignsComponent,
       },
       {
         path: '**',

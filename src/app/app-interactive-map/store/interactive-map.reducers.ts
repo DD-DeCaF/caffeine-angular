@@ -53,6 +53,7 @@ export const emptyCard: Card = {
   name: 'foo',
   type: CardType.Design,
   model: null,
+  model_id: null,
   solution: null,
   method: 'pfba',
   addedReactions: [],
@@ -162,10 +163,12 @@ export function interactiveMapReducer(
       const {type, solution} = action.payload;
       let name: string;
       let model: Cobra.Model;
+      let model_id: number;
       switch (type) {
         case CardType.Design: {
           name = 'Design';
           model = state.selectedModel.model_serialized;
+          model_id = state.selectedModel.id;
           break;
         }
         case CardType.DataDriven: {
@@ -187,6 +190,7 @@ export function interactiveMapReducer(
               type,
               name,
               model,
+              model_id,
               solution,
             },
           },
