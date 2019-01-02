@@ -6,6 +6,10 @@ import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/mat
 import * as actions from '../store/shared.actions';
 import {DesignRequest} from './types';
 import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
+import {AddCard} from '../app-interactive-map/store/interactive-map.actions';
+import {CardType} from '../app-interactive-map/types';
+import {Observable} from 'rxjs';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-designs',
@@ -50,6 +54,13 @@ export class AppDesignsComponent implements OnInit {
       this.designs = this.designs.filter((d) => d.id !== design.id);
     } else {
       this.designs.push(design);
+    }
+  }
+
+  addCards(): void {
+    for (let i = 0; i < this.designs.length; i++) {
+      const design: DesignRequest = this.designs[i];
+      this.store.dispatch(new AddCard(CardType.Design, design));
     }
   }
 

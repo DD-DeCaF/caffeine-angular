@@ -1,3 +1,5 @@
+import {AddedReaction} from '../app-interactive-map/types';
+
 export interface DesignRequest {
   design: {
     constraints: [
@@ -10,6 +12,7 @@ export interface DesignRequest {
     gene_knockouts: string[];
     reaction_knockins: string[];
     reaction_knockouts: string[];
+    added_reactions?: AddedReaction[];
   };
   id: number;
   model_id: number;

@@ -16,6 +16,7 @@ import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
 import * as types from '../types';
+import {DesignRequest} from '../../app-designs/types';
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODEL = 'SET_MODEL';
@@ -37,6 +38,8 @@ export const ADD_CARD = 'ADD_CARD';
 export const ADD_CARD_FETCHED = 'ADD_CARD_FETCHED';
 export const DELETE_CARD = 'DELETE_CARD';
 export const RENAME_CARD = 'RENAME_CARD';
+export const ADD_CARDS = 'ADD_CARDS';
+
 
 export const SET_METHOD_APPLY = 'SET_METHOD_APPLY';
 export const SET_METHOD = 'SET_METHOD';
@@ -99,7 +102,7 @@ export class Loaded implements Action {
 
 export class AddCard implements Action {
   readonly type = ADD_CARD;
-  constructor(public payload: types.CardType) {}
+  constructor(public payload: types.CardType, public design: DesignRequest = null) {}
 }
 
 export class AddCardFetched implements Action {
@@ -107,6 +110,7 @@ export class AddCardFetched implements Action {
   constructor(public payload: {
     type: types.CardType,
     solution: types.DeCaF.Solution,
+    design?: DesignRequest,
   }) {}
 }
 

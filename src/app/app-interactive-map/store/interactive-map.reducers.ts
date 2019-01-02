@@ -17,7 +17,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {Card, CardType, OperationDirection, BoundedReaction, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
-import { mapBiggReactionToCobra } from '../../lib';
+import {mapBiggReactionToCobra} from '../../lib';
 import {debug} from '../../logger';
 
 
@@ -87,7 +87,7 @@ export const addedReactionEquality = (item: AddedReaction) => (arrayItem: AddedR
 export const boundEquality = (item: BoundedReaction) => (arrayItem: BoundedReaction) =>
   arrayItem.reaction.id === item.reaction.id;
 
-const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
+const doOperations: { [key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key] } = {
   addedReactions: appendOrUpdate(addedReactionEquality),
   knockoutReactions: appendOrUpdateStringList,
   knockoutGenes: appendOrUpdateStringList,
@@ -99,14 +99,14 @@ const filter = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item:
 
 type OperationFunction<T> = (array: T[], item: T) => T[];
 
-const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
+const undoOperations: { [key in OperationTarget]: OperationFunction<Card[key][0]> } = {
   addedReactions: filter((a: AddedReaction) => (b: AddedReaction) => a.bigg_id !== b.bigg_id),
   knockoutReactions: filter<string>(stringFilter),
   knockoutGenes: filter<string>(stringFilter),
   bounds: filter((a: BoundedReaction) => (b: BoundedReaction) => a.reaction.id !== b.reaction.id),
 };
 
-const operations: {[key in OperationDirection]: {[tKey in OperationTarget]: OperationFunction<Card[tKey][0]>}} = {
+const operations: { [key in OperationDirection]: { [tKey in OperationTarget]: OperationFunction<Card[tKey][0]> } } = {
   [OperationDirection.Do]: doOperations,
   [OperationDirection.Undo]: undoOperations,
 };
@@ -160,15 +160,15 @@ export function interactiveMapReducer(
       };
     case fromInteractiveMapActions.ADD_CARD_FETCHED: {
       const newId = idGen.next();
-      const {type, solution} = action.payload;
+      const {type, solution, design} = action.payload;
       let name: string;
       let model: Cobra.Model;
       let model_id: number;
       switch (type) {
         case CardType.Design: {
-          name = 'Design';
+          name = design ? design.name : 'Design';
           model = state.selectedModel.model_serialized;
-          model_id = state.selectedModel.id;
+          model_id = design ? design.model_id : state.selectedModel.id;
           break;
         }
         case CardType.DataDriven: {
@@ -192,6 +192,14 @@ export function interactiveMapReducer(
               model,
               model_id,
               solution,
+              addedReactions: design ? design.design.added_reactions : [],
+              bounds: design ? design.design.constraints.map((reaction) => Object.assign({
+                reaction: {id: reaction.id},
+                lowerBound: reaction.lower_bound,
+                upperBound: reaction.upper_bound,
+              })) : [],
+              knockoutReactions: design ? design.design.reaction_knockouts : [],
+              knockoutGenes: design ? design.design.gene_knockouts : [],
             },
           },
         },
@@ -255,7 +263,7 @@ export function interactiveMapReducer(
           break;
         }
         case fromInteractiveMapActions.REACTION_OPERATION_APPLY: {
-          const {item, operationTarget, direction} = action.payload;
+          const {item, operationTarget, direction, saved} = action.payload;
           const operationFunction = operations[direction][operationTarget];
           const value = card[operationTarget];
           // @ts-ignore
@@ -274,7 +282,7 @@ export function interactiveMapReducer(
           }
           newCard = {
             ...card,
-            saved: false,
+            saved: saved || false,
             [operationTarget]: result,
           };
           break;

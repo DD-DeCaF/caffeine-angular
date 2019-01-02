@@ -46,18 +46,21 @@ export interface KnockoutOperationPayload {
   item: string;
   operationTarget: OperationTarget;
   direction: OperationDirection;
+  saved?: boolean;
 }
 
 export interface AddedReactionPayload {
   item: AddedReaction;
   operationTarget: OperationTarget;
   direction: OperationDirection;
+  saved?: boolean;
 }
 
 export interface BoundOperationPayload {
   item: BoundedReaction;
   operationTarget: BoundOperationTarget;
   direction: OperationDirection;
+  saved?: boolean;
 }
 export type OperationPayload = KnockoutOperationPayload | AddedReactionPayload | BoundOperationPayload;
 export type ObjectiveDirection = 'min' | 'max';
@@ -219,7 +222,8 @@ export interface SimulateRequest {
   method: Methods;
   objective?: string;
   objective_direction: ObjectiveDirection;
-  operations: DeCaF.Operation[];
+  // tslint:disable-next-line
+  operations: any[];
 }
 
 // Experimental conditions
