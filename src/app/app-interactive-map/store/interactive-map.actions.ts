@@ -20,6 +20,7 @@ import * as types from '../types';
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODEL = 'SET_MODEL';
 export const SET_FULL_MODEL = 'SET_FULL_MODEL';
+export const SELECT_FIRST_MODEL_MAP = 'SELECT_FIRST_MODEL_MAP';
 
 export const SET_MAP = 'SET_MAP';
 export const MAP_FETCHED = 'MAP_FETCHED';
@@ -148,6 +149,11 @@ export class SetObjectiveReactionApply implements Action {
   constructor(public payload: types.ObjectiveReactionPayload) {}
 }
 
+export class SelectFirstModel implements Action {
+  readonly type = SELECT_FIRST_MODEL_MAP;
+  constructor(public species: types.Species, public models: types.DeCaF.ModelHeader[]) {}
+}
+
 export const operationToApply = {
   [REACTION_OPERATION]: ReactionOperationApply,
   [SET_METHOD]: SetMethodApply,
@@ -170,4 +176,5 @@ export type InteractiveMapActions =
   RenameCard |
   SetMethodApply |
   ReactionOperationApply |
-  SetObjectiveReactionApply;
+  SetObjectiveReactionApply |
+  SelectFirstModel;

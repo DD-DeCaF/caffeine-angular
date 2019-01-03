@@ -29,6 +29,7 @@ import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
+import {Router} from '@angular/router';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -72,6 +73,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     private elRef: ElementRef,
     private store: Store<AppState>,
     private dialog: MatDialog,
+    private router: Router,
   ) {
   }
 
@@ -125,13 +127,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
         // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
         // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
         // setTimeout(() => ...., 0);
-        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loader')) {
+        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loader') && this.router.url === '/interactiveMap') {
           setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
         }
       } else {
         this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
           if (loadingError) {
-            if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'error')) {
+            if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'error') && this.router.url === '/interactiveMap') {
               setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
             }
           } else {

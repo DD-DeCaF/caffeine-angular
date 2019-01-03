@@ -48,13 +48,11 @@ export class InteractiveMapEffects {
       new fromActions.SetSelectedSpecies(WarehouseService.preferredSpecies(action.payload))));
 
   @Effect()
-  selectFirstModel: Observable<Action> = combineLatest<fromActions.SetSelectedSpecies, sharedActions.SetModels>(
-    this.actions$.pipe(ofType(fromActions.SET_SELECTED_SPECIES)),
-    this.actions$.pipe(ofType(sharedActions.SET_MODELS)),
-  ).pipe(
-    map(([{payload: {id: selectedOrgId}}, {payload: models}]: [fromActions.SetSelectedSpecies, sharedActions.SetModels]) => {
-      const selectedModelHeader = models
-        .find((model) => model.organism_id === selectedOrgId);
+  selectFirstModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SELECT_FIRST_MODEL_MAP),
+    map((payload: fromActions.SelectFirstModel) => {
+      const selectedModelHeader = payload.models
+        .find((model) => model.organism_id === payload.species.id);
       return new fromActions.SetModel(selectedModelHeader);
     }),
   );

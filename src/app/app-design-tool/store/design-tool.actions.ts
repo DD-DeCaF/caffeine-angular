@@ -20,6 +20,7 @@ import {StatePrediction} from '../types';
 export const INIT_DESIGN = 'INIT_DESIGN';
 export const SET_SELECTED_SPECIES_DESIGN = 'SET_SELECTED_SPECIES_DESIGN';
 export const SET_MODEL_DESIGN = 'SET_MODEL_DESIGN';
+export const SELECT_FIRST_MODEL = 'SELECT_FIRST_MODEL';
 export const FETCH_PRODUCTS_DESIGN = 'FETCH_PRODUCTS_DESIGN';
 export const SET_PRODUCTS_DESIGN = 'SET_PRODUCTS_DESIGN';
 export const FETCH_JOBS_DESIGN = 'FETCH_JOBS_DESIGN';
@@ -41,6 +42,11 @@ export class SetSelectedSpeciesDesign implements Action {
 export class SetModelDesign implements Action {
   readonly type = SET_MODEL_DESIGN;
   constructor(public payload: types.DeCaF.ModelHeader) {}
+}
+
+export class SelectFirstModel implements Action {
+  readonly type = SELECT_FIRST_MODEL;
+  constructor(public species: types.Species, public models: types.DeCaF.ModelHeader[]) {}
 }
 
 export class FetchProductsDesign implements Action {
@@ -78,4 +84,4 @@ export class StartDesign implements Action {
 }
 
 export type DesignToolActions = InitDesign | SetSelectedSpeciesDesign | SetModelDesign | FetchProductsDesign | SetProductsDesign | StartDesign | AbortJobDesign
-  | SetLastJobDesign;
+  | SetLastJobDesign | SelectFirstModel;
