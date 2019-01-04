@@ -21,12 +21,15 @@ import {DesignRequest} from '../app-designs/types';
 import {BiggSearchService} from '../app-interactive-map/components/app-reaction/components/app-panel/services/bigg-search.service';
 import {map} from 'rxjs/operators';
 import {mapBiggReactionToCobra} from '../lib';
+import {select, Store} from '@ngrx/store';
+import {AppState} from '../store/app.reducers';
 
 @Injectable()
 export class DesignService {
   constructor(
     private http: HttpClient,
     private biggService: BiggSearchService,
+    private store: Store<AppState>,
   ) {
   }
 
@@ -67,6 +70,10 @@ export class DesignService {
 
         }));
       }
+      this.http.get(`${environment.apis.model_storage}/models/${ designs[i].model_id}`).subscribe((model: DeCaF.Model) => {
+        console.log('MODEL PROCESS', model);
+        designs[i].model = model;
+      });
     }
     return designs;
   }

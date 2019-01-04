@@ -83,7 +83,7 @@ export const appendUnique = (array, item) => array.includes(item) ? array : [...
 // TODO Here we have definition for equality and non-equaliyty check. These should be merged.
 export const addedReactionEquality = (item: AddedReaction) => (arrayItem: AddedReaction) =>
   arrayItem.bigg_id === item.bigg_id;
-
+console.log('ADDED REACTION EQUALITY', addedReactionEquality);
 export const boundEquality = (item: BoundedReaction) => (arrayItem: BoundedReaction) =>
   arrayItem.reaction.id === item.reaction.id;
 
@@ -93,6 +93,8 @@ const doOperations: { [key in OperationTarget]: (array: Card[key], item: Card[ke
   knockoutGenes: appendOrUpdateStringList,
   bounds: appendOrUpdate(boundEquality),
 };
+console.log('doOperations', doOperations);
+
 
 const stringFilter = (a: string) => (b: string) => a !== b;
 const filter = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item: T) => array.filter(predicate(item));
@@ -133,6 +135,7 @@ export function interactiveMapReducer(
         selectedModel: action.payload,
       };
     case fromInteractiveMapActions.MAP_FETCHED:
+      console.log('MAP FETCHED', action.payload);
       return {
         ...state,
         // tslint:disable-next-line:no-any
@@ -166,8 +169,10 @@ export function interactiveMapReducer(
       let model_id: number;
       switch (type) {
         case CardType.Design: {
+          console.log('SELECTED MODEL', state.selectedModel);
           name = design ? design.name : 'Design';
-          model = state.selectedModel.model_serialized;
+          model = design ? design.model.model_serialized : state.selectedModel.model_serialized;
+          console.log('model_serialized', state.selectedModel);
           model_id = design ? design.model_id : state.selectedModel.id;
           console.log('ADD CARD FETCHED', name, model);
           break;
@@ -274,7 +279,9 @@ export function interactiveMapReducer(
             if (!card.model.reactions.includes(addedReaction)) {
               card.model.reactions.push(addedReaction);
             }
+            console.log('ITEM', (<AddedReaction>item).metabolites_to_add);
             const metabolitesToAdd = (<AddedReaction>item).metabolites_to_add;
+            console.log('METABOLITES TO ADD', metabolitesToAdd);
             for (let i = 0; i < metabolitesToAdd.length; i++) {
               if (card.model.metabolites.indexOf(metabolitesToAdd[i]) === -1) {
                 card.model.metabolites.push(metabolitesToAdd[i]);

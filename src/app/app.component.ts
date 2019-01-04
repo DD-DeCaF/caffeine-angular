@@ -17,7 +17,7 @@ import {Router, NavigationEnd, Event} from '@angular/router';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 
 import MAP_ICON from '../assets/images/map_icon.svg';
 import HOURGLASS_FULL from '../assets/images/hourglass_full.svg';
@@ -29,10 +29,14 @@ import {SessionService} from './session/session.service';
 import {environment} from '../environments/environment';
 import {AppState} from './store/app.reducers';
 import * as sharedActions from './store/shared.actions';
+import {activeModels, mapItemsByModel} from './app-interactive-map/store/interactive-map.selectors';
+import {combineLatest} from 'rxjs';
+import {SelectFirstModel} from './app-interactive-map/store/interactive-map.actions';
 
 @Component({
   selector: 'app-root',
-  template: `<router-outlet></router-outlet>`,
+  template: `
+    <router-outlet></router-outlet>`,
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
@@ -87,6 +91,13 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new sharedActions.FetchProjects());
     this.store.dispatch(new sharedActions.FetchJobs());
     this.store.dispatch(new sharedActions.FetchDesigns());
+
+    combineLatest(this.store.pipe(select((store) => store.interactiveMap.selectedSpecies)),
+      this.store.pipe(select((store) => store.shared.modelHeaders))).subscribe(([species, models]) => {
+      if (species && models.length > 0) {
+        this.store.dispatch(new SelectFirstModel(species, models));
+      }
+    });
   }
 
   setTheme(theme: string): void {

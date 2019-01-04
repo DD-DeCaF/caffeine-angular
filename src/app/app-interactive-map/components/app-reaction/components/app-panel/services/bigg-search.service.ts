@@ -37,6 +37,8 @@ export class BiggSearchService {
   }
 
   processReaction(reaction: AddedReaction): AddedReaction {
+    // tslint:disable-next-line:no-any
+    let metabolites_to_add: any = [];
     let metanetx_id: string;
     try {
       metanetx_id = reaction.database_links['MetaNetX (MNX) Equation'][0].id;
@@ -44,7 +46,8 @@ export class BiggSearchService {
       metanetx_id = '';
     }
 
-    const metabolites_to_add = reaction.metabolites.map((m) => {
+    console.log('PROCESSS REACTION', reaction, metabolites_to_add);
+     metabolites_to_add = reaction.metabolites.map((m) => {
       return {
         id: `${m.bigg_id}_c`,
         compartment: m.compartment_bigg_id,

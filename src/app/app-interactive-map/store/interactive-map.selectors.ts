@@ -74,3 +74,5 @@ export const activeModels = createSelector(
   (models, selectedSpecies) => models
     .filter((m) => selectedSpecies && (m.organism_id === selectedSpecies.id)),
 );
+
+export const getModels = (state: AppState) => state.shared.modelHeaders;

@@ -1,4 +1,5 @@
-import {AddedReaction} from '../app-interactive-map/types';
+import {AddedReaction, DeCaF} from '../app-interactive-map/types';
+import ModelHeader = DeCaF.ModelHeader;
 
 export interface DesignRequest {
   design: {
@@ -18,4 +19,6 @@ export interface DesignRequest {
   model_id: number;
   name: string;
   project_id: number;
+  model?: DeCaF.Model;
+  modelHeader?: ModelHeader;
 }

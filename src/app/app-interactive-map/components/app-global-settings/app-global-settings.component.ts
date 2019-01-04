@@ -59,11 +59,6 @@ export class AppGlobalSettingsComponent implements OnInit, AfterViewInit {
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
     this.mapItems = this.store.pipe(select(mapItemsByModel));
-    combineLatest(this.selectedSpecies, this.models).subscribe(([species, models]) => {
-      if (species && models.length > 0) {
-        this.store.dispatch(new SelectFirstModel(species, models));
-      }
-    });
   }
 
   ngAfterViewInit(): void {
