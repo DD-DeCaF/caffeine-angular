@@ -8,8 +8,8 @@ import {DesignRequest} from './types';
 import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
 import {AddCard} from '../app-interactive-map/store/interactive-map.actions';
 import {CardType} from '../app-interactive-map/types';
-import {Observable} from 'rxjs';
-import {forkJoin} from 'rxjs';
+import {Router} from '@angular/router';
+import {DesignsAddedComponent} from './components/designs-added/designs-added.component';
 
 @Component({
   selector: 'app-designs',
@@ -19,6 +19,8 @@ import {forkJoin} from 'rxjs';
 export class AppDesignsComponent implements OnInit {
   public dataSource = new MatTableDataSource<DesignRequest>([]);
   public designs: DesignRequest[] = [];
+  private cardAdded = false;
+  private counterCardAdded = 0;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -33,7 +35,8 @@ export class AppDesignsComponent implements OnInit {
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
@@ -58,10 +61,24 @@ export class AppDesignsComponent implements OnInit {
   }
 
   addCards(): void {
-    for (let i = 0; i < this.designs.length; i++) {
-      const design: DesignRequest = this.designs[i];
-      this.store.dispatch(new AddCard(CardType.Design, design));
+    this.store.pipe(select((store) => store.interactiveMap.cards)).subscribe((cards) => {
+      console.log('CARDS', cards);
+      if (this.cardAdded) {
+        if (this.designs.length > 0) {
+          this.store.dispatch(new AddCard(CardType.Design, this.designs.pop()));
+          this.counterCardAdded = this.counterCardAdded + 1;
+        } else {
+          console.log('COUNTER', this.counterCardAdded);
+          this.cardAdded = false;
+        }
+      }
+    });
+    if (!this.cardAdded) {
+      if (this.designs.length > 0) {
+        this.store.dispatch(new AddCard(CardType.Design, this.designs.pop()));
+        this.cardAdded = true;
+        this.counterCardAdded = this.counterCardAdded + 1;
+      }
     }
   }
-
 }

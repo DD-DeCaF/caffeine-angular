@@ -169,6 +169,7 @@ export function interactiveMapReducer(
           name = design ? design.name : 'Design';
           model = state.selectedModel.model_serialized;
           model_id = design ? design.model_id : state.selectedModel.id;
+          console.log('ADD CARD FETCHED', name, model);
           break;
         }
         case CardType.DataDriven: {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -37,13 +37,15 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
   templateUrl: './app-interactive-map.component.html',
   styleUrls: ['./app-interactive-map.component.scss'],
 })
-export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
+export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private builder: escher.BuilderObject;
   private builderSubject = new Subject<escher.BuilderObject>();
   public map: escher.PathwayMap;
   public loading = true;
   private card: Card;
+  private selectedCard;
+  private selectedCardBuilder;
 
   readonly escherSettings = {
     ...escherSettingsConst,
@@ -89,13 +91,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       builder.load_map(map);
     });
 
-    const selectedCard = this.store.pipe(
+    this.selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
     );
 
     // Detect changes in model only..
-    combineLatest(
-      selectedCard,
+    this.selectedCardBuilder = combineLatest(
+      this.selectedCard,
       builderObservable,
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
@@ -113,13 +115,11 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loader';
 
     const dialogConfigError = new MatDialogConfig();
     dialogConfigError.disableClose = true;
     dialogConfigError.autoFocus = true;
     dialogConfigError.panelClass = 'loader';
-    dialogConfigError.id = 'error';
 
     this.store.pipe(
       select(isLoading),
@@ -240,5 +240,10 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   firstLoadEscher(): void {
     this.builderSubject.next(this.builder);
+  }
+
+  ngOnDestroy(): void {
+    this.selectedCardBuilder.unsubscribe();
+    this.builderSubject.unsubscribe();
   }
 }
