@@ -32,3 +32,70 @@ tr.expanded > td {
 .expandRow > td {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
+
+.method-input {
+  margin-top: 10px;
+}
+
+@mixin jobs-details($theme) {
+  .custom-slider {
+    width: 110px !important;
+  }
+  .custom-slider .ng5-slider .ng5-slider-bar {
+    background: lightgray;
+    height: 2px;
+  }
+  .custom-slider .ng5-slider .ng5-slider-selection {
+    background: mat-color(map-get($theme, primary));
+  }
+
+  .custom-slider .ng5-slider .ng5-slider-pointer {
+    width: 8px;
+    height: 10px;
+    top: auto; /* to remove the default positioning */
+    bottom: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    background-color: #333;
+  }
+
+  .custom-slider .ng5-slider .ng5-slider-pointer:after {
+    display: none;
+  }
+
+  .custom-slider .ng5-slider .ng5-slider-bubble {
+    bottom: 14px;
+  }
+
+  .custom-slider .ng5-slider .ng5-slider-limit {
+    font-weight: bold;
+    color: mat-color(map-get($theme, primary));
+  }
+
+  .custom-slider .ng5-slider .ng5-slider-tick {
+    width: 1px;
+    height: 10px;
+    margin-left: 4px;
+    border-radius: 0;
+    background: lightgray;
+    top: -1px;
+  }
+
+  .custom-slider .ng5-slider .ng5-slider-tick.ng5-slider-selected {
+    background: mat-color(map-get($theme, primary));
+  }
+}
+
+.title-without-filter {
+  padding-bottom: 57px;
+}
+
+.aligned-with-icon {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.arrow-icon {
+  margin-right: 5px;
+  margin-left: 5px;
+}

@@ -15,6 +15,7 @@
 @import '~@angular/material/theming';
 @import 'app/app-interactive-map/components/app-build/app-build.component';
 @import 'app/app-interactive-map/components/app-reaction/components/app-panel/app-panel.component';
+@import 'app/jobs/components/job-detail/components/job-result-table/job-results-table.component';
 
 // Plus imports for other components in your app.
 
@@ -41,6 +42,7 @@ $metabolica-app-theme: mat-light-theme($metabolica-app-primary, $metabolica-app-
 @include angular-material-theme($metabolica-app-theme);
 @include app-build-component($metabolica-app-theme);
 @include app-reaction-panel-component($metabolica-app-theme);
+@include jobs-details($metabolica-app-theme);
 
 // Amber theme
 $amber-primary: mat-palette($mat-amber);
@@ -51,4 +53,6 @@ $amber-theme: mat-light-theme($amber-primary, $metabolica-app-accent, $metabolic
   @include angular-material-theme($amber-theme);
   @include app-build-component($amber-theme);
   @include app-reaction-panel-component($amber-theme);
+  @include jobs-details($amber-theme);
+
 }

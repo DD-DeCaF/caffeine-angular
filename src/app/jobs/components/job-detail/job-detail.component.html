@@ -16,95 +16,78 @@ limitations under the License.
 
 <div class="container" *ngIf="(job$ | async) as job; else loadingTemplate">
   <mat-card class="card">
-    <h2>
-      <a routerLink="/jobs">Jobs</a> / #{{ job.id }}
-    </h2>
-  </mat-card>
-
-  <div fxLayout="row">
-    <mat-card class="card">
+    <div fxLayout="row">
+      <h2>
+        <a routerLink="/jobs">Jobs</a> / #{{ job.id }}
+      </h2>
+      <span class="fill-remaining-space"></span>
       <mat-list>
         <mat-list-item>
-          <mat-icon mat-list-icon>dashboard</mat-icon>
+          <mat-icon mat-list-icon>timelapse</mat-icon>
           <p>
-            Type:
-            <strong>{{ job.data.type }}</strong>
+            Completed:
+            <strong *ngIf="job?.status !== 'PENDING' && job?.status !== 'STARTED'">
+              {{ job.updated | date : 'd. LLL yyyyHH:mm' }}
+            </strong>
+            <strong *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'">Still running</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>timelapse</mat-icon>
           <p>
             Started:
-            <strong>{{ job.started | date : 'd. LLL yyyy HH:mm' }}</strong>
+            <strong>{{ job.created | date : 'd. LLL yyyy HH:mm' }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon mat-list-icon>timelapse</mat-icon>
-          <p>
-            Completed:
-            <strong *ngIf="job.completed">{{ job.completed | date : 'd. LLL yyyy HH:mm' }}</strong>
-            <strong *ngIf="!job.completed">Still running</strong>
-          </p>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>pets</mat-icon>
-          <p>
-            Organism:
-            <strong>{{ job.data.species.name }}</strong>
-          </p>
-        </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>gavel</mat-icon>
+          <mat-icon mat-list-icon>attach_money</mat-icon>
           <p>
             Product:
-            <strong>{{ job.data.product }}</strong>
+            <strong>{{ job.product_name }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>rounded_corner</mat-icon>
           <p>
             Model:
-            <strong>{{ job.data.model.name }}</strong>
+            <strong>{{ model | async }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
-          <mat-icon mat-list-icon>equalizer</mat-icon>
+          <mat-icon mat-list-icon>bug_report</mat-icon>
           <p>
-            Number of pathways:
-            <strong>{{ job.data.max_predictions }}</strong>
+            Organism:
+            <strong>{{ organism | async }}</strong>
           </p>
         </mat-list-item>
       </mat-list>
-    </mat-card>
+    </div>
+  </mat-card>
 
-    <mat-card class="card">
-      Visualization comes here
-    </mat-card>
-  </div>
 
   <mat-card class="card">
     <h3>Results</h3>
 
-    <p *ngIf="job?.state === 'PENDING' || job?.state === 'STARTED'">
+    <p *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'">
       The job is still running.
       <button mat-button color="warn" (click)="abort(job)">
         Abort job
       </button>
     </p>
 
-    <mat-error *ngIf="job?.state === 'FAILURE'">
+    <mat-error *ngIf="job?.status === 'FAILURE'">
       The job errored with the following message: <strong>{{ job.error }}</strong>
     </mat-error>
 
-    <mat-error *ngIf="job?.state === 'REVOKED'">
+    <mat-error *ngIf="job?.status === 'REVOKED'">
       The job was manually aborted at {{ job.completed | date : 'd. LLL yyyy HH:mm' }}
     </mat-error>
 
-    <div *ngIf="job?.state === 'SUCCESS' && tableData">
-      <app-job-results-table [model]="job.data.model.name"
-                             [organism]="job.data.species.name"
-                             [tableData]="tableData"
-                             [reactions]="reactionsData"></app-job-results-table>
+    <div *ngIf="job?.status === 'SUCCESS' && tableData">
+      <app-job-results-table
+        [model]="job.model_id"
+        [tableData]="tableData"
+        [reactions]="reactionsData"></app-job-results-table>
     </div>
   </mat-card>
 </div>
