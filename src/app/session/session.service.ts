@@ -102,6 +102,7 @@ export class SessionService {
       localStorage.setItem(AUTHORIZATION_TOKEN, token);
     }, () => {
       console.log('Session: Token refresh failure');
+      this.logout();
     });
 
     return refresh$;
