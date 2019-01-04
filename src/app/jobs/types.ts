@@ -21,6 +21,7 @@ export interface Job {
   completed?: Date;
   state: string;
   error?: string;
+  type?: string;
   data: PathwayPrediction;
 }
 
@@ -67,8 +68,11 @@ export interface PathwayResponse {
   organism_id: number;
   status: string;
   task_id: string;
+  type?: string;
   result: {
     table: PathwayPredictionResult[];
     reactions: PathwayPredictionReactions[];
+    diff_fva: PathwayPredictionResult[];
+    cofactor_swap: PathwayPredictionResult[];
   };
 }

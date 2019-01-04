@@ -28,6 +28,7 @@ import { AppRoutingModule } from '../app-routing.module';
 import { JobResultTableComponent } from './components/job-detail/components/job-result-table/job-results-table.component';
 import { FloatPipe } from '../pipes/float.pipe';
 import { JobResultsDetailRowDirective } from './components/job-detail/components/job-result-table/job-results-table-row-detail.directive';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { JobResultsDetailRowDirective } from './components/job-detail/components
     AppRoutingModule,
 
     AppMaterialModule,
+    Ng5SliderModule,
   ],
   providers: [
     JobsService,

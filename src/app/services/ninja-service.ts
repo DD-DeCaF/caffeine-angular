@@ -18,7 +18,7 @@ import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import * as typesDesign from '../app-design-tool/types';
 import {map} from 'rxjs/operators';
-import {PathwayResponse} from '../jobs/types';
+import {Job, PathwayResponse} from '../jobs/types';
 
 @Injectable()
 export class NinjaService {
@@ -53,5 +53,9 @@ export class NinjaService {
       ...predict,
       configuration: design,
     };
+  }
+
+  getPredictions(): Observable<Job[]> {
+    return this.http.get<Job[]>(`${environment.apis.metabolic_ninja}/predictions`);
   }
 }

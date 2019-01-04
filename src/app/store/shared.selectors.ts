@@ -12,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  padding: 3px;
-  background: gainsboro;
-}
-.mat-list-item {
-  float: right;
-}
-.card {
-  padding: 10px;
-  margin: 5px;
-}
-.fill-remaining-space {
-  /* This fills the remaining space, by using flexbox.
-     Every toolbar row uses a flexbox row layout. */
-  flex: 1 1 auto;
-}
+import {createSelector} from '@ngrx/store';
+import {AppState} from './app.reducers';
+
+export const getModelName = (model_id: number) => createSelector(
+  (state: AppState) => state.shared.modelHeaders,
+  (models) => models
+    .find((m) => m.id === model_id).name,
+);
+
+export const getOrganismName = (organism_id: number) => createSelector(
+  (state: AppState) => state.shared.allSpecies,
+  (species) => species
+    .find((s) => s.id === organism_id).name,
+);

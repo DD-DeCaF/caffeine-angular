@@ -84,7 +84,7 @@
             <mat-option [value]="model" *ngFor="let model of (models | async)">{{model.name}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-label class="title">Maximum predictions</mat-label>
+        <mat-label class="title">Maximum pathways predictions</mat-label>
         <mat-form-field>
           <input formControlName="max_predictions"
                  type="number"

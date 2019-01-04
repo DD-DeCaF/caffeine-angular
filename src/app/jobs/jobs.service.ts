@@ -13,10 +13,9 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { Observable, from, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { Job, PathwayResponse } from './types';
-import { concatMap, map } from 'rxjs/operators';
+import { Job } from './types';
 import { NinjaService } from '../services/ninja-service';
 
 @Injectable()
@@ -24,31 +23,6 @@ export class JobsService {
   constructor(public ninjaService: NinjaService) { }
 
   getJobs(): Observable<Job[]> {
-    return from([
-      JSON.parse(localStorage.getItem('jobs')) || [],
-    ])
-      .pipe(
-        map((jobs) => this.checkJobs(jobs)),
-        concatMap((x) => of(x),
-        ),
-    );
-  }
-
-  checkJobs(jobs: Job[]): Job[] {
-    const jobsLocalStorage = <Job[]>JSON.parse(localStorage.getItem('jobs'));
-    for (let i = 0; i < jobs.length; i++) {
-      if (jobs[i].state !== 'REVOKED') {
-        this.ninjaService.getPredict(jobs[i].id).subscribe((jobPrediction: PathwayResponse) => {
-          const jobIndex = jobsLocalStorage.findIndex(((job) => job.id === jobs[i].id));
-          jobs[jobIndex].state = jobPrediction.status;
-          if (jobPrediction.status === 'SUCCESS') {
-            jobs[jobIndex].completed = jobs[jobIndex].completed || new Date();
-          }
-          localStorage.setItem('jobs', JSON.stringify(jobs));
-        });
-      }
-    }
-    return jobs;
-
+    return this.ninjaService.getPredictions();
   }
 }
