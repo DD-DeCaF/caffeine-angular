@@ -16,6 +16,8 @@ import * as fromModelsActions from './shared.actions';
 import * as types from '../app-interactive-map/types';
 import {Project} from 'src/app/projects/types';
 import {Job} from 'src/app/jobs/types';
+import {Design} from '../app-design-tool/types';
+import {DesignRequest} from '../app-designs/types';
 
 export interface SharedState {
   allSpecies: types.Species[];
@@ -23,11 +25,13 @@ export interface SharedState {
   modelHeaders: types.DeCaF.ModelHeader[];
   projects: Project[];
   jobs: Job[];
+  designs: DesignRequest[];
   speciesError: boolean;
   mapsError: boolean;
   modelsError: boolean;
   projectsError: boolean;
   jobsError: boolean;
+  designsError: boolean;
 }
 
 export const initialState: SharedState = {
@@ -36,11 +40,13 @@ export const initialState: SharedState = {
   projects: [],
   modelHeaders: [],
   jobs: [],
+  designs: [],
   speciesError: false,
   mapsError: false,
   modelsError: false,
   projectsError: false,
   jobsError: false,
+  designsError: false,
 };
 
 
@@ -98,6 +104,16 @@ export function sharedReducer(
       return {
         ...state,
         jobsError: true,
+      };
+    case fromModelsActions.SET_DESIGNS_ERROR:
+      return {
+        ...state,
+        designsError: true,
+      };
+    case fromModelsActions.SET_DESIGNS:
+      return {
+        ...state,
+        designs: action.payload,
       };
     default:
       return state;

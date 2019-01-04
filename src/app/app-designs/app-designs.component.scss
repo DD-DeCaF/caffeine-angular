@@ -12,34 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export interface Configuration {
-  production: boolean;
-  apis: {
-    iam: string;
-    model: string;
-    model_storage: string;
-    map: string;
-    bigg: string;
-    metabolic_ninja: string;
-    warehouse: string;
-    maps: string;
-    design_storage: string,
+.container {
+  max-width: 700px;
+  max-height: 100%;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
 
-  };
-  GA?: {
-    trackingID: string;
-  };
-  sentry?: {
-    DSN: string,
-    release: string,
-  };
-  firebase: {
-    api_key: string;
-    auth_domain: string;
-    database_url: string;
-    project_id: string;
-    storage_bucket: string;
-    sender_id: string;
-  };
-  trustedURLs: string[];
+.table-container {
+  margin-bottom: 40px;
+}
+
+.table {
+  width: 100%;
+}
+
+.mat-column-id {
+  width: 45px;
+}
+
+.mat-column-actions {
+  text-align: center;
+  width: 60px;
+}
+
+.inline-button {
+  display: inline;
+  color: black;
+}
+
+.disabled {
+  color: rgba(0, 0, 0, 0.26)
+}
+
+.select-column {
+  width: 60px;
 }

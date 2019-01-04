@@ -34,4 +34,5 @@ export default {
   tooltip: 'custom',
   tooltip_callbacks: null,
   enable_editing: false,
+  show_gene_reaction_rules: true,
 };

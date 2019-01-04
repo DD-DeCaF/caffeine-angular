@@ -12,10 +12,25 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<app-knockout-genes [card]="(card | async)"></app-knockout-genes>
-<app-added [card]="(card | async)"></app-added>
-<app-knockout [card]="(card | async)"></app-knockout>
-<app-objective [card]="(card | async)"></app-objective>
-<app-bounds [card]="(card | async)"></app-bounds>
-
-
+<mat-dialog-content
+  class="mat-primary"
+  fxLayout="colum"
+  fxFlexAlign="center center"
+>
+  <div class="map-progress">
+    <div class="box">
+      <div>
+        <div><mat-icon color="warn" class="error-icon">error_outline</mat-icon></div>
+        <span class="text"
+        >Are you sure you want to delete <i>{{ design.name }}</i>?</span
+        >
+        <div class="section-buttons">
+          <button mat-flat-button color="primary" (click)="close()">No</button>
+          <button mat-flat-button color="warn" (click)="submit()">
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

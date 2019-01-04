@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -38,13 +38,15 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
   templateUrl: './app-interactive-map.component.html',
   styleUrls: ['./app-interactive-map.component.scss'],
 })
-export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
+export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private builder: escher.BuilderObject;
   private builderSubject = new Subject<escher.BuilderObject>();
   public map: escher.PathwayMap;
   public loading = true;
   private card: Card;
+  private selectedCard;
+  private selectedCardBuilder;
 
   readonly escherSettings = {
     ...escherSettingsConst,
@@ -64,6 +66,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       },
       objectiveDirection: (args) => {
         this.handleObjectiveDirection(args);
+      },
+      knockoutGenes: (args) => {
+        this.handleKnockoutGenes(args);
       },
     },
     first_load_callback: () => this.firstLoadEscher(),
@@ -88,13 +93,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       builder.load_map(map);
     });
 
-    const selectedCard = this.store.pipe(
+    this.selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
     );
 
     // Detect changes in model only..
-    combineLatest(
-      selectedCard,
+    this.selectedCardBuilder = combineLatest(
+      this.selectedCard,
       builderObservable,
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
@@ -112,13 +117,11 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loader';
 
     const dialogConfigError = new MatDialogConfig();
     dialogConfigError.disableClose = true;
     dialogConfigError.autoFocus = true;
     dialogConfigError.panelClass = 'loader';
-    dialogConfigError.id = 'error';
 
     this.store.pipe(
       select(isLoading),
@@ -160,6 +163,14 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       item: reactionId,
       operationTarget: 'knockoutReactions',
       direction: this.card.knockoutReactions.includes(reactionId) ? OperationDirection.Undo : OperationDirection.Do,
+    }));
+  }
+
+  handleKnockoutGenes(reactionId: string): void {
+    this.store.dispatch(new fromActions.ReactionOperation({
+      item: reactionId,
+      operationTarget: 'knockoutGenes',
+      direction: this.card.knockoutGenes.includes(reactionId) ? OperationDirection.Undo : OperationDirection.Do,
     }));
   }
 
@@ -216,19 +227,25 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     return reaction ? reaction.lowerBound : reactionModel ? reactionModel.lower_bound : null;
   }
 
-  reactionState(reactionId: string): ReactionState {
+  reactionState(id: string): ReactionState {
     return {
-      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
-      knockout: this.card.knockoutReactions.includes(reactionId),
+      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === id)),
+      knockout: this.card.knockoutReactions.includes(id),
+      knockoutGenes: this.card.knockoutGenes.includes(id),
       objective: this.card.objectiveReaction,
       bounds: {
-        lowerbound: this.lowerBound(reactionId),
-        upperbound: this.upperBound(reactionId),
+        lowerbound: this.lowerBound(id),
+        upperbound: this.upperBound(id),
       },
     };
   }
 
   firstLoadEscher(): void {
     this.builderSubject.next(this.builder);
+  }
+
+  ngOnDestroy(): void {
+    this.selectedCardBuilder.unsubscribe();
+    this.builderSubject.unsubscribe();
   }
 }

@@ -71,6 +71,10 @@ import {AppMapsModule} from './app-maps/app-maps.module';
 import {IamService} from './services/iam.service';
 import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
+import {DesignService} from './services/design.service';
+import { AppDesignsComponent } from './app-designs/app-designs.component';
+import {DeleteDesignComponent} from './app-designs/components/delete-design/delete-design.component';
+import {AppDesignsModule} from './app-designs/app-designs.module';
 
 
 if (environment.sentry) {
@@ -122,7 +126,7 @@ export class RavenErrorHandler implements ErrorHandler {
     JobsModule,
     ProjectsModule,
     AppMapsModule,
-
+    AppDesignsModule,
     // NgRX imports
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
@@ -141,6 +145,7 @@ export class RavenErrorHandler implements ErrorHandler {
     NinjaService,
     IamService,
     MapsService,
+    DesignService,
 
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),

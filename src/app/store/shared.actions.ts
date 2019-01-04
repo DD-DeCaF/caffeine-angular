@@ -17,6 +17,7 @@ import * as types from '../app-interactive-map/types';
 import {FetchModel} from '../app-models/store/models.actions';
 import * as projectTypes from '../projects/types';
 import {Job} from '../jobs/types';
+import {DesignRequest} from '../app-designs/types';
 
 
 export const FETCH_MODELS = 'FETCH_MODELS';
@@ -34,6 +35,9 @@ export const SET_MAPS_ERROR = 'SET_MAPS_ERROR';
 export const FETCH_JOBS = 'FETCH_JOBS';
 export const SET_JOBS = 'SET_JOBS';
 export const SET_JOBS_ERROR = 'SET_JOBS_ERROR';
+export const FETCH_DESIGNS = 'FETCH_DESIGNS';
+export const SET_DESIGNS = 'SET_DESIGNS';
+export const SET_DESIGNS_ERROR = 'SET_DESIGNS_ERROR';
 
 export class FetchModels implements Action {
   readonly type = FETCH_MODELS;
@@ -95,9 +99,24 @@ export class SetProjectsError implements Action {
 export class SetMapsError implements Action {
   readonly type = SET_MAPS_ERROR;
 }
+
 export class SetJobsError implements Action {
   readonly type = SET_JOBS_ERROR;
 }
 
+export class FetchDesigns implements Action {
+  readonly type = FETCH_DESIGNS;
+}
+
+export class SetDesigns implements Action {
+  readonly type = SET_DESIGNS;
+  constructor(public payload: DesignRequest[]) {}
+}
+
+export class SetDesignsError implements Action {
+  readonly type = SET_DESIGNS_ERROR;
+}
+
+
 export type SharedActions = FetchModels | SetModels | FetchSpecies | SetSpecies | FetchModel | FetchProjects | SetProjects | FetchMaps | SetMaps | FetchJobs |
-  SetJobs | SetModelsError | SetSpeciesError | SetProjectsError | SetMapsError | SetJobsError;
+  SetJobs | SetModelsError | SetSpeciesError | SetProjectsError | SetMapsError | SetJobsError | FetchDesigns | SetDesigns | SetDesignsError;

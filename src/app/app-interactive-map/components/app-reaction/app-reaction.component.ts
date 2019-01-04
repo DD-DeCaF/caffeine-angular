@@ -30,7 +30,7 @@ export class AppReactionComponent implements OnInit {
   @ViewChild('addedPanel') addedPanel: AppPanelComponent;
 
   public card: Observable<HydratedCard>;
-
+  public knockout;
   constructor(
     public store: Store<AppState>,
   ) {}
@@ -40,5 +40,8 @@ export class AppReactionComponent implements OnInit {
       .pipe(
         selectNotNull(getSelectedCard),
       );
+    this.card.subscribe((card) => {
+      this.knockout = card.knockoutReactions;
+    })
   }
 }

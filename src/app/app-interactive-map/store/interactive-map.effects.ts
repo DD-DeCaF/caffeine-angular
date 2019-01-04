@@ -12,25 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Action, Store, select} from '@ngrx/store';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Action, Store, select} from '@ngrx/store';
+import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Observable, combineLatest, of} from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError} from 'rxjs/operators';
-import { AppState } from '../../store/app.reducers';
+import {AppState} from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
-import { environment } from '../../../environments/environment.staging';
+import {environment} from '../../../environments/environment.staging';
 import * as types from '../types';
-import { PathwayMap } from '@dd-decaf/escher';
+import {PathwayMap} from '@dd-decaf/escher';
 import {interactiveMapReducer} from './interactive-map.reducers';
-import { SimulationService } from '../services/simulation.service';
-import { MapService } from '../services/map.service';
-import { WarehouseService } from '../../services/warehouse.service';
-import { mapBiggReactionToCobra } from '../../lib';
+import {SimulationService} from '../services/simulation.service';
+import {MapService} from '../services/map.service';
+import {WarehouseService} from '../../services/warehouse.service';
+import {mapBiggReactionToCobra} from '../../lib';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
+import {DesignService} from '../../services/design.service';
+import {DesignRequest} from '../../app-designs/types';
+import {BiggSearchService} from '../components/app-reaction/components/app-panel/services/bigg-search.service';
+import {ReactionOperation} from './interactive-map.actions';
+import {OperationDirection} from '../types';
 
 
 const ACTION_OFFSETS = {
@@ -81,11 +86,11 @@ export class InteractiveMapEffects {
     ofType(fromActions.SET_FULL_MODEL),
     concatMapTo([
       new fromActions.ResetCards(),
-      new fromActions.AddCard(types.CardType.WildType),
+      new fromActions.AddCard(types.CardType.Design),
     ]),
   );
 
-   @Effect()
+  @Effect()
   fetchFullModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetFullModel) =>
@@ -97,23 +102,64 @@ export class InteractiveMapEffects {
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
     withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModelHeader))),
-    switchMap(([{payload: type}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
-      const payload: types.SimulateRequest = {
+    switchMap(([{payload, type, design}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
+      let payloadSimulate: types.SimulateRequest = {
         model_id: model.id,
         method: 'pfba',
         objective: null,
         objective_direction: null,
         operations: [],
       };
-      return this.simulationService.simulate(payload)
-        .pipe(
-          map((solution) => ({
-            type,
-            solution,
-          })),
-          map((data) => new fromActions.AddCardFetched(data)),
-          catchError(() => of(new loaderActions.LoadingError())),
-        );
+
+      if (design) {
+        payloadSimulate = {
+          model_id: design.model_id,
+          method: 'pfba',
+          objective: null,
+          objective_direction: null,
+          operations: this.designService.getOperations(design) || [],
+        };
+        for (let i = 0; i < design.design.reaction_knockins.length; i++) {
+          const knockin = design.design.reaction_knockins[i];
+          this.biggService.search(knockin).subscribe((react) => this.biggService.getDetails(react[0]).subscribe((r) => {
+            this.store$.dispatch(new ReactionOperation({
+              item: r,
+              operationTarget: 'addedReactions',
+              direction: OperationDirection.Do,
+              saved: true,
+            }));
+          }));
+
+        }
+        return this.simulationService.simulate(payloadSimulate)
+          .pipe(
+            map((solution) => {
+              return {
+              type: payload,
+              solution,
+            };
+            }),
+            map((data) => {
+              const dataDesign = {type: data.type, solution: data.solution, design};
+
+              return new fromActions.AddCardFetched(dataDesign);
+            }),
+            catchError(() => of(new loaderActions.LoadingError())),
+          );
+      } else {
+        return this.simulationService.simulate(payloadSimulate)
+          .pipe(
+            map((solution) => ({
+              type: payload,
+              solution,
+            })),
+            map((data) => {
+              const dataDesign = {type: data.type, solution: data.solution, design};
+              return new fromActions.AddCardFetched(dataDesign);
+            }),
+            catchError(() => of(new loaderActions.LoadingError())),
+          );
+      }
     }),
   );
 
@@ -124,12 +170,12 @@ export class InteractiveMapEffects {
       return this
         .http.get(`${environment.apis.maps}/maps/${action.payload.id}`)
         .pipe(map((response: PathwayMap) => ({
-          mapData: response,
-          mapItem: action.payload,
-        })),
+            mapData: response,
+            mapItem: action.payload,
+          })),
           map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
           catchError(() => of(new loaderActions.LoadingError())),
-      );
+        );
     }),
   );
 
@@ -195,6 +241,13 @@ export class InteractiveMapEffects {
         data: null,
       }));
 
+      const knockoutsGenes = selectedCard.knockoutGenes.map((geneId: string): types.DeCaF.Operation => ({
+        operation: 'knockout',
+        type: 'gene',
+        id: geneId,
+        data: null,
+      }));
+
       const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.BoundedReaction): types.DeCaF.Operation => ({
         operation: 'modify',
         type: 'reaction',
@@ -214,14 +267,15 @@ export class InteractiveMapEffects {
         operations: [
           ...addedReactions,
           ...knockouts,
+          ...knockoutsGenes,
           ...bounds,
         ],
       };
       return this.simulationService.simulate(payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
-          action: newAction,
-          solution,
-        })),
+            action: newAction,
+            solution,
+          })),
           /* tslint:disable */
           map(({action, solution}) => ({
             ...action,
@@ -229,11 +283,11 @@ export class InteractiveMapEffects {
           })),
           /* tslint:enable */
           catchError(() => of(new loaderActions.LoadingError())),
-          );
+        );
     }),
   );
 
-   @Effect()
+  @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
       fromActions.SET_OBJECTIVE_REACTION),
@@ -246,10 +300,21 @@ export class InteractiveMapEffects {
     mapTo(new loaderActions.LoadingFinished()),
   );
 
+  @Effect()
+  saveDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SAVE_DESIGN),
+    switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload).pipe(
+      map(() => new sharedActions.FetchDesigns()),
+    )),
+  );
+
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
     private http: HttpClient,
     private simulationService: SimulationService,
-  ) {}
+    private designService: DesignService,
+    private biggService: BiggSearchService,
+  ) {
+  }
 }

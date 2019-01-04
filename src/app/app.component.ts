@@ -86,6 +86,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new sharedActions.FetchModels());
     this.store.dispatch(new sharedActions.FetchProjects());
     this.store.dispatch(new sharedActions.FetchJobs());
+    this.store.dispatch(new sharedActions.FetchDesigns());
   }
 
   setTheme(theme: string): void {
