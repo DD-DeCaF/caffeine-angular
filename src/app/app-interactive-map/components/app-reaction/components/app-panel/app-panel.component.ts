@@ -46,7 +46,7 @@ export class AppPanelComponent {
   }
 
   queryChange(query: string): void {
-    if (query.length > 2) {
+    if (query.length > 0) {
       this.query.emit(query);
     }
   }
