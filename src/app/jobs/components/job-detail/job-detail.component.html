@@ -76,7 +76,7 @@ limitations under the License.
     </p>
 
     <mat-error *ngIf="job?.status === 'FAILURE'">
-      The job errored with the following message: <strong>{{ job.error }}</strong>
+      The job was unable to complete successfully.
     </mat-error>
 
     <mat-error *ngIf="job?.status === 'REVOKED'">
