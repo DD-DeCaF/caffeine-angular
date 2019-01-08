@@ -45,6 +45,7 @@ export class DesignService {
       'model_id': card.model_id,
       'name': card.name,
       'project_id': projectId,
+      'method': card.methodCard,
     };
     if (card.designId) {
       return this.http.put<HydratedCard>(`${environment.apis.design_storage}/designs/${card.designId}`, design);

@@ -118,17 +118,21 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public save(card: HydratedCard, projectId: number): void {
-    if (projectId) {
-      this.store.dispatch(new SaveDesign(card, projectId));
-    } else {
-      const dialogRef = this.dialog.open(SelectProjectComponent);
 
-      dialogRef.afterClosed().subscribe(
-        (id) => {
-          if (id) {
-            this.store.dispatch(new SaveDesign(card, id));
-          }
-        });
+    if (card.projectId) {
+      this.store.dispatch(new SaveDesign(card, card.projectId));
+    } else {
+      if (projectId) {
+        this.store.dispatch(new SaveDesign(card, projectId));
+      } else {
+        const dialogRef = this.dialog.open(SelectProjectComponent);
+        dialogRef.afterClosed().subscribe(
+          (id) => {
+            if (id) {
+              this.store.dispatch(new SaveDesign(card, id));
+            }
+          });
+      }
     }
   }
 }

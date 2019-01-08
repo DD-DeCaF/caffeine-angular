@@ -63,6 +63,8 @@ export const emptyCard: Card = {
   bounds: [],
   objectiveReaction: null,
   designId: null,
+  projectId: null,
+  methodCard: 'Manual',
   saved: null,
 };
 
@@ -169,6 +171,7 @@ export function interactiveMapReducer(
       let model: Cobra.Model;
       let model_id: number;
       let designId: number;
+      let projectId: number;
 
       switch (type) {
         case CardType.Design: {
@@ -176,6 +179,7 @@ export function interactiveMapReducer(
           name = design ? design.name : 'Design';
           model = design ? design.model.model_serialized : state.selectedModel.model_serialized;
           model_id = design ? design.model_id : state.selectedModel.id;
+          projectId = design ? design.project_id : null;
           break;
         }
         case CardType.DataDriven: {
@@ -199,6 +203,7 @@ export function interactiveMapReducer(
               name,
               model,
               model_id,
+              projectId,
               designId,
               solution,
               addedReactions: design ? design.design.added_reactions : [],

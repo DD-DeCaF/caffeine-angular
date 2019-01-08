@@ -84,6 +84,8 @@ export interface Card {
   objectiveReaction: ObjectiveReaction;
   bounds: BoundedReaction[];
   designId: number;
+  projectId: number;
+  methodCard: string;
   saved: boolean;
 }
 

@@ -84,7 +84,7 @@ export class InteractiveMapEffects {
   resetCards: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_FULL_MODEL),
     concatMapTo([
-      // new fromActions.ResetCards(),
+       new fromActions.ResetCards(),
       new fromActions.AddCard(types.CardType.Design),
     ]),
   );
