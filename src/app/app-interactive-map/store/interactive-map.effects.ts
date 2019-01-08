@@ -14,7 +14,7 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Action, Store, select, State} from '@ngrx/store';
+import {Action, Store, select} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Observable, combineLatest, of} from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError, mergeMap} from 'rxjs/operators';
@@ -33,10 +33,8 @@ import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {BiggSearchService} from '../components/app-reaction/components/app-panel/services/bigg-search.service';
-import {ReactionOperation, SetModel} from './interactive-map.actions';
+import {ReactionOperation} from './interactive-map.actions';
 import {OperationDirection} from '../types';
-import {getModels} from './interactive-map.selectors';
-import {isLoading} from '../components/loader/store/loader.selectors';
 
 
 const ACTION_OFFSETS = {
@@ -77,7 +75,6 @@ export class InteractiveMapEffects {
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
       const {maps} = storeState.shared;
-      console.log('MAP SELECTOR');
       const mapSelector = MapService.createMapSelector(model);
       return new fromActions.SetMap(mapSelector(maps));
     }),
@@ -105,7 +102,6 @@ export class InteractiveMapEffects {
     ofType(fromActions.ADD_CARD),
     withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModelHeader))),
     mergeMap(([{payload, type, design}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
-      console.log('MOOOOOOOOODEL', model);
       let payloadSimulate: types.SimulateRequest = {
         model_id: model.id,
         method: 'pfba',
@@ -113,7 +109,6 @@ export class InteractiveMapEffects {
         objective_direction: null,
         operations: [],
       };
-      console.log('PAYLOAD SIMULATE WITHOUT DESIGN', payloadSimulate);
 
       if (design) {
         payloadSimulate = {
@@ -123,7 +118,6 @@ export class InteractiveMapEffects {
           objective_direction: null,
           operations: this.designService.getOperations(design) || [],
         };
-        console.log('PAYLOAD SIMULATE WITH DESIGN', payloadSimulate);
         for (let i = 0; i < design.design.added_reactions.length; i++) {
           const knockin = design.design.reaction_knockins[i];
           this.biggService.search(knockin).subscribe((react) => this.biggService.getDetails(react[0]).subscribe((r) => {
@@ -171,7 +165,6 @@ export class InteractiveMapEffects {
   fetchMap: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MAP),
     switchMap((action: fromActions.SetMap) => {
-      console.log('SET MAP', action.payload);
       return this
         .http.get(`${environment.apis.maps}/maps/${action.payload.id}`)
         .pipe(map((response: PathwayMap) => ({
@@ -229,9 +222,7 @@ export class InteractiveMapEffects {
       // Ugly hack not to implement the reduction twice.
       // @ts-ignore
       const newAction = new fromActions.operationToApply[action.type](action.payload);
-      console.log('INTERACTIVE MAP NEW ACTION', newAction);
       const IMStore = interactiveMapReducer(store.interactiveMap, newAction);
-      console.log('INTERACTIVE MAP REDUCER', IMStore);
       const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
 
       const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
@@ -240,7 +231,6 @@ export class InteractiveMapEffects {
         id: reaction.bigg_id,
         data: mapBiggReactionToCobra(reaction),
       }));
-      console.log('INTERACTIVE MAP REDUCER ADDED REACTION', addedReactions);
 
       const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({
         operation: 'knockout',
@@ -311,7 +301,7 @@ export class InteractiveMapEffects {
   @Effect()
   saveDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SAVE_DESIGN),
-    switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload).pipe(
+    switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload, action.projectId).pipe(
       map(() => new sharedActions.FetchDesigns()),
     )),
   );

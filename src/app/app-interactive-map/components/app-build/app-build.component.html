@@ -61,7 +61,7 @@
             matTooltip="Unsaved strain" *ngIf="expandedCard.saved === false">*</span>
           </h4>
         </div>
-        <button mat-button *ngIf="expandedCard.saved === false" (click)="save(expandedCard)">SAVE</button>
+        <button mat-button *ngIf="expandedCard.saved === false" (click)="save(expandedCard, selectedProjectId)">SAVE</button>
       </div>
 
       <mat-tab-group mat-stretch-tabs [selectedIndex]="tabIndex">

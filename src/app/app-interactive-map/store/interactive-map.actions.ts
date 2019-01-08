@@ -162,7 +162,7 @@ export class SelectFirstModel implements Action {
 
 export class SaveDesign implements Action {
   readonly type = SAVE_DESIGN;
-  constructor(public payload: types.HydratedCard) {}
+  constructor(public payload: types.HydratedCard, public projectId: number) {}
 }
 
 export const operationToApply = {

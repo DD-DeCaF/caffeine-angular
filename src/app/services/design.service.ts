@@ -21,19 +21,16 @@ import {DesignRequest} from '../app-designs/types';
 import {BiggSearchService} from '../app-interactive-map/components/app-reaction/components/app-panel/services/bigg-search.service';
 import {map} from 'rxjs/operators';
 import {mapBiggReactionToCobra} from '../lib';
-import {select, Store} from '@ngrx/store';
-import {AppState} from '../store/app.reducers';
 
 @Injectable()
 export class DesignService {
   constructor(
     private http: HttpClient,
     private biggService: BiggSearchService,
-    private store: Store<AppState>,
   ) {
   }
 
-  saveDesign(card: HydratedCard): Observable<HydratedCard> {
+  saveDesign(card: HydratedCard, projectId: number): Observable<HydratedCard> {
     const design = {
       'design': {
         'constraints': card.bounds.map((reaction) => Object.assign({
@@ -47,9 +44,13 @@ export class DesignService {
       },
       'model_id': card.model_id,
       'name': card.name,
-      'project_id': 7,
+      'project_id': projectId,
     };
-    return this.http.post<HydratedCard>(`${environment.apis.design_storage}/designs`, design);
+    if (card.designId) {
+      return this.http.put<HydratedCard>(`${environment.apis.design_storage}/designs/${card.designId}`, design);
+    } else {
+      return this.http.post<HydratedCard>(`${environment.apis.design_storage}/designs`, design);
+    }
   }
 
   getDesigns(): Observable<DesignRequest[]> {
@@ -71,7 +72,6 @@ export class DesignService {
         }));
       }
       this.http.get(`${environment.apis.model_storage}/models/${ designs[i].model_id}`).subscribe((model: DeCaF.Model) => {
-        console.log('MODEL PROCESS', model);
         designs[i].model = model;
       });
     }

@@ -22,6 +22,7 @@ import {DesignRequest} from '../app-designs/types';
 
 export const FETCH_MODELS = 'FETCH_MODELS';
 export const SET_MODELS = 'SET_MODELS';
+export const SET_SELECTED_PROJECT = 'SET_SELECTED_PROJECT';
 export const SET_MODELS_ERROR = 'SET_MODELS_ERROR';
 export const FETCH_SPECIES = 'FETCH_SPECIES';
 export const SET_SPECIES = 'SET_SPECIES';
@@ -45,7 +46,9 @@ export class FetchModels implements Action {
 
 export class SetModels implements Action {
   readonly type = SET_MODELS;
-  constructor(public payload: types.DeCaF.ModelHeader[]) {}
+
+  constructor(public payload: types.DeCaF.ModelHeader[]) {
+  }
 }
 
 export class FetchSpecies implements Action {
@@ -54,7 +57,9 @@ export class FetchSpecies implements Action {
 
 export class SetSpecies implements Action {
   readonly type = SET_SPECIES;
-  constructor(public payload: types.Species[]) {}
+
+  constructor(public payload: types.Species[]) {
+  }
 }
 
 export class FetchProjects implements Action {
@@ -63,7 +68,9 @@ export class FetchProjects implements Action {
 
 export class SetProjects implements Action {
   readonly type = SET_PROJECTS;
-  constructor(public payload: projectTypes.Project[]) {}
+
+  constructor(public payload: projectTypes.Project[]) {
+  }
 }
 
 export class FetchMaps implements Action {
@@ -72,7 +79,9 @@ export class FetchMaps implements Action {
 
 export class SetMaps implements Action {
   readonly type = SET_MAPS;
-  constructor(public payload: types.MapItem[]) {}
+
+  constructor(public payload: types.MapItem[]) {
+  }
 }
 
 export class FetchJobs implements Action {
@@ -81,7 +90,9 @@ export class FetchJobs implements Action {
 
 export class SetJobs implements Action {
   readonly type = SET_JOBS;
-  constructor(public payload: Job[]) {}
+
+  constructor(public payload: Job[]) {
+  }
 }
 
 export class SetModelsError implements Action {
@@ -110,13 +121,41 @@ export class FetchDesigns implements Action {
 
 export class SetDesigns implements Action {
   readonly type = SET_DESIGNS;
-  constructor(public payload: DesignRequest[]) {}
+
+  constructor(public payload: DesignRequest[]) {
+  }
 }
 
 export class SetDesignsError implements Action {
   readonly type = SET_DESIGNS_ERROR;
 }
 
+export class SetSelectedProject implements Action {
+  readonly type = SET_SELECTED_PROJECT;
 
-export type SharedActions = FetchModels | SetModels | FetchSpecies | SetSpecies | FetchModel | FetchProjects | SetProjects | FetchMaps | SetMaps | FetchJobs |
-  SetJobs | SetModelsError | SetSpeciesError | SetProjectsError | SetMapsError | SetJobsError | FetchDesigns | SetDesigns | SetDesignsError;
+  constructor(public payload: number) {
+  }
+}
+
+
+export type SharedActions =
+  FetchModels
+  | SetModels
+  | FetchSpecies
+  | SetSpecies
+  | FetchModel
+  | FetchProjects
+  | SetProjects
+  | FetchMaps
+  | SetMaps
+  | FetchJobs
+  | SetJobs
+  | SetModelsError
+  | SetSpeciesError
+  | SetProjectsError
+  | SetMapsError
+  | SetJobsError
+  | FetchDesigns
+  | SetDesigns
+  | SetDesignsError
+  | SetSelectedProject;

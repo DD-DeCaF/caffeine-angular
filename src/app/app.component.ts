@@ -29,7 +29,6 @@ import {SessionService} from './session/session.service';
 import {environment} from '../environments/environment';
 import {AppState} from './store/app.reducers';
 import * as sharedActions from './store/shared.actions';
-import {activeModels, mapItemsByModel} from './app-interactive-map/store/interactive-map.selectors';
 import {combineLatest} from 'rxjs';
 import {SelectFirstModel} from './app-interactive-map/store/interactive-map.actions';
 

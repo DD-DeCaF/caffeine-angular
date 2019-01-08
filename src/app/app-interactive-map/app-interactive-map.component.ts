@@ -17,10 +17,10 @@ import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import {Card, DeCaF, MapItem, OperationDirection, ReactionState} from './types';
+import {Card, OperationDirection, ReactionState} from './types';
 import escherSettingsConst from './escherSettings';
 import * as fromActions from './store/interactive-map.actions';
-import {getSelectedCard, mapItemsByModel} from './store/interactive-map.selectors';
+import {getSelectedCard} from './store/interactive-map.selectors';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {isLoading} from './components/loader/store/loader.selectors';
@@ -30,10 +30,7 @@ import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {Router} from '@angular/router';
-import {PathwayMap} from "@dd-decaf/escher";
-import {SetModel} from './store/interactive-map.actions';
-import ModelHeader = DeCaF.ModelHeader;
-import {SelectFirstModel} from './store/interactive-map.actions';
+import {PathwayMap} from '@dd-decaf/escher';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -110,8 +107,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     ).subscribe(([card, map, builder]: [Card, PathwayMap, escher.BuilderObject]) => {
       this.loading = true;
       this.card = card;
-      builder._update_data(true, true);
-      console.log('SELECTED CARD', card.model);
       builder.load_model(card.model);
       builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
       builder.set_knockout_reactions(card.knockoutReactions);

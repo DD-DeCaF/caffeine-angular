@@ -42,6 +42,6 @@ export class AppReactionComponent implements OnInit {
       );
     this.card.subscribe((card) => {
       this.knockout = card.knockoutReactions;
-    })
+    });
   }
 }

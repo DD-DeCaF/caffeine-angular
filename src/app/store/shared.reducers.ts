@@ -12,11 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as fromModelsActions from './shared.actions';
+import * as fromSharedActions from './shared.actions';
 import * as types from '../app-interactive-map/types';
 import {Project} from 'src/app/projects/types';
 import {Job} from 'src/app/jobs/types';
-import {Design} from '../app-design-tool/types';
 import {DesignRequest} from '../app-designs/types';
 
 export interface SharedState {
@@ -32,6 +31,7 @@ export interface SharedState {
   projectsError: boolean;
   jobsError: boolean;
   designsError: boolean;
+  selectedProject: number;
 }
 
 export const initialState: SharedState = {
@@ -47,73 +47,79 @@ export const initialState: SharedState = {
   projectsError: false,
   jobsError: false,
   designsError: false,
+  selectedProject: null,
 };
 
 
 export function sharedReducer(
   state: SharedState = initialState,
-  action: fromModelsActions.SharedActions,
+  action: fromSharedActions.SharedActions,
 ): SharedState {
   switch (action.type) {
-    case fromModelsActions.SET_MODELS:
+    case fromSharedActions.SET_MODELS:
       return {
         ...state,
         modelHeaders: action.payload,
       };
-    case fromModelsActions.SET_MODELS_ERROR:
+    case fromSharedActions.SET_MODELS_ERROR:
       return {
         ...state,
         modelsError: true,
       };
-    case fromModelsActions.SET_SPECIES:
+    case fromSharedActions.SET_SPECIES:
       return {
         ...state,
         allSpecies: action.payload,
       };
-    case fromModelsActions.SET_SPECIES_ERROR:
+    case fromSharedActions.SET_SPECIES_ERROR:
       return {
         ...state,
         speciesError: true,
       };
-    case fromModelsActions.SET_MAPS:
+    case fromSharedActions.SET_MAPS:
       return {
         ...state,
         maps: action.payload,
       };
-    case fromModelsActions.SET_MAPS_ERROR:
+    case fromSharedActions.SET_MAPS_ERROR:
       return {
         ...state,
         mapsError: true,
       };
-    case fromModelsActions.SET_PROJECTS:
+    case fromSharedActions.SET_PROJECTS:
       return {
         ...state,
         projects: action.payload,
       };
-    case fromModelsActions.SET_PROJECTS_ERROR:
+    case fromSharedActions.SET_PROJECTS_ERROR:
       return {
         ...state,
         projectsError: true,
       };
-    case fromModelsActions.SET_JOBS:
+    case fromSharedActions.SET_JOBS:
       return {
         ...state,
         jobs: action.payload,
       };
-    case fromModelsActions.SET_JOBS_ERROR:
+    case fromSharedActions.SET_JOBS_ERROR:
       return {
         ...state,
         jobsError: true,
       };
-    case fromModelsActions.SET_DESIGNS_ERROR:
+    case fromSharedActions.SET_DESIGNS_ERROR:
       return {
         ...state,
         designsError: true,
       };
-    case fromModelsActions.SET_DESIGNS:
+    case fromSharedActions.SET_DESIGNS:
       return {
         ...state,
         designs: action.payload,
+      };
+    case fromSharedActions.SET_SELECTED_PROJECT:
+      return {
+        ...state,
+        selectedProject: action.payload,
       };
     default:
       return state;

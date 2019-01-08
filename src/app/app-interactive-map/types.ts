@@ -83,6 +83,7 @@ export interface Card {
   knockoutGenes: string[];
   objectiveReaction: ObjectiveReaction;
   bounds: BoundedReaction[];
+  designId: number;
   saved: boolean;
 }
 

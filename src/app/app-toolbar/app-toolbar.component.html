@@ -15,9 +15,9 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
     <button mat-icon-button
-      type="button"
-      role="menuButton"
-      (click)="sidenav.toggle()">
+            type="button"
+            role="menuButton"
+            (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
     <h1>
@@ -25,12 +25,19 @@
     </h1>
     <span class="fill-remaining-space"></span>
 
-    <button mat-button
-            type="button"
-            routerLink="/projects"
-            *ngIf="(sessionState | async).authenticated">
-      Projects
-    </button>
+    <!-- <button mat-button
+             type="button"
+             routerLink="/projects"
+             *ngIf="(sessionState | async).authenticated">
+       Projects
+     </button>-->
+    <mat-select [(value)]="selectedProject" style="font-size: 14px; width: 120px; margin-left: 10px" placeholder="Projects" #projects>
+      <mat-option color="primary"
+                  class="mat-primary"
+                  [value]="project.id"
+                  *ngFor="let project of (allProjects | async)">{{project.name}}
+      </mat-option>
+    </mat-select>
     <button mat-button
             type="button"
             appOpenLoginDialog
@@ -43,7 +50,7 @@
             (click)="logout()"
             *ngIf="(sessionState | async).authenticated">
       <mat-icon>power_settings_new</mat-icon>
-      Logout
+      Logout {{selectedProject}}
     </button>
   </mat-toolbar-row>
 </mat-toolbar>

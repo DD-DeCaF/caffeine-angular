@@ -39,6 +39,18 @@
           <p matLine>Design</p>
         </mat-list-item>
 
+        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/projects"
+                       [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon>subject</mat-icon>
+          <p matLine>Projects</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                       matTooltip="Please log in or register to use this functionality!" class="disabled">
+          <mat-icon mat-list-icon>subject</mat-icon>
+          <p matLine>Projects</p>
+        </mat-list-item>
+
         <mat-list-item (click)="sidenav.toggle()" routerLink="/interactiveMap" [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon svgIcon="interactive-map"></mat-icon>
           <p matLine>Interactive Map</p>
@@ -77,6 +89,8 @@
           <p matLine>Designs</p>
         </mat-list-item>
       </mat-nav-list>
+
+
 
 
     </mat-sidenav>

@@ -18,7 +18,7 @@ import {Observable, Subject} from 'rxjs';
 
 import {AppState} from '../../../../../store/app.reducers';
 import {SetObjectiveReaction} from '../../../../store/interactive-map.actions';
-import {HydratedCard, Cobra, AddedReaction} from '../../../../types';
+import {HydratedCard, Cobra} from '../../../../types';
 import {AppPanelComponent} from '../app-panel/app-panel.component';
 import {AppObjectiveDetailComponent} from '../app-objective-detail/app-objective-detail.component';
 

@@ -14,12 +14,12 @@
 
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import {combineLatest, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
 import { AppState } from '../../../store/app.reducers';
 import { MatSelect, MatSelectChange } from '@angular/material';
-import { SetSelectedSpecies, SetModel, SetMap, SelectFirstModel } from '../../store/interactive-map.actions';
+import { SetSelectedSpecies, SetModel, SetMap } from '../../store/interactive-map.actions';
 import { mapItemsByModel, activeModels } from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';

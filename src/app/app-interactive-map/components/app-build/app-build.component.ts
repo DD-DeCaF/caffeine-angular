@@ -13,18 +13,19 @@
 // limitations under the License.
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
-import { MatButton } from '@angular/material';
+import {MatButton, MatDialog} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import {withLatestFrom} from 'rxjs/operators';
 
 import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
-import { AppState } from '../../../store/app.reducers';
-import { CardType, HydratedCard } from '../../types';
+import {AppState} from '../../../store/app.reducers';
+import {CardType, HydratedCard} from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
+import {SelectProjectComponent} from './components/select-project/select-project.component';
 
 @Component({
   selector: 'app-build',
@@ -37,21 +38,26 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   interactiveMapState: Observable<AppState>;
   public cards: Observable<HydratedCard[]>;
   public playing: Observable<boolean>;
-
+  public selectedProjectId: number;
   public expandedCard: HydratedCard = null;
   public tabIndex: number = null;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store<AppState>, private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
+    this.store.pipe(select((state: AppState) => state.shared.selectedProject)).subscribe((project) => {
+      this.selectedProjectId = project;
+    });
+
     this.store.pipe(
       selectNotNull(getSelectedCard)).subscribe((card) => {
-        if (this.expandedCard) {
-          this.expandedCard = card;
-        }
-      });
+      if (this.expandedCard) {
+        this.expandedCard = card;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -111,7 +117,18 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       '0';
   }
 
-  public save(card: HydratedCard): void {
-    this.store.dispatch(new SaveDesign(card));
+  public save(card: HydratedCard, projectId: number): void {
+    if (projectId) {
+      this.store.dispatch(new SaveDesign(card, projectId));
+    } else {
+      const dialogRef = this.dialog.open(SelectProjectComponent);
+
+      dialogRef.afterClosed().subscribe(
+        (id) => {
+          if (id) {
+            this.store.dispatch(new SaveDesign(card, id));
+          }
+        });
+    }
   }
 }

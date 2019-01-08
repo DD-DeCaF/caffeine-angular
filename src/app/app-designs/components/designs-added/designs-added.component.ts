@@ -14,9 +14,7 @@
 
 import {Component, Inject} from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Store } from '@ngrx/store';
 
-import { AppState } from '../../../store/app.reducers';
 import {DesignRequest} from '../../types';
 import {Router} from '@angular/router';
 
@@ -30,7 +28,6 @@ import {Router} from '@angular/router';
 export class DesignsAddedComponent {
 
   constructor(
-    private store: Store<AppState>,
     private dialogRef: MatDialogRef<DesignsAddedComponent>,
     private router: Router,
 
