@@ -43,6 +43,7 @@ export interface InteractiveMapState {
   selectedModel: DeCaF.Model;
   selectedMap: MapItem;
   mapData: PathwayMap;
+  mapDataOriginal: PathwayMap;
   cards: {
     ids: string[];
     cardsById: { [key: string]: Card; };
@@ -72,6 +73,7 @@ export const initialState: InteractiveMapState = {
   selectedModel: null,
   selectedMap: null,
   mapData: null,
+  mapDataOriginal: null,
   cards: {
     ids: [],
     cardsById: {},
@@ -140,6 +142,8 @@ export function interactiveMapReducer(
         ...state,
         // tslint:disable-next-line:no-any
         mapData: (<any> action.payload.mapData).map as PathwayMap,
+        // tslint:disable-next-line:no-any
+        mapDataOriginal: (<any> action.payload.mapData).map,
         selectedMap: action.payload.mapItem,
       };
     case fromInteractiveMapActions.RESET_CARDS:
@@ -186,6 +190,7 @@ export function interactiveMapReducer(
       return {
         ...state,
         selectedCardId: newId,
+        mapData: state.mapDataOriginal,
         cards: {
           ...state.cards,
           ids: [...state.cards.ids, newId],
@@ -282,9 +287,11 @@ export function interactiveMapReducer(
             console.log('ITEM', (<AddedReaction>item).metabolites_to_add);
             const metabolitesToAdd = (<AddedReaction>item).metabolites_to_add;
             console.log('METABOLITES TO ADD', metabolitesToAdd);
-            for (let i = 0; i < metabolitesToAdd.length; i++) {
-              if (card.model.metabolites.indexOf(metabolitesToAdd[i]) === -1) {
-                card.model.metabolites.push(metabolitesToAdd[i]);
+            if (metabolitesToAdd) {
+              for (let i = 0; i < metabolitesToAdd.length; i++) {
+                if (card.model.metabolites.indexOf(metabolitesToAdd[i]) === -1) {
+                  card.model.metabolites.push(metabolitesToAdd[i]);
+                }
               }
             }
           }

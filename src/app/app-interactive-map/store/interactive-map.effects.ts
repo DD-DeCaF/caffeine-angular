@@ -17,7 +17,7 @@ import {HttpClient} from '@angular/common/http';
 import {Action, Store, select, State} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Observable, combineLatest, of} from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError} from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError, mergeMap} from 'rxjs/operators';
 import {AppState} from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
@@ -104,7 +104,7 @@ export class InteractiveMapEffects {
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
     withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModelHeader))),
-    switchMap(([{payload, type, design}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
+    mergeMap(([{payload, type, design}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
       console.log('MOOOOOOOOODEL', model);
       let payloadSimulate: types.SimulateRequest = {
         model_id: model.id,
@@ -124,10 +124,9 @@ export class InteractiveMapEffects {
           operations: this.designService.getOperations(design) || [],
         };
         console.log('PAYLOAD SIMULATE WITH DESIGN', payloadSimulate);
-        for (let i = 0; i < design.design.reaction_knockins.length; i++) {
+        for (let i = 0; i < design.design.added_reactions.length; i++) {
           const knockin = design.design.reaction_knockins[i];
           this.biggService.search(knockin).subscribe((react) => this.biggService.getDetails(react[0]).subscribe((r) => {
-            console.log('REACT 0', knockin, react[0], r);
             this.store$.dispatch(new ReactionOperation({
               item: r,
               operationTarget: 'addedReactions',
@@ -230,7 +229,9 @@ export class InteractiveMapEffects {
       // Ugly hack not to implement the reduction twice.
       // @ts-ignore
       const newAction = new fromActions.operationToApply[action.type](action.payload);
+      console.log('INTERACTIVE MAP NEW ACTION', newAction);
       const IMStore = interactiveMapReducer(store.interactiveMap, newAction);
+      console.log('INTERACTIVE MAP REDUCER', IMStore);
       const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
 
       const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
@@ -239,6 +240,7 @@ export class InteractiveMapEffects {
         id: reaction.bigg_id,
         data: mapBiggReactionToCobra(reaction),
       }));
+      console.log('INTERACTIVE MAP REDUCER ADDED REACTION', addedReactions);
 
       const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({
         operation: 'knockout',

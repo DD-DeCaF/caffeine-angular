@@ -49,6 +49,7 @@ export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 export const SAVE_DESIGN = 'SAVE_DESIGN';
+export const REACTION_OPERATION_APPLIED = 'REACTION_OPERATION_APPLIED';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -170,6 +171,10 @@ export const operationToApply = {
   [SET_OBJECTIVE_REACTION]: SetObjectiveReactionApply,
 };
 
+export class ReactionOperationApplied implements Action {
+  readonly type = REACTION_OPERATION_APPLIED;
+}
+
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions =
   SetSelectedSpecies |
@@ -188,4 +193,5 @@ export type InteractiveMapActions =
   ReactionOperationApply |
   SetObjectiveReactionApply |
   SelectFirstModel |
-  SaveDesign;
+  SaveDesign |
+  ReactionOperationApplied;

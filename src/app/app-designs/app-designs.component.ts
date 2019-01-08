@@ -6,12 +6,11 @@ import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/mat
 import * as actions from '../store/shared.actions';
 import {DesignRequest} from './types';
 import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
-import {AddCard, SetModel} from '../app-interactive-map/store/interactive-map.actions';
+import {AddCard, SetMap, SetModel} from '../app-interactive-map/store/interactive-map.actions';
 import {CardType, DeCaF} from '../app-interactive-map/types';
 import {Router} from '@angular/router';
-import {FetchModel} from '../app-models/store/models.actions';
-import {NgModelGroup} from '@angular/forms';
 import ModelHeader = DeCaF.ModelHeader;
+import {selectNotNull} from '../framework-extensions';
 
 @Component({
   selector: 'app-designs',
@@ -24,6 +23,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   private cardAdded = false;
   private lastDesign: DesignRequest;
   private modelOfDesign: ModelHeader;
+  private mapObservable;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -48,7 +48,10 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-  }
+    this.mapObservable = this.store.pipe(selectNotNull((store) => store.interactiveMap.selectedMap)).subscribe((map) => {
+      this.store.dispatch(new SetMap(map));
+    });
+    }
 
   deleteDesign(design: DesignRequest): void {
     this.dialog.open(DeleteDesignComponent, {
@@ -84,13 +87,14 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
             if (this.lastDesign.design.added_reactions.length > 0) {
               const lastAddedReaction = lastCard.model.reactions.find((reaction) => reaction.id ===
                 this.lastDesign.design.added_reactions[this.lastDesign.design.added_reactions.length - 1].bigg_id);
+              console.log('LAST ADDED REACTIONS', lastAddedReaction);
               if (lastAddedReaction) {
                 this.cardAdded = false;
-                setTimeout(() => this.router.navigateByUrl('/interactiveMap'), 5000);
+                setTimeout(() => this.router.navigateByUrl('/interactiveMap'), 0);
               }
             } else {
               console.log('ELSE ADDED REACTIONS');
-              setTimeout(() => this.router.navigateByUrl('/interactiveMap'), 5000);
+              setTimeout(() => this.router.navigateByUrl('/interactiveMap'), 0);
             }
           }
          }
@@ -105,5 +109,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.mapObservable.unsubscribe();
+  }
 }
