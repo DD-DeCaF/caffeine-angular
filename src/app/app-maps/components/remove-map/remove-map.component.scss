@@ -29,7 +29,9 @@
 }
 
 .section-buttons {
-  margin-top: 20px;
+  margin: 20px 40px 0;
+  display: flex;
+  justify-content: space-around;
 }
 
 .error {
@@ -37,4 +39,3 @@
   font-weight: lighter;
   font-size: 18px;
 }
-

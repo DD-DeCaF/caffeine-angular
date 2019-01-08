@@ -32,7 +32,7 @@
         <td mat-cell *matCellDef="let element" align="center">
           <a
              class="inline-button"
-             (click)="editModel(element)"
+             (click)="editMap(element)"
              *ngIf="(sessionState | async).authenticated">
             <mat-icon class="button">edit</mat-icon>
           </a>
@@ -44,7 +44,7 @@
           </a>
           <a
              class="inline-button"
-             (click)="removeModel(element)"
+             (click)="removeMap(element)"
              *ngIf="(sessionState | async).authenticated">
             <mat-icon class="button">delete</mat-icon>
           </a>

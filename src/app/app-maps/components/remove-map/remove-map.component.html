@@ -12,21 +12,28 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
+<mat-dialog-content
+  class="mat-primary"
+  fxLayout="colum"
+  fxFlexAlign="center center"
+>
   <div class="map-progress">
     <div class="box">
-      <span class="error" [hidden]="!(error | async)">An error ocurred removing the map. Please try again later.</span>
-      <div [hidden]="(error | async)">
-        <div>
-          <mat-icon class="error-icon">error_outline</mat-icon>
-        </div>
-        <span class="text">Are you sure you want to delete {{map.name}}?</span>
+      <span class="error" [hidden]="!(error | async)"
+      >An error ocurred removing the map. Please try again later.</span
+      >
+      <div [hidden]="error | async">
+        <div><mat-icon color="warn" class="error-icon">error_outline</mat-icon></div>
+        <span class="text"
+        >Are you sure you want to delete <i>{{ map.name }}</i>?</span
+        >
         <div class="section-buttons">
-          <button mat-button class="mat-primary" (click)="close()">No</button>
-          <button mat-button class="mat-primary" (click)="removeMap()">Yes</button>
+          <button mat-flat-button color="primary" (click)="close()">No</button>
+          <button mat-flat-button color="warn" (click)="removeMap()">
+            Yes
+          </button>
         </div>
       </div>
     </div>
   </div>
 </mat-dialog-content>
-
