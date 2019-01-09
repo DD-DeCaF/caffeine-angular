@@ -16,17 +16,11 @@
   <h1 class="title">Designs</h1>
   <div class="table-container mat-elevation-z8">
     <table mat-table [dataSource]="dataSource" matSort class="table">
-
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Select</th>
         <td mat-cell *matCellDef="let element" class="select-column">
           <mat-checkbox color="primary" (click)="addDesign(element)"></mat-checkbox>
         </td>
-      </ng-container>
-
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td mat-cell *matCellDef="let element"> {{element.id}}</td>
       </ng-container>
 
       <ng-container matColumnDef="name">
@@ -44,10 +38,18 @@
         </td>
       </ng-container>
 
+      <ng-container>
+
+      </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
     </table>
-    <button (click)="addCards()" mat-button>Share designs with interactive map</button>
+    <mat-list-item fxLayoutAlign="end center">
+      <button (click)="addCards()" mat-button [disabled]="designs.length < 1">
+        <mat-icon>share</mat-icon>
+        <span class="share-button">Visualize on map</span></button>
+    </mat-list-item>
     <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
 </div>

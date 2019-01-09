@@ -27,7 +27,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = [
     'select',
-    'id',
     'name',
     'actions',
   ];
