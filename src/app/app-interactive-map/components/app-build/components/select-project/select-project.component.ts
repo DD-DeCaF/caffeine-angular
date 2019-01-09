@@ -43,8 +43,4 @@ export class SelectProjectComponent implements OnInit {
     this.store.dispatch(new SetSelectedProject(project.id));
     this.dialogRef.close(project.id);
   }
-
-  close(): void {
-    this.dialogRef.close(null);
-  }
 }
