@@ -15,8 +15,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
-import {map, share} from 'rxjs/operators';
+import {Observable, Subscription, of} from 'rxjs';
+import {map, share, catchError} from 'rxjs/operators';
 import {stringify} from 'query-string';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
@@ -95,14 +95,16 @@ export class SessionService {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     }).pipe(
       map((res: {jwt: string}) => res.jwt),
+      catchError((val) => {
+        console.log('Session: Token refresh failure');
+        this.logout();
+        return of(null);
+      }),
       share(),
     );
 
     refresh$.subscribe((token: string) => {
       localStorage.setItem(AUTHORIZATION_TOKEN, token);
-    }, () => {
-      console.log('Session: Token refresh failure');
-      this.logout();
     });
 
     return refresh$;
