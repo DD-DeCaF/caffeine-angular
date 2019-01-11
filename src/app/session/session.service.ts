@@ -95,7 +95,7 @@ export class SessionService {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     }).pipe(
       map((res: {jwt: string}) => res.jwt),
-      catchError((val) => {
+      catchError(() => {
         console.log('Session: Token refresh failure');
         this.logout();
         return of(null);
