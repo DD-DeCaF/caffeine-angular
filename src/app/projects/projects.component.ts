@@ -31,7 +31,7 @@ import { DeleteProjectComponent } from './components/delete-project/delete-proje
 })
 export class ProjectsComponent implements OnInit {
   public dataSource = new MatTableDataSource<types.Project>([]);
-  public projects$: Observable<types.Project[]>;;
+  public projects$: Observable<types.Project[]>;
   public sessionState$: Observable<SessionState>;
 
   @ViewChild(MatSort) sort: MatSort;
