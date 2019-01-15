@@ -33,6 +33,7 @@ import {ModelService} from '../services/model.service';
 import {WarehouseService} from '../services/warehouse.service';
 import {AppRoutingModule} from '../app-routing.module';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
+import {SelectProjectComponent} from './components/app-build/components/select-project/select-project.component';
 
 
 @NgModule({
@@ -65,6 +66,6 @@ import {ModalErrorComponent} from './components/modal-error/modal-error.componen
   exports: [
     AppInteractiveMapComponent,
   ],
-  entryComponents: [LoaderComponent, ModalErrorComponent],
+  entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent],
 })
 export class AppInteractiveMapModule {}

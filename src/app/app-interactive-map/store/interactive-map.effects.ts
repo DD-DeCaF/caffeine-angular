@@ -12,25 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Action, Store, select} from '@ngrx/store';
-import { Actions, Effect, ofType } from '@ngrx/effects';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Action, Store, select} from '@ngrx/store';
+import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Observable, combineLatest, of} from 'rxjs';
 import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError} from 'rxjs/operators';
-import { AppState } from '../../store/app.reducers';
+import {AppState} from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
-import { environment } from '../../../environments/environment.staging';
+import {environment} from '../../../environments/environment.staging';
 import * as types from '../types';
-import { PathwayMap } from '@dd-decaf/escher';
+import {PathwayMap} from '@dd-decaf/escher';
 import {interactiveMapReducer} from './interactive-map.reducers';
-import { SimulationService } from '../services/simulation.service';
-import { MapService } from '../services/map.service';
-import { WarehouseService } from '../../services/warehouse.service';
-import { mapBiggReactionToCobra } from '../../lib';
+import {SimulationService} from '../services/simulation.service';
+import {MapService} from '../services/map.service';
+import {WarehouseService} from '../../services/warehouse.service';
+import {mapBiggReactionToCobra} from '../../lib';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
+import {DesignService} from '../../services/design.service';
 
 
 const ACTION_OFFSETS = {
@@ -81,11 +82,11 @@ export class InteractiveMapEffects {
     ofType(fromActions.SET_FULL_MODEL),
     concatMapTo([
       new fromActions.ResetCards(),
-      new fromActions.AddCard(types.CardType.WildType),
+      new fromActions.AddCard(types.CardType.Design),
     ]),
   );
 
-   @Effect()
+  @Effect()
   fetchFullModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_MODEL),
     switchMap((action: fromActions.SetFullModel) =>
@@ -97,23 +98,69 @@ export class InteractiveMapEffects {
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
     withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModelHeader))),
-    switchMap(([{payload: type}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
-      const payload: types.SimulateRequest = {
+    switchMap(([{payload, type, design, pathwayPrediction}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
+      let payloadSimulate: types.SimulateRequest = {
         model_id: model.id,
         method: 'pfba',
         objective: null,
         objective_direction: null,
         operations: [],
       };
-      return this.simulationService.simulate(payload)
-        .pipe(
-          map((solution) => ({
-            type,
-            solution,
-          })),
-          map((data) => new fromActions.AddCardFetched(data)),
-          catchError(() => of(new loaderActions.LoadingError())),
-        );
+
+      if (design || pathwayPrediction) {
+        if (design) {
+          payloadSimulate = {
+            model_id: design.model_id,
+            method: 'pfba',
+            objective: null,
+            objective_direction: null,
+            operations: this.designService.getOperations(design) || [],
+          };
+        } else {
+          payloadSimulate = {
+            model_id: pathwayPrediction.model_id,
+            method: 'pfba',
+            objective: null,
+            objective_direction: null,
+            operations: pathwayPrediction.knockouts.map((reaction) => Object.assign({
+              data: null,
+              id: reaction,
+              operation: 'knockout',
+              type: 'reaction',
+            }))};
+        }
+
+        return this.simulationService.simulate(payloadSimulate)
+          .pipe(
+            map((solution) => {
+              return {
+                type: payload,
+                solution,
+              };
+            }),
+            map((data) => {
+              if (design) {
+                return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design});
+              } else {
+                return new fromActions.AddCardFetched({type: data.type, solution: data.solution, pathwayPrediction});
+              }
+            }),
+            catchError(() => of(new loaderActions.LoadingError())),
+          );
+      } else {
+        return this.simulationService.simulate(payloadSimulate)
+          .pipe(
+            map((solution) => ({
+              type: payload,
+              solution,
+            })),
+            map((data) => {
+              const dataDesign = {type: data.type, solution: data.solution, design};
+              return new fromActions.AddCardFetched(dataDesign);
+            }),
+            catchError(() => of(new loaderActions.LoadingError())),
+          );
+      }
     }),
   );
 
@@ -124,12 +171,12 @@ export class InteractiveMapEffects {
       return this
         .http.get(`${environment.apis.maps}/maps/${action.payload.id}`)
         .pipe(map((response: PathwayMap) => ({
-          mapData: response,
-          mapItem: action.payload,
-        })),
+            mapData: response,
+            mapItem: action.payload,
+          })),
           map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
           catchError(() => of(new loaderActions.LoadingError())),
-      );
+        );
     }),
   );
 
@@ -219,9 +266,9 @@ export class InteractiveMapEffects {
       };
       return this.simulationService.simulate(payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
-          action: newAction,
-          solution,
-        })),
+            action: newAction,
+            solution,
+          })),
           /* tslint:disable */
           map(({action, solution}) => ({
             ...action,
@@ -229,11 +276,11 @@ export class InteractiveMapEffects {
           })),
           /* tslint:enable */
           catchError(() => of(new loaderActions.LoadingError())),
-          );
+        );
     }),
   );
 
-   @Effect()
+  @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
       fromActions.SET_OBJECTIVE_REACTION),
@@ -246,10 +293,22 @@ export class InteractiveMapEffects {
     mapTo(new loaderActions.LoadingFinished()),
   );
 
+  @Effect()
+  saveDesign: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SAVE_DESIGN),
+    switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload, action.projectId).pipe(
+      switchMap((designId: {id: number}) => [
+        new fromActions.SaveNewDesign(designId),
+        new sharedActions.FetchDesigns()]),
+    )),
+  );
+
   constructor(
     private actions$: Actions,
     private store$: Store<AppState>,
     private http: HttpClient,
     private simulationService: SimulationService,
-  ) {}
+    private designService: DesignService,
+  ) {
+  }
 }

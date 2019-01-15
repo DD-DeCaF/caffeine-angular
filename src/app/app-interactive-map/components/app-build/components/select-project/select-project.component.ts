@@ -13,36 +13,34 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
-import {SessionState} from '../session/store/session.reducers';
+import { MatDialogRef } from '@angular/material';
 import {select, Store} from '@ngrx/store';
-import {AppState} from '../store/app.reducers';
-import {Project} from '../projects/types';
-import {SetSelectedProject} from '../store/shared.actions';
+import {Observable} from 'rxjs';
+import {AppState} from '../../../../../store/app.reducers';
+import {Project} from '../../../../../projects/types';
+import {SetSelectedProject} from '../../../../../store/shared.actions';
 
 @Component({
-  selector: 'app-app-home',
-  templateUrl: './app-home.component.html',
-  styleUrls: ['./app-home.component.scss'],
+  selector: 'app-select-project',
+  templateUrl: './select-project.component.html',
+  styleUrls: ['./select-project.component.scss'],
 })
-export class AppHomeComponent implements OnInit {
-  public sessionState: Observable<SessionState>;
-  public allProjects: Observable<Project[]>;
-  public selectedProject: number;
 
-  public title = 'app';
+export class SelectProjectComponent implements OnInit {
+
+  public allProjects: Observable<Project[]>;
 
   constructor(
-    private store: Store<AppState>) {
-  }
+    private store: Store<AppState>,
+    private dialogRef: MatDialogRef<SelectProjectComponent>,
+  ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
-    this.store.pipe(select((store) => store.shared.selectedProject)).subscribe((project) => this.selectedProject = project);
-    this.sessionState = this.store.select('session');
   }
 
   selectProject(project: Project): void {
     this.store.dispatch(new SetSelectedProject(project.id));
+    this.dialogRef.close(project.id);
   }
 }

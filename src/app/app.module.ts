@@ -71,6 +71,8 @@ import {AppMapsModule} from './app-maps/app-maps.module';
 import {IamService} from './services/iam.service';
 import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
+import {DesignService} from './services/design.service';
+import {AppDesignsModule} from './app-designs/app-designs.module';
 
 
 if (environment.sentry) {
@@ -122,6 +124,7 @@ export class RavenErrorHandler implements ErrorHandler {
     JobsModule,
     ProjectsModule,
     AppMapsModule,
+    AppDesignsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
@@ -141,7 +144,7 @@ export class RavenErrorHandler implements ErrorHandler {
     NinjaService,
     IamService,
     MapsService,
-
+    DesignService,
     FormBuilder,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],

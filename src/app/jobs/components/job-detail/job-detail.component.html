@@ -66,8 +66,6 @@ limitations under the License.
 
 
   <mat-card class="card">
-    <h3>Results</h3>
-
     <p *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'">
       The job is still running.
       <button mat-button color="warn" (click)="abort(job)">
@@ -85,7 +83,9 @@ limitations under the License.
 
     <div *ngIf="job?.status === 'SUCCESS' && tableData">
       <app-job-results-table
-        [model]="job.model_id"
+        [modelId]="job.model_id"
+        [jobId]="jobId"
+        [model]="job.model"
         [tableData]="tableData"
         [reactions]="reactionsData"></app-job-results-table>
     </div>

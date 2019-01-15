@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Cobra} from '../app-interactive-map/types';
+import {Cobra, DeCaF} from '../app-interactive-map/types';
 import Metabolite = Cobra.Metabolite;
 
 export interface Job {
@@ -23,6 +23,8 @@ export interface Job {
   error?: string;
   type?: string;
   data: PathwayPrediction;
+  model_id: number;
+  model?: DeCaF.Model;
 }
 
 export interface PathwayPrediction {
@@ -36,17 +38,20 @@ export interface PathwayPrediction {
 export interface PathwayPredictionResult {
   id: number;
   host: string;
-  model: string;
+  model: DeCaF.Model;
   manipulations: {
     direction: 'delta' | 'down' | 'up';
     value: string;
   }[];
+  knockouts: string[];
   heterologous_pathway: string[];
   fitness: number;
   yield: number;
   product: number;
   biomass: number;
   method: string;
+  name?: string;
+  model_id?: number;
 }
 
 export interface PathwayPredictionReactions {

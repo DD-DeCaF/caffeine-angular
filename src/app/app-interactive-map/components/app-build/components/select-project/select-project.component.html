@@ -11,10 +11,12 @@
 <!--WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.-->
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
-<mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
-  <div class="map-progress">
-    <mat-spinner class="mat-primary" *ngIf="(loading | async)"></mat-spinner>
-    <h3 class="map-progress-text" *ngIf="data">{{data}}</h3>
-  </div>
-</mat-dialog-content>
 
+<h1 mat-dialog-title>Select a project</h1>
+<div mat-dialog-content>
+  <mat-list>
+    <mat-list-item class="select-project" *ngFor="let project of allProjects | async" (click)="selectProject(project)">
+      {{project.name}}
+    </mat-list-item>
+  </mat-list>
+</div>

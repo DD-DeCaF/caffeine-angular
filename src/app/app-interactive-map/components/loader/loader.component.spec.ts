@@ -19,8 +19,9 @@ import {AppMaterialModule} from '../../../app-material.module';
 import {reducers} from '../../../store/app.reducers';
 import {StoreModule} from '@ngrx/store';
 import {initialState} from '../app-reaction/mock-initial-state';
+import {MAT_DIALOG_DATA} from '@angular/material';
 
-describe('ModalErrorComponent', () => {
+describe('ModalLoadingComponent', () => {
   let component: LoaderComponent;
   let fixture: ComponentFixture<LoaderComponent>;
 
@@ -30,6 +31,9 @@ describe('ModalErrorComponent', () => {
       imports: [
         AppMaterialModule,
         StoreModule.forRoot(reducers, {initialState}),
+      ],
+      providers: [
+        { provide: MAT_DIALOG_DATA, useValue: {} },
       ],
     })
     .compileComponents();

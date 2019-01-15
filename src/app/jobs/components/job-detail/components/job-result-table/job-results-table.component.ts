@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit} from '@angular/core';
-import {MatSort, MatTableDataSource} from '@angular/material';
+import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit, OnDestroy} from '@angular/core';
+import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from '@angular/material';
 
 import {PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
 import { JobResultsDetailRowDirective } from './job-results-table-row-detail.directive';
@@ -22,6 +22,15 @@ import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getModelName, getOrganismName} from '../../../../../store/shared.selectors';
 import {AppState} from '../../../../../store/app.reducers';
+import {SelectionModel} from '@angular/cdk/collections';
+import {selectNotNull} from '../../../../../framework-extensions';
+import {getSelectedCard} from '../../../../../app-interactive-map/store/interactive-map.selectors';
+import {AddCard} from '../../../../../app-interactive-map/store/interactive-map.actions';
+import {CardType, DeCaF} from '../../../../../app-interactive-map/types';
+import {Router} from '@angular/router';
+import {isLoading} from '../../../../../app-interactive-map/components/loader/store/loader.selectors';
+import {LoaderComponent} from '../../../../../app-interactive-map/components/loader/loader.component';
+import {ModalErrorComponent} from '../../../../../app-interactive-map/components/modal-error/modal-error.component';
 
 const indicators = {
   delta: 'Δ',
@@ -34,10 +43,13 @@ const indicators = {
   templateUrl: './job-results-table.component.html',
   styleUrls: ['./job-results-table.component.scss'],
 })
-export class JobResultTableComponent implements AfterViewInit, OnInit {
+export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() tableData: PathwayPredictionResult[];
   @Input() reactions: PathwayPredictionReactions[];
-  @Input() model: number;
+  @Input() model: DeCaF.Model;
+  @Input() modelId: number;
+  @Input() jobId: number;
+
   @Input() organism: number;
   @ViewChild(MatSort) sort: MatSort;
   model_name: Observable<string>;
@@ -82,6 +94,8 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
     },
   };
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
+  public selection = new SelectionModel<PathwayPredictionResult>(true, []);
+
   private collapseClicked = new EventEmitter<PathwayPredictionResult>();
   public expandedId: string = null;
   public yieldFilter = new FormControl([0, 1]);
@@ -91,6 +105,10 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
   public reactionsFilter = new FormControl([0, 50]);
   public manipulationsFilter = new FormControl([0, 200]);
   public methodFilter = new FormControl('');
+  private lastPrediction: PathwayPredictionResult;
+  private cardAdded = false;
+  private loadingObservable;
+  private errorObservable;
 
   public filterValues = {
     organism: '',
@@ -117,11 +135,13 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
 
   constructor(
     private store: Store<AppState>,
+    private router: Router,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
     this.model_name = this.store.pipe(
-      select(getModelName(this.model)));
+      select(getModelName(this.modelId)));
 
     this.organism_name = this.store.pipe(
       select(getOrganismName(this.organism)));
@@ -257,5 +277,103 @@ export class JobResultTableComponent implements AfterViewInit, OnInit {
     };
     /* tslint:enable */
     return filterFunction;
+  }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  public isAllSelected(): boolean {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  public masterToggle(): void {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach((row) => {
+
+        return this.selection.select(row);
+      });
+  }
+
+  addValues(prediction: PathwayPredictionResult, counter: number): PathwayPredictionResult {
+    prediction.name = 'Job ' + this.jobId + ' prediction ' + counter;
+    prediction.model_id = this.modelId;
+    prediction.model = this.model;
+    return prediction;
+  }
+
+  addCards(): void {
+    this.subscribeObservableLoading();
+    const selectedCard = this.store.pipe(
+      selectNotNull(getSelectedCard),
+    );
+    selectedCard.subscribe((card) => {
+      if (card && this.lastPrediction) {
+        if (card.name === this.lastPrediction.name) {
+          if (this.selection.selected.length > 0) {
+            this.lastPrediction = this.selection.selected.pop();
+            this.lastPrediction = this.addValues(this.lastPrediction, this.dataSource.data.indexOf(this.lastPrediction));
+            this.store.dispatch(new AddCard(CardType.Design, null, this.lastPrediction));
+          } else {
+              this.router.navigateByUrl('/interactiveMap');
+          }
+        }
+      }
+    });
+    if (!this.cardAdded) {
+      if (this.selection.selected.length > 0) {
+        this.lastPrediction = this.selection.selected.pop();
+        this.lastPrediction = this.addValues(this.lastPrediction, this.dataSource.data.indexOf(this.lastPrediction) + 1);
+        this.store.dispatch(new AddCard(CardType.Design, null, this.lastPrediction));
+        this.cardAdded = true;
+      }
+    }
+  }
+
+  public subscribeObservableLoading(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+    dialogConfig.id = 'loading';
+
+    const dialogConfigError = new MatDialogConfig();
+    dialogConfigError.disableClose = true;
+    dialogConfigError.autoFocus = true;
+    dialogConfigError.panelClass = 'loader';
+    dialogConfigError.id = 'error';
+
+    this.loadingObservable = this.store.pipe(
+      select(isLoading),
+    ).subscribe((loading) => {
+      if (loading) {
+        // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
+        // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
+        // setTimeout(() => ...., 0);
+        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
+          setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
+        }
+      } else {
+        this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
+          if (loadingError) {
+            if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'error') && this.router.url === '/interactiveMap') {
+              setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
+            }
+          } else {
+            this.dialog.closeAll();
+          }
+        });
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.loadingObservable) {
+      this.loadingObservable.unsubscribe();
+    }
+    if (this.errorObservable) {
+      this.errorObservable.unsubscribe();
+    }
   }
 }
