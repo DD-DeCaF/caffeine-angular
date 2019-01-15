@@ -12,13 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { select, Store } from '@ngrx/store';
 
 import { AppState } from '../store/app.reducers';
+import {SessionState} from '../session/store/session.reducers';
 import * as actions from '../store/shared.actions';
 import * as types from './types';
+import {Observable} from 'rxjs';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { DeleteProjectComponent } from './components/delete-project/delete-project.component';
 
@@ -28,7 +30,13 @@ import { DeleteProjectComponent } from './components/delete-project/delete-proje
   styleUrls: ['./projects.component.scss'],
 })
 export class ProjectsComponent implements OnInit {
-  public projects$;
+  public dataSource = new MatTableDataSource<types.Project>([]);
+  public projects$: Observable<types.Project[]>;
+  public sessionState$: Observable<SessionState>;
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   displayedColumns = ['name', 'delete'];
 
   constructor(
@@ -38,7 +46,12 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new actions.FetchProjects());
-    this.projects$ = this.store.pipe(select((state) => state.shared.projects));
+    this.store.pipe(select((state) => state.shared.projects)).subscribe((projects) => {
+      this.dataSource.data = projects;
+    });
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.sessionState$ = this.store.select('session');
   }
 
   create(): void {

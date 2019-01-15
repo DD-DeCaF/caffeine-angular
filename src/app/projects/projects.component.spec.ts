@@ -18,6 +18,7 @@ import { ProjectsComponent } from './projects.component';
 import {AppMaterialModule} from '../app-material.module';
 import {reducers} from '../store/app.reducers';
 import {StoreModule} from '@ngrx/store';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 describe('ProjectsComponent', () => {
   let component: ProjectsComponent;
@@ -28,6 +29,7 @@ describe('ProjectsComponent', () => {
       imports: [
         AppMaterialModule,
         StoreModule.forRoot(reducers),
+        BrowserAnimationsModule,
       ],
       declarations: [ ProjectsComponent ],
     })

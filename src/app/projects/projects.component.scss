@@ -13,11 +13,29 @@
 // limitations under the License.
 
 .container {
-  margin: 0 20px;
+  max-width: 700px;
+  max-height: 100%;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-table {
+.table-container {
+  margin-bottom: 40px;
+}
+
+.table {
   width: 100%;
+}
+
+.mat-column-delete {
+  text-align: center;
+  width: 60px;
+}
+
+.button {
+  cursor: pointer;
 }
 
 .floating-button {
@@ -25,4 +43,13 @@ table {
   position: fixed;
   right: 40px;
   bottom: 50px;
+}
+
+.inline-button {
+  display: inline;
+  color: black;
+}
+
+.disabled {
+  color: rgba(0, 0, 0, 0.26)
 }

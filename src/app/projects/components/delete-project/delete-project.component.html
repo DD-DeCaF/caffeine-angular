@@ -12,11 +12,15 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<h1 mat-dialog-title>Really delete project?</h1>
-<div mat-dialog-content>
-  <p>Project {{project.name}} will be permanently deleted.</p>
-</div>
-<div mat-dialog-actions>
-  <button mat-button (click)="close()">Cancel</button>
-  <button mat-button (click)="submit()">Delete</button>
+<div class="box">
+  <div><mat-icon color="warn" class="error-icon">error_outline</mat-icon></div>
+  <span class="text"
+    >Are you sure you want to delete <em>{{ project.name }}</em>?</span
+  >
+  <div class="section-buttons">
+    <button mat-flat-button color="primary" (click)="close()">No</button>
+    <button mat-flat-button color="warn" (click)="submit()">
+      Yes
+    </button>
+  </div>
 </div>

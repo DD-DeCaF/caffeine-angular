@@ -12,32 +12,47 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<div class="container">
+<div class="container" >
   <h1>Projects</h1>
+  <div class="table-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="table">
 
-  <table mat-table [dataSource]="projects$" class="mat-elevation-z8">
+     <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Project</th>
+        <td mat-cell *matCellDef="let project"> {{project.name}}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Project</th>
-      <td mat-cell *matCellDef="let project"> {{project.name}} </td>
-    </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let project">
+          <a
+             class="inline-button"
+             (click)="delete(project)"
+             *ngIf="(sessionState$ | async).authenticated">
+            <mat-icon class="button">delete</mat-icon>
+          </a>
+          <a
+             class="disabled inline-button"
+             matTooltip="Please log in or register to use this functionality!"
+             *ngIf="!(sessionState$ | async).authenticated">
+            <mat-icon class="button">delete</mat-icon>
+          </a>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef>Delete</th>
-      <td mat-cell *matCellDef="let project">
-        <button mat-button type="button" (click)="delete(project)">
-          <mat-icon class="delete">delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <div class="floating-button">
-    <button mat-fab color="primary" class="circle-icon" (click)="create()">
-      <mat-icon svgIcon="plus"></mat-icon>
-    </button>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
+</div>
+<div class="floating-button"
+     matTooltip="Please log in or register to use this functionality!"
+     [matTooltipDisabled]="(sessionState$ | async).authenticated">
+  <button [disabled]="!(sessionState$ | async).authenticated"
+          mat-fab color="primary"
+          class="circle-icon"
+          (click)="create()">
+    <mat-icon svgIcon="plus"></mat-icon>
+  </button>
 </div>
