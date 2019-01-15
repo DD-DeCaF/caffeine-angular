@@ -29,7 +29,6 @@ import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
-import {Router} from '@angular/router';
 import {SetMap} from './store/interactive-map.actions';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
@@ -82,7 +81,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     private elRef: ElementRef,
     private store: Store<AppState>,
     private dialog: MatDialog,
-    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -129,6 +127,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     dialogConfigError.panelClass = 'loader';
     dialogConfigError.id = 'error';
 
+    let error = false;
+
     this.loadingObservable = this.store.pipe(
       select(isLoading),
     ).subscribe((loading) => {
@@ -141,12 +141,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         }
       } else {
         this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
-          if (loadingError) {
-            if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'error') && this.router.url === '/interactiveMap') {
+          if (loadingError && !error) {
               setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
-            }
+              error = true;
           } else {
             this.dialog.closeAll();
+            error = false;
+
           }
         });
       }
