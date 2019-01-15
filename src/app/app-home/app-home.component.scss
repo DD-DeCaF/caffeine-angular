@@ -42,3 +42,21 @@ mat-sidenav-container {
 .disabled {
   color: darkgray !important;
 }
+
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: none !important;
+}
+
+.selected-project {
+  background: #F4F4F4;
+}
+
+/deep/ .projectsPanel .mat-expansion-panel-body {
+  padding: 0;
+}
+
+.folder-icon {
+  color: rgb(128, 144, 199);
+  padding-left: 10px;
+  padding-right:  5px;
+}

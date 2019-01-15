@@ -55,6 +55,8 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public allProjects: Observable<Project[]>;
+  public selectedProject: number;
+
   public product_placeholder = 'vanillate';
 
   constructor(
@@ -78,7 +80,10 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
     this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
     this.selectedSpecies = this.store.pipe(select((store) => store.designTool.selectedSpecies));
-
+    this.store.pipe(select((store) => store.shared.selectedProject)).subscribe((project) => {
+      this.selectedProject = project;
+      this.projectSelector.placeholder = null;
+    });
     this.models = this.store.pipe(select(activeModels));
 
     combineLatest(this.selectedSpecies, this.models).subscribe(([species, models]) => {

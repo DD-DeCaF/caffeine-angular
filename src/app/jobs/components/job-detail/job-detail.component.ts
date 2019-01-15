@@ -40,12 +40,13 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   public tableData: PathwayPredictionResult[];
   public reactionsData: PathwayPredictionReactions[];
   polling: Subscription;
-
+  public jobId: number;
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private ninjaService: NinjaService,
   ) {
+    this.jobId = this.route.snapshot.params.id;
   }
 
   ngOnInit(): void {

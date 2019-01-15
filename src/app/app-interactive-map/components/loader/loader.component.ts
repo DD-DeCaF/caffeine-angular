@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {isLoading} from './store/loader.selectors';
+import {MAT_DIALOG_DATA} from '@angular/material';
 
 @Component({
   selector: 'app-loader',
@@ -27,7 +28,8 @@ import {isLoading} from './store/loader.selectors';
 export class LoaderComponent implements OnInit {
 
   constructor(
-    private store: Store<AppState>) { }
+    private store: Store<AppState>,
+    @Inject(MAT_DIALOG_DATA) public data: string) { }
 
   loading: Observable<boolean>;
 

@@ -19,6 +19,7 @@ import { environment } from '../../environments/environment';
 import * as typesDesign from '../app-design-tool/types';
 import {map} from 'rxjs/operators';
 import {Job, PathwayResponse} from '../jobs/types';
+import {DeCaF} from '../app-interactive-map/types';
 
 @Injectable()
 export class NinjaService {
@@ -56,6 +57,16 @@ export class NinjaService {
   }
 
   getPredictions(): Observable<Job[]> {
-    return this.http.get<Job[]>(`${environment.apis.metabolic_ninja}/predictions`);
+    return this.http.get<Job[]>(`${environment.apis.metabolic_ninja}/predictions`).pipe(map((predictions: Job[]) =>
+      this.processPredictions(predictions)));
+  }
+
+  processPredictions(predictions: Job[]): Job[] {
+    for (let i = 0; i < predictions.length; i++) {
+      this.http.get(`${environment.apis.model_storage}/models/${ predictions[i].model_id}`).subscribe((model: DeCaF.Model) => {
+          predictions[i].model = model;
+        });
+    }
+    return predictions;
   }
 }

@@ -16,6 +16,8 @@ import {Action} from '@ngrx/store';
 import {PathwayMap} from '@dd-decaf/escher';
 
 import * as types from '../types';
+import {DesignRequest} from '../../app-designs/types';
+import {PathwayPredictionResult} from '../../jobs/types';
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODEL = 'SET_MODEL';
@@ -45,6 +47,8 @@ export const REACTION_OPERATION = 'REACTION_OPERATION';
 export const REACTION_OPERATION_APPLY = 'REACTION_OPERATION_APPLY';
 export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
+export const SAVE_DESIGN = 'SAVE_DESIGN';
+export const SAVE_NEW_DESIGN = 'SAVE_NEW_DESIGN';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -99,7 +103,7 @@ export class Loaded implements Action {
 
 export class AddCard implements Action {
   readonly type = ADD_CARD;
-  constructor(public payload: types.CardType) {}
+  constructor(public payload: types.CardType, public design: DesignRequest = null, public pathwayPrediction: PathwayPredictionResult = null) {}
 }
 
 export class AddCardFetched implements Action {
@@ -107,6 +111,8 @@ export class AddCardFetched implements Action {
   constructor(public payload: {
     type: types.CardType,
     solution: types.DeCaF.Solution,
+    design?: DesignRequest,
+    pathwayPrediction?: PathwayPredictionResult,
   }) {}
 }
 
@@ -154,6 +160,16 @@ export class SelectFirstModel implements Action {
   constructor(public species: types.Species, public models: types.DeCaF.ModelHeader[]) {}
 }
 
+export class SaveDesign implements Action {
+  readonly type = SAVE_DESIGN;
+  constructor(public payload: types.HydratedCard, public projectId: number) {}
+}
+
+export class SaveNewDesign implements Action {
+  readonly type = SAVE_NEW_DESIGN;
+  constructor(public payload: {id: number}) {}
+}
+
 export const operationToApply = {
   [REACTION_OPERATION]: ReactionOperationApply,
   [SET_METHOD]: SetMethodApply,
@@ -177,4 +193,6 @@ export type InteractiveMapActions =
   SetMethodApply |
   ReactionOperationApply |
   SetObjectiveReactionApply |
+  SaveDesign |
+  SaveNewDesign |
   SelectFirstModel;

@@ -28,6 +28,8 @@ import {Project} from 'src/app/projects/types';
 import {JobsService} from '../jobs/jobs.service';
 import {Job} from 'src/app/jobs/types';
 import {MapsService} from '../services/maps.service';
+import {DesignService} from '../services/design.service';
+import {DesignRequest} from '../app-designs/types';
 
 
 @Injectable()
@@ -81,12 +83,22 @@ export class SharedEffects {
       )),
   );
 
+  @Effect()
+  fetchDesigns: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_DESIGNS),
+    switchMap(() => this.designService.getDesigns().pipe(
+      map((payload: DesignRequest[]) => new fromActions.SetDesigns(payload)),
+      catchError(() => of(new fromActions.SetDesignsError())),
+    )),
+  );
+
   constructor(
     private actions$: Actions,
     private modelService: ModelService,
     private warehouseService: WarehouseService,
     private jobsService: JobsService,
     private mapsService: MapsService,
+    private designService: DesignService,
     private http: HttpClient,
   ) {}
 }

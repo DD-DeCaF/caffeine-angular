@@ -13,7 +13,7 @@
 // limitations under the License.
 
 export enum CardType {
-  WildType,
+  Design,
   DataDriven,
 }
 
@@ -37,7 +37,7 @@ export enum OperationDirection {
   Undo = 'UNDO',
 }
 
-export type SimpleOperationTarget = 'addedReactions' | 'knockoutReactions';
+export type SimpleOperationTarget = 'addedReactions' | 'knockoutReactions' | 'knockoutGenes';
 export type BoundOperationTarget = 'bounds';
 
 export type OperationTarget = SimpleOperationTarget| BoundOperationTarget;
@@ -46,18 +46,21 @@ export interface KnockoutOperationPayload {
   item: string;
   operationTarget: OperationTarget;
   direction: OperationDirection;
+  saved?: boolean;
 }
 
 export interface AddedReactionPayload {
   item: AddedReaction;
   operationTarget: OperationTarget;
   direction: OperationDirection;
+  saved?: boolean;
 }
 
 export interface BoundOperationPayload {
   item: BoundedReaction;
   operationTarget: BoundOperationTarget;
   direction: OperationDirection;
+  saved?: boolean;
 }
 export type OperationPayload = KnockoutOperationPayload | AddedReactionPayload | BoundOperationPayload;
 export type ObjectiveDirection = 'min' | 'max';
@@ -72,12 +75,18 @@ export interface Card {
   type: CardType;
   name: string;
   model: Cobra.Model;
+  model_id: number;
   solution: DeCaF.Solution;
   method: Methods;
   addedReactions: AddedReaction[];
   knockoutReactions: string[];
+  knockoutGenes: string[];
   objectiveReaction: ObjectiveReaction;
   bounds: BoundedReaction[];
+  designId: number;
+  projectId: number;
+  methodCard: string;
+  saved: boolean;
 }
 
 export interface HydratedCard extends Card {
@@ -110,7 +119,8 @@ export declare namespace Cobra {
     name?: string;
     description?: string;
     version?: number;
-    reactions: Reaction[];
+    // tslint:disable-next-line:no-any
+    reactions: any[];
     metabolites: Metabolite[];
     genes: {
       id: string;
@@ -269,10 +279,16 @@ export interface Species {
 export interface ReactionState {
   includedInModel: boolean;
   knockout: boolean;
+  knockoutGenes: boolean;
   objective: ObjectiveReactionPayload;
   bounds: {
     lowerbound: number,
     upperbound: number,
   };
+}
+
+export interface Gene {
+  id: string;
+  name: string;
 }
 

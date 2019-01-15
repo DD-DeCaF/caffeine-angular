@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef, OnInit} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -30,6 +30,7 @@ import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {Router} from '@angular/router';
+import {SetMap} from './store/interactive-map.actions';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -38,13 +39,18 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
   templateUrl: './app-interactive-map.component.html',
   styleUrls: ['./app-interactive-map.component.scss'],
 })
-export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
+export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private builder: escher.BuilderObject;
+  private builder: escher.BuilderObject = null;
   private builderSubject = new Subject<escher.BuilderObject>();
   public map: escher.PathwayMap;
   public loading = true;
   private card: Card;
+  private selectedCard;
+  private selectedCardBuilder;
+  private mapObservable;
+  private loadingObservable;
+  private errorObservable;
 
   readonly escherSettings = {
     ...escherSettingsConst,
@@ -65,6 +71,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       objectiveDirection: (args) => {
         this.handleObjectiveDirection(args);
       },
+      knockoutGenes: (args) => {
+        this.handleKnockoutGenes(args);
+      },
     },
     first_load_callback: () => this.firstLoadEscher(),
   };
@@ -74,13 +83,11 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     private store: Store<AppState>,
     private dialog: MatDialog,
     private router: Router,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     const builderObservable = this.builderSubject.asObservable();
-
-    combineLatest(
+    this.mapObservable = combineLatest(
       this.store.pipe(
         selectNotNull((store) => store.interactiveMap.mapData)),
       builderObservable,
@@ -88,13 +95,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       builder.load_map(map);
     });
 
-    const selectedCard = this.store.pipe(
+    this.selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
     );
 
     // Detect changes in model only..
-    combineLatest(
-      selectedCard,
+    this.selectedCardBuilder = combineLatest(
+      this.selectedCard,
       builderObservable,
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
@@ -103,6 +110,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
       builder.set_knockout_reactions(card.knockoutReactions);
       builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder.set_knockout_genes(card.knockoutGenes);
       builder._update_data(true, true);
       this.store.dispatch(new fromActions.Loaded());
       this.loading = false;
@@ -112,7 +120,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loader';
+    dialogConfig.id = 'loading';
+    dialogConfig.data = 'Calculating flux distribution...';
 
     const dialogConfigError = new MatDialogConfig();
     dialogConfigError.disableClose = true;
@@ -120,18 +129,18 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     dialogConfigError.panelClass = 'loader';
     dialogConfigError.id = 'error';
 
-    this.store.pipe(
+    this.loadingObservable = this.store.pipe(
       select(isLoading),
     ).subscribe((loading) => {
       if (loading) {
         // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
         // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
         // setTimeout(() => ...., 0);
-        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loader') && this.router.url === '/interactiveMap') {
+        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
           setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
         }
       } else {
-        this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
+        this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
           if (loadingError) {
             if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'error') && this.router.url === '/interactiveMap') {
               setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
@@ -160,6 +169,14 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
       item: reactionId,
       operationTarget: 'knockoutReactions',
       direction: this.card.knockoutReactions.includes(reactionId) ? OperationDirection.Undo : OperationDirection.Do,
+    }));
+  }
+
+  handleKnockoutGenes(reactionId: string): void {
+    this.store.dispatch(new fromActions.ReactionOperation({
+      item: reactionId,
+      operationTarget: 'knockoutGenes',
+      direction: this.card.knockoutGenes.includes(reactionId) ? OperationDirection.Undo : OperationDirection.Do,
     }));
   }
 
@@ -220,6 +237,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
     return {
       includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
       knockout: this.card.knockoutReactions.includes(reactionId),
+      knockoutGenes: this.card.knockoutGenes.includes(reactionId),
       objective: this.card.objectiveReaction,
       bounds: {
         lowerbound: this.lowerBound(reactionId),
@@ -230,5 +248,18 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit {
 
   firstLoadEscher(): void {
     this.builderSubject.next(this.builder);
+  }
+
+  ngOnDestroy(): void {
+    this.selectedCardBuilder.unsubscribe();
+    this.builderSubject.unsubscribe();
+    this.store.pipe(selectNotNull((store) => store.interactiveMap.selectedMap)).subscribe((map) => {
+      this.store.dispatch(new SetMap(map));
+    });
+    this.mapObservable.unsubscribe();
+    this.loadingObservable.unsubscribe();
+    if (this.errorObservable) {
+      this.errorObservable.unsubscribe();
+    }
   }
 }

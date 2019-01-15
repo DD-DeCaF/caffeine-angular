@@ -13,111 +13,120 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<table mat-table [dataSource]="dataSource" matSort class="table">
+<mat-card>
+  <div class="buttons-table">
+    <h3 class="inline">Results</h3>
+    <button (click)="addCards()" class="mat-primary inline" mat-button matSuffix style="float: right"
+            [disabled]="selection.selected.length < 1">
+      <mat-icon>share</mat-icon>
+      <span class="share-button">VISUALIZE</span></button>
+  </div>
+  <table mat-table [dataSource]="dataSource" matSort class="table">
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      color="primary"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox (click)="$event.stopPropagation()"
+                      color="primary"
+                      (change)="$event ? selection.toggle(row) : null"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+    </ng-container>
 
-  <!-- Chevron column -->
-  <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef class="title-without-filter">
-      Select
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-icon-button (click)="element.expanded = !element.expanded;">
-        <mat-icon *ngIf="!element.expanded">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="element.expanded">keyboard_arrow_up</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="model">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header class="title-without-filter">Model</th>
+      <td mat-cell *matCellDef="let element"> {{model_name | async}}</td>
+    </ng-container>
 
+    <ng-container matColumnDef="manipulations">
+      <th mat-header-cell *matHeaderCellDef>
+        <span mat-sort-header>Manipulations</span>
+        <div class="custom-slider">
+          <ng5-slider [options]="options['manipulations']" [formControl]="manipulationsFilter"></ng5-slider>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <a>{{element.manipulations.length}}</a>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="model">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header class="title-without-filter">Model</th>
-    <td mat-cell *matCellDef="let element"> {{model_name | async}}</td>
-  </ng-container>
+    <ng-container matColumnDef="heterologous_reactions">
+      <th mat-header-cell *matHeaderCellDef>
+        <span mat-sort-header>Heterologous Reactions</span>
+        <div class="custom-slider">
+          <ng5-slider [options]="options['reactions']" [formControl]="reactionsFilter"></ng5-slider>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <a>{{element.heterologous_reactions.length}}</a>
+      </td>
+    </ng-container>
 
-  <ng-container matColumnDef="manipulations">
-    <th mat-header-cell *matHeaderCellDef>
-      <span mat-sort-header>Manipulations</span>
-      <div class="custom-slider">
-        <ng5-slider [options]="options['manipulations']" [formControl]="manipulationsFilter"></ng5-slider>
-      </div>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <a>{{element.manipulations.length}}</a>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef>
+        <span mat-sort-header>Product</span>
+        <div class="custom-slider">
+          <ng5-slider [options]="options['product']" [formControl]="productFilter"></ng5-slider>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.product | float}}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="heterologous_reactions">
-    <th mat-header-cell *matHeaderCellDef>
-      <span mat-sort-header>Heterologous Reactions</span>
-      <div class="custom-slider">
-        <ng5-slider [options]="options['reactions']" [formControl]="reactionsFilter"></ng5-slider>
-      </div>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <a>{{element.heterologous_reactions.length}}</a>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="biomass">
+      <th mat-header-cell *matHeaderCellDef>
+        <span mat-sort-header>Biomass</span>
+        <div class="custom-slider">
+          <ng5-slider [options]="options['biomass']" [formControl]="biomassFilter"></ng5-slider>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.biomass | float}}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="product">
-    <th mat-header-cell *matHeaderCellDef>
-      <span mat-sort-header>Product</span>
-      <div class="custom-slider">
-        <ng5-slider [options]="options['product']" [formControl]="productFilter"></ng5-slider>
-      </div>
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.product | float}}</td>
-  </ng-container>
+    <ng-container matColumnDef="yield">
+      <th mat-header-cell *matHeaderCellDef><span mat-sort-header>Yield</span>
+        <div class="custom-slider">
+          <ng5-slider [options]="options['yield']" [formControl]="yieldFilter"></ng5-slider>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.yield | float}}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="biomass">
-    <th mat-header-cell *matHeaderCellDef>
-      <span mat-sort-header>Biomass</span>
-      <div class="custom-slider">
-        <ng5-slider [options]="options['biomass']" [formControl]="biomassFilter"></ng5-slider>
-      </div>
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.biomass | float}}</td>
-  </ng-container>
+    <ng-container matColumnDef="fitness">
+      <th mat-header-cell *matHeaderCellDef>
+        <span mat-sort-header>Fitness</span>
+        <div class="custom-slider">
+          <ng5-slider [options]="options['fitness']" [formControl]="fitnessFilter"></ng5-slider>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.fitness | float}}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="yield">
-    <th mat-header-cell *matHeaderCellDef><span mat-sort-header>Yield</span>
-      <div class="custom-slider">
-        <ng5-slider [options]="options['yield']" [formControl]="yieldFilter"></ng5-slider>
-      </div>
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.yield | float}}</td>
-  </ng-container>
+    <ng-container matColumnDef="method">
+      <th mat-header-cell *matHeaderCellDef>
+        <span mat-sort-header>Method</span>
+        <mat-form-field class="example-full-width">
+          <input class="method-input" matInput [formControl]="methodFilter">
+        </mat-form-field>
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.method}}</td>
+    </ng-container>
 
-  <ng-container matColumnDef="fitness">
-    <th mat-header-cell *matHeaderCellDef>
-      <span mat-sort-header>Fitness</span>
-      <div class="custom-slider">
-        <ng5-slider [options]="options['fitness']" [formControl]="fitnessFilter"></ng5-slider>
-      </div>
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.fitness | float}}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="method">
-    <th mat-header-cell *matHeaderCellDef>
-      <span mat-sort-header>Method</span>
-      <mat-form-field class="example-full-width">
-        <input class="method-input" matInput [formControl]="methodFilter">
-      </mat-form-field>
-    </th>
-    <td mat-cell *matCellDef="let element"> {{element.method}}</td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row
-      *matRowDef="let row; columns: displayedColumns;"
-      matRipple
-      class="element-row"
-      [appJobResultsDetailRow]="row"
-      [appJobResultsDetailRowTpl]="tpl"
-      (toggleChange)="toggleChange($event)">
-  </tr>
-</table>
-
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row
+        *matRowDef="let row; columns: displayedColumns;"
+        matRipple
+        class="element-row"
+        [appJobResultsDetailRow]="row"
+        [appJobResultsDetailRowTpl]="tpl"
+        (toggleChange)="toggleChange($event)">
+    </tr>
+  </table>
+</mat-card>
 <ng-template #tpl let-element>
   <tr class="mat-row expandRow">
     <td colspan="2"></td>
@@ -159,7 +168,6 @@ limitations under the License.
         </a>
       </div>
     </td>
-
-    <td colspan="4"></td>
+    <td colspan="6"></td>
   </tr>
 </ng-template>

@@ -17,7 +17,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as fromInteractiveMapActions from './interactive-map.actions';
 import {Card, CardType, OperationDirection, BoundedReaction, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
-import { mapBiggReactionToCobra } from '../../lib';
+import {mapBiggReactionToCobra} from '../../lib';
 import {debug} from '../../logger';
 
 
@@ -51,14 +51,20 @@ export interface InteractiveMapState {
 
 export const emptyCard: Card = {
   name: 'foo',
-  type: CardType.WildType,
+  type: CardType.Design,
   model: null,
   solution: null,
   method: 'pfba',
   addedReactions: [],
   knockoutReactions: [],
+  knockoutGenes: [],
   bounds: [],
   objectiveReaction: null,
+  designId: null,
+  model_id: null,
+  projectId: null,
+  methodCard: 'Manual',
+  saved: null,
 };
 
 export const initialState: InteractiveMapState = {
@@ -84,9 +90,10 @@ export const addedReactionEquality = (item: AddedReaction) => (arrayItem: AddedR
 export const boundEquality = (item: BoundedReaction) => (arrayItem: BoundedReaction) =>
   arrayItem.reaction.id === item.reaction.id;
 
-const doOperations: {[key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key]} = {
+const doOperations: { [key in OperationTarget]: (array: Card[key], item: Card[key][0]) => Card[key] } = {
   addedReactions: appendOrUpdate(addedReactionEquality),
   knockoutReactions: appendOrUpdateStringList,
+  knockoutGenes: appendOrUpdateStringList,
   bounds: appendOrUpdate(boundEquality),
 };
 
@@ -95,13 +102,14 @@ const filter = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item:
 
 type OperationFunction<T> = (array: T[], item: T) => T[];
 
-const undoOperations: {[key in OperationTarget]: OperationFunction<Card[key][0]>} = {
+const undoOperations: { [key in OperationTarget]: OperationFunction<Card[key][0]> } = {
   addedReactions: filter((a: AddedReaction) => (b: AddedReaction) => a.bigg_id !== b.bigg_id),
   knockoutReactions: filter<string>(stringFilter),
+  knockoutGenes: filter<string>(stringFilter),
   bounds: filter((a: BoundedReaction) => (b: BoundedReaction) => a.reaction.id !== b.reaction.id),
 };
 
-const operations: {[key in OperationDirection]: {[tKey in OperationTarget]: OperationFunction<Card[tKey][0]>}} = {
+const operations: { [key in OperationDirection]: { [tKey in OperationTarget]: OperationFunction<Card[tKey][0]> } } = {
   [OperationDirection.Do]: doOperations,
   [OperationDirection.Undo]: undoOperations,
 };
@@ -155,13 +163,29 @@ export function interactiveMapReducer(
       };
     case fromInteractiveMapActions.ADD_CARD_FETCHED: {
       const newId = idGen.next();
-      const {type, solution} = action.payload;
+      const {type, solution, design, pathwayPrediction} = action.payload;
       let name: string;
       let model: Cobra.Model;
+      let model_id: number;
+      let designId: number;
+      let projectId: number;
+      let saved: boolean;
       switch (type) {
-        case CardType.WildType: {
-          name = 'Wild Type';
-          model = state.selectedModel.model_serialized;
+        case CardType.Design: {
+          if (design) {
+            for (let i = 0; i < design.design.added_reactions.length; i++) {
+              design.model.model_serialized.reactions.push(mapBiggReactionToCobra(design.design.added_reactions[i]));
+              for (let j = 0; j < design.design.added_reactions[i].metabolites_to_add.length; j++) {
+                design.model.model_serialized.metabolites.push(design.design.added_reactions[i].metabolites_to_add[j]);
+              }
+            }
+          }
+          designId = design ? design.id : pathwayPrediction ? pathwayPrediction.id : null;
+          name = design ? design.name : pathwayPrediction ? pathwayPrediction.name : 'Design';
+          model = design ? design.model.model_serialized : pathwayPrediction ? pathwayPrediction.model.model_serialized : state.selectedModel.model_serialized;
+          model_id = design ? design.model_id : pathwayPrediction ? pathwayPrediction.model_id : state.selectedModel.id;
+          projectId = design ? design.project_id : null;
+          saved = !pathwayPrediction;
           break;
         }
         case CardType.DataDriven: {
@@ -183,7 +207,19 @@ export function interactiveMapReducer(
               type,
               name,
               model,
+              projectId,
+              model_id,
+              designId,
               solution,
+              saved,
+              addedReactions: design ? design.design.added_reactions : [],
+              bounds: design ? design.design.constraints.map((reaction) => Object.assign({
+                reaction: {id: reaction.id},
+                lowerBound: reaction.lower_bound,
+                upperBound: reaction.upper_bound,
+              })) : [],
+              knockoutReactions: design ? design.design.reaction_knockouts : pathwayPrediction ? pathwayPrediction.knockouts : [],
+              knockoutGenes: design ? design.design.gene_knockouts : [],
             },
           },
         },
@@ -225,7 +261,8 @@ export function interactiveMapReducer(
       };
     case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
-    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
+    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY:
+    case fromInteractiveMapActions.SAVE_NEW_DESIGN: {
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
@@ -237,8 +274,16 @@ export function interactiveMapReducer(
           };
           break;
         }
+        case fromInteractiveMapActions.SAVE_NEW_DESIGN: {
+          newCard = {
+            ...card,
+            designId: !card.designId ? action.payload.id : card.designId,
+            saved: true,
+          };
+          break;
+        }
         case fromInteractiveMapActions.REACTION_OPERATION_APPLY: {
-          const {item, operationTarget, direction} = action.payload;
+          const {item, operationTarget, direction, saved} = action.payload;
           const operationFunction = operations[direction][operationTarget];
           const value = card[operationTarget];
           // @ts-ignore
@@ -255,8 +300,10 @@ export function interactiveMapReducer(
               }
             }
           }
+
           newCard = {
             ...card,
+            saved: saved || false,
             [operationTarget]: result,
           };
           break;

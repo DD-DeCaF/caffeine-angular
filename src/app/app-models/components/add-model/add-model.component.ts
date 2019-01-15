@@ -54,6 +54,7 @@ export class AddModelComponent implements OnInit, OnDestroy {
   public modelError = false;
   public addedModel = false;
   public loading = false;
+  public selectedProject: number;
   public project: Project = {
     id: null,
     name: '',
@@ -95,6 +96,9 @@ export class AddModelComponent implements OnInit, OnDestroy {
       model_serialized: ['', Validators.required],
       default_biomass_reaction: ['', Validators.required],
       preferred_map_id: [null],
+    });
+    this.store.pipe(select((store) => store.shared.selectedProject)).subscribe((project) => {
+      this.selectedProject = project;
     });
   }
 

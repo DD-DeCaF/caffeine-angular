@@ -17,36 +17,71 @@
 
   <mat-sidenav-container>
     <mat-sidenav #sidenav
-                class="mat-elevation-z3"
-                mode="over">
+                 class="mat-elevation-z3"
+                 mode="over">
 
       <mat-nav-list>
-        <mat-list-item (click)="sidenav.toggle()" routerLink="/" [routerLinkActive]="['highlight']" [routerLinkActiveOptions]="{exact: true}">
+        <mat-accordion>
+          <mat-expansion-panel class="projectsPanel">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Projects
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <mat-list>
+              <mat-list-item class="select-project" *ngFor="let project of allProjects | async"
+                             (click)="selectProject(project)"
+                             [ngClass]="{'selected-project': selectedProject === project.id}">
+                <mat-icon class="folder-icon">folder</mat-icon>
+                {{project.name}}
+              </mat-list-item>
+            </mat-list>
+          </mat-expansion-panel>
+        </mat-accordion>
+        <mat-divider></mat-divider>
+        <mat-list-item (click)="sidenav.toggle()" routerLink="/" [routerLinkActive]="['highlight']"
+                       [routerLinkActiveOptions]="{exact: true}">
           <mat-icon mat-list-icon>home</mat-icon>
           <p matLine>Home</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/pathways" [routerLinkActive]="['highlight']">
-          <mat-icon mat-list-icon svgIcon="design" ></mat-icon>
+        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/pathways"
+                       [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon svgIcon="design"></mat-icon>
           <p matLine>Design</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="!(sessionState | async).authenticated" matTooltip="Please log in or register to use this functionality!" class="disabled">
-          <mat-icon mat-list-icon svgIcon="design" ></mat-icon>
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                       matTooltip="Please log in or register to use this functionality!" class="disabled">
+          <mat-icon mat-list-icon svgIcon="design"></mat-icon>
           <p matLine>Design</p>
         </mat-list-item>
 
         <mat-list-item (click)="sidenav.toggle()" routerLink="/interactiveMap" [routerLinkActive]="['highlight']">
-          <mat-icon mat-list-icon svgIcon="interactive-map" ></mat-icon>
+          <mat-icon mat-list-icon svgIcon="interactive-map"></mat-icon>
           <p matLine>Interactive Map</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/jobs" [routerLinkActive]="['highlight']">
+        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/projects"
+                       [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon>subject</mat-icon>
+          <p matLine>Projects</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                       matTooltip="Please log in or register to use this functionality!" class="disabled">
+          <mat-icon mat-list-icon>subject</mat-icon>
+          <p matLine>Projects</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/jobs"
+                       [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon svgIcon="hourglass-full"></mat-icon>
           <p matLine>Jobs</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="!(sessionState | async).authenticated" matTooltip="Please log in or register to use this functionality!" class="disabled">
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                       matTooltip="Please log in or register to use this functionality!" class="disabled">
           <mat-icon mat-list-icon svgIcon="hourglass-full"></mat-icon>
           <p matLine>Jobs</p>
         </mat-list-item>
@@ -59,6 +94,17 @@
         <mat-list-item (click)="sidenav.toggle()" routerLink="/models" [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon>rounded_corner</mat-icon>
           <p matLine>Models</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/designs"
+                       [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon>person</mat-icon>
+          <p matLine>Designs</p>
+        </mat-list-item>
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                       matTooltip="Please log in or register to use this functionality!" class="disabled">
+          <mat-icon mat-list-icon>person</mat-icon>
+          <p matLine>Designs</p>
         </mat-list-item>
       </mat-nav-list>
 

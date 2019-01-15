@@ -12,33 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export interface Configuration {
-  production: boolean;
-  apis: {
-    iam: string;
-    model: string;
-    model_storage: string;
-    map: string;
-    bigg: string;
-    metabolic_ninja: string;
-    warehouse: string;
-    maps: string;
-    design_storage: string,
+import {AddedReaction, DeCaF} from '../app-interactive-map/types';
+import ModelHeader = DeCaF.ModelHeader;
+
+export interface DesignRequest {
+  design: {
+    constraints: [
+      {
+        id: string;
+        lower_bound: number;
+        upper_bound: number;
+      }
+      ],
+    gene_knockouts: string[];
+    reaction_knockins: string[];
+    reaction_knockouts: string[];
+    added_reactions?: AddedReaction[];
   };
-  GA?: {
-    trackingID: string;
-  };
-  sentry?: {
-    DSN: string,
-    release: string,
-  };
-  firebase: {
-    api_key: string;
-    auth_domain: string;
-    database_url: string;
-    project_id: string;
-    storage_bucket: string;
-    sender_id: string;
-  };
-  trustedURLs: string[];
+  id: number;
+  model_id: number;
+  name: string;
+  project_id: number;
+  model?: DeCaF.Model;
+  modelHeader?: ModelHeader;
 }

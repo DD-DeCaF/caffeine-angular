@@ -28,6 +28,8 @@ import { AppAddedComponent } from './components/app-added/app-added.component';
 import { AppKnockoutComponent } from './components/app-knockout/app-knockout.component';
 import { AppBoundsComponent } from './components/app-bounds/app-bounds.component';
 import { AppObjectiveDetailComponent } from './components/app-objective-detail/app-objective-detail.component';
+import {AppKnockoutGenesComponent} from './components/app-knockout-genes/app-knockout-genes.component';
+import {SelectProjectComponent} from '../app-build/components/select-project/select-project.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { AppObjectiveDetailComponent } from './components/app-objective-detail/a
     AppPanelComponent,
     AppAddedComponent,
     AppKnockoutComponent,
+    AppKnockoutGenesComponent,
+    SelectProjectComponent,
   ],
   imports: [
     AppMaterialModule,
@@ -50,6 +54,7 @@ import { AppObjectiveDetailComponent } from './components/app-objective-detail/a
   ],
   exports: [
     AppReactionComponent,
+    SelectProjectComponent,
   ],
 })
 export class ReactionModule {}
