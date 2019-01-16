@@ -227,7 +227,6 @@ export class InteractiveMapEffects {
       const newAction = new fromActions.operationToApply[action.type](action.payload);
       const IMStore = interactiveMapReducer(store.interactiveMap, newAction);
       const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
-
       const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
         operation: 'add',
         type: 'reaction',
@@ -239,6 +238,13 @@ export class InteractiveMapEffects {
         operation: 'knockout',
         type: 'reaction',
         id: reactionId,
+        data: null,
+      }));
+
+      const knockoutsGenes = selectedCard.knockoutGenes.map((id: string): types.DeCaF.Operation => ({
+        operation: 'knockout',
+        type: 'gene',
+        id: id,
         data: null,
       }));
 
@@ -261,6 +267,7 @@ export class InteractiveMapEffects {
         operations: [
           ...addedReactions,
           ...knockouts,
+          ...knockoutsGenes,
           ...bounds,
         ],
       };
