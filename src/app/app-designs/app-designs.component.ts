@@ -124,6 +124,8 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     dialogConfigError.panelClass = 'loader';
     dialogConfigError.id = 'error';
 
+    let error = false;
+
     this.loadingObservable = this.store.pipe(
       select(isLoading),
     ).subscribe((loading) => {
@@ -136,12 +138,13 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
         }
       } else {
         this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
-          if (loadingError) {
-            if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'error') && this.router.url === '/interactiveMap') {
-              setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
-            }
+          if (loadingError && !error) {
+            setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
+            error = true;
           } else {
             this.dialog.closeAll();
+            error = false;
+
           }
         });
       }
