@@ -133,7 +133,7 @@ export class SetDesignsError implements Action {
 export class SetSelectedProject implements Action {
   readonly type = SET_SELECTED_PROJECT;
 
-  constructor(public payload: number) {
+  constructor(public payload: projectTypes.Project) {
   }
 }
 

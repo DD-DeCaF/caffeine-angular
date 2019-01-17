@@ -31,7 +31,7 @@ export interface SharedState {
   projectsError: boolean;
   jobsError: boolean;
   designsError: boolean;
-  selectedProject: number;
+  selectedProject: Project;
 }
 
 export const initialState: SharedState = {

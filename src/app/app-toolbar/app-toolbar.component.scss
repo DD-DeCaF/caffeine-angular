@@ -19,3 +19,7 @@ p {
 .fill-remaining-space {
   flex: 1 1 auto;
 }
+
+.capitalize {
+  text-transform: capitalize;
+}

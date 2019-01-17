@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MatButton, MatSelect, MatSelectChange, MatAutocomplete} from '@angular/material';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {MatButton, MatSelect, MatSelectChange, MatAutocomplete, MatSnackBar} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
-import {combineLatest, Observable, Subscription} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -30,6 +30,10 @@ import * as typesDesign from '../../types';
 import {Project} from '../../../projects/types';
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {WarehouseService} from '../../../services/warehouse.service';
+import * as actions from '../../../store/shared.actions';
+import {SessionService} from '../../../session/session.service';
+import {IamService} from '../../../services/iam.service';
+import {selectNotNull} from '../../../framework-extensions';
 
 
 @Component({
@@ -43,7 +47,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   @ViewChild('auto') productSelector: MatAutocomplete;
   @ViewChild('projects') projectSelector: MatSelect;
   @ViewChild('model') modelSelector: MatSelect;
-  subscription: Subscription;
+  @ViewChild('newproject') newProject: ElementRef;
   @ViewChild('design') designButton: MatButton;
 
   @Input() gridView: boolean;
@@ -56,13 +60,16 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public allProjects: Observable<Project[]>;
   public selectedProject: number;
-
   public product_placeholder = 'vanillate';
 
   constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private warehouseService: WarehouseService) {
+    private warehouseService: WarehouseService,
+    private session: SessionService,
+    private iamService: IamService,
+    public snackBar: MatSnackBar) {
+
     this.designForm = this.fb.group({
       species: ['', Validators.required],
       product: ['', Validators.required],
@@ -80,9 +87,9 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
     this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
     this.selectedSpecies = this.store.pipe(select((store) => store.designTool.selectedSpecies));
-    this.store.pipe(select((store) => store.shared.selectedProject)).subscribe((project) => {
-      this.selectedProject = project;
-      this.projectSelector.placeholder = null;
+    this.store.pipe(
+      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
+      this.selectedProject = project.id;
     });
     this.models = this.store.pipe(select(activeModels));
 
@@ -135,5 +142,42 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     this.store.dispatch(new StartDesign(this.designForm.value));
+  }
+
+  submitProject(): void {
+    const project = {
+      id: null,
+      name: this.newProject.nativeElement.value,
+    };
+    this.iamService.createProject(project).subscribe(
+      // Refresh the token to include the newly created project when fetching new projects
+      () => this.session.refresh().subscribe(
+        () => {
+          this.snackBar.open(`Project ${project.name} created`, '', {
+            duration: 2000,
+          });
+          this.store.dispatch(new actions.FetchProjects());
+          this.store.pipe(select((store) => store.shared.projects)).subscribe((projects) => {
+            this.designForm.patchValue({
+              project_id: projects.slice(-1).pop().id,
+            });
+          });
+        },
+      ),
+    );
+  }
+
+  isValidProject(): boolean {
+    if (this.newProject) {
+      return Boolean(this.newProject.nativeElement.value);
+    } else {
+      return false;
+    }
+  }
+
+  cancelProject(): void {
+    this.designForm.patchValue({
+      project_id: '',
+    });
   }
 }
