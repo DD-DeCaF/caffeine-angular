@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { Store, select } from '@ngrx/store';
 
 import { Job } from '../../types';
-import {Observable, Subscription} from 'rxjs';
-import { Store, select } from '@ngrx/store';
-import {map} from 'rxjs/operators';
-import { timer } from 'rxjs';
+import { Subscription, Observable, timer } from 'rxjs';
 import { AppState } from '../../../store/app.reducers';
-import {FetchJobs} from '../../../store/shared.actions';
+import { SessionState } from '../../../session/store/session.reducers';
+import { FetchJobs } from '../../../store/shared.actions';
 
 @Component({
   selector: 'app-job-list',
@@ -28,11 +28,17 @@ import {FetchJobs} from '../../../store/shared.actions';
   styleUrls: ['./job-list.component.scss'],
 })
 export class JobListComponent implements OnInit, OnDestroy {
-  jobs: Observable<Job[]>;
-  polling: Subscription;
+  public dataSource = new MatTableDataSource<Job>([]);
+  public polling: Subscription;
+  public sessionState$: Observable<SessionState>;
+
   // isLoading = true;
   // loadError = false;
-  displayedColumns: string[] = ['id', 'type', 'product', 'state', 'details'];
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  displayedColumns: string[] = ['product_name', 'status', 'details'];
 
   constructor(
     private store: Store<AppState>,
@@ -43,9 +49,8 @@ export class JobListComponent implements OnInit, OnDestroy {
     this.polling = timer(0, 20000)
       .subscribe(() => {
         this.store.dispatch(new FetchJobs());
-        this.jobs = this.store.pipe(
-          select((state) => state.shared.jobs),
-          map((jobs) => {
+        this.store.pipe(select((state) => state.shared.jobs))
+          .subscribe((jobs) => {
             for (let i = 0; i < jobs.length; i++) {
               if (jobs[i].state === 'STARTED' || jobs[i].state === 'PENDING') {
                 jobsFinished = false;
@@ -55,10 +60,12 @@ export class JobListComponent implements OnInit, OnDestroy {
             if (jobsFinished) {
               this.polling.unsubscribe();
             }
-            return jobs;
-          }),
-        );
+            this.dataSource.data = jobs;
+          });
       });
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.sessionState$ = this.store.select('session');
   }
 
   ngOnDestroy(): void {
