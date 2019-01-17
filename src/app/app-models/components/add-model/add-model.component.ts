@@ -29,6 +29,7 @@ import {WarehouseService} from '../../../services/warehouse.service';
 import {NewSpecies} from '../../types';
 import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
 import {ModelService} from '../../../services/model.service';
+import {selectNotNull} from '../../../framework-extensions';
 
 @Component({
   selector: 'app-loader',
@@ -97,8 +98,11 @@ export class AddModelComponent implements OnInit, OnDestroy {
       default_biomass_reaction: ['', Validators.required],
       preferred_map_id: [null],
     });
-    this.store.pipe(select((store) => store.shared.selectedProject)).subscribe((project) => {
-      this.selectedProject = project;
+    this.store.pipe(
+      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
+      this.addModelForm.patchValue({
+        project_id: project.id,
+      });
     });
   }
 

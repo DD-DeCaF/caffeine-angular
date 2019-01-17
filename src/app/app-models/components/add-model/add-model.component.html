@@ -49,17 +49,18 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Project*</mat-label>
+            <mat-label class="title">Project* {{selectedProject}}</mat-label>
             <mat-select type="text"
                         color="primary"
                         class="form-control"
-                        formControlName="project_id">
+                        formControlName="project_id"
+                        [(value)]="selectedProject">
               <mat-option color="primary"
                           class="mat-primary"
                           [value]="project.id"
                           *ngFor="let project of (allProjects | async)">{{project.name}}
               </mat-option>
-              <mat-option value="add">
+              <mat-option [value]="'add'">
                 <mat-icon>add_circle</mat-icon>
                 Add project
               </mat-option>

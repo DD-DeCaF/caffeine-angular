@@ -12,6 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@import '~@angular/material/theming';
+
+@include mat-core();
+
 a {
   color: white;
   text-decoration: none;
@@ -56,7 +60,6 @@ mat-sidenav-container {
 }
 
 .folder-icon {
-  color: rgb(128, 144, 199);
   padding-left: 10px;
   padding-right:  5px;
 }
