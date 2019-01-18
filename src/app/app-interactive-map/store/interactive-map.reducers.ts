@@ -190,6 +190,8 @@ export function interactiveMapReducer(
         }
         case CardType.DataDriven: {
           name = 'Data Driven';
+          model = state.selectedModel.model_serialized;
+          model_id = state.selectedModel.id;
           break;
         }
         default:

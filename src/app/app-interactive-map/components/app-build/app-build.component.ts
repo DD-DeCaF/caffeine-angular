@@ -22,10 +22,11 @@ import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, S
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
-import {CardType, HydratedCard} from '../../types';
+import {CardType, HydratedCard, Method} from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
 import {SelectProjectComponent} from './components/select-project/select-project.component';
+import {ShowHelpComponent} from './components/show-help/show-help.component';
 
 @Component({
   selector: 'app-build',
@@ -41,6 +42,13 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public selectedProjectId: number;
   public expandedCard: HydratedCard = null;
   public tabIndex: number = null;
+
+  public methods: Method[] = [
+    { id: 'fba', name: 'Flux Balance Analysis (FBA)' },
+    { id: 'pfba', name: 'Parsimonious FBA' },
+    { id: 'fva', name: 'Flux Variability Analysis (FVA)' },
+    { id: 'pfba-fva', name: 'Parsimonious FVA' },
+  ];
 
   constructor(private store: Store<AppState>, private dialog: MatDialog) {
   }
@@ -135,5 +143,10 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
           });
       }
     }
+  }
+
+  public showHelp(event: Event): void {
+    event.stopPropagation();
+    this.dialog.open(ShowHelpComponent);
   }
 }
