@@ -12,16 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-@import '~@angular/material/theming';
+const colors = [
+  'red',
+  'pink',
+  'purple',
+  'deep-purple',
+  'indigo',
+  'blue',
+  'light-blue',
+  'cyan',
+  'teal',
+  'green',
+  'light-green',
+  'lime',
+  'yellow',
+  'amber',
+  'orange',
+  'deep-orange',
+  'brown',
+  'grey',
+  'blue-grey',
+];
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue.
-$metabolica-app-primary: mat-palette($mat-light-blue);
-$metabolica-app-accent: mat-palette($mat-grey, A100);
-
-// The warn palette is optional (defaults to red).
-$metabolica-app-warn: mat-palette($mat-red);
-
-// Create the theme object (a Sass map containing all of the palettes).
-$metabolica-app-theme: mat-light-theme($metabolica-app-primary, $metabolica-app-accent, $metabolica-app-warn);
+module.exports = {
+  colors,
+  themes: colors.map((color) => `${color}-theme`),
+};
