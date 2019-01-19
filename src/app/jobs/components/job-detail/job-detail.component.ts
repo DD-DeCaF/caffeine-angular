@@ -63,7 +63,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
                 select(getOrganismName(jobPrediction.organism_id)));
 
               if (jobPrediction.result) {
-                this.tableData = jobPrediction.result.table || [];
+                this.tableData = [...jobPrediction.result.cofactor_swap, ...jobPrediction.result.diff_fva];
                 this.reactionsData = jobPrediction.result.reactions || [];
                 this.polling.unsubscribe();
               } else if (jobPrediction.status === 'FAILURE') {
