@@ -15,6 +15,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import '~@angular/material/theming';
 
 html, body {
   margin: 0;
@@ -59,3 +60,74 @@ mat-sidenav-container {
   top: 20px;
 }
 
+ .red {
+   color: mat-color($mat-red, 700);
+ }
+
+.pink {
+  color: mat-color($mat-pink, 700);
+}
+
+.purple {
+  color: mat-color($mat-purple, 700);
+}
+
+.deep-purple {
+  color: mat-color($mat-deep-purple, 700);
+}
+
+.indigo {
+  color: mat-color($mat-indigo, 700);
+}
+
+.blue {
+  color: mat-color($mat-blue, 700);
+}
+
+.light-blue {
+  color: mat-color($mat-light-blue, 700);
+}
+
+.cyan {
+  color: mat-color($mat-cyan, 700);
+}
+
+.teal {
+  color: mat-color($mat-teal, 700);
+}
+
+.green {
+  color: mat-color($mat-green, 700);
+}
+
+.light-green {
+  color: mat-color($mat-light-green, 700);
+}
+
+.lime {
+  color: mat-color($mat-lime, 700);
+}
+
+.yellow {
+  color: mat-color($mat-yellow, 700);
+}
+
+.amber {
+  color: mat-color($mat-amber, 700);
+}
+
+.orange {
+  color: mat-color($mat-orange, 700);
+}
+
+.deep-orange {
+  color: mat-color($mat-deep-orange, 700);
+}
+
+.grey {
+  color: mat-color($mat-grey, 700);
+}
+
+.blue-grey {
+  color: mat-color($mat-blue-grey, 700);
+}

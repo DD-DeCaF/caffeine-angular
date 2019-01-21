@@ -20,6 +20,7 @@ import {AppState} from '../store/app.reducers';
 import {Project} from '../projects/types';
 import {SetSelectedProject} from '../store/shared.actions';
 import {selectNotNull} from '../framework-extensions';
+import {colors} from '../themes';
 
 @Component({
   selector: 'app-app-home',
@@ -30,7 +31,7 @@ export class AppHomeComponent implements OnInit {
   public sessionState: Observable<SessionState>;
   public allProjects: Observable<Project[]>;
   public selectedProject: number;
-
+  public colors = colors;
   public title = 'app';
 
   constructor(

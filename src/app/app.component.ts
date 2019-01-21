@@ -32,8 +32,9 @@ import * as sharedActions from './store/shared.actions';
 import {combineLatest} from 'rxjs';
 import {SelectFirstModel} from './app-interactive-map/store/interactive-map.actions';
 
-// const themes = require('../styles/colors');
 import {themes} from './themes';
+import {selectNotNull} from './framework-extensions';
+import {withLatestFrom} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -62,15 +63,7 @@ export class AppComponent implements OnInit {
       });
     }
     if (!environment.production) {
-      this.setTheme(themes[0]);
-      // This code was just used to set the color dynamically.
-      // Please delete it when merging
-      // let colorIndex = 0;
-      // setInterval(() => {
-      //   const theme = themes[colorIndex % themes.length];
-      //   this.setTheme(theme);
-      //   colorIndex += 1;
-      // }, 1500);
+      this.setTheme(themes[9]);
     }
     matIconRegistry.addSvgIcon(
       'interactive-map',
@@ -108,9 +101,18 @@ export class AppComponent implements OnInit {
         this.store.dispatch(new SelectFirstModel(species, models));
       }
     });
+
+    this.store.pipe(
+      selectNotNull((store) => store.shared.selectedProject)).pipe(
+      withLatestFrom(this.store.pipe(select((store) => store.shared.projects))),
+    ).subscribe(([selectedProject, projects]) => {
+      const theme = themes[projects.indexOf(selectedProject) % themes.length];
+      this.setTheme(theme);
+    });
   }
 
   setTheme(theme: string): void {
     this.componentCssClass = theme;
   }
+
 }
