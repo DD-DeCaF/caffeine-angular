@@ -20,17 +20,11 @@
       (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
-    <h1>
-      Caffeine
+    <h1 class="capitalize">
+      {{projectName}}
     </h1>
     <span class="fill-remaining-space"></span>
 
-    <button mat-button
-            type="button"
-            routerLink="/projects"
-            *ngIf="(sessionState | async).authenticated">
-      Projects
-    </button>
     <button mat-button
             type="button"
             appOpenLoginDialog

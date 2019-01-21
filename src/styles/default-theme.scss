@@ -13,9 +13,14 @@
 // limitations under the License.
 
 @import '~@angular/material/theming';
-@import 'app/app-interactive-map/components/app-build/app-build.component';
-@import 'app/app-interactive-map/components/app-reaction/components/app-panel/app-panel.component';
-@import 'app/jobs/components/job-detail/components/job-result-table/job-results-table.component';
+@import '../app/app-interactive-map/components/app-build/app-build.component';
+@import '../app/app-interactive-map/components/app-reaction/components/app-panel/app-panel.component';
+@import '../app/jobs/components/job-detail/components/job-result-table/job-results-table.component';
+
+@import 'metabolica';
+
+// Custom theme classes
+@import 'themes';
 
 // Plus imports for other components in your app.
 
@@ -24,18 +29,6 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue.
-$metabolica-app-primary: mat-palette($mat-light-blue);
-$metabolica-app-accent: mat-palette($mat-grey, A100);
-
-// The warn palette is optional (defaults to red).
-$metabolica-app-warn: mat-palette($mat-red);
-
-// Create the theme object (a Sass map containing all of the palettes).
-$metabolica-app-theme: mat-light-theme($metabolica-app-primary, $metabolica-app-accent, $metabolica-app-warn);
-
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
@@ -43,16 +36,3 @@ $metabolica-app-theme: mat-light-theme($metabolica-app-primary, $metabolica-app-
 @include app-build-component($metabolica-app-theme);
 @include app-reaction-panel-component($metabolica-app-theme);
 @include jobs-details($metabolica-app-theme);
-
-// Amber theme
-$amber-primary: mat-palette($mat-amber);
-
-$amber-theme: mat-light-theme($amber-primary, $metabolica-app-accent, $metabolica-app-warn);
-
-.amber-theme {
-  @include angular-material-theme($amber-theme);
-  @include app-build-component($amber-theme);
-  @include app-reaction-panel-component($amber-theme);
-  @include jobs-details($amber-theme);
-
-}

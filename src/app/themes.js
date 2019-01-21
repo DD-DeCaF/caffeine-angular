@@ -12,14 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-p {
-  color: blue;
-}
+const colors = [
+  'red',
+  'green',
+  'pink',
+  'cyan',
+  'purple',
+  'yellow',
+  'deep-purple',
+  'lime',
+  'indigo',
+  'amber',
+  'blue',
+  'orange',
+  'teal',
+  'deep-orange',
+  'light-green',
+  'brown',
+  'grey',
+  'blue-grey',
+  'light-blue',
+];
 
-.fill-remaining-space {
-  flex: 1 1 auto;
-}
-
-.capitalize {
-  text-transform: capitalize;
-}
+module.exports = {
+  colors,
+  themes: colors.map((color) => `${color}-theme`),
+};

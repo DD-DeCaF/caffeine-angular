@@ -48,8 +48,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
-    this.store.pipe(select((state: AppState) => state.shared.selectedProject)).subscribe((project) => {
-      this.selectedProjectId = project;
+    this.store.pipe(
+      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
+      this.selectedProjectId = project.id;
     });
 
     this.store.pipe(
