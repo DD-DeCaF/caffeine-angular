@@ -20,8 +20,18 @@
   flex-direction: column;
 }
 
+.status-item {
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.status-item-pending {
+  vertical-align: super;
+}
+
 .mat-column-details {
-  text-align: center;
+  text-align: right;
+  width: 50px;
 }
 
 .mat-button {

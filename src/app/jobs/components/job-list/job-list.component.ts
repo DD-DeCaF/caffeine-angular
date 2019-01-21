@@ -38,7 +38,7 @@ export class JobListComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  displayedColumns: string[] = ['product_name', 'status', 'details'];
+  displayedColumns: string[] = ['product_name', 'status', 'created', 'details'];
 
   constructor(
     private store: Store<AppState>,
