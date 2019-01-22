@@ -56,7 +56,7 @@ limitations under the License.
           </div>
         </th>
         <td mat-cell *matCellDef="let element">
-          <a>{{element.manipulations.length}}</a>
+          <a *ngIf="element.manipulations">{{element.manipulations.length}}</a>
         </td>
       </ng-container>
   
