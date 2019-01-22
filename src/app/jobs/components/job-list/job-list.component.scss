@@ -13,11 +13,29 @@
 // limitations under the License.
 
 .container {
-  margin: 0 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-table {
-  width: 100%;
+.status-item {
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.status-item-pending {
+  vertical-align: super;
+}
+
+.mat-column-details {
+  text-align: right;
+  width: 50px;
+}
+
+.mat-button {
+  cursor: pointer;
 }
 
 .load-error p {
