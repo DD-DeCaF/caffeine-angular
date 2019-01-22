@@ -30,7 +30,7 @@ import {colors} from '../themes';
 export class AppHomeComponent implements OnInit {
   public sessionState: Observable<SessionState>;
   public allProjects: Observable<Project[]>;
-  public selectedProject: number;
+  public selectedProject: Project;
   public colors = colors;
   public title = 'app';
 
@@ -41,8 +41,8 @@ export class AppHomeComponent implements OnInit {
   public ngOnInit(): void {
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
     this.store.pipe(
-      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
-      this.selectedProject = project.id;
+      select((store) => store.shared.selectedProject)).subscribe((project) => {
+      this.selectedProject = project;
     });
     this.sessionState = this.store.select('session');
   }

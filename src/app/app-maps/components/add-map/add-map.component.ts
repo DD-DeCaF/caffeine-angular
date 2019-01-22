@@ -79,9 +79,9 @@ export class AddMapComponent implements OnInit, OnDestroy {
       map: ['', Validators.required],
     });
     this.store.pipe(
-      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
+      select((store) => store.shared.selectedProject)).subscribe((project) => {
       this.addMapForm.patchValue({
-        project_id: project.id,
+        project_id: project ? project.id : null,
       });
     });
   }

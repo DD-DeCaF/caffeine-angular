@@ -99,9 +99,9 @@ export class AddModelComponent implements OnInit, OnDestroy {
       preferred_map_id: [null],
     });
     this.store.pipe(
-      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
+      select((store) => store.shared.selectedProject)).subscribe((project) => {
       this.addModelForm.patchValue({
-        project_id: project.id,
+        project_id: project ? project.id : null,
       });
     });
   }

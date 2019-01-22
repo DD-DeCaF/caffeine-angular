@@ -33,7 +33,6 @@ import {combineLatest} from 'rxjs';
 import {SelectFirstModel} from './app-interactive-map/store/interactive-map.actions';
 
 import {themes} from './themes';
-import {selectNotNull} from './framework-extensions';
 import {withLatestFrom} from 'rxjs/operators';
 
 @Component({
@@ -45,7 +44,7 @@ import {withLatestFrom} from 'rxjs/operators';
 export class AppComponent implements OnInit {
   @HostBinding('class') componentCssClass;
   public title = 'app';
-
+  public theme = null;
   constructor(
     router: Router,
     matIconRegistry: MatIconRegistry,
@@ -103,10 +102,16 @@ export class AppComponent implements OnInit {
     });
 
     this.store.pipe(
-      selectNotNull((store) => store.shared.selectedProject)).pipe(
+      select((store) => store.shared.selectedProject)).pipe(
       withLatestFrom(this.store.pipe(select((store) => store.shared.projects))),
     ).subscribe(([selectedProject, projects]) => {
-      const theme = themes[projects.indexOf(selectedProject) % themes.length];
+      if (!this.theme) {
+        this.theme = this.componentCssClass;
+      }
+      let theme = this.theme;
+      if (selectedProject) {
+         theme = themes[projects.indexOf(selectedProject) % themes.length];
+      }
       this.setTheme(theme);
     });
   }

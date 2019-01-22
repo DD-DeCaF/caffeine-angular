@@ -11,7 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 @import '~@angular/material/theming';
 
 @include mat-core();
@@ -35,7 +34,7 @@ mat-sidenav-container {
   height: 100%;
 }
 
-.highlight{
+.highlight {
   background: #F4F4F4;
 }
 
@@ -61,5 +60,17 @@ mat-sidenav-container {
 
 .folder-icon {
   padding-left: 10px;
-  padding-right:  5px;
+  padding-right: 5px;
+}
+
+@mixin app-home($theme) {
+  .selected-project {
+    background: mat-color(map-get($theme, primary)) !important;
+    text-transform: capitalize;
+    cursor: pointer;
+  }
+}
+
+.home-list {
+  padding-top: 2px;
 }

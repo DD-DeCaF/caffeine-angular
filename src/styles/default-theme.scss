@@ -16,6 +16,7 @@
 @import '../app/app-interactive-map/components/app-build/app-build.component';
 @import '../app/app-interactive-map/components/app-reaction/components/app-panel/app-panel.component';
 @import '../app/jobs/components/job-detail/components/job-result-table/job-results-table.component';
+@import '../app/app-home/app-home.component';
 
 @import 'metabolica';
 
@@ -36,3 +37,4 @@
 @include app-build-component($metabolica-app-theme);
 @include app-reaction-panel-component($metabolica-app-theme);
 @include jobs-details($metabolica-app-theme);
+@include app-home($metabolica-app-theme);

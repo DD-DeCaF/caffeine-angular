@@ -14,7 +14,7 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {MatSidenav} from '@angular/material';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {SessionService} from '../session/session.service';
 import {SessionState} from '../session/store/session.reducers';
@@ -28,7 +28,6 @@ import {selectNotNull} from '../framework-extensions';
 })
 export class AppToolbarComponent implements OnInit {
   public sessionState: Observable<SessionState>;
-  public projectName = 'Caffeine';
   @Input() public sidenav: MatSidenav;
 
   constructor(
@@ -37,10 +36,6 @@ export class AppToolbarComponent implements OnInit {
 
   public ngOnInit(): void {
     this.sessionState = this.store.select('session');
-    this.store.pipe(
-      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
-      this.projectName = project.name;
-    });
   }
 
   public logout(): void {

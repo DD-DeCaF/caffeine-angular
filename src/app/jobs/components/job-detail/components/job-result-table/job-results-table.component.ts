@@ -113,7 +113,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
 
   displayedColumns: string[] = [
     'select',
-    'model',
     'manipulations',
     'heterologous_reactions',
     'fitness',
