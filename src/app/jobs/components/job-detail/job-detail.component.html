@@ -63,8 +63,8 @@ limitations under the License.
       </mat-list>
     </div>
   </mat-card>
-
-
+  
+  
   <mat-card class="card">
     <div *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'" class="pending-status">
       <p class="pending-item">The job is still running.</p>
@@ -88,6 +88,8 @@ limitations under the License.
         [jobId]="jobId"
         [model]="job.model"
         [tableData]="tableData"
+        [productName] = "job.product_name"
+        [organismId]="job.organism_id"
         [reactions]="reactionsData"></app-job-results-table>
     </div>
   </mat-card>

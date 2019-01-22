@@ -49,8 +49,9 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   @Input() model: DeCaF.Model;
   @Input() modelId: number;
   @Input() jobId: number;
+  @Input() productName: string;
+  @Input() organismId: number;
 
-  @Input() organism: number;
   @ViewChild(MatSort) sort: MatSort;
   model_name: Observable<string>;
   organism_name: Observable<string>;
@@ -144,7 +145,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
       select(getModelName(this.modelId)));
 
     this.organism_name = this.store.pipe(
-      select(getOrganismName(this.organism)));
+      select(getOrganismName(this.organismId)));
 
     this.yieldFilter.valueChanges
       .subscribe(
