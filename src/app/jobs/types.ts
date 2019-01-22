@@ -44,7 +44,7 @@ export interface PathwayPredictionResult {
     value: string;
   }[];
   knockouts: string[];
-  heterologous_pathway: string[];
+  heterologous_reactions: string[];
   fitness: number;
   yield: number;
   product: number;
