@@ -143,9 +143,9 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   ngOnInit(): void {
     this.model_name = this.store.pipe(
       select(getModelName(this.modelId)));
-    
+
     this.organism_name = this.store.pipe(
-      select(getOrganismName(this.organismId)));  
+      select(getOrganismName(this.organismId)));
 
     this.yieldFilter.valueChanges
       .subscribe(
