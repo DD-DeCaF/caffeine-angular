@@ -131,7 +131,9 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   ngOnInit(): void {
-    this.getValues();
+    if (this.tableData.length > 0) {
+      this.getValues();
+    }
     this.model_name = this.store.pipe(
       select(getModelName(this.modelId)));
 
