@@ -368,7 +368,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
       this.tableData[0].manipulations.length), this.tableData.reduce((max, row) => row.manipulations.length > max ?
       row.manipulations.length : max, this.tableData[0].manipulations.length)];
     this.manipulationsFilter.patchValue(this.filterValues.manipulations);
-    console.log('FILTER VALUES', this.filterValues);
     this.options = {
       yield: {
         floor: parseInt(this.filterValues.yieldNum[0].toFixed(2), 10),
