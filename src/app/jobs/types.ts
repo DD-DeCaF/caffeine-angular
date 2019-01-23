@@ -81,3 +81,9 @@ export interface PathwayResponse {
     cofactor_swap: PathwayPredictionResult[];
   };
 }
+
+export interface Manipulation {
+  direction: string;
+  id: string;
+  value: number;
+}

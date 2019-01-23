@@ -19,7 +19,6 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {Project} from '../projects/types';
 import {SetSelectedProject} from '../store/shared.actions';
-import {selectNotNull} from '../framework-extensions';
 import {colors} from '../themes';
 
 @Component({

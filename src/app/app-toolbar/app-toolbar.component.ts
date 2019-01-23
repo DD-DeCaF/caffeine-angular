@@ -14,12 +14,11 @@
 
 import {Component, Input, OnInit} from '@angular/core';
 import {MatSidenav} from '@angular/material';
-import {select, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {SessionService} from '../session/session.service';
 import {SessionState} from '../session/store/session.reducers';
 import {Observable} from 'rxjs';
-import {selectNotNull} from '../framework-extensions';
 
 @Component({
   selector: 'app-toolbar',

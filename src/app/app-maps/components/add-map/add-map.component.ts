@@ -25,7 +25,6 @@ import * as actions from '../../../store/shared.actions';
 import {SessionService} from '../../../session/session.service';
 import {AddMap} from '../../store/maps.actions';
 import {IamService} from '../../../services/iam.service';
-import {selectNotNull} from '../../../framework-extensions';
 
 @Component({
   selector: 'app-loader',

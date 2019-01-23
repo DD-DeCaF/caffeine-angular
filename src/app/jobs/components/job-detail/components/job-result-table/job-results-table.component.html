@@ -57,14 +57,14 @@ limitations under the License.
           </div>
         </th>
         <td mat-cell *matCellDef="let element">
-          <a>{{element.heterologous_reactions.length}}</a>
+          <a>{{element.heterologous_reactions.length}} </a>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="product">
         <th mat-header-cell *matHeaderCellDef>
           <p mat-sort-header>Production
-            <span class="units">[mmmol gDW
+            <span class="units">[mmol gDW
               <sup>-1</sup> h
               <sup>-1</sup>]</span>
           </p>
@@ -91,7 +91,7 @@ limitations under the License.
       <ng-container matColumnDef="yield">
         <th mat-header-cell *matHeaderCellDef>
           <p mat-sort-header>Yield
-            <span class="units">[mmol-substrate/mmol-product]</span>
+            <span class="units">[C-mol/C-mol]</span>
           </p>
           <div class="custom-slider">
             <ng5-slider [options]="options['yield']" [formControl]="yieldFilter"></ng5-slider>
@@ -103,7 +103,7 @@ limitations under the License.
       <ng-container matColumnDef="fitness">
         <th mat-header-cell *matHeaderCellDef>
           <p mat-sort-header>Fitness
-            <span class="units">[(Production * Growth)/Carbon-uptake]</span>
+            <span class="units">[(Production * Growth / Carbon uptake)]</span>
           </p>
           <div class="custom-slider">
             <ng5-slider [options]="options['fitness']" [formControl]="fitnessFilter"></ng5-slider>
@@ -131,20 +131,42 @@ limitations under the License.
 </ng-template>
 <ng-template #tpl let-element>
   <tr class="mat-row expandRow">
-    <td colspan="2"></td>
+    <td colspan="1"></td>
 
     <td class="linkList">
       <div class="linkListInner">
-        <div *ngFor="let manipulation of element.manipulations">
-          <a *ngIf="element.method === 'PathwayPredictor+DifferentialFVA'" [attr.href]="geneLink(manipulation)" target="_blank">
-            {{dispManipulation(manipulation)}}
-          </a>
-          <a *ngIf="element.method === 'PathwayPredictor+CofactorSwap'" [attr.href]="geneLink(manipulation)" target="_blank">
+        <div *ngFor="let manipulation of getManipulations(element.manipulations); let i = index;">
+          <div *ngIf="i < 10">
+            <a *ngIf="element.method === 'PathwayPredictor+DifferentialFVA'" [attr.href]="geneLink(manipulation)" target="_blank">
+              {{dispManipulation(manipulation)}}
+            </a>
+            <a *ngIf="element.method === 'PathwayPredictor+CofactorSwap'" [attr.href]="geneLink(manipulation)" target="_blank">
             <span class="aligned-with-icon">
               {{manipulation.from}}
               <mat-icon class="arrow-icon">arrow_forward</mat-icon> {{manipulation.to}}
             </span>
+            </a>
+          </div>
+          <div *ngIf="i >= 10" [hidden]="!showAllManipulations">
+            <a *ngIf="element.method === 'PathwayPredictor+DifferentialFVA'" [attr.href]="geneLink(manipulation)" target="_blank">
+              {{dispManipulation(manipulation)}}
+            </a>
+            <a *ngIf="element.method === 'PathwayPredictor+CofactorSwap'" [attr.href]="geneLink(manipulation)" target="_blank">
+            <span class="aligned-with-icon">
+              {{manipulation.from}}
+              <mat-icon class="arrow-icon">arrow_forward</mat-icon> {{manipulation.to}}
+            </span>
+            </a>
+          </div>
+        </div>
+        <div>
+           <a (click)="showAllManipulations = true;" [hidden]="showAllManipulations" style="cursor: pointer; padding-top: 10px">
+          ...
           </a>
+        </div>
+        <div style="padding-top: 10px; padding-bottom: 10px;">
+        <span style="color: rgba(0, 0, 0, 0.54); font-size: 12px;">↑ up-regulation, ↓ down-regulation<mat-icon
+          style="font-size: 16px">info_outline</mat-icon></span>
         </div>
       </div>
     </td>

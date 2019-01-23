@@ -29,7 +29,6 @@ import {WarehouseService} from '../../../services/warehouse.service';
 import {NewSpecies} from '../../types';
 import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
 import {ModelService} from '../../../services/model.service';
-import {selectNotNull} from '../../../framework-extensions';
 
 @Component({
   selector: 'app-loader',

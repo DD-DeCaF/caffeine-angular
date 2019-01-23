@@ -33,7 +33,6 @@ import {WarehouseService} from '../../../services/warehouse.service';
 import * as actions from '../../../store/shared.actions';
 import {SessionService} from '../../../session/session.service';
 import {IamService} from '../../../services/iam.service';
-import {selectNotNull} from '../../../framework-extensions';
 
 
 @Component({
