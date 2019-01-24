@@ -218,8 +218,16 @@ export function interactiveMapReducer(
                 lowerBound: reaction.lower_bound,
                 upperBound: reaction.upper_bound,
               })) : [],
-              knockoutReactions: design ? design.design.reaction_knockouts : (pathwayPrediction && pathwayPrediction.method !== 'PathwayPredictor+OptGene') ? pathwayPrediction.knockouts : [],
-              knockoutGenes: design ? design.design.gene_knockouts : (pathwayPrediction && pathwayPrediction.method === 'PathwayPredictor+OptGene') ? pathwayPrediction.knockouts : [],
+              knockoutReactions: design
+                ? design.design.reaction_knockouts
+                : (pathwayPrediction && pathwayPrediction.method !== 'PathwayPredictor+OptGene')
+                  ? pathwayPrediction.knockouts
+                  : [],
+              knockoutGenes: design
+                ? design.design.gene_knockouts
+                : (pathwayPrediction && pathwayPrediction.method === 'PathwayPredictor+OptGene')
+                  ? pathwayPrediction.knockouts
+                  : [],
             },
           },
         },

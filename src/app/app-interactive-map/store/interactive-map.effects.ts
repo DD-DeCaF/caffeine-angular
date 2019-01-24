@@ -123,7 +123,7 @@ export class InteractiveMapEffects {
             method: 'pfba',
             objective: null,
             objective_direction: null,
-            operations: this.ninjaService.getOperations(pathwayPrediction)
+            operations: this.ninjaService.getOperations(pathwayPrediction),
           };
         }
 

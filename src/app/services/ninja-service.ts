@@ -77,13 +77,13 @@ export class NinjaService {
         id: gene,
         operation: 'knockout',
         type: 'gene',
-      }))
+      }));
     }
     return pathwayPrediction.knockouts.map((reaction) => Object.assign({
       data: null,
       id: reaction,
       operation: 'knockout',
       type: 'reaction',
-    }))
+    }));
   }
 }
