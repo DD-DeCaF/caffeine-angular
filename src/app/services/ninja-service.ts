@@ -18,7 +18,7 @@ import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import * as typesDesign from '../app-design-tool/types';
 import {map} from 'rxjs/operators';
-import {Job, PathwayResponse} from '../jobs/types';
+import {Job, PathwayResponse, PathwayPredictionResult} from '../jobs/types';
 import {DeCaF} from '../app-interactive-map/types';
 
 @Injectable()
@@ -68,5 +68,25 @@ export class NinjaService {
         });
     }
     return predictions;
+  }
+
+  getOperations(pathwayPrediction: PathwayPredictionResult): DeCaF.Operation[] {
+    if (pathwayPrediction.method === 'PathwayPredictor+OptGene') {
+      return pathwayPrediction.knockouts.map((gene) => Object.assign({
+        data: null,
+        id: gene,
+        operation: 'knockout',
+        type: 'gene',
+      }));
+    } else if (pathwayPrediction.method === 'PathwayPredictor+DifferentialFVA' || pathwayPrediction.method === 'PathwayPredictor+CofactorSwap') {
+      return pathwayPrediction.knockouts.map((reaction) => Object.assign({
+        data: null,
+        id: reaction,
+        operation: 'knockout',
+        type: 'reaction',
+      }));
+    } else {
+      throw new Error(`Method ${pathwayPrediction.method} is not recognized.`);
+    }
   }
 }

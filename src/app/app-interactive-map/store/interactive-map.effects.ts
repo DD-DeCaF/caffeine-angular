@@ -32,6 +32,7 @@ import {mapBiggReactionToCobra} from '../../lib';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
+import {NinjaService} from './../../services/ninja-service';
 
 
 const ACTION_OFFSETS = {
@@ -122,12 +123,8 @@ export class InteractiveMapEffects {
             method: 'pfba',
             objective: null,
             objective_direction: null,
-            operations: pathwayPrediction.knockouts.map((reaction) => Object.assign({
-              data: null,
-              id: reaction,
-              operation: 'knockout',
-              type: 'reaction',
-            }))};
+            operations: this.ninjaService.getOperations(pathwayPrediction),
+          };
         }
 
         return this.simulationService.simulate(payloadSimulate)
@@ -316,6 +313,7 @@ export class InteractiveMapEffects {
     private http: HttpClient,
     private simulationService: SimulationService,
     private designService: DesignService,
+    private ninjaService: NinjaService,
   ) {
   }
 }

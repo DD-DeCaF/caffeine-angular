@@ -27,6 +27,8 @@
   flex-flow: column;
   align-items: center;
   opacity: 0.9;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .map-progress-text {
