@@ -15,7 +15,7 @@
 import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit, OnDestroy} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from '@angular/material';
 
-import {PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
+import {Manipulation, PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
 import {JobResultsDetailRowDirective} from './job-results-table-row-detail.directive';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -56,32 +56,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   model_name: Observable<string>;
   organism_name: Observable<string>;
 
-  options = {
-    yield: {
-      minRange: 0.1,
-      step: .1,
-    },
-    fitness: {
-      minRange: 0.1,
-      step: .1,
-    },
-    biomass: {
-      minRange: 0.05,
-      step: .1,
-    },
-    product: {
-      minRange: 0.1,
-      step: .5,
-    },
-    reactions: {
-      minRange: 1,
-      step: 1,
-    },
-    manipulations: {
-      minRange: 1,
-      step: 1,
-    },
-  };
+  public options = null;
 
   public dataSource = new MatTableDataSource<PathwayPredictionResult>([]);
   public selection = new SelectionModel<PathwayPredictionResult>(true, []);
@@ -99,6 +74,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   private cardAdded = false;
   private loadingObservable;
   private errorObservable;
+  public showAllManipulations = false;
 
   public filterValues = {
     organism: '',
@@ -113,7 +89,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
 
   displayedColumns: string[] = [
     'select',
-    'model',
     'manipulations',
     'heterologous_reactions',
     'fitness',
@@ -218,13 +193,13 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   dispManipulation(
-    {direction, id}: { direction: string, id: string },
+    {direction, id, value}: Manipulation,
   ): string {
     return `${indicators[direction]} ${id}`;
   }
 
   dispManipulations(
-    manipulations: { direction: string, id: string }[],
+    manipulations: Manipulation[],
   ): string {
     const [firstManipulation] = manipulations;
     if (firstManipulation) {
@@ -236,6 +211,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
 
 
   toggleChange(val: JobResultsDetailRowDirective): void {
+    this.showAllManipulations = false;
     // @ts-ignore
     this.collapseClicked.emit(val);
   }
@@ -386,12 +362,52 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     this.filterValues.reactions = [this.tableData.reduce((min, row) => row.heterologous_reactions.length < min ? row.heterologous_reactions.length : min,
       this.tableData[0].heterologous_reactions.length), this.tableData.reduce((max, row) => row.heterologous_reactions.length > max ?
       row.heterologous_reactions.length : max, this.tableData[0].heterologous_reactions.length)];
-    this.reactionsFilter.patchValue(this.filterValues.reactions);
+    this.reactionsFilter.setValue(this.filterValues.reactions);
 
     this.filterValues.manipulations = [this.tableData.reduce((min, row) => row.manipulations.length < min ? row.manipulations.length : min,
       this.tableData[0].manipulations.length), this.tableData.reduce((max, row) => row.manipulations.length > max ?
       row.manipulations.length : max, this.tableData[0].manipulations.length)];
     this.manipulationsFilter.patchValue(this.filterValues.manipulations);
+    this.options = {
+      yield: {
+        floor: parseInt(this.filterValues.yieldNum[0].toFixed(2), 10),
+        ceil: parseInt(this.filterValues.yieldNum[1].toFixed(2), 10) >= 1 ? parseInt(this.filterValues.yieldNum[1].toFixed(2), 10) : 1,
+        minRange: 0.1,
+        step: .1,
+      },
+      fitness: {
+        floor: parseInt(this.filterValues.fitness[0].toFixed(2), 10),
+        ceil: parseInt(this.filterValues.fitness[1].toFixed(2), 10) >= 1 ? parseInt(this.filterValues.fitness[1].toFixed(2), 10) : 1,
+        step: .01,
+      },
+      biomass: {
+        floor: parseInt(this.filterValues.biomass[0].toFixed(2), 10),
+        ceil: parseInt(this.filterValues.biomass[1].toFixed(2), 10) >= 1 ? parseInt(this.filterValues.biomass[1].toFixed(2), 10) : 1,
+        minRange: 0.05,
+        step: .1,
+      },
+      product: {
+        floor: parseInt(this.filterValues.product[0].toFixed(2), 10),
+        ceil: parseInt(this.filterValues.product[1].toFixed(2), 10) >= 1 ? parseInt(this.filterValues.product[1].toFixed(2), 10) : 1,
+        minRange: 0.1,
+        step: .5,
+      },
+      reactions: {
+        floor: parseInt(this.filterValues.reactions[0], 10),
+        ceil: parseInt(this.filterValues.reactions[1], 10) >= 1 ? parseInt(this.filterValues.reactions[1].toFixed(2), 10) : 1,
+        step: 1,
+      },
+      manipulations: {
+        floor: parseInt(this.filterValues.manipulations[0], 10),
+        ceil: parseInt(this.filterValues.manipulations[1], 10) >= 1 ? parseInt(this.filterValues.manipulations[1].toFixed(2), 10) : 1,
+        step: 1,
+      },
+    };
+
+  }
+
+  getManipulations(manipulations: Manipulation[]): Manipulation[] {
+    return manipulations.sort((a, b) => (Math.abs(a.value) > Math.abs(b.value)) ? 1 : -1);
   }
 
   ngOnDestroy(): void {
