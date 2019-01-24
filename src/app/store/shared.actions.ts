@@ -18,6 +18,7 @@ import {FetchModel} from '../app-models/store/models.actions';
 import * as projectTypes from '../projects/types';
 import {Job} from '../jobs/types';
 import {DesignRequest} from '../app-designs/types';
+import {Experiment} from '../app-interactive-map/types';
 
 
 export const FETCH_MODELS = 'FETCH_MODELS';
@@ -39,6 +40,8 @@ export const SET_JOBS_ERROR = 'SET_JOBS_ERROR';
 export const FETCH_DESIGNS = 'FETCH_DESIGNS';
 export const SET_DESIGNS = 'SET_DESIGNS';
 export const SET_DESIGNS_ERROR = 'SET_DESIGNS_ERROR';
+export const FETCH_EXPERIMENTS = 'FETCH_EXPERIMENTS';
+export const SET_EXPERIMENTS = 'SET_EXPERIMENTS';
 
 export class FetchModels implements Action {
   readonly type = FETCH_MODELS;
@@ -92,6 +95,17 @@ export class SetJobs implements Action {
   readonly type = SET_JOBS;
 
   constructor(public payload: Job[]) {
+  }
+}
+
+export class FetchExperiments implements Action {
+  readonly type = FETCH_EXPERIMENTS;
+}
+
+export class SetExperiments implements Action {
+  readonly type = SET_EXPERIMENTS;
+
+  constructor(public payload: Experiment[]) {
   }
 }
 
@@ -158,4 +172,6 @@ export type SharedActions =
   | FetchDesigns
   | SetDesigns
   | SetDesignsError
-  | SetSelectedProject;
+  | SetSelectedProject
+  | FetchExperiments
+  | SetExperiments;

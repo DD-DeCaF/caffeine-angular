@@ -32,6 +32,7 @@ export interface SharedState {
   jobsError: boolean;
   designsError: boolean;
   selectedProject: Project;
+  experiments: types.Experiment[];
 }
 
 export const initialState: SharedState = {
@@ -48,6 +49,7 @@ export const initialState: SharedState = {
   jobsError: false,
   designsError: false,
   selectedProject: null,
+  experiments: [],
 };
 
 
@@ -120,6 +122,11 @@ export function sharedReducer(
       return {
         ...state,
         selectedProject: action.payload,
+      };
+    case fromSharedActions.SET_EXPERIMENTS:
+      return {
+        ...state,
+        experiments: action.payload,
       };
     default:
       return state;

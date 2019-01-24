@@ -30,6 +30,7 @@ import {Job} from 'src/app/jobs/types';
 import {MapsService} from '../services/maps.service';
 import {DesignService} from '../services/design.service';
 import {DesignRequest} from '../app-designs/types';
+import {Experiment} from '../app-interactive-map/types';
 
 
 @Injectable()
@@ -89,6 +90,14 @@ export class SharedEffects {
     switchMap(() => this.designService.getDesigns().pipe(
       map((payload: DesignRequest[]) => new fromActions.SetDesigns(payload)),
       catchError(() => of(new fromActions.SetDesignsError())),
+    )),
+  );
+
+  @Effect()
+  fetchExperiments: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.FETCH_EXPERIMENTS),
+    switchMap(() => this.warehouseService.getExperiments().pipe(
+      map((payload: Experiment[]) => new fromActions.SetExperiments(payload)),
     )),
   );
 

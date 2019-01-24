@@ -18,6 +18,8 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as types from '../types';
 import {DesignRequest} from '../../app-designs/types';
 import {PathwayPredictionResult} from '../../jobs/types';
+import {DeCaF} from '../types';
+import Operation = DeCaF.Operation;
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODEL = 'SET_MODEL';
@@ -49,6 +51,7 @@ export const SET_OBJECTIVE_REACTION = 'SET_OBJECTIVE_REACTION';
 export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 export const SAVE_DESIGN = 'SAVE_DESIGN';
 export const SAVE_NEW_DESIGN = 'SAVE_NEW_DESIGN';
+export const SET_OPERATIONS = 'SET_OPERATIONS';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -170,6 +173,11 @@ export class SaveNewDesign implements Action {
   constructor(public payload: {id: number}) {}
 }
 
+export class SetOperations implements Action {
+  readonly type = SET_OPERATIONS;
+  constructor(public payload: Operation[]) {}
+}
+
 export const operationToApply = {
   [REACTION_OPERATION]: ReactionOperationApply,
   [SET_METHOD]: SetMethodApply,
@@ -195,4 +203,5 @@ export type InteractiveMapActions =
   SetObjectiveReactionApply |
   SaveDesign |
   SaveNewDesign |
-  SelectFirstModel;
+  SelectFirstModel |
+  SetOperations;

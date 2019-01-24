@@ -292,3 +292,25 @@ export interface Gene {
   name: string;
 }
 
+export interface Experiment {
+  created: string;
+  description: string;
+  id: number;
+  name: string;
+  project_id: number;
+  updated: string;
+}
+
+export interface Condition {
+  aerobic: boolean;
+  created: string;
+  experiment_id: number;
+  feed_medium_id: number;
+  id: number;
+  medium_id: number;
+  name: string;
+  protocol: string;
+  strain_id: number;
+  temperature: number;
+  updated: string;
+}

@@ -288,6 +288,47 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
+  setOperations: Observable<void> = this.actions$.pipe(
+    ofType(fromActions.SET_OPERATIONS),
+    withLatestFrom(this.store$),
+    switchMap(([action, store]: [fromActions.SetOperations, AppState]) => {
+      // Ugly hack not to implement the reduction twice.
+      // @ts-ignore
+      const IMStore = interactiveMapReducer(store.interactiveMap);
+      const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
+
+      const payload: types.SimulateRequest = {
+        model_id: store.interactiveMap.selectedModelHeader.id,
+        method: selectedCard.method,
+        objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
+        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        operations: [
+          ...action.payload,
+        ],
+      };
+      this.simulationService.simulate(payload)
+        .pipe(map((solution: types.DeCaF.Solution) => ({
+            action: action.payload,
+            solution,
+          })),
+          /* tslint:disable */
+          map(({action, solution}) => {
+            console.log('ACTION', action);
+            console.log('SOLUTION', solution);
+
+            return {
+            ...action,
+            solution,
+          }}
+          ),
+          /* tslint:enable */
+          catchError(() => of(new loaderActions.LoadingError())),
+        );
+
+    }),
+  );
+
+  @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
       fromActions.SET_OBJECTIVE_REACTION),

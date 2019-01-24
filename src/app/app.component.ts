@@ -90,6 +90,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new sharedActions.FetchProjects());
     this.store.dispatch(new sharedActions.FetchJobs());
     this.store.dispatch(new sharedActions.FetchDesigns());
+    this.store.dispatch(new sharedActions.FetchExperiments());
 
     combineLatest(this.store.pipe(select((store) => store.interactiveMap.selectedSpecies)),
       this.store.pipe(select((store) => store.shared.modelHeaders))).subscribe(([species, models]) => {

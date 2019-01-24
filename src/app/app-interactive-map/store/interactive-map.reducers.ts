@@ -264,6 +264,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY:
+    case fromInteractiveMapActions.SET_OPERATIONS:
     case fromInteractiveMapActions.SAVE_NEW_DESIGN: {
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
@@ -308,6 +309,9 @@ export function interactiveMapReducer(
             saved: saved || false,
             [operationTarget]: result,
           };
+          break;
+        }
+        case fromInteractiveMapActions.SET_OPERATIONS: {
           break;
         }
         case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {

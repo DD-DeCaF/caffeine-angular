@@ -124,28 +124,31 @@
         <mat-card class="remove-box-shadow" fxLayout="column">
           <mat-form-field>
             <div>
-              <label>Method</label>
+              <mat-label>Method</mat-label>
               <div fxFlex></div>
               <button mat-icon-button (click)='showHelp($event)'>
-                <mat-icon style="vertical-align: super" >help_outline</mat-icon>
+                <mat-icon style="vertical-align: super">help_outline</mat-icon>
               </button>
             </div>
-            <mat-select placeholder="Method" [value]="card.method" #method>
+            <mat-select [value]="card.method" #method>
               <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
-            <label>Experiment</label>
-            <mat-select name="experiment">
-              <mat-option [value]="'experiment'">experiment</mat-option>
+            <mat-label>Experiment</mat-label>
+            <mat-select (selectionChange)="experimentChanged($event)">
+              <mat-option *ngFor="let experiment of (experiments | async)" [value]="experiment.id">{{experiment.name}}
+              </mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
-            <label>Conditions</label>
-            <mat-select name="conditions">
-              <mat-option [value]="'condition'">condition</mat-option>
+            <mat-label>Conditions</mat-label>
+            <mat-select (selectionChange)="conditionChanged($event)">
+              <mat-option *ngFor="let condition of conditions" [value]="condition.id">{{condition.name}},
+                {{condition.protocol}}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </mat-card>
