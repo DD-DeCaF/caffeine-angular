@@ -50,7 +50,7 @@ export interface PathwayPredictionResult {
   yield: number;
   product: number;
   biomass: number;
-  exotic_cofactors;
+  exotic_cofactors: string[];
   method: string;
   synthetic_reactions: string[];
   name?: string;

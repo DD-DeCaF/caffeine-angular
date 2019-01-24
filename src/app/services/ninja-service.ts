@@ -78,12 +78,15 @@ export class NinjaService {
         operation: 'knockout',
         type: 'gene',
       }));
+    } else if (pathwayPrediction.method === 'PathwayPredictor+DifferentialFVA' || pathwayPrediction.method === 'PathwayPredictor+CofactorSwap') {
+      return pathwayPrediction.knockouts.map((reaction) => Object.assign({
+        data: null,
+        id: reaction,
+        operation: 'knockout',
+        type: 'reaction',
+      }));
+    } else {
+      throw new Error(`Method ${pathwayPrediction.method} is not recognized.`);
     }
-    return pathwayPrediction.knockouts.map((reaction) => Object.assign({
-      data: null,
-      id: reaction,
-      operation: 'knockout',
-      type: 'reaction',
-    }));
   }
 }
