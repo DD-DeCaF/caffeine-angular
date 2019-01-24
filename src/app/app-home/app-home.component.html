@@ -37,10 +37,11 @@
             </mat-list>
           </mat-expansion-panel>
         </mat-accordion>
-        <mat-list-item class="selected-project mat-primary" *ngIf="selectedProject" (click)="selectProject(null)">
+        <mat-divider></mat-divider>
+        <mat-toolbar class="selected-project mat-primary" *ngIf="selectedProject" (click)="selectProject(null)">
           <mat-icon mat-list-icon>chevron_left</mat-icon>
-          <p matLine>{{selectedProject.name}}</p>
-        </mat-list-item>
+          <p matLine primary>{{selectedProject.name}}</p>
+        </mat-toolbar>
         <mat-divider></mat-divider>
         <mat-list-item (click)="sidenav.toggle()" routerLink="/" [routerLinkActive]="['highlight']"
                        [routerLinkActiveOptions]="{exact: true}">

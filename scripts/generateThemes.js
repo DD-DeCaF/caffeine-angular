@@ -50,7 +50,6 @@ $${color}-theme: mat-light-theme($${color}-primary, $metabolica-app-accent, $met
   @include app-build-component($${color}-theme);
   @include app-reaction-panel-component($${color}-theme);
   @include jobs-details($${color}-theme);
-  @include app-home($${color}-theme);
 }
 `, header);
 

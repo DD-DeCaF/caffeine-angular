@@ -26,7 +26,6 @@ $red-theme: mat-light-theme($red-primary, $metabolica-app-accent, $metabolica-ap
   @include app-build-component($red-theme);
   @include app-reaction-panel-component($red-theme);
   @include jobs-details($red-theme);
-  @include app-home($red-theme);
 }
 
 
@@ -40,7 +39,6 @@ $pink-theme: mat-light-theme($pink-primary, $metabolica-app-accent, $metabolica-
   @include app-build-component($pink-theme);
   @include app-reaction-panel-component($pink-theme);
   @include jobs-details($pink-theme);
-  @include app-home($pink-theme);
 }
 
 
@@ -54,7 +52,6 @@ $purple-theme: mat-light-theme($purple-primary, $metabolica-app-accent, $metabol
   @include app-build-component($purple-theme);
   @include app-reaction-panel-component($purple-theme);
   @include jobs-details($purple-theme);
-  @include app-home($purple-theme);
 }
 
 
@@ -68,7 +65,6 @@ $deep-purple-theme: mat-light-theme($deep-purple-primary, $metabolica-app-accent
   @include app-build-component($deep-purple-theme);
   @include app-reaction-panel-component($deep-purple-theme);
   @include jobs-details($deep-purple-theme);
-  @include app-home($deep-purple-theme);
 }
 
 
@@ -82,7 +78,6 @@ $indigo-theme: mat-light-theme($indigo-primary, $metabolica-app-accent, $metabol
   @include app-build-component($indigo-theme);
   @include app-reaction-panel-component($indigo-theme);
   @include jobs-details($indigo-theme);
-  @include app-home($indigo-theme);
 }
 
 
@@ -96,7 +91,6 @@ $blue-theme: mat-light-theme($blue-primary, $metabolica-app-accent, $metabolica-
   @include app-build-component($blue-theme);
   @include app-reaction-panel-component($blue-theme);
   @include jobs-details($blue-theme);
-  @include app-home($blue-theme);
 }
 
 
@@ -110,7 +104,6 @@ $light-blue-theme: mat-light-theme($light-blue-primary, $metabolica-app-accent, 
   @include app-build-component($light-blue-theme);
   @include app-reaction-panel-component($light-blue-theme);
   @include jobs-details($light-blue-theme);
-  @include app-home($light-blue-theme);
 }
 
 
@@ -124,7 +117,6 @@ $cyan-theme: mat-light-theme($cyan-primary, $metabolica-app-accent, $metabolica-
   @include app-build-component($cyan-theme);
   @include app-reaction-panel-component($cyan-theme);
   @include jobs-details($cyan-theme);
-  @include app-home($cyan-theme);
 }
 
 
@@ -138,7 +130,6 @@ $teal-theme: mat-light-theme($teal-primary, $metabolica-app-accent, $metabolica-
   @include app-build-component($teal-theme);
   @include app-reaction-panel-component($teal-theme);
   @include jobs-details($teal-theme);
-  @include app-home($teal-theme);
 }
 
 
@@ -152,7 +143,6 @@ $green-theme: mat-light-theme($green-primary, $metabolica-app-accent, $metabolic
   @include app-build-component($green-theme);
   @include app-reaction-panel-component($green-theme);
   @include jobs-details($green-theme);
-  @include app-home($green-theme);
 }
 
 
@@ -166,7 +156,6 @@ $light-green-theme: mat-light-theme($light-green-primary, $metabolica-app-accent
   @include app-build-component($light-green-theme);
   @include app-reaction-panel-component($light-green-theme);
   @include jobs-details($light-green-theme);
-  @include app-home($light-green-theme);
 }
 
 
@@ -180,7 +169,6 @@ $lime-theme: mat-light-theme($lime-primary, $metabolica-app-accent, $metabolica-
   @include app-build-component($lime-theme);
   @include app-reaction-panel-component($lime-theme);
   @include jobs-details($lime-theme);
-  @include app-home($lime-theme);
 }
 
 
@@ -194,7 +182,6 @@ $yellow-theme: mat-light-theme($yellow-primary, $metabolica-app-accent, $metabol
   @include app-build-component($yellow-theme);
   @include app-reaction-panel-component($yellow-theme);
   @include jobs-details($yellow-theme);
-  @include app-home($yellow-theme);
 }
 
 
@@ -208,7 +195,6 @@ $amber-theme: mat-light-theme($amber-primary, $metabolica-app-accent, $metabolic
   @include app-build-component($amber-theme);
   @include app-reaction-panel-component($amber-theme);
   @include jobs-details($amber-theme);
-  @include app-home($amber-theme);
 }
 
 
@@ -222,7 +208,6 @@ $orange-theme: mat-light-theme($orange-primary, $metabolica-app-accent, $metabol
   @include app-build-component($orange-theme);
   @include app-reaction-panel-component($orange-theme);
   @include jobs-details($orange-theme);
-  @include app-home($orange-theme);
 }
 
 
@@ -236,7 +221,6 @@ $deep-orange-theme: mat-light-theme($deep-orange-primary, $metabolica-app-accent
   @include app-build-component($deep-orange-theme);
   @include app-reaction-panel-component($deep-orange-theme);
   @include jobs-details($deep-orange-theme);
-  @include app-home($deep-orange-theme);
 }
 
 
@@ -250,7 +234,6 @@ $brown-theme: mat-light-theme($brown-primary, $metabolica-app-accent, $metabolic
   @include app-build-component($brown-theme);
   @include app-reaction-panel-component($brown-theme);
   @include jobs-details($brown-theme);
-  @include app-home($brown-theme);
 }
 
 
@@ -264,7 +247,6 @@ $grey-theme: mat-light-theme($grey-primary, $metabolica-app-accent, $metabolica-
   @include app-build-component($grey-theme);
   @include app-reaction-panel-component($grey-theme);
   @include jobs-details($grey-theme);
-  @include app-home($grey-theme);
 }
 
 
@@ -278,5 +260,4 @@ $blue-grey-theme: mat-light-theme($blue-grey-primary, $metabolica-app-accent, $m
   @include app-build-component($blue-grey-theme);
   @include app-reaction-panel-component($blue-grey-theme);
   @include jobs-details($blue-grey-theme);
-  @include app-home($blue-grey-theme);
 }

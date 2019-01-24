@@ -63,12 +63,9 @@ mat-sidenav-container {
   padding-right: 5px;
 }
 
-@mixin app-home($theme) {
-  .selected-project {
-    background: mat-color(map-get($theme, primary)) !important;
-    text-transform: capitalize;
-    cursor: pointer;
-  }
+.selected-project {
+  text-transform: capitalize;
+  cursor: pointer;
 }
 
 .home-list {
