@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<div class="container" *ngIf="(job$ | async) as job; else loadingTemplate">
+<div class="container" *ngIf="job; else loadingTemplate">
   <mat-card class="card">
     <div fxLayout="row">
       <h2>

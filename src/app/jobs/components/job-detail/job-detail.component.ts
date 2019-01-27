@@ -21,7 +21,6 @@ import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {getJob} from '../../store/jobs.selectors';
 import {selectNotNull} from '../../../framework-extensions';
-import {map} from 'rxjs/operators';
 import {NinjaService} from '../../../services/ninja-service';
 import {getModelName, getOrganismName} from '../../../store/shared.selectors';
 
@@ -32,7 +31,7 @@ import {getModelName, getOrganismName} from '../../../store/shared.selectors';
   styleUrls: ['./job-detail.component.scss'],
 })
 export class JobDetailComponent implements OnInit, OnDestroy {
-  job$: Observable<Job>;
+  public job: PathwayResponse;
   model: Observable<string>;
   organism: Observable<string>;
   loadError = false;
@@ -50,34 +49,29 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    const jobId = this.route.snapshot.params.id;
+    this.store.pipe(selectNotNull(getJob, {jobId}))
+      .subscribe((job) => {
+        this.job = job;
+        this.model = this.store.pipe(
+          select(getModelName(job.model_id)));
+        this.organism = this.store.pipe(
+          select(getOrganismName(job.organism_id)));
+      });
+
     this.polling = timer(0, 20000)
       .subscribe(() => {
-        const jobId = this.route.snapshot.params.id;
-        this.job$ = this.store.pipe(
-          selectNotNull(getJob, {jobId}),
-          map((j) => {
-            this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
-              this.model = this.store.pipe(
-                select(getModelName(jobPrediction.model_id)));
-              this.organism = this.store.pipe(
-                select(getOrganismName(jobPrediction.organism_id)));
+        this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
+          this.job = jobPrediction;
 
-              if (jobPrediction.result) {
-                if (jobPrediction.result.opt_gene) {
-                  jobPrediction.result.opt_gene[0].manipulations = [];
-                  this.tableData = [...jobPrediction.result.cofactor_swap, ...jobPrediction.result.diff_fva, ...jobPrediction.result.opt_gene];
-                } else {
-                  this.tableData = [...jobPrediction.result.cofactor_swap, ...jobPrediction.result.diff_fva];
-                }
-                this.reactionsData = jobPrediction.result.reactions || [];
-                this.polling.unsubscribe();
-              } else if (jobPrediction.status === 'FAILURE') {
-                this.polling.unsubscribe();
-              }
-            });
-            return j;
-          }),
-        );
+          if (jobPrediction.result) {
+            this.tableData = [...jobPrediction.result.cofactor_swap, ...jobPrediction.result.diff_fva, ...jobPrediction.result.opt_gene];
+            this.reactionsData = jobPrediction.result.reactions || [];
+            this.polling.unsubscribe();
+          } else if (jobPrediction.status === 'FAILURE') {
+            this.polling.unsubscribe();
+          }
+        });
       });
   }
 
