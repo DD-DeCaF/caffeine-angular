@@ -88,7 +88,9 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.selectedSpecies = this.store.pipe(select((store) => store.designTool.selectedSpecies));
     this.store.pipe(
       select((store) => store.shared.selectedProject)).subscribe((project) => {
-      this.selectedProject = project ? project.id : null;
+      this.designForm.patchValue({
+        project_id: project ? project.id : null,
+      });
     });
     this.models = this.store.pipe(select(activeModels));
 

@@ -102,6 +102,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       this.selectedCard,
       builderObservable,
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
+      console.log('CARD', card);
       this.loading = true;
       this.card = card;
       builder.load_model(card.model);

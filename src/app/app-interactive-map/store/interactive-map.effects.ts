@@ -96,12 +96,20 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
+  changeSelectedModel: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.CHANGE_SELECTED_MODEL),
+    switchMap((action: fromActions.SetFullModel) =>
+      this.http.get(`${environment.apis.model_storage}/models/${action.payload}`)),
+    map((model: types.DeCaF.Model) => new fromActions.SetSelectedModel(model)),
+  );
+
+  @Effect()
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
-    withLatestFrom(this.store$.pipe(select((store) => store.interactiveMap.selectedModelHeader))),
-    switchMap(([{payload, type, design, pathwayPrediction}, model]: [fromActions.AddCard, types.DeCaF.Model]) => {
+    withLatestFrom(this.store$),
+    switchMap(([{payload, type, design, pathwayPrediction}, store]: [fromActions.AddCard, AppState]) => {
       let payloadSimulate: types.SimulateRequest = {
-        model_id: model.id,
+        model_id: store.interactiveMap.selectedModelHeader.id,
         method: 'pfba',
         objective: null,
         objective_direction: null,

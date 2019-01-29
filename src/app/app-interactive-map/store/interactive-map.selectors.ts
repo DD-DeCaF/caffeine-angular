@@ -14,8 +14,9 @@
 
 import {createSelector} from '@ngrx/store';
 import {AppState} from '../../store/app.reducers';
-import {Card, HydratedCard, MapItem} from '../types';
+import {Card, DeCaF, HydratedCard, MapItem} from '../types';
 import { firstIfContains, unique } from '../../utils';
+import ModelHeader = DeCaF.ModelHeader;
 
 export const getCardIds = (state: AppState) => state.interactiveMap.cards.ids;
 
@@ -73,4 +74,11 @@ export const activeModels = createSelector(
   (state: AppState) => state.interactiveMap.selectedSpecies,
   (models, selectedSpecies) => models
     .filter((m) => selectedSpecies && (m.organism_id === selectedSpecies.id)),
+);
+
+export const activeModelsCard = createSelector(
+  (state: AppState) => state.shared.modelHeaders,
+  getSelectedCard,
+  (models, card) => models
+    .filter((m) => card && (m.organism_id === card.species.id)),
 );

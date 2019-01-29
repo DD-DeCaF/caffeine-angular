@@ -12,27 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material';
-import {Store} from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
 import {AppState} from '../../../store/app.reducers';
-import {getSelectedCard} from '../../store/interactive-map.selectors';
+import {activeModels, activeModelsCard, getSelectedCard} from '../../store/interactive-map.selectors';
 import { HydratedCard, Method } from '../../types';
-import { SetMethod, RenameCard } from '../../store/interactive-map.actions';
+import {SetMethod, RenameCard, ChangeSelectedSpecies, ChangeSelectedModel} from '../../store/interactive-map.actions';
 import { selectNotNull } from '../../../framework-extensions';
+import * as types from '../../types';
 
 @Component({
   selector: 'app-card-info',
   templateUrl: './app-card-info.component.html',
   styleUrls: ['./app-card-info.component.scss'],
 })
-export class AppCardInfoComponent implements OnInit {
+export class AppCardInfoComponent implements OnInit, AfterViewInit {
   @ViewChild('method') method: MatSelect;
   @ViewChild('name') name: ElementRef;
+  @ViewChild('species') speciesSelector: MatSelect;
+  @ViewChild('modelSelector') modelsSelector: MatSelect;
 
   public card: Observable<HydratedCard>;
+  public allSpecies: Observable<types.Species[]>;
+  public models: Observable<types.DeCaF.ModelHeader[]>;
 
   public methods: Method[] = [
     { id: 'fba', name: 'Flux Balance Analysis (FBA)' },
@@ -44,8 +49,24 @@ export class AppCardInfoComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
+    this.models = this.store.pipe(select(activeModelsCard));
+
     this.card = this.store.pipe(
       selectNotNull(getSelectedCard));
+  }
+
+  ngAfterViewInit(): void {
+    this.speciesSelector.selectionChange
+      .subscribe((change: MatSelectChange) => {
+        this.store.dispatch(new ChangeSelectedSpecies(change.value));
+      });
+
+    this.modelsSelector.selectionChange
+      .subscribe((change: MatSelectChange) => {
+        console.log('CHNAGE VALUE', change);
+        this.store.dispatch(new ChangeSelectedModel(change.value));
+      });
 
     this.method.selectionChange
       .subscribe((change: MatSelectChange) => {

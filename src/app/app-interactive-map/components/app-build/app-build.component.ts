@@ -13,12 +13,12 @@
 // limitations under the License.
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
-import {MatButton, MatDialog} from '@angular/material';
+import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
-import {withLatestFrom} from 'rxjs/operators';
+import {map, withLatestFrom} from 'rxjs/operators';
 
-import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
@@ -26,6 +26,9 @@ import {CardType, HydratedCard} from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
 import {SelectProjectComponent} from './components/select-project/select-project.component';
+import {mapItemsByModel} from '../../store/interactive-map.selectors';
+import * as types from '../../types';
+import {ModelService} from '../../../services/model.service';
 
 @Component({
   selector: 'app-build',
@@ -34,6 +37,7 @@ import {SelectProjectComponent} from './components/select-project/select-project
 })
 export class AppBuildComponent implements OnInit, AfterViewInit {
   @ViewChild('play') playButton: MatButton;
+  @ViewChild('map') mapSelector: MatSelect;
 
   interactiveMapState: Observable<AppState>;
   public cards: Observable<HydratedCard[]>;
@@ -41,8 +45,18 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public selectedProjectId: number;
   public expandedCard: HydratedCard = null;
   public tabIndex: number = null;
+  public selectedMap: Observable<types.MapItem>;
+  public models: Observable<types.DeCaF.ModelHeader[]>;
 
-  constructor(private store: Store<AppState>, private dialog: MatDialog) {
+  public mapItems: Observable<{
+    modelIds: string[],
+    mapsByModelId: {[key: string]: types.MapItem[] },
+  }>;
+
+  constructor(
+    private store: Store<AppState>,
+    private dialog: MatDialog,
+    private modelService: ModelService) {
   }
 
   ngOnInit(): void {
@@ -59,6 +73,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
         this.expandedCard = card;
       }
     });
+    this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
+    this.mapItems = this.store.pipe(select(mapItemsByModel));
+    this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
   }
 
   ngAfterViewInit(): void {
@@ -67,6 +84,14 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     ).subscribe(([, playing]) => {
       this.store.dispatch(new SetPlayState(!playing));
     });
+
+    this.mapSelector.selectionChange
+      .pipe(
+        map((change: MatSelectChange): types.MapItem => change.value),
+      )
+      .subscribe((mapItem: types.MapItem) => {
+        this.store.dispatch(new SetMap(mapItem));
+      });
   }
 
   public select(card: HydratedCard): void {
@@ -135,5 +160,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
           });
       }
     }
+  }
+
+  public getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
+    return this.modelService.getModel(id, models);
   }
 }

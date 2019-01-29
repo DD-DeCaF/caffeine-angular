@@ -13,7 +13,24 @@
 <!--limitations under the License.-->
 
 <div class="container">
+
   <div [hidden]="expandedCard">
+    <div fxLayoutAlign="space-around center">
+      <mat-form-field class="selected-map">
+        <mat-select placeholder="Selected Map" [value]="selectedMap | async"
+                    *ngIf="(mapItems | async) && (models |async)" #map>
+          <mat-optgroup *ngFor="let modelforMaps of (mapItems | async).modelIds"
+                        [label]="getModel(modelforMaps, models | async).name">
+            <mat-option [value]="mapItem" *ngFor="let mapItem of (mapItems | async).mapsByModelId[modelforMaps]">
+              {{mapItem.name}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-divider></mat-divider>
+
     <div fxLayout="row" fxLayoutAlign="space-around center">
       <div>
         <mat-menu #addMenu="matMenu">
@@ -108,6 +125,14 @@
       </div>
 
       <div class="content">
+        <div class="displayRow">
+          <label>Species:</label>
+          <label class="right-text">{{card.species.name}}</label>
+        </div>
+        <div class="displayRow">
+          <label>Model:</label>
+          <label class="right-text">{{card.model.id}}</label>
+        </div>
         <div class="displayRow">
           <label>Method:</label>
           <label>{{card.method}}</label>
