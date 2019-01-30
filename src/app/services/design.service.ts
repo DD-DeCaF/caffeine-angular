@@ -61,24 +61,29 @@ export class DesignService {
 
   processDesigns(designs: DesignRequest[]): DesignRequest[] {
     for (let i = 0; i < designs.length; i++) {
-      designs[i].design.added_reactions = [];
-      for (let j = 0; j < designs[i].design.reaction_knockins.length; j++) {
-        const addedReaction = designs[i].design.reaction_knockins[j];
-        this.biggService.search(addedReaction).subscribe((react) => this.biggService.getDetails(react[0]).subscribe((r: AddedReaction) => {
-          if (!designs[i].design.added_reactions) {
-            designs[i].design.added_reactions = [];
-          }
-          designs[i].design.added_reactions.push(r);
-
-        }));
-      }
       this.http.get(`${environment.apis.model_storage}/models/${ designs[i].model_id}`).subscribe((model: DeCaF.Model) => {
+        if (designs[i].design.reaction_knockins.length > 0) {
+          for (let j = 0; j < designs[i].design.reaction_knockins.length; j++) {
+            const addedReaction = designs[i].design.reaction_knockins[j];
+            this.biggService.search(addedReaction).subscribe((react) => this.biggService.getDetails(react[0]).subscribe((r: AddedReaction) => {
+              if (!designs[i].design.added_reactions) {
+                designs[i].design.added_reactions = [];
+              }
+              designs[i].design.added_reactions.push(r);
+              model.model_serialized.reactions.push(mapBiggReactionToCobra(r));
+              for (let k = 0; k < r.metabolites_to_add.length; k++) {
+                model.model_serialized.metabolites.push(r.metabolites_to_add[k]);
+              }
+            }));
+          }
+        } else {
+          designs[i].design.added_reactions = [];
+        }
         designs[i].model = model;
       });
     }
     return designs;
   }
-
 
     // tslint:disable-next-line:no-any
   getOperations(design: DesignRequest): DeCaF.Operation [] {

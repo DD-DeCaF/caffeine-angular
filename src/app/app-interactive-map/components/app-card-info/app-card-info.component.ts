@@ -18,7 +18,7 @@ import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 
 import {AppState} from '../../../store/app.reducers';
-import {activeModels, activeModelsCard, getSelectedCard} from '../../store/interactive-map.selectors';
+import {activeModelsCard, getSelectedCard} from '../../store/interactive-map.selectors';
 import { HydratedCard, Method } from '../../types';
 import {SetMethod, RenameCard, ChangeSelectedSpecies, ChangeSelectedModel} from '../../store/interactive-map.actions';
 import { selectNotNull } from '../../../framework-extensions';
@@ -64,7 +64,6 @@ export class AppCardInfoComponent implements OnInit, AfterViewInit {
 
     this.modelsSelector.selectionChange
       .subscribe((change: MatSelectChange) => {
-        console.log('CHNAGE VALUE', change);
         this.store.dispatch(new ChangeSelectedModel(change.value));
       });
 

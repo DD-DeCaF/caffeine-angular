@@ -28,6 +28,7 @@ export interface DesignRequest {
     reaction_knockins: string[];
     reaction_knockouts: string[];
     added_reactions?: AddedReaction[];
+    model: DeCaF.Model;
   };
   id: number;
   model_id: number;

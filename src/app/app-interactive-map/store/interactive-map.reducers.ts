@@ -174,14 +174,6 @@ export function interactiveMapReducer(
       let saved: boolean;
       switch (type) {
         case CardType.Design: {
-          if (design) {
-            for (let i = 0; i < design.design.added_reactions.length; i++) {
-              design.model.model_serialized.reactions.push(mapBiggReactionToCobra(design.design.added_reactions[i]));
-              for (let j = 0; j < design.design.added_reactions[i].metabolites_to_add.length; j++) {
-                design.model.model_serialized.metabolites.push(design.design.added_reactions[i].metabolites_to_add[j]);
-              }
-            }
-          }
           designId = design ? design.id : pathwayPrediction ? pathwayPrediction.id : null;
           name = design ? design.name : pathwayPrediction ? pathwayPrediction.name : 'Design';
           model = design ? design.model.model_serialized : pathwayPrediction ? pathwayPrediction.model.model_serialized : state.selectedModel.model_serialized;

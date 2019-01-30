@@ -14,9 +14,8 @@
 
 import {createSelector} from '@ngrx/store';
 import {AppState} from '../../store/app.reducers';
-import {Card, DeCaF, HydratedCard, MapItem} from '../types';
+import {Card, HydratedCard, MapItem} from '../types';
 import { firstIfContains, unique } from '../../utils';
-import ModelHeader = DeCaF.ModelHeader;
 
 export const getCardIds = (state: AppState) => state.interactiveMap.cards.ids;
 

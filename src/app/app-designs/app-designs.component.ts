@@ -88,16 +88,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
             this.lastDesign = this.selection.selected.pop();
             this.store.dispatch(new AddCard(CardType.Design, this.lastDesign));
           } else {
-            if (this.lastDesign.design.added_reactions.length > 0) {
-              const lastAddedReaction = card.model.reactions.find((reaction) => reaction.id ===
-                this.lastDesign.design.added_reactions[this.lastDesign.design.added_reactions.length - 1].bigg_id);
-              if (lastAddedReaction) {
-                this.cardAdded = false;
-                this.router.navigateByUrl('/interactiveMap');
-              }
-            } else {
-              this.router.navigateByUrl('/interactiveMap');
-            }
+            this.router.navigateByUrl('/interactiveMap');
           }
         }
       }
