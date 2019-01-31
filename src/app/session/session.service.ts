@@ -26,6 +26,7 @@ import {AppState} from '../store/app.reducers';
 import {Logout, Login} from './store/session.actions';
 import {AUTHORIZATION_TOKEN, REFRESH_TOKEN} from './consts';
 import {FetchDesigns, FetchModels, FetchProjects} from '../store/shared.actions';
+import * as sharedActions from '../store/shared.actions';
 
 class UserCredentials {
   constructor(
@@ -149,6 +150,11 @@ export class SessionService {
   public logout(next: string = null): void {
     localStorage.removeItem(AUTHORIZATION_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
+    this.store.dispatch(new sharedActions.FetchMaps());
+    this.store.dispatch(new sharedActions.FetchModels());
+    this.store.dispatch(new sharedActions.FetchProjects());
+    this.store.dispatch(new sharedActions.FetchJobs());
+    this.store.dispatch(new sharedActions.FetchDesigns());
     this.store.dispatch(new Logout());
   }
 

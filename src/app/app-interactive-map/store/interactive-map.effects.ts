@@ -265,7 +265,7 @@ export class InteractiveMapEffects {
       }));
 
       const payload: types.SimulateRequest = {
-        model_id: store.interactiveMap.selectedModelHeader.id,
+        model_id: selectedCard.model_id,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
         objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,

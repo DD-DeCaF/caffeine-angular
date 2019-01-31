@@ -15,11 +15,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs';
+import {forkJoin, Observable, of} from 'rxjs';
 import {AddedReaction, DeCaF, HydratedCard} from '../app-interactive-map/types';
 import {DesignRequest} from '../app-designs/types';
 import {BiggSearchService} from '../app-interactive-map/components/app-reaction/components/app-panel/services/bigg-search.service';
-import {map} from 'rxjs/operators';
+import {flatMap} from 'rxjs/operators';
 import {mapBiggReactionToCobra} from '../lib';
 
 @Injectable()
@@ -30,7 +30,7 @@ export class DesignService {
   ) {
   }
 
-  saveDesign(card: HydratedCard, projectId: number): Observable<{id: number}> {
+  saveDesign(card: HydratedCard, projectId: number): Observable<{ id: number }> {
     const design = {
       'design': {
         'constraints': card.bounds.map((reaction) => Object.assign({
@@ -48,44 +48,31 @@ export class DesignService {
       'method': card.methodCard,
     };
     if (card.designId) {
-      return this.http.put<{id: number}>(`${environment.apis.design_storage}/designs/${card.designId}`, design);
+      return this.http.put<{ id: number }>(`${environment.apis.design_storage}/designs/${card.designId}`, design);
     } else {
-      return this.http.post<{id: number}>(`${environment.apis.design_storage}/designs`, design);
+      return this.http.post<{ id: number }>(`${environment.apis.design_storage}/designs`, design);
     }
   }
 
   getDesigns(): Observable<DesignRequest[]> {
-    return this.http.get<DesignRequest[]>(`${environment.apis.design_storage}/designs`).pipe(map((designs: DesignRequest[]) =>
-      this.processDesigns(designs)));
+    return this.http.get<DesignRequest[]>(`${environment.apis.design_storage}/designs`);
   }
 
-  processDesigns(designs: DesignRequest[]): DesignRequest[] {
-    for (let i = 0; i < designs.length; i++) {
-      this.http.get(`${environment.apis.model_storage}/models/${ designs[i].model_id}`).subscribe((model: DeCaF.Model) => {
-        if (designs[i].design.reaction_knockins.length > 0) {
-          for (let j = 0; j < designs[i].design.reaction_knockins.length; j++) {
-            const addedReaction = designs[i].design.reaction_knockins[j];
-            this.biggService.search(addedReaction).subscribe((react) => this.biggService.getDetails(react[0]).subscribe((r: AddedReaction) => {
-              if (!designs[i].design.added_reactions) {
-                designs[i].design.added_reactions = [];
-              }
-              designs[i].design.added_reactions.push(r);
-              model.model_serialized.reactions.push(mapBiggReactionToCobra(r));
-              for (let k = 0; k < r.metabolites_to_add.length; k++) {
-                model.model_serialized.metabolites.push(r.metabolites_to_add[k]);
-              }
-            }));
-          }
-        } else {
-          designs[i].design.added_reactions = [];
-        }
-        designs[i].model = model;
-      });
+  getAddedReactions(reactions_knockins: string[]): Observable<AddedReaction[]> {
+    const addedReactions = reactions_knockins.map((reaction) => {
+      return this.biggService.search(reaction).pipe(
+        // tslint:disable-next-line:no-any
+        flatMap((reactions: AddedReaction[]) => {
+          return this.biggService.getDetails(reactions[0]);
+        }));
+    });
+
+    if (addedReactions.length === 0) {
+      return of([]);
     }
-    return designs;
+    return forkJoin(addedReactions);
   }
 
-    // tslint:disable-next-line:no-any
   getOperations(design: DesignRequest): DeCaF.Operation [] {
     const knockoutsReactions = design.design.reaction_knockouts.map((reaction) => Object.assign({
       data: null,

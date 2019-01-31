@@ -43,7 +43,9 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   private mapObservable;
   private loadingObservable;
   private errorObservable;
-
+  public designs;
+  public auth;
+  public loading = true;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -60,7 +62,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
+    this.designs = this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
       this.dataSource.data = designs;
     });
     this.dataSource.sort = this.sort;
@@ -157,6 +159,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.designs.unsubscribe();
     this.mapObservable.unsubscribe();
     if (this.loadingObservable) {
       this.loadingObservable.unsubscribe();
