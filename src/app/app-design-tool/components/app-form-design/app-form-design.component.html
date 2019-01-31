@@ -120,15 +120,13 @@
     <div fxFlex fxLayoutAlign="space-between">
       <button
         type="button"
-        mat-flat-button
-        color="primary"
+        mat-button
         (click)="cancelProject()"
       >Cancel
       </button>
       <button
         type="button"
-        mat-flat-button
-        color="accent"
+        mat-button
         (click)="submitProject()"
         [disabled]="!isValidProject()"
       >
