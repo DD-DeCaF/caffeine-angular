@@ -49,12 +49,11 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Project* {{selectedProject}}</mat-label>
+            <mat-label class="title">Project*</mat-label>
             <mat-select type="text"
                         color="primary"
                         class="form-control"
-                        formControlName="project_id"
-                        [(value)]="selectedProject">
+                        formControlName="project_id">
               <mat-option color="primary"
                           class="mat-primary"
                           [value]="project.id"
@@ -117,49 +116,54 @@
         </form>
       </div>
     </div>
-    <div class="create-organism" *ngIf="addModelForm.value.organism_id === 'add'">
-      <h3 class="title">Add new organism</h3>
-      <mat-form-field>
-        <mat-label class="title">Organism name*</mat-label>
-        <input matInput cdkFocusInitial #neworganism/>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label class="title">Project*</mat-label>
-        <mat-select type="text"
-                    color="primary"
-                    class="form-control"
-                    [(value)]="selectedProject"
-                    #neworganism_project>
-          <mat-option color="primary"
-                      class="mat-primary"
-                      [value]="project.id"
-                      *ngFor="let project of (allProjects | async)">{{project.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-card-actions align="end">
-        <div fxFlex></div>
-        <div fxFlex fxLayoutAlign="space-between">
-          <button
-            type="button"
-            mat-flat-button
-            color="primary"
-            (click)="cancelOrganism()"
-          >Cancel
-          </button>
-          <button
-            type="button"
-            mat-flat-button
-            color="accent"
-            (click)="submitOrganism()"
-            [disabled]="!isValidOrganism()"
-          >
-            Create
-          </button>
-        </div>
-      </mat-card-actions>
+    <div class="create-organism" *ngIf="addModelForm.value.organism_id === 'add' && addOrganismForm.value.project_id !== 'add'">
+      <form class="model-form" [formGroup]="addOrganismForm">
+          <h3 class="title">Add new organism</h3>
+          <mat-form-field>
+            <mat-label class="title">Organism name*</mat-label>
+            <input matInput cdkFocusInitial formControlName="organism_name"/>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label class="title">Project*</mat-label>
+            <mat-select type="text"
+                        color="primary"
+                        class="form-control"
+                        formControlName="project_id">
+              <mat-option color="primary"
+                          class="mat-primary"
+                          [value]="project.id"
+                          *ngFor="let project of (allProjects | async)">{{project.name}}
+              </mat-option>
+              <mat-option [value]="'add'">
+                <mat-icon>add_circle</mat-icon>
+                Add project
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-card-actions align="end">
+            <div fxFlex></div>
+            <div fxFlex fxLayoutAlign="space-between">
+              <button
+                type="button"
+                mat-flat-button
+                color="primary"
+                (click)="cancelOrganism()"
+              >Cancel
+              </button>
+              <button
+                type="button"
+                mat-flat-button
+                color="accent"
+                (click)="submitOrganism()"
+                [disabled]="!isValidOrganism()"
+              >
+                Create
+              </button>
+            </div>
+          </mat-card-actions>
+      </form>
     </div>
-    <div class="create-project" *ngIf="addModelForm.value.project_id === 'add'">
+    <div class="create-project" *ngIf="addModelForm.value.project_id === 'add' || addOrganismForm.value.project_id === 'add'">
       <h3 class="title">Add new project</h3>
       <mat-form-field>
         <mat-label class="title">Project name*</mat-label>

@@ -25,7 +25,7 @@ export class IamService {
     private http: HttpClient,
   ) {}
 
-  createProject(project: Project): Observable<Project> {
-    return this.http.post<Project>(`${environment.apis.iam}/projects`, project);
+  createProject(project: Project): Observable<{project_id: number}> {
+    return this.http.post<{project_id: number}>(`${environment.apis.iam}/projects`, project);
   }
 }
