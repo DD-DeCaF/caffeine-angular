@@ -13,19 +13,26 @@
 // limitations under the License.
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+
 import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
-import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap, SetOperations} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
-import {CardType, HydratedCard} from '../../types';
+import {CardType, Condition, DeCaF, Experiment, HydratedCard, Method} from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
 import {SelectProjectComponent} from './components/select-project/select-project.component';
+import {ShowHelpComponent} from './components/show-help/show-help.component';
+import {environment} from '../../../../environments/environment';
+import * as actions from '../../../store/shared.actions';
+import Operation = DeCaF.Operation;
+
 import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
@@ -44,7 +51,17 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public playing: Observable<boolean>;
   public selectedProjectId: number;
   public expandedCard: HydratedCard = null;
+  public selectedCard: HydratedCard = null;
   public tabIndex: number = null;
+  public experiments: Observable<Experiment[]>;
+  public conditions: Condition[];
+
+  public methods: Method[] = [
+    {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
+    {id: 'pfba', name: 'Parsimonious FBA'},
+    {id: 'fva', name: 'Flux Variability Analysis (FVA)'},
+    {id: 'pfba-fva', name: 'Parsimonious FVA'},
+  ];
   public selectedMap: Observable<types.MapItem>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
 
@@ -56,12 +73,15 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
+    private http: HttpClient,
     private modelService: ModelService) {
   }
 
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
+    this.experiments = this.store.pipe(select((store) => store.shared.experiments));
+
     this.store.pipe(
       select((store) => store.shared.selectedProject)).subscribe((project) => {
       this.selectedProjectId = project ? project.id : null;
@@ -69,6 +89,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
     this.store.pipe(
       selectNotNull(getSelectedCard)).subscribe((card) => {
+      this.selectedCard = card;
       if (this.expandedCard) {
         this.expandedCard = card;
       }
@@ -144,7 +165,6 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public save(card: HydratedCard, projectId: number): void {
-
     if (card.projectId) {
       this.store.dispatch(new SaveDesign(card, card.projectId));
     } else {
@@ -160,6 +180,28 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
           });
       }
     }
+  }
+
+  public experimentChanged(event: MatSelect): void {
+    this.http.get(`${environment.apis.warehouse}/experiments/${event.value}/conditions`).subscribe((conditions: Condition[]) => {
+      this.conditions = conditions;
+      console.log('conditions', conditions);
+    });
+  }
+
+  public conditionChanged(event: MatSelect): void {
+    this.http.get(`${environment.apis.warehouse}/conditions/${event.value}/data`).subscribe((condition) => {
+      console.log('CONDITIONS', condition);
+      this.http.post(`${environment.apis.model}/models/${this.selectedCard.model_id}/modify`, condition).subscribe((operations: Operation[]) => {
+        console.log('operations', operations);
+        this.store.dispatch(new SetOperations(operations));
+      });
+    });
+  }
+
+  public showHelp(event: Event): void {
+    event.stopPropagation();
+    this.dialog.open(ShowHelpComponent);
   }
 
   public getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {

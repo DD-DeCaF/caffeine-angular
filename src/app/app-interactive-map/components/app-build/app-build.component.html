@@ -40,6 +40,7 @@
                   [matTooltipPosition]="'after'">Design
           </button>
           <button mat-menu-item
+                  (click)="addDataDrivenCard()"
                   matTooltip="Integrate experimental data with models."
                   [matTooltipPosition]="'after'">Data driven
           </button>
@@ -78,7 +79,8 @@
             matTooltip="Unsaved strain" *ngIf="expandedCard.saved === false">*</span>
           </h4>
         </div>
-        <button mat-button *ngIf="expandedCard.saved === false" (click)="save(expandedCard, selectedProjectId)">SAVE</button>
+        <button mat-button *ngIf="expandedCard.saved === false" (click)="save(expandedCard, selectedProjectId)">SAVE
+        </button>
       </div>
 
       <mat-tab-group mat-stretch-tabs [selectedIndex]="tabIndex">
@@ -143,8 +145,41 @@
           <label>{{formatGrowthRate(card.solution.growth_rate)}} <i>h<sup>-1</sup></i></label>
         </div>
       </div>
+      <div *ngIf="card.type === 1" [hidden]="!card.selected">
+        <mat-card class="remove-box-shadow" fxLayout="column">
+          <mat-form-field>
+            <div>
+              <mat-label>Method</mat-label>
+              <div fxFlex></div>
+              <button mat-icon-button (click)='showHelp($event)'>
+                <mat-icon style="vertical-align: super">help_outline</mat-icon>
+              </button>
+            </div>
+            <mat-select [value]="card.method" #method>
+              <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Experiment</mat-label>
+            <mat-select (selectionChange)="experimentChanged($event)">
+              <mat-option *ngFor="let experiment of (experiments | async)" [value]="experiment.id">{{experiment.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Conditions</mat-label>
+            <mat-select (selectionChange)="conditionChanged($event)">
+              <mat-option *ngFor="let condition of conditions" [value]="condition.id">{{condition.name}},
+                {{condition.protocol}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-card>
+      </div>
       <div fxLayoutAlign="end space-around" *ngIf="card.saved === false && card.selected" class="save-button">
-        <button  mat-flat-button class="save-button" style="color: white" (click)="save(card)">SAVE</button>
+        <button mat-flat-button class="save-button" style="color: white" (click)="save(card)">SAVE</button>
       </div>
     </div>
   </div>

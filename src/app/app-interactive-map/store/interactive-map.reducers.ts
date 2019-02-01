@@ -185,6 +185,8 @@ export function interactiveMapReducer(
         }
         case CardType.DataDriven: {
           name = 'Data Driven';
+          model = state.selectedModel.model_serialized;
+          model_id = state.selectedModel.id;
           break;
         }
         default:
@@ -266,6 +268,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY:
+    case fromInteractiveMapActions.SET_OPERATIONS:
     case fromInteractiveMapActions.CHANGE_SELECTED_SPECIES:
     case fromInteractiveMapActions.SET_SELECTED_MODEL:
     case fromInteractiveMapActions.SAVE_NEW_DESIGN: {
@@ -327,6 +330,9 @@ export function interactiveMapReducer(
             saved: saved || false,
             [operationTarget]: result,
           };
+          break;
+        }
+        case fromInteractiveMapActions.SET_OPERATIONS: {
           break;
         }
         case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {

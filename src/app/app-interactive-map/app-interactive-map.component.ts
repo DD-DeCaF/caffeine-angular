@@ -34,6 +34,15 @@ import {PathwayMap} from '@dd-decaf/escher';
 import {withLatestFrom} from 'rxjs/operators';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
+const deleteFlux = (
+  // tslint:disable:no-any
+  (obj: {[key: string]: any}) =>
+  Object.assign(
+    {},
+    ...Object.entries(obj)
+      .map(([key, value]) => ({[key]: null})),
+  ));
+// tslint:enable:no-any
 
 @Component({
   selector: 'app-interactive-map',
@@ -120,12 +129,19 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
       this.card = card;
-      builder.load_model(card.model);
-      builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-      builder.set_knockout_reactions(card.knockoutReactions);
-      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
-      builder.set_knockout_genes(card.knockoutGenes);
-      builder._update_data(true, true);
+      if (card.type === 1) {
+        console.log('CAARD SOLUTION', deleteFlux(card.solution.flux_distribution));
+        builder.load_model(card.model);
+        builder.set_reaction_data(deleteFlux(card.solution.flux_distribution));
+        builder._update_data(true, true);
+      } else {
+        builder.load_model(card.model);
+        builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        builder.set_knockout_reactions(card.knockoutReactions);
+        builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+        builder.set_knockout_genes(card.knockoutGenes);
+        builder._update_data(true, true);
+      }
       this.store.dispatch(new fromActions.Loaded());
       this.loading = false;
     });

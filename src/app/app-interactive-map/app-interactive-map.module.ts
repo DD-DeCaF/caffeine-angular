@@ -33,6 +33,7 @@ import {WarehouseService} from '../services/warehouse.service';
 import {AppRoutingModule} from '../app-routing.module';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {SelectProjectComponent} from './components/app-build/components/select-project/select-project.component';
+import {ShowHelpComponent} from './components/app-build/components/show-help/show-help.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import {SelectProjectComponent} from './components/app-build/components/select-p
     AppLegendComponent,
     LoaderComponent,
     ModalErrorComponent,
+    ShowHelpComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +66,6 @@ import {SelectProjectComponent} from './components/app-build/components/select-p
   exports: [
     AppInteractiveMapComponent,
   ],
-  entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent],
+  entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent, ShowHelpComponent],
 })
 export class AppInteractiveMapModule {}
