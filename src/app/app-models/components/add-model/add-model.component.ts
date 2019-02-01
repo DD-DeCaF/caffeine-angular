@@ -19,14 +19,14 @@ import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AddModel} from '../../store/models.actions';
-import {Project} from 'src/app/projects/types';
-import {MatDialog, MatSelect, MatSnackBar} from '@angular/material';
+import {Project, NewProjectResponse} from 'src/app/projects/types';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {AddedModelComponent} from './added-model.component';
 import * as actions from '../../../store/shared.actions';
 import {SessionService} from '../../../session/session.service';
 import {IamService} from '../../../services/iam.service';
 import {WarehouseService} from '../../../services/warehouse.service';
-import {NewSpecies} from '../../types';
+import {NewSpecies, NewSpeciesResponse} from '../../types';
 import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
 import {ModelService} from '../../../services/model.service';
 
@@ -40,21 +40,19 @@ import {ModelService} from '../../../services/model.service';
 export class AddModelComponent implements OnInit, OnDestroy {
 
   @ViewChild('newproject') newProject: ElementRef;
-  @ViewChild('neworganism') newOrganism: ElementRef;
-  @ViewChild('neworganism_project') newOrganismProject: MatSelect;
 
   public allSpecies: Observable<types.Species[]>;
   public allProjects: Observable<Project[]>;
   public model: types.DeCaF.Model;
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public addModelForm: FormGroup;
+  public addOrganismForm: FormGroup;
   public error: Observable<Boolean>;
   public fileType = '.json';
   public reactions: string[] = [];
   public modelError = false;
   public addedModel = false;
   public loading = false;
-  public selectedProject: number;
   public project: Project = {
     id: null,
     name: '',
@@ -97,9 +95,16 @@ export class AddModelComponent implements OnInit, OnDestroy {
       default_biomass_reaction: ['', Validators.required],
       preferred_map_id: [null],
     });
+    this.addOrganismForm = this.fb.group({
+      organism_name: ['', Validators.required],
+      project_id: ['', Validators.required],
+    });
     this.store.pipe(
       select((store) => store.shared.selectedProject)).subscribe((project) => {
       this.addModelForm.patchValue({
+        project_id: project ? project.id : null,
+      });
+      this.addOrganismForm.patchValue({
         project_id: project ? project.id : null,
       });
     });
@@ -154,17 +159,21 @@ export class AddModelComponent implements OnInit, OnDestroy {
     };
     this.iamService.createProject(project).subscribe(
       // Refresh the token to include the newly created project when fetching new projects
-      () => this.session.refresh().subscribe(
+      (p: NewProjectResponse) => this.session.refresh().subscribe(
         () => {
           this.snackBar.open(`Project ${project.name} created`, '', {
             duration: 2000,
           });
           this.store.dispatch(new actions.FetchProjects());
-          this.store.pipe(select((store) => store.shared.projects)).subscribe((projects) => {
+          if (this.addModelForm.value.project_id === 'add') {
             this.addModelForm.patchValue({
-              project_id: projects.slice(-1).pop().id,
+              project_id: p.project_id,
             });
-          });
+          } else if (this.addOrganismForm.value.project_id === 'add') {
+            this.addOrganismForm.patchValue({
+              project_id: p.project_id,
+            });
+          }
         },
       ),
     );
@@ -172,17 +181,20 @@ export class AddModelComponent implements OnInit, OnDestroy {
 
   submitOrganism(): void {
     const organism: NewSpecies = {
-      name: this.newOrganism.nativeElement.value,
-      project_id: this.newOrganismProject.value,
+      name: this.addOrganismForm.value.organism_name,
+      project_id: this.addOrganismForm.value.project_id,
     };
-    this.warehouseService.createOrganisms(organism).subscribe(() => {
-      this.store.dispatch(new actions.FetchSpecies());
-      this.store.pipe(select((store) => store.shared.allSpecies)).subscribe((species) => {
-        this.addModelForm.patchValue({
-          organism_id: species.slice(-1).pop().id,
+    this.warehouseService.createOrganisms(organism).subscribe(
+      (s: NewSpeciesResponse) => {
+        this.snackBar.open(`Organism ${organism.name} created`, '', {
+          duration: 2000,
         });
-      });
-    });
+        this.store.dispatch(new actions.FetchSpecies());
+        this.addModelForm.patchValue({
+          organism_id: s.id,
+        });
+      },
+    );
   }
 
   isValidProject(): boolean {
@@ -194,17 +206,19 @@ export class AddModelComponent implements OnInit, OnDestroy {
   }
 
   isValidOrganism(): boolean {
-    if (this.newOrganism && this.newOrganismProject) {
-      return Boolean(this.newOrganism.nativeElement.value && this.newOrganismProject.value);
-    } else {
-      return false;
-    }
+    return this.addOrganismForm.value.organism_name && this.addOrganismForm.value.project_id;
   }
 
   cancelProject(): void {
-    this.addModelForm.patchValue({
-      project_id: '',
-    });
+    if (this.addModelForm.value.project_id === 'add') {
+      this.addModelForm.patchValue({
+        project_id: '',
+      });
+    } else if (this.addOrganismForm.value.project_id === 'add') {
+      this.addOrganismForm.patchValue({
+        project_id: '',
+      });
+    }
   }
 
   cancelOrganism(): void {
@@ -222,4 +236,3 @@ export class AddModelComponent implements OnInit, OnDestroy {
     return this.modelService.getModel(id, models);
   }
 }
-
