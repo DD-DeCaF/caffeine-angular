@@ -39,7 +39,7 @@
                         #species>
               <mat-option color="primary"
                           class="mat-primary"
-                          [value]="species.id.toString()"
+                          [value]="species.id"
                           *ngFor="let species of (allSpecies | async)">{{species.name}}
               </mat-option>
               <mat-option value="add">

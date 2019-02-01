@@ -16,7 +16,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
-import {Project} from '../projects/types';
+import {Project, NewProjectResponse} from '../projects/types';
 
 @Injectable()
 export class IamService {
@@ -25,7 +25,7 @@ export class IamService {
     private http: HttpClient,
   ) {}
 
-  createProject(project: Project): Observable<{project_id: number}> {
-    return this.http.post<{project_id: number}>(`${environment.apis.iam}/projects`, project);
+  createProject(project: Project): Observable<NewProjectResponse> {
+    return this.http.post<NewProjectResponse>(`${environment.apis.iam}/projects`, project);
   }
 }

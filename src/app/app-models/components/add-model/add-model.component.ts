@@ -19,14 +19,14 @@ import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AddModel} from '../../store/models.actions';
-import {Project} from 'src/app/projects/types';
+import {Project, NewProjectResponse} from 'src/app/projects/types';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AddedModelComponent} from './added-model.component';
 import * as actions from '../../../store/shared.actions';
 import {SessionService} from '../../../session/session.service';
 import {IamService} from '../../../services/iam.service';
 import {WarehouseService} from '../../../services/warehouse.service';
-import {NewSpecies} from '../../types';
+import {NewSpecies, NewSpeciesResponse} from '../../types';
 import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
 import {ModelService} from '../../../services/model.service';
 
@@ -159,7 +159,7 @@ export class AddModelComponent implements OnInit, OnDestroy {
     };
     this.iamService.createProject(project).subscribe(
       // Refresh the token to include the newly created project when fetching new projects
-      (p: {project_id: number}) => this.session.refresh().subscribe(
+      (p: NewProjectResponse) => this.session.refresh().subscribe(
         () => {
           this.snackBar.open(`Project ${project.name} created`, '', {
             duration: 2000,
@@ -184,14 +184,17 @@ export class AddModelComponent implements OnInit, OnDestroy {
       name: this.addOrganismForm.value.organism_name,
       project_id: this.addOrganismForm.value.project_id,
     };
-    this.warehouseService.createOrganisms(organism).subscribe(() => {
-      this.store.dispatch(new actions.FetchSpecies());
-      this.store.pipe(select((store) => store.shared.allSpecies)).subscribe((species) => {
-        this.addModelForm.patchValue({
-          organism_id: species.slice(-1).pop().id,
+    this.warehouseService.createOrganisms(organism).subscribe(
+      (s: NewSpeciesResponse) => {
+        this.snackBar.open(`Organism ${organism.name} created`, '', {
+          duration: 2000,
         });
-      });
-    });
+        this.store.dispatch(new actions.FetchSpecies());
+        this.addModelForm.patchValue({
+          organism_id: s.id,
+        });
+      },
+    );
   }
 
   isValidProject(): boolean {
