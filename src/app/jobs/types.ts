@@ -39,7 +39,7 @@ export interface PathwayPredictionResult {
   id: number;
   host: string;
   model: DeCaF.Model;
-  manipulations?: {
+  manipulations: {
     direction: 'delta' | 'down' | 'up';
     value: string;
     id: string;
@@ -80,7 +80,7 @@ export interface PathwayResponse {
   status: string;
   project_id: number;
   type?: string;
-  result: {
+  result?: {
     reactions: PathwayPredictionReactions[];
     diff_fva: PathwayPredictionResult[];
     cofactor_swap: PathwayPredictionResult[];
