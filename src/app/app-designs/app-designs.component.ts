@@ -44,8 +44,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   private loadingObservable;
   private errorObservable;
   public designs;
-  public auth;
-  public loading = true;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -59,11 +57,23 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
   ) {
+    this.openDialog();
   }
 
   ngOnInit(): void {
     this.designs = this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
       this.dataSource.data = designs;
+      if (designs.length > 0) {
+        this.dialog.closeAll();
+      } else {
+        this.store.pipe(select((store) => store.session.authenticated)).subscribe((auth) => {
+          if (!auth) {
+            this.dialog.closeAll();
+          } else {
+            setTimeout(() => this.openDialog(), 0);
+          }
+        });
+      }
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -156,6 +166,17 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach((row) => this.selection.select(row));
+  }
+
+  public openDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+    dialogConfig.id = 'loading';
+    if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
+      this.dialog.open(LoaderComponent, dialogConfig);
+    }
   }
 
   ngOnDestroy(): void {
