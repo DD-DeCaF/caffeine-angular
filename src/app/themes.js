@@ -12,32 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
+const colors = [
+  'red',
+  'green',
+  'pink',
+  'cyan',
+  'purple',
+  'yellow',
+  'deep-purple',
+  'lime',
+  'indigo',
+  'amber',
+  'blue',
+  'orange',
+  'teal',
+  'deep-orange',
+  'light-green',
+  'brown',
+  'grey',
+  'blue-grey',
+  'light-blue',
+];
 
-.status-item {
-  display: inline-block;
-  margin-right: 12px;
-}
-
-.status-item-pending {
-  vertical-align: super;
-}
-
-.mat-column-details {
-  text-align: right;
-  width: 50px;
-}
-
-.mat-button {
-  cursor: pointer;
-}
-
-.load-error p {
-  padding: 20px 10px;
-}
+module.exports = {
+  colors,
+  themes: colors.map((color) => `${color}-theme`),
+};

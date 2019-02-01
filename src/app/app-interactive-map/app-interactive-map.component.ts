@@ -30,6 +30,8 @@ import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {SetMap} from './store/interactive-map.actions';
+import {PathwayMap} from '@dd-decaf/escher';
+import {withLatestFrom} from 'rxjs/operators';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 const deleteFlux = (
@@ -57,6 +59,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
   private selectedCard;
   private selectedCardBuilder;
   private mapObservable;
+  private updateReactions;
   private loadingObservable;
   private errorObservable;
 
@@ -90,7 +93,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     private elRef: ElementRef,
     private store: Store<AppState>,
     private dialog: MatDialog,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     const builderObservable = this.builderSubject.asObservable();
@@ -105,6 +109,18 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     this.selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
     );
+
+    this.updateReactions = this.store.pipe(
+      selectNotNull((store) => store.interactiveMap.mapData)).pipe(
+      withLatestFrom(
+        this.selectedCard,
+        builderObservable,
+      )).subscribe(([map, card, builder]: [PathwayMap, Card, escher.BuilderObject]) => {
+      builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+      builder.set_knockout_reactions(card.knockoutReactions);
+      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder.set_knockout_genes(card.knockoutGenes);
+    });
 
     // Detect changes in model only..
     this.selectedCardBuilder = combineLatest(
@@ -158,8 +174,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       } else {
         this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
           if (loadingError && !error) {
-              setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
-              error = true;
+            setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
+            error = true;
           } else {
             this.dialog.closeAll();
             error = false;
@@ -274,6 +290,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       this.store.dispatch(new SetMap(map));
     });
     this.mapObservable.unsubscribe();
+    this.updateReactions.unsubscribe();
     this.loadingObservable.unsubscribe();
     if (this.errorObservable) {
       this.errorObservable.unsubscribe();

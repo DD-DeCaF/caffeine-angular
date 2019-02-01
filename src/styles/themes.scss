@@ -1,0 +1,263 @@
+// Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+@import '~@angular/material/theming';
+@import 'metabolica';
+
+
+// red theme
+$red-primary: mat-palette($mat-red);
+
+$red-theme: mat-light-theme($red-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.red-theme {
+  @include angular-material-theme($red-theme);
+  @include app-build-component($red-theme);
+  @include app-reaction-panel-component($red-theme);
+  @include jobs-details($red-theme);
+}
+
+
+// pink theme
+$pink-primary: mat-palette($mat-pink);
+
+$pink-theme: mat-light-theme($pink-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.pink-theme {
+  @include angular-material-theme($pink-theme);
+  @include app-build-component($pink-theme);
+  @include app-reaction-panel-component($pink-theme);
+  @include jobs-details($pink-theme);
+}
+
+
+// purple theme
+$purple-primary: mat-palette($mat-purple);
+
+$purple-theme: mat-light-theme($purple-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.purple-theme {
+  @include angular-material-theme($purple-theme);
+  @include app-build-component($purple-theme);
+  @include app-reaction-panel-component($purple-theme);
+  @include jobs-details($purple-theme);
+}
+
+
+// deep-purple theme
+$deep-purple-primary: mat-palette($mat-deep-purple);
+
+$deep-purple-theme: mat-light-theme($deep-purple-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.deep-purple-theme {
+  @include angular-material-theme($deep-purple-theme);
+  @include app-build-component($deep-purple-theme);
+  @include app-reaction-panel-component($deep-purple-theme);
+  @include jobs-details($deep-purple-theme);
+}
+
+
+// indigo theme
+$indigo-primary: mat-palette($mat-indigo);
+
+$indigo-theme: mat-light-theme($indigo-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.indigo-theme {
+  @include angular-material-theme($indigo-theme);
+  @include app-build-component($indigo-theme);
+  @include app-reaction-panel-component($indigo-theme);
+  @include jobs-details($indigo-theme);
+}
+
+
+// blue theme
+$blue-primary: mat-palette($mat-blue);
+
+$blue-theme: mat-light-theme($blue-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.blue-theme {
+  @include angular-material-theme($blue-theme);
+  @include app-build-component($blue-theme);
+  @include app-reaction-panel-component($blue-theme);
+  @include jobs-details($blue-theme);
+}
+
+
+// light-blue theme
+$light-blue-primary: mat-palette($mat-light-blue);
+
+$light-blue-theme: mat-light-theme($light-blue-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.light-blue-theme {
+  @include angular-material-theme($light-blue-theme);
+  @include app-build-component($light-blue-theme);
+  @include app-reaction-panel-component($light-blue-theme);
+  @include jobs-details($light-blue-theme);
+}
+
+
+// cyan theme
+$cyan-primary: mat-palette($mat-cyan);
+
+$cyan-theme: mat-light-theme($cyan-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.cyan-theme {
+  @include angular-material-theme($cyan-theme);
+  @include app-build-component($cyan-theme);
+  @include app-reaction-panel-component($cyan-theme);
+  @include jobs-details($cyan-theme);
+}
+
+
+// teal theme
+$teal-primary: mat-palette($mat-teal);
+
+$teal-theme: mat-light-theme($teal-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.teal-theme {
+  @include angular-material-theme($teal-theme);
+  @include app-build-component($teal-theme);
+  @include app-reaction-panel-component($teal-theme);
+  @include jobs-details($teal-theme);
+}
+
+
+// green theme
+$green-primary: mat-palette($mat-green);
+
+$green-theme: mat-light-theme($green-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.green-theme {
+  @include angular-material-theme($green-theme);
+  @include app-build-component($green-theme);
+  @include app-reaction-panel-component($green-theme);
+  @include jobs-details($green-theme);
+}
+
+
+// light-green theme
+$light-green-primary: mat-palette($mat-light-green);
+
+$light-green-theme: mat-light-theme($light-green-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.light-green-theme {
+  @include angular-material-theme($light-green-theme);
+  @include app-build-component($light-green-theme);
+  @include app-reaction-panel-component($light-green-theme);
+  @include jobs-details($light-green-theme);
+}
+
+
+// lime theme
+$lime-primary: mat-palette($mat-lime);
+
+$lime-theme: mat-light-theme($lime-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.lime-theme {
+  @include angular-material-theme($lime-theme);
+  @include app-build-component($lime-theme);
+  @include app-reaction-panel-component($lime-theme);
+  @include jobs-details($lime-theme);
+}
+
+
+// yellow theme
+$yellow-primary: mat-palette($mat-yellow);
+
+$yellow-theme: mat-light-theme($yellow-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.yellow-theme {
+  @include angular-material-theme($yellow-theme);
+  @include app-build-component($yellow-theme);
+  @include app-reaction-panel-component($yellow-theme);
+  @include jobs-details($yellow-theme);
+}
+
+
+// amber theme
+$amber-primary: mat-palette($mat-amber);
+
+$amber-theme: mat-light-theme($amber-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.amber-theme {
+  @include angular-material-theme($amber-theme);
+  @include app-build-component($amber-theme);
+  @include app-reaction-panel-component($amber-theme);
+  @include jobs-details($amber-theme);
+}
+
+
+// orange theme
+$orange-primary: mat-palette($mat-orange);
+
+$orange-theme: mat-light-theme($orange-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.orange-theme {
+  @include angular-material-theme($orange-theme);
+  @include app-build-component($orange-theme);
+  @include app-reaction-panel-component($orange-theme);
+  @include jobs-details($orange-theme);
+}
+
+
+// deep-orange theme
+$deep-orange-primary: mat-palette($mat-deep-orange);
+
+$deep-orange-theme: mat-light-theme($deep-orange-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.deep-orange-theme {
+  @include angular-material-theme($deep-orange-theme);
+  @include app-build-component($deep-orange-theme);
+  @include app-reaction-panel-component($deep-orange-theme);
+  @include jobs-details($deep-orange-theme);
+}
+
+
+// brown theme
+$brown-primary: mat-palette($mat-brown);
+
+$brown-theme: mat-light-theme($brown-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.brown-theme {
+  @include angular-material-theme($brown-theme);
+  @include app-build-component($brown-theme);
+  @include app-reaction-panel-component($brown-theme);
+  @include jobs-details($brown-theme);
+}
+
+
+// grey theme
+$grey-primary: mat-palette($mat-grey);
+
+$grey-theme: mat-light-theme($grey-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.grey-theme {
+  @include angular-material-theme($grey-theme);
+  @include app-build-component($grey-theme);
+  @include app-reaction-panel-component($grey-theme);
+  @include jobs-details($grey-theme);
+}
+
+
+// blue-grey theme
+$blue-grey-primary: mat-palette($mat-blue-grey);
+
+$blue-grey-theme: mat-light-theme($blue-grey-primary, $metabolica-app-accent, $metabolica-app-warn);
+
+.blue-grey-theme {
+  @include angular-material-theme($blue-grey-theme);
+  @include app-build-component($blue-grey-theme);
+  @include app-reaction-panel-component($blue-grey-theme);
+  @include jobs-details($blue-grey-theme);
+}

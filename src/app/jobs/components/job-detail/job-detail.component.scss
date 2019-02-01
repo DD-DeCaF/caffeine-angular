@@ -31,3 +31,12 @@
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
+.pending-status {
+  display: flex;
+  align-items: center;
+}
+
+.pending-item {
+  margin-right: 12px;
+}

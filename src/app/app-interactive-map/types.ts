@@ -76,6 +76,7 @@ export interface Card {
   name: string;
   model: Cobra.Model;
   model_id: number;
+  species: Species;
   solution: DeCaF.Solution;
   method: Methods;
   addedReactions: AddedReaction[];

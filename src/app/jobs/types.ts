@@ -39,45 +39,59 @@ export interface PathwayPredictionResult {
   id: number;
   host: string;
   model: DeCaF.Model;
-  manipulations: {
+  manipulations?: {
     direction: 'delta' | 'down' | 'up';
     value: string;
+    id: string;
   }[];
   knockouts: string[];
-  heterologous_pathway: string[];
+  heterologous_reactions: string[];
   fitness: number;
   yield: number;
   product: number;
   biomass: number;
+  exotic_cofactors: string[];
   method: string;
+  synthetic_reactions: string[];
   name?: string;
   model_id?: number;
 }
 
 export interface PathwayPredictionReactions {
   annotation: {
-  Description: string;
-   EC: string;
+    Description: string;
+    EC: string;
    };
-gene_reaction_rule: string;
-id: string;
-lower_bound: number;
-metabolites: Metabolite[];
-name: string;
-upper_bound: number;
+  gene_reaction_rule: string;
+  id: string;
+  lower_bound: number;
+  metabolites: Metabolite[];
+  name: string;
+  upper_bound: number;
 }
 
 export interface PathwayResponse {
+  created: string;
   id: number;
+  max_predictions: number;
   model_id: number;
   organism_id: number;
+  product_name: string;
   status: string;
-  task_id: string;
+  project_id: number;
   type?: string;
   result: {
-    table: PathwayPredictionResult[];
     reactions: PathwayPredictionReactions[];
     diff_fva: PathwayPredictionResult[];
     cofactor_swap: PathwayPredictionResult[];
+    opt_gene: PathwayPredictionResult[];
+    metabolites;
   };
+  updated: string;
+}
+
+export interface Manipulation {
+  direction: string;
+  id: string;
+  value: number;
 }

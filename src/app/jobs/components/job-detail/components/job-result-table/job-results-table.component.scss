@@ -109,3 +109,39 @@ tr.expanded > td {
 .inline {
   display: inline;
 }
+.mat-header-cell p {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.units {
+  vertical-align: central;
+  margin-left: 3px;
+  font-size: 10px;
+}
+
+.jobs-table {
+  mat-cell, .mat-cell,
+  mat-header-cell, .mat-header-cell {
+    padding: 0 16px 0 0;
+  }
+
+  mat-cell, .mat-cell:last-child,
+  mat-header-cell, .mat-header-cell:last-child {
+    padding: 0;
+  }
+}
+
+.legend-manipulations {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.legend-text-manipulation {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+}
+
+.legend-icon {
+  font-size: 16px
+}

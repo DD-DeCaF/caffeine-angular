@@ -52,6 +52,9 @@ export const SET_OBJECTIVE_REACTION_APPLY = 'SET_OBJECTIVE_REACTION_APPLY';
 export const SAVE_DESIGN = 'SAVE_DESIGN';
 export const SAVE_NEW_DESIGN = 'SAVE_NEW_DESIGN';
 export const SET_OPERATIONS = 'SET_OPERATIONS';
+export const CHANGE_SELECTED_SPECIES = 'CHANGE_SELECTED_SPECIES';
+export const CHANGE_SELECTED_MODEL = 'CHANGE_SELECTED_MODEL';
+export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -184,6 +187,21 @@ export const operationToApply = {
   [SET_OBJECTIVE_REACTION]: SetObjectiveReactionApply,
 };
 
+export class ChangeSelectedSpecies implements Action {
+  readonly type = CHANGE_SELECTED_SPECIES;
+  constructor(public payload: types.Species) {}
+}
+
+export class ChangeSelectedModel implements Action {
+  readonly type = CHANGE_SELECTED_MODEL;
+  constructor(public payload: number) {}
+}
+
+export class SetSelectedModel implements Action {
+  readonly type = SET_SELECTED_MODEL;
+  constructor(public payload: types.DeCaF.Model) {}
+}
+
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions =
   SetSelectedSpecies |
@@ -204,4 +222,7 @@ export type InteractiveMapActions =
   SaveDesign |
   SaveNewDesign |
   SelectFirstModel |
-  SetOperations;
+  SetOperations |
+  ChangeSelectedSpecies |
+  ChangeSelectedModel |
+  SetSelectedModel;

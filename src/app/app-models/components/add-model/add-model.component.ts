@@ -29,7 +29,6 @@ import {WarehouseService} from '../../../services/warehouse.service';
 import {NewSpecies} from '../../types';
 import {mapItemsByModel} from '../../../app-interactive-map/store/interactive-map.selectors';
 import {ModelService} from '../../../services/model.service';
-import {selectNotNull} from '../../../framework-extensions';
 
 @Component({
   selector: 'app-loader',
@@ -99,9 +98,9 @@ export class AddModelComponent implements OnInit, OnDestroy {
       preferred_map_id: [null],
     });
     this.store.pipe(
-      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
+      select((store) => store.shared.selectedProject)).subscribe((project) => {
       this.addModelForm.patchValue({
-        project_id: project.id,
+        project_id: project ? project.id : null,
       });
     });
   }

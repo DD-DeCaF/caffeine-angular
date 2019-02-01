@@ -63,15 +63,16 @@ limitations under the License.
       </mat-list>
     </div>
   </mat-card>
-
-
+  
+  
   <mat-card class="card">
-    <p *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'">
-      The job is still running.
+    <div *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'" class="pending-status">
+      <p class="pending-item">The job is still running.</p>
+      <mat-progress-spinner mode="indeterminate" diameter="25" class="pending-item"></mat-progress-spinner>
       <button mat-button color="warn" (click)="abort(job)">
         Abort job
       </button>
-    </p>
+    </div>
 
     <mat-error *ngIf="job?.status === 'FAILURE'">
       The job was unable to complete successfully.
@@ -87,6 +88,8 @@ limitations under the License.
         [jobId]="jobId"
         [model]="job.model"
         [tableData]="tableData"
+        [productName] = "job.product_name"
+        [organismId]="job.organism_id"
         [reactions]="reactionsData"></app-job-results-table>
     </div>
   </mat-card>

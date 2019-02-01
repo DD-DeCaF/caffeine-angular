@@ -13,13 +13,14 @@
 // limitations under the License.
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
-import {MatButton, MatDialog, MatSelect} from '@angular/material';
+
+import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
-import {withLatestFrom} from 'rxjs/operators';
+import {map, withLatestFrom} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
-import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetOperations} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap, SetOperations} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
@@ -32,6 +33,10 @@ import {environment} from '../../../../environments/environment';
 import * as actions from '../../../store/shared.actions';
 import Operation = DeCaF.Operation;
 
+import {mapItemsByModel} from '../../store/interactive-map.selectors';
+import * as types from '../../types';
+import {ModelService} from '../../../services/model.service';
+
 @Component({
   selector: 'app-build',
   templateUrl: './app-build.component.html',
@@ -39,6 +44,7 @@ import Operation = DeCaF.Operation;
 })
 export class AppBuildComponent implements OnInit, AfterViewInit {
   @ViewChild('play') playButton: MatButton;
+  @ViewChild('map') mapSelector: MatSelect;
 
   interactiveMapState: Observable<AppState>;
   public cards: Observable<HydratedCard[]>;
@@ -56,11 +62,19 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     {id: 'fva', name: 'Flux Variability Analysis (FVA)'},
     {id: 'pfba-fva', name: 'Parsimonious FVA'},
   ];
+  public selectedMap: Observable<types.MapItem>;
+  public models: Observable<types.DeCaF.ModelHeader[]>;
+
+  public mapItems: Observable<{
+    modelIds: string[],
+    mapsByModelId: {[key: string]: types.MapItem[] },
+  }>;
 
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private modelService: ModelService) {
   }
 
   ngOnInit(): void {
@@ -69,8 +83,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.experiments = this.store.pipe(select((store) => store.shared.experiments));
 
     this.store.pipe(
-      selectNotNull((store) => store.shared.selectedProject)).subscribe((project) => {
-      this.selectedProjectId = project.id;
+      select((store) => store.shared.selectedProject)).subscribe((project) => {
+      this.selectedProjectId = project ? project.id : null;
     });
 
     this.store.pipe(
@@ -80,6 +94,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
         this.expandedCard = card;
       }
     });
+    this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
+    this.mapItems = this.store.pipe(select(mapItemsByModel));
+    this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
   }
 
   ngAfterViewInit(): void {
@@ -88,6 +105,14 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     ).subscribe(([, playing]) => {
       this.store.dispatch(new SetPlayState(!playing));
     });
+
+    this.mapSelector.selectionChange
+      .pipe(
+        map((change: MatSelectChange): types.MapItem => change.value),
+      )
+      .subscribe((mapItem: types.MapItem) => {
+        this.store.dispatch(new SetMap(mapItem));
+      });
   }
 
   public select(card: HydratedCard): void {
@@ -177,5 +202,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public showHelp(event: Event): void {
     event.stopPropagation();
     this.dialog.open(ShowHelpComponent);
+  }
+
+  public getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
+    return this.modelService.getModel(id, models);
   }
 }
