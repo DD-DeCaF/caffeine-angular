@@ -126,6 +126,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       if (card.type === CardType.DataDriven) {
         builder.load_model(card.model);
         builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
         builder.set_highlight_reactions(card.measurements.map((m) => m.id));
         builder._update_data(true, true);
       } else {

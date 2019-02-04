@@ -36,6 +36,7 @@ import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
 import {LoaderComponent} from '../loader/loader.component';
+import {MatAutocomplete} from '@angular/material/typings/esm5/autocomplete';
 
 @Component({
   selector: 'app-build',
@@ -57,6 +58,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public conditions: Condition[];
   public condition: number;
   public experiment: number;
+  public queryExperiment = '';
+  public queryCondition = '';
   public method: string;
   public cardType = CardType;
   public methods: Method[] = [
@@ -190,19 +193,18 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       this.method = event.value;
   }
 
-  public experimentChanged(event: MatSelect): void {
-    this.http.get(`${environment.apis.warehouse}/experiments/${event.value}/conditions`).subscribe((conditions: Condition[]) => {
-      this.experiment = event.value;
+  public experimentChanged(event: Experiment): void {
+    this.http.get(`${environment.apis.warehouse}/experiments/${event.id}/conditions`).subscribe((conditions: Condition[]) => {
+      this.experiment = event.id;
       this.conditions = conditions;
     });
   }
 
-  public conditionChanged(event: MatSelect): void {
+  public conditionChanged(event: Condition): void {
     this.openDialog();
-    this.http.get(`${environment.apis.warehouse}/conditions/${event.value}/data`).subscribe((condition: DataResponse) => {
+    this.http.get(`${environment.apis.warehouse}/conditions/${event.id}/data`).subscribe((condition: DataResponse) => {
       this.http.post(`${environment.apis.model}/models/${this.selectedCard.model_id}/modify`, condition).subscribe((operations: Operation[]) => {
-        this.condition = event.value;
-
+        this.condition = event.id;
         this.store.dispatch(new SetOperations(operations, this.method, this.experiment, this.condition, this.selectedCard.model_id, condition));
       });
     });
@@ -227,5 +229,29 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
   public getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
     return this.modelService.getModel(id, models);
+  }
+
+  public displayFn(item: Experiment): string {
+    return item ? item.name : '';
+  }
+
+  public displayFnCondition(item: Condition): string {
+    return item ? item.name + ', ' + item.protocol : '';
+  }
+
+  public filterByQuery(query: string, experiments: Experiment[]): Experiment[] {
+    if (query) {
+      return experiments.filter((s) => new RegExp(query.toString().toLowerCase()).test(s.name.toLowerCase())).slice(0, 9);
+    } else {
+      return experiments.slice(0, 9);
+    }
+  }
+
+  public filterByQueryConditions(query: string): Condition[] {
+    if (query) {
+      return this.conditions.filter((s) => new RegExp(query.toString().toLowerCase()).test(s.name.toLowerCase())).slice(0, 9);
+    } else {
+      return this.conditions;
+    }
   }
 }

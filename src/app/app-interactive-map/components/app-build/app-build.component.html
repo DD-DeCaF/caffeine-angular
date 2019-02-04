@@ -159,22 +159,35 @@
               <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-
           <mat-form-field>
-            <mat-label>Experiment</mat-label>
-            <mat-select [value]="card.experiment" (selectionChange)="experimentChanged($event)">
-              <mat-option *ngFor="let experiment of (experiments | async)" [value]="experiment.id">{{experiment.name}}
+            <mat-label class="title">Experiment</mat-label>
+            <input type="text"
+                   matInput
+                   [(ngModel)]="queryExperiment"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete"
+                              [displayWith]="displayFn"
+                              (optionSelected)="experimentChanged(queryExperiment)">
+              <mat-option *ngFor="let experiment of filterByQuery(queryExperiment, (experiments | async))"
+                          [value]="experiment"
+                          >{{experiment.name}}
               </mat-option>
-            </mat-select>
+            </mat-autocomplete>
           </mat-form-field>
-
           <mat-form-field>
-            <mat-label>Conditions</mat-label>
-            <mat-select [value]="card.condition" (selectionChange)="conditionChanged($event)">
-              <mat-option *ngFor="let condition of conditions" [value]="condition.id">{{condition.name}},
-                {{condition.protocol}}
+            <mat-label class="title">Conditions</mat-label>
+            <input type="text"
+                   matInput
+                   [(ngModel)]="queryCondition"
+                   [matAutocomplete]="autoCondition">
+            <mat-autocomplete #autoCondition="matAutocomplete"
+                              [displayWith]="displayFnCondition"
+                              (optionSelected)="conditionChanged(queryCondition)">
+              <mat-option *ngFor="let condition of filterByQueryConditions(queryCondition)"
+                          [value]="condition"
+              >{{condition.name}}, {{condition.protocol}}
               </mat-option>
-            </mat-select>
+            </mat-autocomplete>
           </mat-form-field>
         </mat-card>
       </div>
