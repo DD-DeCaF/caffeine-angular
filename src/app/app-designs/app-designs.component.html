@@ -23,7 +23,8 @@
         <mat-icon>delete</mat-icon>
         <span class="share-button">DELETE</span></button>
     </mat-list-item>
-    <table mat-table [dataSource]="dataSource" matSort class="table">
+    <table mat-table [dataSource]="dataSource" matSort class="table" matSortActive="name" matSortDirection="asc"
+           matSortDisableClear>
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
           <mat-checkbox (change)="$event ? masterToggle() : null"

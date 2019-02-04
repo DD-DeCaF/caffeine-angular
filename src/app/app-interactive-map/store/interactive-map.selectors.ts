@@ -74,3 +74,10 @@ export const activeModels = createSelector(
   (models, selectedSpecies) => models
     .filter((m) => selectedSpecies && (m.organism_id === selectedSpecies.id)),
 );
+
+export const activeModelsCard = createSelector(
+  (state: AppState) => state.shared.modelHeaders,
+  getSelectedCard,
+  (models, card) => models
+    .filter((m) => card && (m.organism_id === card.species.id)),
+);

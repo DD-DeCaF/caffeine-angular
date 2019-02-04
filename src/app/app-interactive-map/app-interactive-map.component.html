@@ -23,25 +23,8 @@
         #sidenav
       >
 
-        <mat-tab-group mat-stretch-tabs>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon matTooltip="Manage predicted and experimental fluxes">build</mat-icon>
-            </ng-template>
+      <app-build></app-build>
 
-            <app-build></app-build>
-
-          </mat-tab>
-
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <mat-icon class="example-tab-icon"
-                        matTooltip="Metabolic Pathways">timeline</mat-icon>
-            </ng-template>
-
-            <app-global-settings></app-global-settings>
-          </mat-tab>
-        </mat-tab-group>
 
       </mat-sidenav>
 

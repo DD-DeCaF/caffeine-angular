@@ -24,7 +24,6 @@ import { ReactionModule } from './components/app-reaction/app-reaction.module';
 import { AppBuildComponent } from './components/app-build/app-build.component';
 import { AppCardInfoComponent } from './components/app-card-info/app-card-info.component';
 import { AppLegendComponent } from './components/app-legend/app-legend.component';
-import { AppGlobalSettingsComponent } from './components/app-global-settings/app-global-settings.component';
 import { SimulationService } from './services/simulation.service';
 import { MapService } from './services/map.service';
 import {LoaderComponent} from './components/loader/loader.component';
@@ -42,7 +41,6 @@ import {SelectProjectComponent} from './components/app-build/components/select-p
     AppBuildComponent,
     AppCardInfoComponent,
     AppLegendComponent,
-    AppGlobalSettingsComponent,
     LoaderComponent,
     ModalErrorComponent,
   ],

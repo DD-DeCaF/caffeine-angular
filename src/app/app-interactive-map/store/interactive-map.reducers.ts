@@ -53,6 +53,7 @@ export const emptyCard: Card = {
   name: 'foo',
   type: CardType.Design,
   model: null,
+  species: null,
   solution: null,
   method: 'pfba',
   addedReactions: [],
@@ -166,23 +167,17 @@ export function interactiveMapReducer(
       const {type, solution, design, pathwayPrediction} = action.payload;
       let name: string;
       let model: Cobra.Model;
+      let species: Species;
       let model_id: number;
       let designId: number;
       let projectId: number;
       let saved: boolean;
       switch (type) {
         case CardType.Design: {
-          if (design) {
-            for (let i = 0; i < design.design.added_reactions.length; i++) {
-              design.model.model_serialized.reactions.push(mapBiggReactionToCobra(design.design.added_reactions[i]));
-              for (let j = 0; j < design.design.added_reactions[i].metabolites_to_add.length; j++) {
-                design.model.model_serialized.metabolites.push(design.design.added_reactions[i].metabolites_to_add[j]);
-              }
-            }
-          }
           designId = design ? design.id : pathwayPrediction ? pathwayPrediction.id : null;
           name = design ? design.name : pathwayPrediction ? pathwayPrediction.name : 'Design';
           model = design ? design.model.model_serialized : pathwayPrediction ? pathwayPrediction.model.model_serialized : state.selectedModel.model_serialized;
+          species = state.selectedSpecies;
           model_id = design ? design.model_id : pathwayPrediction ? pathwayPrediction.model_id : state.selectedModel.id;
           projectId = design ? design.project_id : null;
           saved = !pathwayPrediction;
@@ -207,6 +202,7 @@ export function interactiveMapReducer(
               type,
               name,
               model,
+              species,
               projectId,
               model_id,
               designId,
@@ -270,6 +266,8 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_METHOD_APPLY:
     case fromInteractiveMapActions.REACTION_OPERATION_APPLY:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY:
+    case fromInteractiveMapActions.CHANGE_SELECTED_SPECIES:
+    case fromInteractiveMapActions.SET_SELECTED_MODEL:
     case fromInteractiveMapActions.SAVE_NEW_DESIGN: {
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
@@ -279,6 +277,21 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             method: action.payload,
+          };
+          break;
+        }
+        case fromInteractiveMapActions.CHANGE_SELECTED_SPECIES: {
+          newCard = {
+            ...card,
+            species: action.payload,
+          };
+          break;
+        }
+        case fromInteractiveMapActions.SET_SELECTED_MODEL: {
+          newCard = {
+            ...card,
+            model_id: action.payload.id,
+            model: action.payload.model_serialized,
           };
           break;
         }

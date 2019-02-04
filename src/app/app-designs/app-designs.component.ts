@@ -43,7 +43,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   private mapObservable;
   private loadingObservable;
   private errorObservable;
-
+  public designs;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -57,11 +57,23 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
   ) {
+    this.openDialog();
   }
 
   ngOnInit(): void {
-    this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
+    this.designs = this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
       this.dataSource.data = designs;
+      if (designs.length > 0) {
+        this.dialog.closeAll();
+      } else {
+        this.store.pipe(select((store) => store.session.authenticated)).subscribe((auth) => {
+          if (!auth) {
+            this.dialog.closeAll();
+          } else {
+            setTimeout(() => this.openDialog(), 0);
+          }
+        });
+      }
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -88,16 +100,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
             this.lastDesign = this.selection.selected.pop();
             this.store.dispatch(new AddCard(CardType.Design, this.lastDesign));
           } else {
-            if (this.lastDesign.design.added_reactions.length > 0) {
-              const lastAddedReaction = card.model.reactions.find((reaction) => reaction.id ===
-                this.lastDesign.design.added_reactions[this.lastDesign.design.added_reactions.length - 1].bigg_id);
-              if (lastAddedReaction) {
-                this.cardAdded = false;
-                this.router.navigateByUrl('/interactiveMap');
-              }
-            } else {
-              this.router.navigateByUrl('/interactiveMap');
-            }
+            this.router.navigateByUrl('/interactiveMap');
           }
         }
       }
@@ -165,7 +168,19 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
       this.dataSource.data.forEach((row) => this.selection.select(row));
   }
 
+  public openDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+    dialogConfig.id = 'loading';
+    if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
+      this.dialog.open(LoaderComponent, dialogConfig);
+    }
+  }
+
   ngOnDestroy(): void {
+    this.designs.unsubscribe();
     this.mapObservable.unsubscribe();
     if (this.loadingObservable) {
       this.loadingObservable.unsubscribe();

@@ -16,8 +16,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {catchError, map, switchMap} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
+import {catchError, map, mergeMap, switchMap, tap, toArray} from 'rxjs/operators';
+import {combineLatest, from, Observable, of} from 'rxjs';
 
 import {environment} from '../../environments/environment';
 import * as types from '../app-interactive-map/types';
@@ -30,6 +30,7 @@ import {Job} from 'src/app/jobs/types';
 import {MapsService} from '../services/maps.service';
 import {DesignService} from '../services/design.service';
 import {DesignRequest} from '../app-designs/types';
+import {mapBiggReactionToCobra} from '../lib';
 
 
 @Injectable()
@@ -86,11 +87,35 @@ export class SharedEffects {
   @Effect()
   fetchDesigns: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_DESIGNS),
-    switchMap(() => this.designService.getDesigns().pipe(
-      map((payload: DesignRequest[]) => new fromActions.SetDesigns(payload)),
-      catchError(() => of(new fromActions.SetDesignsError())),
-    )),
-  );
+    switchMap(() => this.designService.getDesigns()
+      .pipe(
+        switchMap((designs: DesignRequest[]) => from(designs)),
+        mergeMap((design) => combineLatest(this.modelService.loadModel(design.model_id), this.designService.getAddedReactions(design.design.reaction_knockins))
+          .pipe(map((data) => ({
+            design,
+            model: data[0],
+            addedReactions: data[1],
+          }))),
+        ),
+        tap((data) => {
+          for (let i = 0; i < data.addedReactions.length; i++) {
+            const addedReaction = data.addedReactions[i];
+              data.model.model_serialized.reactions.push(mapBiggReactionToCobra(addedReaction));
+              for (let j = 0; j < addedReaction.metabolites_to_add.length; j++) {
+                data.model.model_serialized.metabolites.push(addedReaction.metabolites_to_add[j]);
+              }
+          }
+          data.design.model = data.model;
+        }),
+        tap((data) => data.design.design.added_reactions = data.addedReactions),
+        map((data) => data.design),
+        toArray(),
+      ).pipe(
+        map((payload: DesignRequest[]) => {
+          return new fromActions.SetDesigns(payload);
+        }),
+        catchError(() => of(new fromActions.SetDesignsError())),
+      )));
 
   constructor(
     private actions$: Actions,

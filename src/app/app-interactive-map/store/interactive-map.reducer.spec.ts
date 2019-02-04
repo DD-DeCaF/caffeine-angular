@@ -59,6 +59,8 @@ const testSolution: types.DeCaF.Solution = {
   flux_distribution: {},
 };
 
+const testSpecies: types.Species = {project_id: null, id: 2, name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null};
+
 const testAddCard = (type: types.CardType): fromActions.AddCardFetched =>
   new fromActions.AddCardFetched({type, solution: testSolution});
 
@@ -98,6 +100,7 @@ describe('interactiveMapReducer', () => {
               name: 'Design',
               type: types.CardType.Design,
               model: testModel.model_serialized,
+              species: null,
               solution: testSolution,
               method: 'pfba',
               addedReactions: [],
@@ -201,8 +204,8 @@ describe('interactiveMapReducer', () => {
   it('should set the selected specie', () => {
     const state = interactiveMapReducer(
       undefined,
-      new fromActions.SetSelectedSpecies({project_id: null, id: 2, name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null}),
+      new fromActions.SetSelectedSpecies(testSpecies),
     );
-    expect(state.selectedSpecies).toEqual({project_id: null, id: 2, name: 'Escherichia coli', created: '2018-07-04T15:22:05.701458', updated: null});
+    expect(state.selectedSpecies).toEqual(testSpecies);
   });
 });
