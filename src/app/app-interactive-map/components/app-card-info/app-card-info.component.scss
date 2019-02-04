@@ -17,3 +17,18 @@
   display: flex;
   flex-direction: column;
 }
+
+.card-info {
+  margin-bottom: 10px
+}
+
+.column-left {
+  text-align: left;
+  padding: 10px;
+}
+
+.column-right {
+  text-align: right;
+  padding: 10px;
+  white-space: nowrap;
+}

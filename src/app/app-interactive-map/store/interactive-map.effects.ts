@@ -96,6 +96,14 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
+  fetchFullModelDataDriven: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL_DATA_DRIVEN),
+    switchMap((action: fromActions.SetFullModel) =>
+      this.http.get(`${environment.apis.model_storage}/models/${action.payload.id}`)),
+    map((model: types.DeCaF.Model) => new fromActions.SetFullModelDataDriven(model)),
+  );
+
+  @Effect()
   changeSelectedModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.CHANGE_SELECTED_MODEL),
     switchMap((action: fromActions.SetFullModel) =>
@@ -293,56 +301,38 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
-  setOperations: Observable<void> = this.actions$.pipe(
+  setOperations: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SET_OPERATIONS),
-    withLatestFrom(this.store$),
-    switchMap(([action, store]: [fromActions.SetOperations, AppState]) => {
-      // Ugly hack not to implement the reduction twice.
-      // @ts-ignore
-      const IMStore = interactiveMapReducer(store.interactiveMap);
-      const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
-
-      const payload: types.SimulateRequest = {
-        model_id: store.interactiveMap.selectedModelHeader.id,
-        method: selectedCard.method,
-        objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
-        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
-        operations: [
-          ...action.payload,
-        ],
+    switchMap((payload: fromActions.SetOperations) => {
+      const operations = payload.operations;
+      const payloadSimulate: types.SimulateRequest = {
+        model_id: payload.model_id,
+        method: payload.method,
+        objective: null,
+        objective_direction: null,
+        // tslint:disable-next-line:no-any
+        operations: (<any>operations).operations,
       };
-      this.simulationService.simulate(payload)
-        .pipe(map((solution: types.DeCaF.Solution) => ({
-            action: action.payload,
-            solution,
-          })),
-          /* tslint:disable */
-          map(({action, solution}) => {
-            console.log('ACTION', action);
-            console.log('SOLUTION', solution);
-
-            return {
-            ...action,
-            solution,
-          }}
-          ),
-          /* tslint:enable */
-          catchError(() => of(new loaderActions.LoadingError())),
-        );
-
+        return this.simulationService.simulate(payloadSimulate)
+          .pipe(
+            map((data) => {
+              return new fromActions.UpdateSolution(data);
+            }),
+            catchError(() => of(new loaderActions.LoadingError())),
+          );
     }),
   );
 
   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
-      fromActions.SET_OBJECTIVE_REACTION),
+      fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS),
     mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED),
+    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION, fromActions.REACTION_OPERATION_APPLY),
     mapTo(new loaderActions.LoadingFinished()),
   );
 

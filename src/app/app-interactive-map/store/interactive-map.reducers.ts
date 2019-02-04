@@ -41,6 +41,8 @@ export interface InteractiveMapState {
   selectedSpecies: Species;
   selectedModelHeader: DeCaF.ModelHeader;
   selectedModel: DeCaF.Model;
+  selectedModelHeaderDataDriven: DeCaF.ModelHeader;
+  selectedModelDataDriven: DeCaF.Model;
   selectedMap: MapItem;
   mapData: PathwayMap;
   cards: {
@@ -65,6 +67,11 @@ export const emptyCard: Card = {
   model_id: null,
   projectId: null,
   methodCard: 'Manual',
+  experiment: null,
+  condition: null,
+  measurements: [],
+  medium: [],
+  genotype: [],
   saved: null,
 };
 
@@ -74,6 +81,8 @@ export const initialState: InteractiveMapState = {
   selectedSpecies: null,
   selectedModelHeader: null,
   selectedModel: null,
+  selectedModelDataDriven: null,
+  selectedModelHeaderDataDriven: null,
   selectedMap: null,
   mapData: null,
   cards: {
@@ -136,6 +145,16 @@ export function interactiveMapReducer(
         ...state,
         selectedModel: action.payload,
       };
+    case fromInteractiveMapActions.SET_MODEL_DATA_DRIVEN:
+      return {
+        ...state,
+        selectedModelHeaderDataDriven: action.payload,
+      };
+    case fromInteractiveMapActions.SET_FULL_MODEL_DATA_DRIVEN:
+      return {
+        ...state,
+        selectedModelDataDriven: action.payload,
+      };
     case fromInteractiveMapActions.MAP_FETCHED:
       return {
         ...state,
@@ -185,8 +204,9 @@ export function interactiveMapReducer(
         }
         case CardType.DataDriven: {
           name = 'Data Driven';
-          model = state.selectedModel.model_serialized;
-          model_id = state.selectedModel.id;
+          model = state.selectedModelDataDriven.model_serialized;
+          species = state.selectedSpecies;
+          model_id = state.selectedModelDataDriven.id;
           break;
         }
         default:
@@ -271,11 +291,19 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_OPERATIONS:
     case fromInteractiveMapActions.CHANGE_SELECTED_SPECIES:
     case fromInteractiveMapActions.SET_SELECTED_MODEL:
-    case fromInteractiveMapActions.SAVE_NEW_DESIGN: {
+    case fromInteractiveMapActions.SAVE_NEW_DESIGN:
+    case fromInteractiveMapActions.UPDATE_SOLUTION: {
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
       switch (action.type) {
+        case fromInteractiveMapActions.UPDATE_SOLUTION: {
+          newCard = {
+            ...card,
+            solution: action.payload,
+          };
+          break;
+        }
         case fromInteractiveMapActions.SET_METHOD_APPLY: {
           newCard = {
             ...card,
@@ -324,7 +352,6 @@ export function interactiveMapReducer(
               }
             }
           }
-
           newCard = {
             ...card,
             saved: saved || false,
@@ -333,6 +360,15 @@ export function interactiveMapReducer(
           break;
         }
         case fromInteractiveMapActions.SET_OPERATIONS: {
+          newCard = {
+            ...card,
+            method: action.method || card.method,
+            experiment: action.experiment,
+            condition: action.condition,
+            measurements: action.conditions.measurements,
+            medium: action.conditions.medium,
+            genotype: action.conditions.genotype,
+          };
           break;
         }
         case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {

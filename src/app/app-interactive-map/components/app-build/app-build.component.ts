@@ -14,7 +14,7 @@
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 
-import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
+import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
@@ -24,18 +24,18 @@ import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, S
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
-import {CardType, Condition, DeCaF, Experiment, HydratedCard, Method} from '../../types';
+import {CardType, Condition, DataResponse, DeCaF, Experiment, HydratedCard, Method} from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
 import {SelectProjectComponent} from './components/select-project/select-project.component';
 import {ShowHelpComponent} from './components/show-help/show-help.component';
 import {environment} from '../../../../environments/environment';
-import * as actions from '../../../store/shared.actions';
 import Operation = DeCaF.Operation;
 
 import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
+import {LoaderComponent} from '../loader/loader.component';
 
 @Component({
   selector: 'app-build',
@@ -55,7 +55,10 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public tabIndex: number = null;
   public experiments: Observable<Experiment[]>;
   public conditions: Condition[];
-
+  public condition: number;
+  public experiment: number;
+  public method: string;
+  public cardType = CardType;
   public methods: Method[] = [
     {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
     {id: 'pfba', name: 'Parsimonious FBA'},
@@ -90,6 +93,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.store.pipe(
       selectNotNull(getSelectedCard)).subscribe((card) => {
       this.selectedCard = card;
+      this.method = card.method;
       if (this.expandedCard) {
         this.expandedCard = card;
       }
@@ -182,19 +186,24 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public methodChanged(event: MatSelect): void {
+      this.method = event.value;
+  }
+
   public experimentChanged(event: MatSelect): void {
     this.http.get(`${environment.apis.warehouse}/experiments/${event.value}/conditions`).subscribe((conditions: Condition[]) => {
+      this.experiment = event.value;
       this.conditions = conditions;
-      console.log('conditions', conditions);
     });
   }
 
   public conditionChanged(event: MatSelect): void {
-    this.http.get(`${environment.apis.warehouse}/conditions/${event.value}/data`).subscribe((condition) => {
-      console.log('CONDITIONS', condition);
+    this.openDialog();
+    this.http.get(`${environment.apis.warehouse}/conditions/${event.value}/data`).subscribe((condition: DataResponse) => {
       this.http.post(`${environment.apis.model}/models/${this.selectedCard.model_id}/modify`, condition).subscribe((operations: Operation[]) => {
-        console.log('operations', operations);
-        this.store.dispatch(new SetOperations(operations));
+        this.condition = event.value;
+
+        this.store.dispatch(new SetOperations(operations, this.method, this.experiment, this.condition, this.selectedCard.model_id, condition));
       });
     });
   }
@@ -202,6 +211,18 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public showHelp(event: Event): void {
     event.stopPropagation();
     this.dialog.open(ShowHelpComponent);
+  }
+
+  public openDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+    dialogConfig.id = 'loading';
+    dialogConfig.data = 'Calculating flux distribution...';
+    if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
+      this.dialog.open(LoaderComponent, dialogConfig);
+    }
   }
 
   public getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {

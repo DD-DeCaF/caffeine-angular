@@ -19,7 +19,7 @@ import {Observable} from 'rxjs';
 
 import {AppState} from '../../../store/app.reducers';
 import {activeModelsCard, getSelectedCard} from '../../store/interactive-map.selectors';
-import { HydratedCard, Method } from '../../types';
+import { HydratedCard, Method, CardType } from '../../types';
 import {SetMethod, RenameCard, ChangeSelectedSpecies, ChangeSelectedModel} from '../../store/interactive-map.actions';
 import { selectNotNull } from '../../../framework-extensions';
 import * as types from '../../types';
@@ -38,6 +38,7 @@ export class AppCardInfoComponent implements OnInit, AfterViewInit {
   public card: Observable<HydratedCard>;
   public allSpecies: Observable<types.Species[]>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
+  public cardType = CardType;
 
   public methods: Method[] = [
     { id: 'fba', name: 'Flux Balance Analysis (FBA)' },

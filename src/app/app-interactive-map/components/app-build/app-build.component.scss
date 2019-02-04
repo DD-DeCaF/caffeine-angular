@@ -62,6 +62,9 @@
 }
 
 @mixin app-build-component($theme) {
+  .primary-title {
+    color: mat-color(map-get($theme, primary));
+  }
   .card .header {
     background: gray;
 

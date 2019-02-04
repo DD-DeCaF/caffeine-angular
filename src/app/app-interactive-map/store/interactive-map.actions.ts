@@ -18,12 +18,14 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as types from '../types';
 import {DesignRequest} from '../../app-designs/types';
 import {PathwayPredictionResult} from '../../jobs/types';
-import {DeCaF} from '../types';
+import {DataResponse, DeCaF} from '../types';
 import Operation = DeCaF.Operation;
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODEL = 'SET_MODEL';
 export const SET_FULL_MODEL = 'SET_FULL_MODEL';
+export const SET_MODEL_DATA_DRIVEN = 'SET_MODEL_DATA_DRIVEN';
+export const SET_FULL_MODEL_DATA_DRIVEN = 'SET_FULL_MODEL_DATA_DRIVEN';
 export const SELECT_FIRST_MODEL_MAP = 'SELECT_FIRST_MODEL_MAP';
 
 export const SET_MAP = 'SET_MAP';
@@ -55,6 +57,7 @@ export const SET_OPERATIONS = 'SET_OPERATIONS';
 export const CHANGE_SELECTED_SPECIES = 'CHANGE_SELECTED_SPECIES';
 export const CHANGE_SELECTED_MODEL = 'CHANGE_SELECTED_MODEL';
 export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
+export const UPDATE_SOLUTION = 'UPDATE_SOLUTION';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -68,6 +71,16 @@ export class SetModel implements Action {
 
 export class SetFullModel implements Action {
   readonly type = SET_FULL_MODEL;
+  constructor(public payload: types.DeCaF.Model) {}
+}
+
+export class SetModelDataDriven implements Action {
+  readonly type = SET_MODEL_DATA_DRIVEN;
+  constructor(public payload: types.DeCaF.ModelHeader) {}
+}
+
+export class SetFullModelDataDriven implements Action {
+  readonly type = SET_FULL_MODEL_DATA_DRIVEN;
   constructor(public payload: types.DeCaF.Model) {}
 }
 
@@ -120,6 +133,11 @@ export class AddCardFetched implements Action {
     design?: DesignRequest,
     pathwayPrediction?: PathwayPredictionResult,
   }) {}
+}
+
+export class UpdateSolution implements Action {
+  readonly type = UPDATE_SOLUTION;
+  constructor(public payload: types.DeCaF.Solution) {}
 }
 
 export class DeleteCard implements Action {
@@ -178,7 +196,8 @@ export class SaveNewDesign implements Action {
 
 export class SetOperations implements Action {
   readonly type = SET_OPERATIONS;
-  constructor(public payload: Operation[]) {}
+  constructor(public operations: Operation[], public method: string, public experiment: number, public condition: number, public model_id: number,
+              public conditions: DataResponse) {}
 }
 
 export const operationToApply = {
@@ -225,4 +244,7 @@ export type InteractiveMapActions =
   SetOperations |
   ChangeSelectedSpecies |
   ChangeSelectedModel |
-  SetSelectedModel;
+  SetSelectedModel |
+  SetFullModelDataDriven |
+  SetModelDataDriven |
+  UpdateSolution;

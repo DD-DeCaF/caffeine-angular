@@ -92,7 +92,7 @@
           <app-card-info></app-card-info>
         </mat-tab>
 
-        <mat-tab>
+        <mat-tab *ngIf="expandedCard" [disabled]="expandedCard.type === cardType.DataDriven">
           <ng-template mat-tab-label>
             <mat-icon matTooltip="Model changes">edit</mat-icon>
           </ng-template>
@@ -121,7 +121,7 @@
           <mat-icon matTooltip="Information">info</mat-icon>
         </button>
 
-        <button mat-icon-button (click)="grow(card, 1)">
+        <button mat-icon-button (click)="grow(card, 1)" [disabled]="card.type === cardType.DataDriven">
           <mat-icon matTooltip="Model changes">edit</mat-icon>
         </button>
       </div>
@@ -145,7 +145,7 @@
           <label>{{formatGrowthRate(card.solution.growth_rate)}} <i>h<sup>-1</sup></i></label>
         </div>
       </div>
-      <div *ngIf="card.type === 1" [hidden]="!card.selected">
+      <div *ngIf="card.type === cardType.DataDriven" [hidden]="!card.selected">
         <mat-card class="remove-box-shadow" fxLayout="column">
           <mat-form-field>
             <div>
@@ -155,14 +155,14 @@
                 <mat-icon style="vertical-align: super">help_outline</mat-icon>
               </button>
             </div>
-            <mat-select [value]="card.method" #method>
+            <mat-select [value]="card.method" (selectionChange)="methodChanged($event)">
               <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field>
             <mat-label>Experiment</mat-label>
-            <mat-select (selectionChange)="experimentChanged($event)">
+            <mat-select [value]="card.experiment" (selectionChange)="experimentChanged($event)">
               <mat-option *ngFor="let experiment of (experiments | async)" [value]="experiment.id">{{experiment.name}}
               </mat-option>
             </mat-select>
@@ -170,7 +170,7 @@
 
           <mat-form-field>
             <mat-label>Conditions</mat-label>
-            <mat-select (selectionChange)="conditionChanged($event)">
+            <mat-select [value]="card.condition" (selectionChange)="conditionChanged($event)">
               <mat-option *ngFor="let condition of conditions" [value]="condition.id">{{condition.name}},
                 {{condition.protocol}}
               </mat-option>
