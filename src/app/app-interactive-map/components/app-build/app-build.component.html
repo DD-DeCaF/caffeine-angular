@@ -185,7 +185,9 @@
                               (optionSelected)="conditionChanged(queryCondition)">
               <mat-option *ngFor="let condition of filterByQueryConditions(queryCondition)"
                           [value]="condition"
-              >{{condition.name}}, {{condition.protocol}}
+              >
+                <span *ngIf="condition.protocol.length > 0">{{condition.name}}, {{condition.protocol}}</span>
+                <span *ngIf="condition.protocol.length === 0">{{condition.name}}</span>
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>

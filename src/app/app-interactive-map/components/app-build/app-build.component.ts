@@ -236,7 +236,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public displayFnCondition(item: Condition): string {
-    return item ? item.name + ', ' + item.protocol : '';
+    return item ? item.name + ((item.protocol && item.protocol.length > 0) ? ', ' + item.protocol : '') : '';
   }
 
   public filterByQuery(query: string, experiments: Experiment[]): Experiment[] {
