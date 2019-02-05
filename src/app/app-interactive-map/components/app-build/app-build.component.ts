@@ -36,7 +36,6 @@ import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
 import {LoaderComponent} from '../loader/loader.component';
-import {MatAutocomplete} from '@angular/material/typings/esm5/autocomplete';
 
 @Component({
   selector: 'app-build',
