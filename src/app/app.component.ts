@@ -30,7 +30,7 @@ import {environment} from '../environments/environment';
 import {AppState} from './store/app.reducers';
 import * as sharedActions from './store/shared.actions';
 import {combineLatest} from 'rxjs';
-import {SelectFirstModel} from './app-interactive-map/store/interactive-map.actions';
+import {SelectFirstModel, SetModelDataDriven} from './app-interactive-map/store/interactive-map.actions';
 
 import {themes} from './themes';
 import {withLatestFrom} from 'rxjs/operators';
@@ -93,11 +93,13 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new sharedActions.FetchProjects());
     this.store.dispatch(new sharedActions.FetchJobs());
     this.store.dispatch(new sharedActions.FetchDesigns());
+    this.store.dispatch(new sharedActions.FetchExperiments());
 
     combineLatest(this.store.pipe(select((store) => store.interactiveMap.selectedSpecies)),
       this.store.pipe(select((store) => store.shared.modelHeaders))).subscribe(([species, models]) => {
       if (species && models.length > 0) {
         this.store.dispatch(new SelectFirstModel(species, models));
+        this.store.dispatch(new SetModelDataDriven(models.find((model) => model.name === 'iJO1366')));
       }
     });
 

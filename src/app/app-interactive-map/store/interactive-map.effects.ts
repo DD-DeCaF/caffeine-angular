@@ -96,6 +96,14 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
+  fetchFullModelDataDriven: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_MODEL_DATA_DRIVEN),
+    switchMap((action: fromActions.SetFullModel) =>
+      this.http.get(`${environment.apis.model_storage}/models/${action.payload.id}`)),
+    map((model: types.DeCaF.Model) => new fromActions.SetFullModelDataDriven(model)),
+  );
+
+  @Effect()
   changeSelectedModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.CHANGE_SELECTED_MODEL),
     switchMap((action: fromActions.SetFullModel) =>
@@ -293,15 +301,38 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
+  setOperations: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.SET_OPERATIONS),
+    switchMap((payload: fromActions.SetOperations) => {
+      const operations = payload.operations;
+      const payloadSimulate: types.SimulateRequest = {
+        model_id: payload.model_id,
+        method: payload.method,
+        objective: null,
+        objective_direction: null,
+        // tslint:disable-next-line:no-any
+        operations: (<any>operations).operations,
+      };
+        return this.simulationService.simulate(payloadSimulate)
+          .pipe(
+            map((data) => {
+              return new fromActions.UpdateSolution(data);
+            }),
+            catchError(() => of(new loaderActions.LoadingError())),
+          );
+    }),
+  );
+
+  @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
-      fromActions.SET_OBJECTIVE_REACTION),
+      fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS),
     mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED),
+    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION, fromActions.REACTION_OPERATION_APPLY),
     mapTo(new loaderActions.LoadingFinished()),
   );
 

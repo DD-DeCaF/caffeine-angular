@@ -78,7 +78,7 @@ export interface Card {
   model_id: number;
   species: Species;
   solution: DeCaF.Solution;
-  method: Methods;
+  method: string;
   addedReactions: AddedReaction[];
   knockoutReactions: string[];
   knockoutGenes: string[];
@@ -87,7 +87,12 @@ export interface Card {
   designId: number;
   projectId: number;
   methodCard: string;
+  experiment: number;
+  condition: number;
   saved: boolean;
+  measurements: Measurement[];
+  medium: Medium[];
+  genotype: string[];
 }
 
 export interface HydratedCard extends Card {
@@ -224,7 +229,7 @@ export declare namespace DeCaF {
 
 export interface SimulateRequest {
   model_id: number;
-  method: Methods;
+  method: string;
   objective?: string;
   objective_direction: ObjectiveDirection;
   operations: DeCaF.Operation[];
@@ -293,3 +298,44 @@ export interface Gene {
   name: string;
 }
 
+export interface Experiment {
+  created: string;
+  description: string;
+  id: number;
+  name: string;
+  project_id: number;
+  updated: string;
+}
+
+export interface Condition {
+  aerobic: boolean;
+  created: string;
+  experiment_id: number;
+  feed_medium_id: number;
+  id: number;
+  medium_id: number;
+  name: string;
+  protocol: string;
+  strain_id: number;
+  temperature: number;
+  updated: string;
+}
+
+export interface DataResponse {
+  genotype: string[];
+  growth_rate: number;
+  measurements: Measurement[];
+  medium: Medium[];
+}
+
+export interface Measurement {
+  id: string;
+  measurements: number[];
+  namespace: string;
+  type: string;
+}
+
+export interface Medium {
+  id: string;
+  namespace: string;
+}

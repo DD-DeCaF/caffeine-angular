@@ -12,25 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container-card-info {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
+import { Component } from '@angular/core';
+import { MatDialogRef} from '@angular/material';
 
-.card-info {
-  margin-bottom: 10px
-}
+@Component({
+  selector: 'app-delete-project',
+  templateUrl: './show-help.component.html',
+  styleUrls: ['./show-help.component.scss'],
+})
 
-.column-left {
-  text-align: left;
-  padding: 10px;
-}
+export class ShowHelpComponent {
 
-.column-right {
-  text-align: right;
-  padding: 10px;
-  white-space: nowrap;
+  constructor(
+    private dialogRef: MatDialogRef<ShowHelpComponent>,
+  ) {}
+
+  close(): void {
+    this.dialogRef.close();
+  }
 }

@@ -17,6 +17,7 @@
 .container {
   position: relative;
   min-height: 100%;
+  overflow: visible;
 }
 
 .card {
@@ -62,6 +63,9 @@
 }
 
 @mixin app-build-component($theme) {
+  .primary-title {
+    color: mat-color(map-get($theme, primary));
+  }
   .card .header {
     background: gray;
 
@@ -79,6 +83,10 @@
 .save-button{
   margin: 5px;
   margin-right: 3px;
+}
+
+.remove-box-shadow {
+  box-shadow: none !important;
 }
 
 .right-text{

@@ -20,6 +20,7 @@ import {Design, Product} from '../app-design-tool/types';
 import {environment} from '../../environments/environment';
 import {map} from 'rxjs/operators';
 import { of } from 'rxjs';
+import {Experiment} from '../app-interactive-map/types';
 import {NewSpecies, NewSpeciesResponse} from '../app-models/types';
 
 const preferredSpecies = 'Escherichia coli';
@@ -70,5 +71,9 @@ export class WarehouseService {
       observer.next('OK');
     });
     return fixtures$;
+  }
+
+  getExperiments(): Observable<Experiment[]> {
+    return this.http.get<Experiment[]>(`${environment.apis.warehouse}/experiments`);
   }
 }

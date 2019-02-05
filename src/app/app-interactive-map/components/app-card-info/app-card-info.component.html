@@ -12,7 +12,7 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<div class="container">
+<div class="container-card-info">
   <mat-form-field>
     <mat-select placeholder="Species" [value]="(card | async).species" #species>
       <mat-option [value]="species" *ngFor="let species of (allSpecies |async)">{{species.name}}</mat-option>
@@ -39,6 +39,44 @@
       <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
     </mat-select>
   </mat-form-field>
-
   <!-- data driven -->
+  <div *ngIf="(card | async).type === cardType.DataDriven">
+    <mat-card class="card-info" *ngIf="(card | async).genotype.length > 0">
+      <mat-card-content>
+        <h4 class="primary-title">Genotype changes</h4>
+        <div *ngFor="let geno of (card | async).genotype">
+          <table>
+            <tr *ngFor="let g of geno.split(',')">
+              <td class="column-left">{{ g }}</td>
+              <mat-divider></mat-divider>
+            </tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="card-info" *ngIf="(card | async).measurements.length > 0">
+      <h4 class="primary-title">Measurements</h4>
+      <mat-card-content>
+        <table>
+          <tr *ngFor="let m of (card | async).measurements" >
+            <td class="column-left">{{ m.id }}</td>
+            <td class="column-right"><span>{{ m.measurements.join(', ') }}
+              mmol g<sup>-1</sup> h<sup>-1</sup></span></td>
+            <mat-divider></mat-divider>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="card-info" *ngIf="(card | async).medium.length > 0">
+      <mat-card-content>
+        <h4 class="primary-title">Medium</h4>
+        <table>
+          <tr *ngFor="let m of (card | async).medium">
+            <td class="column-left">{{ m.id }}</td>
+            <mat-divider></mat-divider>
+          </tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

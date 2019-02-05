@@ -12,25 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container-card-info {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
+.box {
+  min-width: 400px;
   overflow-y: hidden;
   overflow-x: hidden;
 }
 
-.card-info {
-  margin-bottom: 10px
+.error-icon {
+  font-size: 60px;
+  width: 60px;
+  height: 60px;
 }
 
-.column-left {
-  text-align: left;
-  padding: 10px;
+.text {
+  font-size: 18px;
 }
 
-.column-right {
-  text-align: right;
-  padding: 10px;
-  white-space: nowrap;
+.section-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
 }

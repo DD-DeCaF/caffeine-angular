@@ -13,22 +13,29 @@
 // limitations under the License.
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
-import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
+
+import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
-import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap} from '../../store/interactive-map.actions';
+import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap, SetOperations} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
-import {CardType, HydratedCard} from '../../types';
+import {CardType, Condition, DataResponse, DeCaF, Experiment, HydratedCard, Method} from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
 import {SelectProjectComponent} from './components/select-project/select-project.component';
+import {ShowHelpComponent} from './components/show-help/show-help.component';
+import {environment} from '../../../../environments/environment';
+import Operation = DeCaF.Operation;
+
 import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
+import {LoaderComponent} from '../loader/loader.component';
 
 @Component({
   selector: 'app-build',
@@ -44,7 +51,22 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public playing: Observable<boolean>;
   public selectedProjectId: number;
   public expandedCard: HydratedCard = null;
+  public selectedCard: HydratedCard = null;
   public tabIndex: number = null;
+  public experiments: Observable<Experiment[]>;
+  public conditions: Condition[];
+  public condition: number;
+  public experiment: number;
+  public queryExperiment = '';
+  public queryCondition = '';
+  public method: string;
+  public cardType = CardType;
+  public methods: Method[] = [
+    {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
+    {id: 'pfba', name: 'Parsimonious FBA'},
+    {id: 'fva', name: 'Flux Variability Analysis (FVA)'},
+    {id: 'pfba-fva', name: 'Parsimonious FVA'},
+  ];
   public selectedMap: Observable<types.MapItem>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
 
@@ -56,12 +78,15 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
+    private http: HttpClient,
     private modelService: ModelService) {
   }
 
   ngOnInit(): void {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
+    this.experiments = this.store.pipe(select((store) => store.shared.experiments));
+
     this.store.pipe(
       select((store) => store.shared.selectedProject)).subscribe((project) => {
       this.selectedProjectId = project ? project.id : null;
@@ -69,6 +94,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
     this.store.pipe(
       selectNotNull(getSelectedCard)).subscribe((card) => {
+      this.selectedCard = card;
+      this.method = card.method;
       if (this.expandedCard) {
         this.expandedCard = card;
       }
@@ -144,7 +171,6 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public save(card: HydratedCard, projectId: number): void {
-
     if (card.projectId) {
       this.store.dispatch(new SaveDesign(card, card.projectId));
     } else {
@@ -162,7 +188,69 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     }
   }
 
+  public methodChanged(event: MatSelect): void {
+      this.method = event.value;
+  }
+
+  public experimentChanged(event: Experiment): void {
+    this.http.get(`${environment.apis.warehouse}/experiments/${event.id}/conditions`).subscribe((conditions: Condition[]) => {
+      this.experiment = event.id;
+      this.conditions = conditions;
+    });
+  }
+
+  public conditionChanged(event: Condition): void {
+    this.openDialog();
+    this.http.get(`${environment.apis.warehouse}/conditions/${event.id}/data`).subscribe((condition: DataResponse) => {
+      this.http.post(`${environment.apis.model}/models/${this.selectedCard.model_id}/modify`, condition).subscribe((operations: Operation[]) => {
+        this.condition = event.id;
+        this.store.dispatch(new SetOperations(operations, this.method, this.experiment, this.condition, this.selectedCard.model_id, condition));
+      });
+    });
+  }
+
+  public showHelp(event: Event): void {
+    event.stopPropagation();
+    this.dialog.open(ShowHelpComponent);
+  }
+
+  public openDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.panelClass = 'loader';
+    dialogConfig.id = 'loading';
+    dialogConfig.data = 'Calculating flux distribution...';
+    if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
+      this.dialog.open(LoaderComponent, dialogConfig);
+    }
+  }
+
   public getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
     return this.modelService.getModel(id, models);
+  }
+
+  public displayFn(item: Experiment): string {
+    return item ? item.name : '';
+  }
+
+  public displayFnCondition(item: Condition): string {
+    return item ? item.name + ((item.protocol && item.protocol.length > 0) ? ', ' + item.protocol : '') : '';
+  }
+
+  public filterByQuery(query: string, experiments: Experiment[]): Experiment[] {
+    if (query) {
+      return experiments.filter((s) => new RegExp(query.toString().toLowerCase()).test(s.name.toLowerCase())).slice(0, 9);
+    } else {
+      return experiments.slice(0, 9);
+    }
+  }
+
+  public filterByQueryConditions(query: string): Condition[] {
+    if (query) {
+      return this.conditions.filter((s) => new RegExp(query.toString().toLowerCase()).test(s.name.toLowerCase())).slice(0, 9);
+    } else {
+      return this.conditions;
+    }
   }
 }

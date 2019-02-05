@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy, NgZone} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import {Card, OperationDirection, ReactionState} from './types';
+import {Card, CardType, OperationDirection, ReactionState} from './types';
 import escherSettingsConst from './escherSettings';
 import * as fromActions from './store/interactive-map.actions';
 import {getSelectedCard} from './store/interactive-map.selectors';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
-import {isLoading} from './components/loader/store/loader.selectors';
 import {objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
@@ -53,6 +52,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
   private updateReactions;
   private loadingObservable;
   private errorObservable;
+  private cardSelected;
 
   readonly escherSettings = {
     ...escherSettingsConst,
@@ -84,6 +84,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     private elRef: ElementRef,
     private store: Store<AppState>,
     private dialog: MatDialog,
+    private ngZoneService: NgZone,
   ) {
   }
 
@@ -100,6 +101,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     this.selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
     );
+
+    this.selectedCard.subscribe((card) => this.cardSelected = card);
 
     this.updateReactions = this.store.pipe(
       selectNotNull((store) => store.interactiveMap.mapData)).pipe(
@@ -120,13 +123,21 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
       this.card = card;
-      builder.load_model(card.model);
-      builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-      builder.set_knockout_reactions(card.knockoutReactions);
-      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
-      builder.set_knockout_genes(card.knockoutGenes);
-      builder._update_data(true, true);
-      this.store.dispatch(new fromActions.Loaded());
+      if (card.type === CardType.DataDriven) {
+        builder.load_model(card.model);
+        builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+        builder.set_highlight_reactions(card.measurements.map((m) => m.id));
+        builder._update_data(true, true);
+      } else {
+        builder.load_model(card.model);
+        builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        builder.set_knockout_reactions(card.knockoutReactions);
+        builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+        builder.set_knockout_genes(card.knockoutGenes);
+        builder.set_highlight_reactions(card.measurements.map((m) => m.id));
+        builder._update_data(true, true);
+      }
       this.loading = false;
     });
 
@@ -145,9 +156,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
 
     let error = false;
 
-    this.loadingObservable = this.store.pipe(
-      select(isLoading),
-    ).subscribe((loading) => {
+    this.loadingObservable = this.store.pipe(select((store) => store.loader.loading)).subscribe((loading) => {
       if (loading) {
         // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
         // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
@@ -161,9 +170,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
             setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
             error = true;
           } else {
-            this.dialog.closeAll();
+            setTimeout(() => this.closeDialogs(), 0);
             error = false;
-
           }
         });
       }
@@ -252,7 +260,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
 
   reactionState(reactionId: string): ReactionState {
     return {
-      includedInModel: Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
+      includedInModel: this.cardSelected.type === CardType.DataDriven ? false : Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
       knockout: this.card.knockoutReactions.includes(reactionId),
       knockoutGenes: this.card.knockoutGenes.includes(reactionId),
       objective: this.card.objectiveReaction,
@@ -265,6 +273,14 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
 
   firstLoadEscher(): void {
     this.builderSubject.next(this.builder);
+  }
+
+  public closeDialogs(): void {
+    this.ngZoneService.runOutsideAngular(() => {
+      this.ngZoneService.run(() => {
+        this.dialog.closeAll();
+      });
+    });
   }
 
   ngOnDestroy(): void {
