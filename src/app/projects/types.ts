@@ -16,3 +16,7 @@ export interface Project {
   id: number;
   name: string;
 }
+
+export interface NewProjectResponse {
+  project_id: number;
+}

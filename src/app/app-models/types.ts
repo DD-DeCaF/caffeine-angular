@@ -33,3 +33,11 @@ export interface NewSpecies {
   name: string;
   project_id: number;
 }
+
+export interface NewSpeciesResponse {
+  created: string;
+  id: number;
+  name: string;
+  project_id: number;
+  updated: string;
+}

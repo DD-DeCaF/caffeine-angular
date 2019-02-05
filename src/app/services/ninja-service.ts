@@ -44,7 +44,6 @@ export class NinjaService {
       this.processPrediction(predict, design)));
   }
 
-
   getPredict(task_id: number): Observable<PathwayResponse> {
     return this.http.get<PathwayResponse>(`${environment.apis.metabolic_ninja}/predictions/${task_id}`);
   }
