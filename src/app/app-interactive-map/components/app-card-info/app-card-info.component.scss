@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
+.container-card-info {
   padding: 10px;
   display: flex;
   flex-direction: column;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .card-info {

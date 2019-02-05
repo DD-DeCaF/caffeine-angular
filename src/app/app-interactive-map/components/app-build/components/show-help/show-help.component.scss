@@ -13,9 +13,9 @@
 // limitations under the License.
 
 .box {
-  background: white;
-  text-align: center;
   min-width: 400px;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .error-icon {
