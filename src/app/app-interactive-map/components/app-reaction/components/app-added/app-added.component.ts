@@ -14,7 +14,7 @@
 
 import {Component, AfterViewInit, ViewChild, Input} from '@angular/core';
 import { Store } from '@ngrx/store';
-import { switchMap } from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 
 import { AppPanelComponent } from '../app-panel/app-panel.component';
@@ -48,6 +48,9 @@ export class AppAddedComponent implements AfterViewInit {
     this.panel.query
       .pipe(
         switchMap((query) => this.biggSearchService.search(query)),
+        map((query) => query.filter((q) => Boolean(this.card.model.reactions.find((r) => {
+          return r.id.toLowerCase() === q.bigg_id.toLowerCase();
+        })))),
       )
       .subscribe((results) => {
         this.reactionsSubject.next(results);
