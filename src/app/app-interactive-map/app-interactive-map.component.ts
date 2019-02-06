@@ -137,7 +137,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       this.loading = true;
       this.card = card;
       if (card.type === CardType.DataDriven) {
-        console.log('CARD SOLUTION', card.solutionUpdated)
         if (!card.solutionUpdated) {
           builder.load_model(null);
           builder.set_reaction_data(deleteFlux(card.solution.flux_distribution));
