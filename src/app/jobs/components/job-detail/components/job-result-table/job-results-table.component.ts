@@ -22,7 +22,7 @@ import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getModelName, getOrganismName} from '../../../../../store/shared.selectors';
 import {AppState} from '../../../../../store/app.reducers';
-import {SelectionModel} from '@angular/cdk/collections';
+import {SelectionModel, DataSource} from '@angular/cdk/collections';
 import {selectNotNull} from '../../../../../framework-extensions';
 import {getSelectedCard} from '../../../../../app-interactive-map/store/interactive-map.selectors';
 import {AddCard} from '../../../../../app-interactive-map/store/interactive-map.actions';
@@ -254,7 +254,12 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   /** Whether the number of selected elements matches the total number of rows. */
   public isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    let numRows = 0;
+    this.dataSource.data.forEach((row) => {
+      if (row.method !== 'PathwayPredictor+DifferentialFVA') {
+        numRows++;
+      }
+    });
     return numSelected === numRows;
   }
 
@@ -263,7 +268,9 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach((row) => {
-        return this.selection.select(row);
+        if (row.method !== 'PathwayPredictor+DifferentialFVA') {
+          return this.selection.select(row);
+        }
       });
   }
 
