@@ -93,6 +93,7 @@ export interface Card {
   measurements: Measurement[];
   medium: Medium[];
   genotype: string[];
+  solutionUpdated: boolean;
 }
 
 export interface HydratedCard extends Card {
