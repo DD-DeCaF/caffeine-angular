@@ -326,13 +326,13 @@ export class InteractiveMapEffects {
   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
-      fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS),
+      fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS, sharedActions.FETCH_DESIGNS),
     mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION, fromActions.REACTION_OPERATION_APPLY),
+    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION, fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS),
     mapTo(new loaderActions.LoadingFinished()),
   );
 

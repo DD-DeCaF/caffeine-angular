@@ -52,28 +52,18 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     'name',
   ];
 
+
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
     private router: Router,
   ) {
-    this.openDialog();
+    this.subscribeObservableLoading();
   }
 
   ngOnInit(): void {
     this.designs = this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
-      this.dataSource.data = designs;
-      if (designs.length > 0) {
-        this.dialog.closeAll();
-      } else {
-        this.store.pipe(select((store) => store.session.authenticated)).subscribe((auth) => {
-          if (!auth) {
-            this.dialog.closeAll();
-          } else {
-            setTimeout(() => this.openDialog(), 0);
-          }
-        });
-      }
+        this.dataSource.data = designs;
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -166,17 +156,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach((row) => this.selection.select(row));
-  }
-
-  public openDialog(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loading';
-    if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
-      this.dialog.open(LoaderComponent, dialogConfig);
-    }
   }
 
   ngOnDestroy(): void {
