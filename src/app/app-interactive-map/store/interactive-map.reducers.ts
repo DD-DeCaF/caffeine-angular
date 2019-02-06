@@ -323,6 +323,7 @@ export function interactiveMapReducer(
             ...card,
             model_id: action.payload.id,
             model: action.payload.model_serialized,
+            solution: action.solution,
           };
           break;
         }
