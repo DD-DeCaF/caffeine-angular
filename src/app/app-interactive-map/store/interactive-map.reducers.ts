@@ -191,15 +191,25 @@ export function interactiveMapReducer(
       let model_id: number;
       let designId: number;
       let projectId: number;
+      let methodCard: string;
       let saved: boolean;
       switch (type) {
         case CardType.Design: {
+          if (pathwayPrediction) {
+            for (const addedReaction of pathwayPrediction.added_reactions) {
+              pathwayPrediction.model.model_serialized.reactions.push(mapBiggReactionToCobra(addedReaction));
+              for (const metaboliteToAdd of addedReaction.metabolites_to_add) {
+                pathwayPrediction.model.model_serialized.metabolites.push(metaboliteToAdd)
+              }
+            }
+          }
           designId = design ? design.id : pathwayPrediction ? pathwayPrediction.id : null;
           name = design ? design.name : pathwayPrediction ? pathwayPrediction.name : 'Design';
           model = design ? design.model.model_serialized : pathwayPrediction ? pathwayPrediction.model.model_serialized : state.selectedModel.model_serialized;
           species = state.selectedSpecies;
           model_id = design ? design.model_id : pathwayPrediction ? pathwayPrediction.model_id : state.selectedModel.id;
           projectId = design ? design.project_id : null;
+          methodCard = design ? 'Design' : pathwayPrediction ? 'Pathway' : 'Manual';
           saved = !pathwayPrediction;
           break;
         }
@@ -227,11 +237,16 @@ export function interactiveMapReducer(
               model,
               species,
               projectId,
+              methodCard,
               model_id,
               designId,
               solution,
               saved,
-              addedReactions: design ? design.design.added_reactions : [],
+              addedReactions: design
+              ? design.design.added_reactions
+              : pathwayPrediction
+                ? pathwayPrediction.added_reactions || []
+                : [],
               bounds: design ? design.design.constraints.map((reaction) => Object.assign({
                 reaction: {id: reaction.id},
                 lowerBound: reaction.lower_bound,

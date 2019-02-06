@@ -17,7 +17,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 
 import * as types from '../types';
 import {DesignRequest} from '../../app-designs/types';
-import {PathwayPredictionResult} from '../../jobs/types';
+import {PathwayPredictionResult, PathwayPredictionReactions, PathwayPredictionMetabolites} from '../../jobs/types';
 import {DataResponse, DeCaF} from '../types';
 import Operation = DeCaF.Operation;
 import {HydratedCard} from '../types';
@@ -123,7 +123,13 @@ export class Loaded implements Action {
 
 export class AddCard implements Action {
   readonly type = ADD_CARD;
-  constructor(public payload: types.CardType, public design: DesignRequest = null, public pathwayPrediction: PathwayPredictionResult = null) {}
+  constructor(
+    public payload: types.CardType, 
+    public design: DesignRequest = null, 
+    public pathwayPrediction: PathwayPredictionResult = null, 
+    public reactions: PathwayPredictionReactions = null,
+    public metabolites: PathwayPredictionMetabolites = null,
+  ) {}
 }
 
 export class AddCardFetched implements Action {

@@ -20,8 +20,8 @@ export enum CardType {
 export interface Reaction {
   bigg_id: string;
   name: string;
-  model_bigg_id: string;
-  organism: string;
+  model_bigg_id?: string;
+  organism?: string;
 }
 
 export interface Bounds {
@@ -258,21 +258,23 @@ export interface BiggSearch {
 }
 
 export interface BiggReaction {
-  model_bigg_id: string;
+  model_bigg_id?: string;
   bigg_id: string;
   name: string;
-  organism: string;
+  organism?: string;
 }
 
 export interface AddedReaction extends BiggReaction {
   bigg_id: string;
-  metanetx_id: string;
-  reaction_string: string;
+  metanetx_id?: string;
+  reaction_string?: string;
   // tslint:disable-next-line
   metabolites: any;
   // tslint:disable-next-line
+  //metabolites_to_add: Cobra.Metabolite[];
   metabolites_to_add: any;
-  database_links: {};
+  database_links?: {};
+  id?: string;
 }
 
 export interface Species {

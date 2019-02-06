@@ -34,6 +34,7 @@ export interface DesignRequest {
   model_id: number;
   name: string;
   project_id: number;
+  method: string;
   model?: DeCaF.Model;
   modelHeader?: ModelHeader;
 }

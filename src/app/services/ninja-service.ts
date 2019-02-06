@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs';
-import { environment } from '../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable, of, forkJoin} from 'rxjs';
+import {environment} from '../../environments/environment';
 import * as typesDesign from '../app-design-tool/types';
-import {map} from 'rxjs/operators';
-import {Job, PathwayResponse, PathwayPredictionResult} from '../jobs/types';
-import {DeCaF} from '../app-interactive-map/types';
+import {map, switchMap} from 'rxjs/operators';
+import {Job, PathwayResponse, PathwayPredictionResult, PathwayPredictionReactions, PathwayPredictionMetabolites} from '../jobs/types';
+import {DeCaF, AddedReaction} from '../app-interactive-map/types';
+import {mapBiggReactionToCobra} from '../lib';
 
 @Injectable()
 export class NinjaService {
@@ -56,36 +57,90 @@ export class NinjaService {
   }
 
   getPredictions(): Observable<Job[]> {
-    return this.http.get<Job[]>(`${environment.apis.metabolic_ninja}/predictions`).pipe(map((predictions: Job[]) =>
-      this.processPredictions(predictions)));
+    return this.http.get<Job[]>(`${environment.apis.metabolic_ninja}/predictions`).pipe(switchMap((predictions: Job[]) => {
+      return this.processPredictions(predictions);
+    }));
   }
 
-  processPredictions(predictions: Job[]): Job[] {
-    for (let i = 0; i < predictions.length; i++) {
-      this.http.get(`${environment.apis.model_storage}/models/${ predictions[i].model_id}`).subscribe((model: DeCaF.Model) => {
-          predictions[i].model = model;
-        });
+  processPredictions(predictions: Job[]): Observable<Job[]> {
+    const jobs$ = predictions.map((prediction) =>
+      this.http.get(`${environment.apis.model_storage}/models/${prediction.model_id}`).pipe(
+        map((model: DeCaF.Model) => {
+          prediction.model = model;
+          return prediction;
+        }),
+      ),
+    );
+    if (jobs$.length === 0) {
+      return of([]);
     }
-    return predictions;
+    return forkJoin(jobs$);
   }
 
-  getOperations(pathwayPrediction: PathwayPredictionResult): DeCaF.Operation[] {
+  mapMnxMetabolitesToBigg(metaboliteIds: string[]): Observable<Object> {
+    const body = {ids: metaboliteIds, db_from: 'mnx', db_to: 'bigg', type: 'Metabolite'};
+    return this.http.post(`${environment.apis.id_mapper}`, body).
+      pipe(map((response) => response["ids"]));
+  }
+
+  getAddedReactions(
+    pathwayPrediction: PathwayPredictionResult,
+    reactions: PathwayPredictionReactions,
+    metabolites: PathwayPredictionMetabolites): Observable<AddedReaction[]> {
+    const addedReactions = pathwayPrediction.heterologous_reactions.map((reactionId) => {
+      const metaboliteIds = Object.keys(reactions[reactionId].metabolites);
+      return this.mapMnxMetabolitesToBigg(metaboliteIds).pipe(map((ids) => {
+        let metabolites_to_add = [];
+        let biggMetabolites = {};
+        const mnxMetabolites = reactions[reactionId].metabolites;
+        for (const mnxId in ids) {
+          let metabolite = metabolites[mnxId];
+          metabolite.id = ids[mnxId][0];
+          metabolites_to_add.push(metabolite);
+          biggMetabolites[ids[mnxId][0]] = mnxMetabolites[mnxId];
+        }
+        return {
+          ...reactions[reactionId],
+          metabolites: biggMetabolites,
+          bigg_id: reactionId,
+          metabolites_to_add,
+        };
+      }));
+    });
+
+    if (addedReactions.length === 0) {
+      return of([]);
+    }
+
+    return forkJoin(addedReactions);
+  }
+
+  getOperations(pathwayPrediction: PathwayPredictionResult, reactions: PathwayPredictionReactions): DeCaF.Operation[] {
+    let knockoutReactions = [];
+    let knockoutGenes = [];
     if (pathwayPrediction.method === 'PathwayPredictor+OptGene') {
-      return pathwayPrediction.knockouts.map((gene) => Object.assign({
+      knockoutGenes = pathwayPrediction.knockouts.map((geneId) => Object.assign({
         data: null,
-        id: gene,
+        id: geneId,
         operation: 'knockout',
         type: 'gene',
       }));
     } else if (pathwayPrediction.method === 'PathwayPredictor+DifferentialFVA' || pathwayPrediction.method === 'PathwayPredictor+CofactorSwap') {
-      return pathwayPrediction.knockouts.map((reaction) => Object.assign({
+      knockoutReactions = pathwayPrediction.knockouts.map((reactionId) => Object.assign({
         data: null,
-        id: reaction,
+        id: reactionId,
         operation: 'knockout',
         type: 'reaction',
       }));
     } else {
       throw new Error(`Method ${pathwayPrediction.method} is not recognized.`);
     }
+    const addedReactions = pathwayPrediction.added_reactions.map((reaction) => Object.assign({
+      data: mapBiggReactionToCobra(reaction),
+      id: reaction.id,
+      operation: 'add',
+      type: 'reaction',
+    }));
+    return [...knockoutReactions, ...knockoutGenes, ...addedReactions];
   }
 }
