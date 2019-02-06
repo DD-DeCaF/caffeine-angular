@@ -130,6 +130,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public addDataDrivenCard(): void {
+    this.queryExperiment = '';
+    this.queryCondition = '';
     this.store.dispatch(new AddCard(CardType.DataDriven));
   }
 
