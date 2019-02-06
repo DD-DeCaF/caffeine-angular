@@ -20,6 +20,7 @@ import {DesignRequest} from '../../app-designs/types';
 import {PathwayPredictionResult} from '../../jobs/types';
 import {DataResponse, DeCaF} from '../types';
 import Operation = DeCaF.Operation;
+import {HydratedCard} from '../types';
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODEL = 'SET_MODEL';
@@ -213,12 +214,12 @@ export class ChangeSelectedSpecies implements Action {
 
 export class ChangeSelectedModel implements Action {
   readonly type = CHANGE_SELECTED_MODEL;
-  constructor(public payload: number) {}
+  constructor(public payload: number, public card: HydratedCard) {}
 }
 
 export class SetSelectedModel implements Action {
   readonly type = SET_SELECTED_MODEL;
-  constructor(public payload: types.DeCaF.Model) {}
+  constructor(public payload: types.DeCaF.Model, public solution: types.DeCaF.Solution) {}
 }
 
 export type OperationAction = SetObjectiveReaction | ReactionOperation;

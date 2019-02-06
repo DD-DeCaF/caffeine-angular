@@ -33,6 +33,8 @@ import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {NinjaService} from './../../services/ninja-service';
+import {DeCaF} from '../types';
+import Model = DeCaF.Model;
 
 
 const ACTION_OFFSETS = {
@@ -106,9 +108,60 @@ export class InteractiveMapEffects {
   @Effect()
   changeSelectedModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.CHANGE_SELECTED_MODEL),
-    switchMap((action: fromActions.SetFullModel) =>
-      this.http.get(`${environment.apis.model_storage}/models/${action.payload}`)),
-    map((model: types.DeCaF.Model) => new fromActions.SetSelectedModel(model)),
+    switchMap((action: fromActions.ChangeSelectedModel) => {
+      const selectedCard = action.card;
+      const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
+        operation: 'add',
+        type: 'reaction',
+        id: reaction.bigg_id,
+        data: mapBiggReactionToCobra(reaction),
+      }));
+
+      const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({
+        operation: 'knockout',
+        type: 'reaction',
+        id: reactionId,
+        data: null,
+      }));
+
+      const knockoutsGenes = selectedCard.knockoutGenes.map((id: string): types.DeCaF.Operation => ({
+        operation: 'knockout',
+        type: 'gene',
+        id: id,
+        data: null,
+      }));
+
+      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.BoundedReaction): types.DeCaF.Operation => ({
+        operation: 'modify',
+        type: 'reaction',
+        id: reaction.id,
+        data: {
+          ...reaction,
+          lower_bound: lowerBound,
+          upper_bound: upperBound,
+        },
+      }));
+
+      const payloadSimulate: types.SimulateRequest = {
+        model_id: action.payload,
+        method: selectedCard.method,
+        objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
+        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        operations: [
+          ...addedReactions,
+          ...knockouts,
+          ...knockoutsGenes,
+          ...bounds,
+        ],
+      };
+      return combineLatest(this.simulationService.simulate(payloadSimulate),
+        this.http.get<Model>(`${environment.apis.model_storage}/models/${action.payload}`)).pipe(
+        map((data) => {
+          return new fromActions.SetSelectedModel(data[1], data[0]);
+        }),
+        catchError(() => of(new loaderActions.LoadingError())),
+      );
+    }),
   );
 
   @Effect()
@@ -313,13 +366,13 @@ export class InteractiveMapEffects {
         // tslint:disable-next-line:no-any
         operations: (<any>operations).operations,
       };
-        return this.simulationService.simulate(payloadSimulate)
-          .pipe(
-            map((data) => {
-              return new fromActions.UpdateSolution(data);
-            }),
-            catchError(() => of(new loaderActions.LoadingError())),
-          );
+      return this.simulationService.simulate(payloadSimulate)
+        .pipe(
+          map((data) => {
+            return new fromActions.UpdateSolution(data);
+          }),
+          catchError(() => of(new loaderActions.LoadingError())),
+        );
     }),
   );
 
@@ -340,7 +393,7 @@ export class InteractiveMapEffects {
   saveDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SAVE_DESIGN),
     switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload, action.projectId).pipe(
-      switchMap((designId: {id: number}) => [
+      switchMap((designId: { id: number }) => [
         new fromActions.SaveNewDesign(designId),
         new sharedActions.FetchDesigns()]),
     )),

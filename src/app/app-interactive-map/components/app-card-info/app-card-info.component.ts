@@ -39,7 +39,7 @@ export class AppCardInfoComponent implements OnInit, AfterViewInit {
   public allSpecies: Observable<types.Species[]>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public cardType = CardType;
-
+  private cardObject: HydratedCard;
   public methods: Method[] = [
     { id: 'fba', name: 'Flux Balance Analysis (FBA)' },
     { id: 'pfba', name: 'Parsimonious FBA' },
@@ -55,6 +55,9 @@ export class AppCardInfoComponent implements OnInit, AfterViewInit {
 
     this.card = this.store.pipe(
       selectNotNull(getSelectedCard));
+    this.card.subscribe((card) => {
+      this.cardObject = card;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -65,7 +68,7 @@ export class AppCardInfoComponent implements OnInit, AfterViewInit {
 
     this.modelsSelector.selectionChange
       .subscribe((change: MatSelectChange) => {
-        this.store.dispatch(new ChangeSelectedModel(change.value));
+        this.store.dispatch(new ChangeSelectedModel(change.value, this.cardObject));
       });
 
     this.method.selectionChange
