@@ -1,3 +1,4 @@
+import { PathwayPrediction } from './../../jobs/types';
 // Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,27 +13,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Action, Store} from '@ngrx/store';
-import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Observable, combineLatest, of} from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError} from 'rxjs/operators';
-import {AppState} from '../../store/app.reducers';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Action, Store } from '@ngrx/store';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import {Observable, combineLatest, of, from, concat} from 'rxjs';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError, mergeMap, tap, toArray, flatMap} from 'rxjs/operators';
+import { AppState } from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
-import {environment} from '../../../environments/environment.staging';
+import { environment } from '../../../environments/environment.staging';
 import * as types from '../types';
-import {PathwayMap} from '@dd-decaf/escher';
-import {interactiveMapReducer} from './interactive-map.reducers';
-import {SimulationService} from '../services/simulation.service';
-import {MapService} from '../services/map.service';
-import {WarehouseService} from '../../services/warehouse.service';
-import {mapBiggReactionToCobra} from '../../lib';
+import { PathwayMap } from '@dd-decaf/escher';
+import { interactiveMapReducer } from './interactive-map.reducers';
+import { SimulationService } from '../services/simulation.service';
+import { MapService } from '../services/map.service';
+import { WarehouseService } from '../../services/warehouse.service';
+import { mapBiggReactionToCobra } from '../../lib';
 import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
-import {DesignService} from '../../services/design.service';
-import {NinjaService} from './../../services/ninja-service';
+import { DesignService } from '../../services/design.service';
+import { NinjaService } from './../../services/ninja-service';
+import {DesignRequest} from '../../app-designs/types';
+import {ModelService} from '../../services/model.service';
 
 
 const ACTION_OFFSETS = {
@@ -72,7 +75,7 @@ export class InteractiveMapEffects {
     withLatestFrom(this.store$),
     map(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
-      const {maps} = storeState.shared;
+      const { maps } = storeState.shared;
       const mapSelector = MapService.createMapSelector(model);
       return new fromActions.SetMap(mapSelector(maps));
     }),
@@ -107,7 +110,7 @@ export class InteractiveMapEffects {
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
     withLatestFrom(this.store$),
-    switchMap(([{payload, type, design, pathwayPrediction}, store]: [fromActions.AddCard, AppState]) => {
+    switchMap(([{ payload, design, pathwayPrediction, reactions, metabolites }, store]: [fromActions.AddCard, AppState]) => {
       let payloadSimulate: types.SimulateRequest = {
         model_id: store.interactiveMap.selectedModelHeader.id,
         method: 'pfba',
@@ -116,42 +119,49 @@ export class InteractiveMapEffects {
         operations: [],
       };
 
-      if (design || pathwayPrediction) {
-        if (design) {
-          payloadSimulate = {
-            model_id: design.model_id,
-            method: 'pfba',
-            objective: null,
-            objective_direction: null,
-            operations: this.designService.getOperations(design) || [],
-          };
-        } else {
-          payloadSimulate = {
-            model_id: pathwayPrediction.model_id,
-            method: 'pfba',
-            objective: null,
-            objective_direction: null,
-            operations: this.ninjaService.getOperations(pathwayPrediction),
-          };
-        }
-
+      if (design) {
+        payloadSimulate = {
+          model_id: design.model_id,
+          method: 'pfba',
+          objective: null,
+          objective_direction: null,
+          operations: this.designService.getOperations(design) || [],
+        };
         return this.simulationService.simulate(payloadSimulate)
-          .pipe(
-            map((solution) => {
-              return {
-                type: payload,
-                solution,
-              };
-            }),
-            map((data) => {
-              if (design) {
-                return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design});
-              } else {
-                return new fromActions.AddCardFetched({type: data.type, solution: data.solution, pathwayPrediction});
-              }
-            }),
-            catchError(() => of(new loaderActions.LoadingError())),
-          );
+        .pipe(
+          map((solution) => {
+            return {
+              type: payload,
+              solution,
+            };
+          }),
+          map((data) => {
+            return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design})
+          }),
+          catchError(() => of(new loaderActions.LoadingError())),
+        );
+      } else if (pathwayPrediction) {
+        payloadSimulate = {
+          model_id: pathwayPrediction.model_id,
+          method: 'pfba',
+          objective: null,
+          objective_direction: null,
+          operations: this.ninjaService.getOperations(pathwayPrediction, reactions),
+        };
+        return combineLatest(this.simulationService.simulate(payloadSimulate).pipe(map((solution) => {
+          return {
+            type: payload,
+            solution,
+          };
+        })), this.ninjaService.getAddedReactions(pathwayPrediction, reactions, metabolites)).pipe(
+          map((data) => {
+            console.log('DATAAAAAAAAA', data);
+            pathwayPrediction.added_reactions = data[1];
+            console.log("addedReactions!!!", pathwayPrediction.added_reactions);
+            return new fromActions.AddCardFetched({ type: data[0].type, solution: data[0].solution, pathwayPrediction, reactions, metabolites});
+          }),
+        catchError(() => of(new loaderActions.LoadingError())),
+      );
       } else {
         return this.simulationService.simulate(payloadSimulate)
           .pipe(
@@ -160,7 +170,7 @@ export class InteractiveMapEffects {
               solution,
             })),
             map((data) => {
-              const dataDesign = {type: data.type, solution: data.solution, design};
+              const dataDesign = { type: data.type, solution: data.solution, design };
               return new fromActions.AddCardFetched(dataDesign);
             }),
             catchError(() => of(new loaderActions.LoadingError())),
@@ -176,10 +186,10 @@ export class InteractiveMapEffects {
       return this
         .http.get(`${environment.apis.maps}/maps/${action.payload.id}`)
         .pipe(map((response: PathwayMap) => ({
-            mapData: response,
-            mapItem: action.payload,
-          })),
-          map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
+          mapData: response,
+          mapItem: action.payload,
+        })),
+          map(({ mapData, mapItem }) => new fromActions.MapFetched({ mapData, mapItem })),
           catchError(() => of(new loaderActions.LoadingError())),
         );
     }),
@@ -192,9 +202,9 @@ export class InteractiveMapEffects {
     ofType(fromActions.NEXT_CARD, fromActions.PREVIOUS_CARD),
     withLatestFrom(this.store$),
     map(([action, storeState]) => {
-      const {interactiveMap} = storeState;
-      const {ids} = interactiveMap.cards;
-      const {length} = ids;
+      const { interactiveMap } = storeState;
+      const { ids } = interactiveMap.cards;
+      const { length } = ids;
       const index = ids.findIndex((id) => interactiveMap.selectedCardId === id);
 
       const newIndex = (length + index + ACTION_OFFSETS[action.type]) % length;
@@ -253,7 +263,7 @@ export class InteractiveMapEffects {
         data: null,
       }));
 
-      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.BoundedReaction): types.DeCaF.Operation => ({
+      const bounds = selectedCard.bounds.map(({ reaction, lowerBound, upperBound }: types.BoundedReaction): types.DeCaF.Operation => ({
         operation: 'modify',
         type: 'reaction',
         id: reaction.id,
@@ -278,11 +288,11 @@ export class InteractiveMapEffects {
       };
       return this.simulationService.simulate(payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
-            action: newAction,
-            solution,
-          })),
+          action: newAction,
+          solution,
+        })),
           /* tslint:disable */
-          map(({action, solution}) => ({
+          map(({ action, solution }) => ({
             ...action,
             solution,
           })),
@@ -309,7 +319,7 @@ export class InteractiveMapEffects {
   saveDesign: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.SAVE_DESIGN),
     switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload, action.projectId).pipe(
-      switchMap((designId: {id: number}) => [
+      switchMap((designId: { id: number }) => [
         new fromActions.SaveNewDesign(designId),
         new sharedActions.FetchDesigns()]),
     )),
@@ -320,6 +330,7 @@ export class InteractiveMapEffects {
     private store$: Store<AppState>,
     private http: HttpClient,
     private simulationService: SimulationService,
+    private modelService: ModelService,
     private designService: DesignService,
     private ninjaService: NinjaService,
   ) {

@@ -15,7 +15,7 @@
 import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit, OnDestroy} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from '@angular/material';
 
-import {Manipulation, PathwayPredictionReactions, PathwayPredictionResult} from '../../../../types';
+import {Manipulation, PathwayPredictionReactions, PathwayPredictionResult, PathwayPredictionMetabolites} from '../../../../types';
 import {JobResultsDetailRowDirective} from './job-results-table-row-detail.directive';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -45,7 +45,8 @@ const indicators = {
 })
 export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() tableData: PathwayPredictionResult[];
-  @Input() reactions: PathwayPredictionReactions[];
+  @Input() reactions: PathwayPredictionReactions;
+  @Input() metabolites: PathwayPredictionMetabolites;
   @Input() model: DeCaF.Model;
   @Input() modelId: number;
   @Input() jobId: number;
@@ -262,7 +263,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach((row) => {
-
         return this.selection.select(row);
       });
   }
@@ -285,9 +285,18 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
           if (this.selection.selected.length > 0) {
             this.lastPrediction = this.selection.selected.pop();
             this.lastPrediction = this.addValues(this.lastPrediction, this.dataSource.data.indexOf(this.lastPrediction));
-            this.store.dispatch(new AddCard(CardType.Design, null, this.lastPrediction));
+            this.store.dispatch(new AddCard(CardType.Design, null, this.lastPrediction, this.reactions, this.metabolites));
           } else {
-            this.router.navigateByUrl('/interactiveMap');
+            if (this.lastPrediction.heterologous_reactions.length > 0) {
+              const lastAddedReaction = card.model.reactions.find((reaction) => reaction.id ===
+                this.lastPrediction.heterologous_reactions[this.lastPrediction.heterologous_reactions.length - 1]);
+              if (lastAddedReaction) {
+                this.cardAdded = false;
+                this.router.navigateByUrl('/interactiveMap');
+              }
+            } else {
+              this.router.navigateByUrl('/interactiveMap');
+            }
           }
         }
       }
@@ -296,7 +305,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
       if (this.selection.selected.length > 0) {
         this.lastPrediction = this.selection.selected.pop();
         this.lastPrediction = this.addValues(this.lastPrediction, this.dataSource.data.indexOf(this.lastPrediction) + 1);
-        this.store.dispatch(new AddCard(CardType.Design, null, this.lastPrediction));
+        this.store.dispatch(new AddCard(CardType.Design, null, this.lastPrediction, this.reactions, this.metabolites));
         this.cardAdded = true;
       }
     }

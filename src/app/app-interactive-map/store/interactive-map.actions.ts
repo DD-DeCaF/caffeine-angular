@@ -17,7 +17,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 
 import * as types from '../types';
 import {DesignRequest} from '../../app-designs/types';
-import {PathwayPredictionResult} from '../../jobs/types';
+import {PathwayPredictionResult, PathwayPredictionReactions, PathwayPredictionMetabolites} from '../../jobs/types';
 
 export const SET_SELECTED_SPECIES = 'SET_SELECTED_SPECIES';
 export const SET_MODEL = 'SET_MODEL';
@@ -106,7 +106,13 @@ export class Loaded implements Action {
 
 export class AddCard implements Action {
   readonly type = ADD_CARD;
-  constructor(public payload: types.CardType, public design: DesignRequest = null, public pathwayPrediction: PathwayPredictionResult = null) {}
+  constructor(
+    public payload: types.CardType, 
+    public design: DesignRequest = null, 
+    public pathwayPrediction: PathwayPredictionResult = null, 
+    public reactions: PathwayPredictionReactions = null,
+    public metabolites: PathwayPredictionMetabolites = null,
+  ) {}
 }
 
 export class AddCardFetched implements Action {
@@ -116,6 +122,8 @@ export class AddCardFetched implements Action {
     solution: types.DeCaF.Solution,
     design?: DesignRequest,
     pathwayPrediction?: PathwayPredictionResult,
+    reactions?: PathwayPredictionReactions,
+    metabolites?: PathwayPredictionMetabolites,
   }) {}
 }
 

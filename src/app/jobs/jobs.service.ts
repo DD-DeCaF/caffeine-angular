@@ -15,14 +15,29 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Job } from './types';
+import { Job, IdMapperResponse } from './types';
 import { NinjaService } from '../services/ninja-service';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class JobsService {
-  constructor(public ninjaService: NinjaService) { }
+  constructor(public ninjaService: NinjaService, private http: HttpClient) { }
 
   getJobs(): Observable<Job[]> {
     return this.ninjaService.getPredictions();
   }
+
+  // mapMetabolitesToBiggIds(metaboliteIds): Observable<Object> {
+  //   const body = {"ids": metaboliteIds, "dbFrom": "mnx", "dbTo": "bigg", "type": "Metabolite"}
+  //   return this.http.post<IdMapperResponse>(`${environment.apis.id_mapper}`, body).pipe(map((response: IdMapperResponse) => {
+  //     let ids = Object.values(response.ids);
+  //     let result = [];
+  //     for (let id of ids) {
+  //       result.push(id[0]);
+  //     }
+  //     return result
+  //   }))
+  // }
 }

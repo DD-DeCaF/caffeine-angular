@@ -24,6 +24,7 @@ export interface Configuration {
     warehouse: string;
     maps: string;
     design_storage: string,
+    id_mapper: string,
   };
   GA?: {
     trackingID: string;

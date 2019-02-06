@@ -17,18 +17,17 @@
 
 import * as types from './app-interactive-map/types';
 
-const defaultBounds = {
+const defaultBounds: types.Bounds = {
   lowerBound: -1000,
   upperBound: 1000,
 };
 
-export const mapBiggReactionToCobra = (
-  { bigg_id, name, metabolites}: types.AddedReaction,
-  bounds: types.Bounds= defaultBounds): types.Cobra.Reaction => ({
-  name: name,
-  id: bigg_id,
-  gene_reaction_rule: '',
-  lower_bound: bounds.lowerBound,
-  upper_bound: bounds.upperBound,
-  metabolites: metabolites,
+export const mapBiggReactionToCobra = (reaction): types.Cobra.Reaction => ({
+  name: reaction.name,
+  id: reaction.bigg_id || reaction.id,
+  gene_reaction_rule: reaction.gene_reaction_rule || '',
+  lower_bound: reaction.lower_bound || defaultBounds.lowerBound,
+  upper_bound: reaction.upper_bound || defaultBounds.upperBound,
+  metabolites: reaction.metabolites || {},
+  annotation: reaction.annotation || {},
 });

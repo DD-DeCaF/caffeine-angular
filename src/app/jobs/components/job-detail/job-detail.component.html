@@ -50,14 +50,14 @@ limitations under the License.
           <mat-icon mat-list-icon>rounded_corner</mat-icon>
           <p>
             Model:
-            <strong>{{ model | async }}</strong>
+            <strong>{{ modelName$ | async }}</strong>
           </p>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>bug_report</mat-icon>
           <p>
             Organism:
-            <strong>{{ organism | async }}</strong>
+            <strong>{{ organismName$ | async }}</strong>
           </p>
         </mat-list-item>
       </mat-list>
@@ -69,9 +69,6 @@ limitations under the License.
     <div *ngIf="job?.status === 'PENDING' || job?.status === 'STARTED'" class="pending-status">
       <p class="pending-item">The job is still running.</p>
       <mat-progress-spinner mode="indeterminate" diameter="25" class="pending-item"></mat-progress-spinner>
-      <button mat-button color="warn" (click)="abort(job)">
-        Abort job
-      </button>
     </div>
 
     <mat-error *ngIf="job?.status === 'FAILURE'">
@@ -86,10 +83,11 @@ limitations under the License.
       <app-job-results-table
         [modelId]="job.model_id"
         [jobId]="jobId"
-        [model]="job.model"
+        [model]="model"
         [tableData]="tableData"
         [productName] = "job.product_name"
         [organismId]="job.organism_id"
+        [metabolites]="metabolitesData"
         [reactions]="reactionsData"></app-job-results-table>
     </div>
   </mat-card>

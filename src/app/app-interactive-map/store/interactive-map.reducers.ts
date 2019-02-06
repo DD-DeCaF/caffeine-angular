@@ -164,22 +164,66 @@ export function interactiveMapReducer(
       };
     case fromInteractiveMapActions.ADD_CARD_FETCHED: {
       const newId = idGen.next();
-      const {type, solution, design, pathwayPrediction} = action.payload;
+      const {type, solution, design, pathwayPrediction, reactions, metabolites} = action.payload;
       let name: string;
       let model: Cobra.Model;
       let species: Species;
       let model_id: number;
       let designId: number;
       let projectId: number;
+      let methodCard: string;
       let saved: boolean;
       switch (type) {
         case CardType.Design: {
+          if (pathwayPrediction) {
+            for (const addedReaction of pathwayPrediction.added_reactions) {
+              pathwayPrediction.model.model_serialized.reactions.push(mapBiggReactionToCobra(addedReaction));
+              for (const metaboliteToAdd of addedReaction.metabolites_to_add) {
+                pathwayPrediction.model.model_serialized.metabolites.push(metaboliteToAdd)
+              }
+            }
+            // for (const reactionId of pathwayPrediction.heterologous_reactions) {
+            //   pathwayPrediction.model.model_serialized.reactions.push(reactions[reactionId]);
+            //   for (let metaboliteId in reactions[reactionId].metabolites) {
+            //     //check if exist
+            //     pathwayPrediction.model.model_serialized.metabolites.push(metabolites[metaboliteId])
+            //   }
+            // }
+          }
           designId = design ? design.id : pathwayPrediction ? pathwayPrediction.id : null;
           name = design ? design.name : pathwayPrediction ? pathwayPrediction.name : 'Design';
           model = design ? design.model.model_serialized : pathwayPrediction ? pathwayPrediction.model.model_serialized : state.selectedModel.model_serialized;
+          for (let metabol of model.metabolites) {
+            if (metabol.id === "h") {
+              console.log("EXIST!!!!! h");
+            }
+            if (metabol.id === "o2") {
+              console.log("EXIST!!!!! o2");
+            }
+            if (metabol.id === "fald") {
+              console.log("EXIST!!!!! fald");
+            }
+            if (metabol.id === "34dhbz") {
+              console.log("EXIST!!!!! 34dhbz");
+            }
+            if (metabol.id === "oh1") {
+              console.log("EXIST!!!!! oh1");
+            }
+            if (metabol.id === "vanlt") {
+              console.log("EXIST!!!!! vanlt");
+            }
+            if (metabol.id === "nadh") {
+              console.log("EXIST!!!!! nadh");
+            }
+            if (metabol.id === "nad") {
+              console.log("EXIST!!!!! nad");
+            }
+          }
+          console.log("model!!!!!", model.metabolites);
           species = state.selectedSpecies;
           model_id = design ? design.model_id : pathwayPrediction ? pathwayPrediction.model_id : state.selectedModel.id;
           projectId = design ? design.project_id : null;
+          methodCard = design ? 'Design' : pathwayPrediction ? 'Pathway' : 'Manual';
           saved = !pathwayPrediction;
           break;
         }
@@ -204,11 +248,16 @@ export function interactiveMapReducer(
               model,
               species,
               projectId,
+              methodCard,
               model_id,
               designId,
               solution,
               saved,
-              addedReactions: design ? design.design.added_reactions : [],
+              addedReactions: design
+              ? design.design.added_reactions
+              : pathwayPrediction
+                ? pathwayPrediction.added_reactions || []
+                : [],
               bounds: design ? design.design.constraints.map((reaction) => Object.assign({
                 reaction: {id: reaction.id},
                 lowerBound: reaction.lower_bound,

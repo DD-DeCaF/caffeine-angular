@@ -1,3 +1,4 @@
+import { map, toArray } from 'rxjs/operators';
 // Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
@@ -15,7 +16,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../../environments/environment';
-import {forkJoin, Observable, of} from 'rxjs';
+import { forkJoin, Observable, of, concat } from 'rxjs';
 import {AddedReaction, DeCaF, HydratedCard} from '../app-interactive-map/types';
 import {DesignRequest} from '../app-designs/types';
 import {BiggSearchService} from '../app-interactive-map/components/app-reaction/components/app-panel/services/bigg-search.service';
@@ -31,6 +32,9 @@ export class DesignService {
   }
 
   saveDesign(card: HydratedCard, projectId: number): Observable<{ id: number }> {
+    let addedReactions = (card.methodCard === 'Pathway')
+      ? card.addedReactions.map((reaction) => JSON.stringify(reaction))
+      : card.addedReactions.map((reaction) => reaction.bigg_id)
     const design = {
       'design': {
         'constraints': card.bounds.map((reaction) => Object.assign({
@@ -39,7 +43,7 @@ export class DesignService {
           'upper_bound': reaction.upperBound,
         }, reaction)),
         'gene_knockouts': card.knockoutGenes,
-        'reaction_knockins': card.addedReactions.map((reaction) => reaction.bigg_id),
+        'reaction_knockins': addedReactions,
         'reaction_knockouts': card.knockoutReactions,
       },
       'model_id': card.model_id,
@@ -54,14 +58,17 @@ export class DesignService {
     }
   }
 
-  getDesigns(): Observable<DesignRequest[]> {
+  getDesigns() {
     return this.http.get<DesignRequest[]>(`${environment.apis.design_storage}/designs`);
   }
 
-  getAddedReactions(reactions_knockins: string[]): Observable<AddedReaction[]> {
-    const addedReactions = reactions_knockins.map((reaction) => {
+  getAddedReactions(design: DesignRequest) {
+    console.log('DESSSIGN', design);
+    if (design.method === "Pathway") {
+      return of(design.design.reaction_knockins.map((reaction) => JSON.parse(reaction)));
+    }
+    const addedReactions = design.design.reaction_knockins.map((reaction) => {
       return this.biggService.search(reaction).pipe(
-        // tslint:disable-next-line:no-any
         flatMap((reactions: AddedReaction[]) => {
           return this.biggService.getDetails(reactions[0]);
         }));
@@ -70,8 +77,22 @@ export class DesignService {
     if (addedReactions.length === 0) {
       return of([]);
     }
-    return forkJoin(addedReactions);
+    return concat(...addedReactions).pipe(toArray());
   }
+
+  // getAddedReactions(reactions_knockins: string[]): Observable<AddedReaction[]> {
+  //   const addedReactions = reactions_knockins.map((reaction) => {
+  //     return this.biggService.search(reaction).pipe(
+  //       flatMap((reactions: AddedReaction[]) => {
+  //         return this.biggService.getDetails(reactions[0]);
+  //       }));
+  //   });
+
+  //   if (addedReactions.length === 0) {
+  //     return of([]);
+  //   }
+  //   return forkJoin(addedReactions);
+  // }
 
   getOperations(design: DesignRequest): DeCaF.Operation [] {
     const knockoutsReactions = design.design.reaction_knockouts.map((reaction) => Object.assign({
@@ -96,12 +117,15 @@ export class DesignService {
       operation: 'modify',
       type: 'reaction',
     }));
-    const addedReactions = design.design.added_reactions.map((reaction: AddedReaction) => Object.assign({
-      data: mapBiggReactionToCobra(reaction),
-      id: reaction.bigg_id,
-      operation: 'add',
-      type: 'reaction',
-    }));
+    const addedReactions = design.design.added_reactions.map((reaction: AddedReaction) => {
+      console.log("reaction!!!", reaction);
+      return Object.assign({
+        data: mapBiggReactionToCobra(reaction),
+        id: reaction.bigg_id,
+        operation: 'add',
+        type: 'reaction',
+      })
+    });
     const operations = knockoutsReactions.concat(knockoutsGenes).concat(constraints).concat(addedReactions);
     return operations;
   }
