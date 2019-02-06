@@ -34,11 +34,22 @@ import {SetMap} from './store/interactive-map.actions';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
+const deleteFlux = (
+  // tslint:disable:no-any
+  (obj: {[key: string]: any}) =>
+    Object.assign(
+      {},
+      ...Object.entries(obj)
+        .map(([key, value]) => ({[key]: null})),
+    ));
+// tslint:enable:no-any
+
 @Component({
   selector: 'app-interactive-map',
   templateUrl: './app-interactive-map.component.html',
   styleUrls: ['./app-interactive-map.component.scss'],
 })
+
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private builder: escher.BuilderObject = null;
@@ -126,8 +137,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       this.loading = true;
       this.card = card;
       if (card.type === CardType.DataDriven) {
-        builder.load_model(card.model);
-        builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        if (!card.solutionUpdated) {
+          builder.load_model(null);
+          builder.set_reaction_data(deleteFlux(card.solution.flux_distribution));
+        } else {
+          builder.load_model(card.model);
+          builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        }
         builder.set_knockout_reactions(card.knockoutReactions);
         builder.set_knockout_genes(card.knockoutGenes);
         builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));

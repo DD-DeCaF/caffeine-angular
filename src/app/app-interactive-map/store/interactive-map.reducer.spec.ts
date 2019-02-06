@@ -118,6 +118,7 @@ describe('interactiveMapReducer', () => {
               medium: [],
               genotype: [],
               saved: true,
+              solutionUpdated: false,
             },
           },
         },

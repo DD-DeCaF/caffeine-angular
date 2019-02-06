@@ -72,6 +72,7 @@ export const emptyCard: Card = {
   measurements: [],
   medium: [],
   genotype: [],
+  solutionUpdated: false,
   saved: null,
 };
 
@@ -301,6 +302,7 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             solution: action.payload,
+            solutionUpdated: true,
           };
           break;
         }
