@@ -66,6 +66,7 @@ export interface PathwayPredictionReaction {
   gene_reaction_rule: string;
   id: string;
   lower_bound: number;
+  // tslint:disable-next-line:no-any
   metabolites: any;
   name: string;
   upper_bound: number;

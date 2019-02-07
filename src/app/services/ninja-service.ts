@@ -80,7 +80,7 @@ export class NinjaService {
   mapMnxMetabolitesToBigg(metaboliteIds: string[]): Observable<Object> {
     const body = {ids: metaboliteIds, db_from: 'mnx', db_to: 'bigg', type: 'Metabolite'};
     return this.http.post(`${environment.apis.id_mapper}`, body).
-      pipe(map((response) => response["ids"]));
+      pipe(map((response) => response['ids']));
   }
 
   getAddedReactions(
@@ -90,15 +90,17 @@ export class NinjaService {
     const addedReactions = pathwayPrediction.heterologous_reactions.map((reactionId) => {
       const metaboliteIds = Object.keys(reactions[reactionId].metabolites);
       return this.mapMnxMetabolitesToBigg(metaboliteIds).pipe(map((ids) => {
-        let metabolites_to_add = [];
-        let biggMetabolites = {};
+        const metabolites_to_add = [];
+        const biggMetabolites = {};
         const mnxMetabolites = reactions[reactionId].metabolites;
-        for (const mnxId in ids) {
-          let metabolite = metabolites[mnxId];
-          metabolite.id = ids[mnxId][0];
-          metabolites_to_add.push(metabolite);
-          biggMetabolites[ids[mnxId][0]] = mnxMetabolites[mnxId];
-        }
+          for (const mnxId in ids) {
+            if (mnxId) {
+              const metabolite = metabolites[mnxId];
+              metabolite.id = ids[mnxId][0];
+              metabolites_to_add.push(metabolite);
+              biggMetabolites[ids[mnxId][0]] = mnxMetabolites[mnxId];
+            }
+          }
         return {
           ...reactions[reactionId],
           metabolites: biggMetabolites,

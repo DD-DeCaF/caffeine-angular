@@ -1,4 +1,3 @@
-import { PathwayPrediction } from './../../jobs/types';
 // Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -195,7 +194,7 @@ export class InteractiveMapEffects {
             };
           }),
           map((data) => {
-            return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design})
+            return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design});
           }),
           catchError(() => of(new loaderActions.LoadingError())),
         );
@@ -215,7 +214,7 @@ export class InteractiveMapEffects {
             return new fromActions.AddCardFetched({type: payload, solution: solution, pathwayPrediction});
           }),
           catchError(() => of(new loaderActions.LoadingError())),
-        )
+        );
       } else {
         return this.simulationService.simulate(payloadSimulate)
           .pipe(

@@ -124,9 +124,9 @@ export class Loaded implements Action {
 export class AddCard implements Action {
   readonly type = ADD_CARD;
   constructor(
-    public payload: types.CardType, 
-    public design: DesignRequest = null, 
-    public pathwayPrediction: PathwayPredictionResult = null, 
+    public payload: types.CardType,
+    public design: DesignRequest = null,
+    public pathwayPrediction: PathwayPredictionResult = null,
     public reactions: PathwayPredictionReactions = null,
     public metabolites: PathwayPredictionMetabolites = null,
   ) {}

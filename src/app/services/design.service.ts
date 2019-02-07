@@ -1,4 +1,3 @@
-import { map, toArray } from 'rxjs/operators';
 // Copyright 2018 Novo Nordisk Foundation Center for Biosustainability, DTU.
 //
 // Licensed under the Apache License, Version 2.0 (the 'License');
@@ -32,9 +31,9 @@ export class DesignService {
   }
 
   saveDesign(card: HydratedCard, projectId: number): Observable<{ id: number }> {
-    let addedReactions = (card.methodCard === 'Pathway')
+    const addedReactions = (card.methodCard === 'Pathway')
       ? card.addedReactions.map((reaction) => JSON.stringify(reaction))
-      : card.addedReactions.map((reaction) => reaction.bigg_id)
+      : card.addedReactions.map((reaction) => reaction.bigg_id);
     const design = {
       'design': {
         'constraints': card.bounds.map((reaction) => Object.assign({
@@ -58,12 +57,12 @@ export class DesignService {
     }
   }
 
-  getDesigns() {
+  getDesigns(): Observable<DesignRequest[]> {
     return this.http.get<DesignRequest[]>(`${environment.apis.design_storage}/designs`);
   }
 
-  getAddedReactions(design: DesignRequest) {
-    if (design.method === "Pathway") {
+  getAddedReactions(design: DesignRequest): Observable<AddedReaction[]> {
+    if (design.method === 'Pathway') {
       return of(design.design.reaction_knockins.map((reaction) => JSON.parse(reaction)));
     }
     const addedReactions = design.design.reaction_knockins.map((reaction) => {
@@ -108,7 +107,7 @@ export class DesignService {
         id: reaction.bigg_id,
         operation: 'add',
         type: 'reaction',
-      })
+      });
     });
     const operations = knockoutsReactions.concat(knockoutsGenes).concat(constraints).concat(addedReactions);
     return operations;

@@ -268,10 +268,9 @@ export interface AddedReaction extends BiggReaction {
   bigg_id: string;
   metanetx_id?: string;
   reaction_string?: string;
-  // tslint:disable-next-line
+  // tslint:disable-next-line:no-any
   metabolites: any;
-  // tslint:disable-next-line
-  //metabolites_to_add: Cobra.Metabolite[];
+  // tslint:disable-next-line:no-any
   metabolites_to_add: any;
   database_links?: {};
   id?: string;

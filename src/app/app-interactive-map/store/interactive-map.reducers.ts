@@ -199,7 +199,7 @@ export function interactiveMapReducer(
             for (const addedReaction of pathwayPrediction.added_reactions) {
               pathwayPrediction.model.model_serialized.reactions.push(mapBiggReactionToCobra(addedReaction));
               for (const metaboliteToAdd of addedReaction.metabolites_to_add) {
-                pathwayPrediction.model.model_serialized.metabolites.push(metaboliteToAdd)
+                pathwayPrediction.model.model_serialized.metabolites.push(metaboliteToAdd);
               }
             }
           }
