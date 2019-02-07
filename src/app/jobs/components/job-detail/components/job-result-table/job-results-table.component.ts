@@ -77,6 +77,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   private loadingObservable;
   private errorObservable;
   public showAllManipulations = false;
+  public showAllKnockouts = false;
 
   public filterValues = {
     organism: '',
@@ -196,6 +197,10 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
 
   geneLink(manipulation: { id: string }): string {
     return `http://bigg.ucsd.edu/search?query=${manipulation.id}`;
+  }
+
+  knockoutLink(knockout: string): string {
+    return `http://bigg.ucsd.edu/search?query=${knockout}`;
   }
 
   hpLink(hp: string): string {

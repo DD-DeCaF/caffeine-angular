@@ -192,16 +192,27 @@ limitations under the License.
       </div>
     </td>
 
-    <!-- <td class="linkList">
-      <div *ngFor="let ko of element.knockouts">
-        <a [hidden]="!reactions[hp]?.annotation.EC" [attr.href]="ecLink(reactions[hp]?.annotation.EC)" target="_blank">
-          {{reactions[hp]?.annotation.EC}}
-        </a>
-        <a [hidden]="reactions[hp]?.annotation.EC || hp.startsWith('DM')" [attr.href]="hpLink(hp)" target="_blank">
-          {{hp}}
-        </a>
+    <td class="linkList">
+      <div class="linkListInner">
+        <div *ngFor="let knockout of element.knockouts; let i = index;">
+          <div *ngIf="i < 10">
+            <a [attr.href]="knockoutLink(knockout)" target="_blank">
+              {{knockout}}
+            </a>
+          </div>
+          <div *ngIf="i >= 10" [hidden]="!showAllKnockouts">
+            <a [attr.href]="knockoutLink(knockout)" target="_blank">
+              {{knockout}}
+            </a>
+          </div>
+        </div>
+        <div *ngIf="element.knockouts.length >= 10">
+          <a (click)="showAllKnockouts = true;" [hidden]="showAllKnockouts" style="cursor: pointer; padding-top: 10px">
+            ...
+          </a>
+        </div>
       </div>
-    </td> -->
+    </td>
     <td colspan="6"></td>
   </tr>
 </ng-template>
