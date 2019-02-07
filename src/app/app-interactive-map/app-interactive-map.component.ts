@@ -143,7 +143,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         } else {
           builder.load_model(card.model);
           builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-          this.store.dispatch(new Loaded())
+          this.store.dispatch(new Loaded());
         }
         builder.set_knockout_reactions(card.knockoutReactions);
         builder.set_knockout_genes(card.knockoutGenes);
