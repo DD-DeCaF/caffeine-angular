@@ -369,36 +369,36 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   getValues(): void {
-    this.filterValues.biomass = [this.tableData.reduce((min, row) => row.biomass < min ? row.biomass : min, this.tableData[0].biomass),
-      this.tableData.reduce((max, row) => row.biomass > max ? row.biomass : max, this.tableData[0].biomass)];
+    const table = this.tableData.filter((t) => t.biomass > 0);
+    this.filterValues.biomass = [table.reduce((min, row) => row.biomass < min ? row.biomass : min, table[0].biomass),
+      table.reduce((max, row) => row.biomass > max ? row.biomass : max, table[0].biomass)];
     this.biomassFilter.patchValue(this.filterValues.biomass);
 
-    this.filterValues.yieldNum = [this.tableData.reduce((min, row) => row.yield < min ? row.yield : min, this.tableData[0].yield),
-      this.tableData.reduce((max, row) => row.yield > max ? row.yield : max, this.tableData[0].yield)];
+    this.filterValues.yieldNum = [table.reduce((min, row) => row.yield < min ? row.yield : min, table[0].yield),
+      table.reduce((max, row) => row.yield > max ? row.yield : max, table[0].yield)];
     this.yieldFilter.patchValue(this.filterValues.yieldNum);
 
-    this.filterValues.product = [this.tableData.reduce((min, row) => row.product < min ? row.product : min, this.tableData[0].product),
-      this.tableData.reduce((max, row) => row.product > max ? row.product : max, this.tableData[0].product)];
+    this.filterValues.product = [table.reduce((min, row) => row.product < min ? row.product : min, table[0].product),
+      table.reduce((max, row) => row.product > max ? row.product : max, table[0].product)];
     this.productFilter.patchValue(this.filterValues.product);
 
-    this.filterValues.fitness = [this.tableData.reduce((min, row) => row.fitness < min ? row.fitness : min, this.tableData[0].fitness),
-      this.tableData.reduce((max, row) => row.fitness > max ? row.fitness : max, this.tableData[0].fitness)];
+    this.filterValues.fitness = [table.reduce((min, row) => row.fitness < min ? row.fitness : min, table[0].fitness),
+      table.reduce((max, row) => row.fitness > max ? row.fitness : max, table[0].fitness)];
     this.fitnessFilter.patchValue(this.filterValues.fitness);
 
-    this.filterValues.reactions = [this.tableData.reduce((min, row) => row.heterologous_reactions.length < min ? row.heterologous_reactions.length : min,
-      this.tableData[0].heterologous_reactions.length), this.tableData.reduce((max, row) => row.heterologous_reactions.length > max ?
-      row.heterologous_reactions.length : max, this.tableData[0].heterologous_reactions.length)];
+    this.filterValues.reactions = [table.reduce((min, row) => row.heterologous_reactions.length < min ? row.heterologous_reactions.length : min,
+      table[0].heterologous_reactions.length), table.reduce((max, row) => row.heterologous_reactions.length > max ?
+      row.heterologous_reactions.length : max, table[0].heterologous_reactions.length)];
     this.reactionsFilter.setValue(this.filterValues.reactions);
 
-    this.filterValues.knockouts = [this.tableData.reduce((min, row) => 
-      row.knockouts.length < min ? row.knockouts.length : min,
-      this.tableData[0].knockouts.length), this.tableData.reduce((max, row) => row.knockouts.length > max ?
-      row.knockouts.length : max, this.tableData[0].knockouts.length)];
+    this.filterValues.knockouts = [table.reduce((min, row) => row.knockouts.length < min ? row.knockouts.length : min,
+      table[0].knockouts.length), table.reduce((max, row) => row.knockouts.length > max ?
+      row.knockouts.length : max, table[0].knockouts.length)];
     this.knockoutsFilter.setValue(this.filterValues.knockouts);
 
-    this.filterValues.manipulations = [this.tableData.reduce((min, row) => row.manipulations.length < min ? row.manipulations.length : min,
-      this.tableData[0].manipulations.length), this.tableData.reduce((max, row) => row.manipulations.length > max ?
-      row.manipulations.length : max, this.tableData[0].manipulations.length)];
+    this.filterValues.manipulations = [table.reduce((min, row) => row.manipulations.length < min ? row.manipulations.length : min,
+      table[0].manipulations.length), table.reduce((max, row) => row.manipulations.length > max ?
+      row.manipulations.length : max, table[0].manipulations.length)];
     this.manipulationsFilter.patchValue(this.filterValues.manipulations);
     this.options = {
       yield: {
@@ -440,7 +440,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
         step: 1,
       },
     };
-
   }
 
   getManipulations(manipulations: Manipulation[]): Manipulation[] {

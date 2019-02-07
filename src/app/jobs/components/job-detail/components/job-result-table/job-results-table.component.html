@@ -172,7 +172,7 @@ limitations under the License.
             </a>
           </div>
         </div>
-        <div>
+        <div *ngIf="getManipulations(element.manipulations).length >= 10">
            <a (click)="showAllManipulations = true;" [hidden]="showAllManipulations" style="cursor: pointer; padding-top: 10px">
           ...
           </a>
@@ -186,10 +186,7 @@ limitations under the License.
 
     <td class="linkList">
       <div *ngFor="let hp of element.heterologous_reactions">
-        <a [hidden]="!reactions[hp]?.annotation.EC" [attr.href]="ecLink(reactions[hp]?.annotation.EC)" target="_blank">
-          {{reactions[hp]?.annotation.EC}}
-        </a>
-        <a [hidden]="reactions[hp]?.annotation.EC || hp.startsWith('DM')" [attr.href]="hpLink(hp)" target="_blank">
+        <a [hidden]="hp.startsWith('DM')" [attr.href]="hpLink(hp)" target="_blank">
           {{hp}}
         </a>
       </div>
