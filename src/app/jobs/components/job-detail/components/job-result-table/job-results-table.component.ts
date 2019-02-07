@@ -22,7 +22,7 @@ import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getModelName, getOrganismName} from '../../../../../store/shared.selectors';
 import {AppState} from '../../../../../store/app.reducers';
-import {SelectionModel} from '@angular/cdk/collections';
+import {SelectionModel, DataSource} from '@angular/cdk/collections';
 import {selectNotNull} from '../../../../../framework-extensions';
 import {getSelectedCard} from '../../../../../app-interactive-map/store/interactive-map.selectors';
 import {AddCard} from '../../../../../app-interactive-map/store/interactive-map.actions';
@@ -69,6 +69,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   public biomassFilter = new FormControl();
   public productFilter = new FormControl();
   public reactionsFilter = new FormControl();
+  public knockoutsFilter = new FormControl();
   public manipulationsFilter = new FormControl();
   public methodFilter = new FormControl('');
   private lastPrediction: PathwayPredictionResult;
@@ -84,6 +85,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     fitness: null,
     biomass: null,
     reactions: null,
+    knockouts: null,
     manipulations: null,
     method: '',
   };
@@ -92,6 +94,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     'select',
     'manipulations',
     'heterologous_reactions',
+    'knockouts',
     'fitness',
     'yield',
     'product',
@@ -144,6 +147,12 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
       .subscribe(
         (reactions) => {
           this.filterValues.reactions = reactions;
+          this.dataSource.filter = JSON.stringify(this.filterValues);
+        });
+    this.knockoutsFilter.valueChanges
+      .subscribe(
+        (knockouts) => {
+          this.filterValues.knockouts = knockouts;
           this.dataSource.filter = JSON.stringify(this.filterValues);
         });
     this.manipulationsFilter.valueChanges
@@ -244,6 +253,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
         && data.fitness >= searchTerms.fitness[0] && data.fitness <= searchTerms.fitness[1]
         && data.biomass >= searchTerms.biomass[0] && data.biomass <= searchTerms.biomass[1]
         && data.heterologous_reactions.length >= searchTerms.reactions[0] && data.heterologous_reactions.length <= searchTerms.reactions[1]
+        && data.knockouts.length >= searchTerms.knockouts[0] && data.knockouts.length <= searchTerms.knockouts[1]
         && data.manipulations.length >= searchTerms.manipulations[0] && data.manipulations.length <= searchTerms.manipulations[1]
         && data.method.toLowerCase().includes(searchTerms.method.toLowerCase());
     };
@@ -380,6 +390,12 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
       row.heterologous_reactions.length : max, this.tableData[0].heterologous_reactions.length)];
     this.reactionsFilter.setValue(this.filterValues.reactions);
 
+    this.filterValues.knockouts = [this.tableData.reduce((min, row) => 
+      row.knockouts.length < min ? row.knockouts.length : min,
+      this.tableData[0].knockouts.length), this.tableData.reduce((max, row) => row.knockouts.length > max ?
+      row.knockouts.length : max, this.tableData[0].knockouts.length)];
+    this.knockoutsFilter.setValue(this.filterValues.knockouts);
+
     this.filterValues.manipulations = [this.tableData.reduce((min, row) => row.manipulations.length < min ? row.manipulations.length : min,
       this.tableData[0].manipulations.length), this.tableData.reduce((max, row) => row.manipulations.length > max ?
       row.manipulations.length : max, this.tableData[0].manipulations.length)];
@@ -411,6 +427,11 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
       reactions: {
         floor: parseInt(this.filterValues.reactions[0], 10),
         ceil: parseInt(this.filterValues.reactions[1], 10) >= 1 ? parseInt(this.filterValues.reactions[1].toFixed(2), 10) : 1,
+        step: 1,
+      },
+      knockouts: {
+        floor: parseInt(this.filterValues.knockouts[0], 10),
+        ceil: parseInt(this.filterValues.knockouts[1], 10) >= 1 ? parseInt(this.filterValues.knockouts[1].toFixed(2), 10) : 1,
         step: 1,
       },
       manipulations: {
