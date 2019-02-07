@@ -67,7 +67,6 @@ export class JobDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
           this.job = jobPrediction;
-          
           if (jobPrediction.result) {
             this.tableData = [...jobPrediction.result.cofactor_swap, ...jobPrediction.result.diff_fva, ...jobPrediction.result.opt_gene];
             this.reactionsData = jobPrediction.result.reactions;
