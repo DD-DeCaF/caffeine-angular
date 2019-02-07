@@ -22,7 +22,7 @@ import {Observable} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {getModelName, getOrganismName} from '../../../../../store/shared.selectors';
 import {AppState} from '../../../../../store/app.reducers';
-import {SelectionModel, DataSource} from '@angular/cdk/collections';
+import {SelectionModel} from '@angular/cdk/collections';
 import {selectNotNull} from '../../../../../framework-extensions';
 import {getSelectedCard} from '../../../../../app-interactive-map/store/interactive-map.selectors';
 import {AddCard} from '../../../../../app-interactive-map/store/interactive-map.actions';
