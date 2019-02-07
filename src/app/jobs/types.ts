@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Cobra, DeCaF} from '../app-interactive-map/types';
+import {Cobra, DeCaF, AddedReaction} from '../app-interactive-map/types';
 import Metabolite = Cobra.Metabolite;
 
 export interface Job {
@@ -55,19 +55,29 @@ export interface PathwayPredictionResult {
   synthetic_reactions: string[];
   name?: string;
   model_id?: number;
+  added_reactions: AddedReaction[];
 }
 
-export interface PathwayPredictionReactions {
+export interface PathwayPredictionReaction {
   annotation: {
     Description: string;
     EC: string;
-   };
+  };
   gene_reaction_rule: string;
   id: string;
   lower_bound: number;
-  metabolites: Metabolite[];
+  // tslint:disable-next-line:no-any
+  metabolites: any;
   name: string;
   upper_bound: number;
+}
+
+export interface PathwayPredictionReactions {
+  [id: string]: PathwayPredictionReaction;
+}
+
+export interface PathwayPredictionMetabolites {
+  [id: string]: Metabolite;
 }
 
 export interface PathwayResponse {
@@ -81,11 +91,11 @@ export interface PathwayResponse {
   project_id: number;
   type?: string;
   result?: {
-    reactions: PathwayPredictionReactions[];
+    reactions: PathwayPredictionReactions;
     diff_fva: PathwayPredictionResult[];
     cofactor_swap: PathwayPredictionResult[];
     opt_gene: PathwayPredictionResult[];
-    metabolites;
+    metabolites: PathwayPredictionMetabolites;
   };
   updated: string;
 }

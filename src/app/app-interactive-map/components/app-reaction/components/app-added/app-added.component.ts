@@ -48,7 +48,7 @@ export class AppAddedComponent implements AfterViewInit {
     this.panel.query
       .pipe(
         switchMap((query) => this.biggSearchService.search(query)),
-        map((query) => query.filter((q) => Boolean(this.card.model.reactions.find((r) => {
+        map((query) => query.filter((q) => !Boolean(this.card.model.reactions.find((r) => {
           return r.id.toLowerCase() === q.bigg_id.toLowerCase();
         })))),
       )

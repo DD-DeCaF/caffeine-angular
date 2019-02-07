@@ -17,7 +17,7 @@ import {HttpClient} from '@angular/common/http';
 import {Action, Store} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {Observable, combineLatest, of} from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError} from 'rxjs/operators';
+import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError, flatMap} from 'rxjs/operators';
 import {AppState} from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
@@ -168,7 +168,7 @@ export class InteractiveMapEffects {
   simulateNewCard: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_CARD),
     withLatestFrom(this.store$),
-    switchMap(([{payload, type, design, pathwayPrediction}, store]: [fromActions.AddCard, AppState]) => {
+    switchMap(([{payload, design, pathwayPrediction, reactions, metabolites}, store]: [fromActions.AddCard, AppState]) => {
       let payloadSimulate: types.SimulateRequest = {
         model_id: store.interactiveMap.selectedModelHeader.id,
         method: 'pfba',
@@ -177,42 +177,44 @@ export class InteractiveMapEffects {
         operations: [],
       };
 
-      if (design || pathwayPrediction) {
-        if (design) {
-          payloadSimulate = {
-            model_id: design.model_id,
-            method: 'pfba',
-            objective: null,
-            objective_direction: null,
-            operations: this.designService.getOperations(design) || [],
-          };
-        } else {
-          payloadSimulate = {
-            model_id: pathwayPrediction.model_id,
-            method: 'pfba',
-            objective: null,
-            objective_direction: null,
-            operations: this.ninjaService.getOperations(pathwayPrediction),
-          };
-        }
-
+      if (design) {
+        payloadSimulate = {
+          model_id: design.model_id,
+          method: 'pfba',
+          objective: null,
+          objective_direction: null,
+          operations: this.designService.getOperations(design) || [],
+        };
         return this.simulationService.simulate(payloadSimulate)
-          .pipe(
-            map((solution) => {
-              return {
-                type: payload,
-                solution,
-              };
-            }),
-            map((data) => {
-              if (design) {
-                return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design});
-              } else {
-                return new fromActions.AddCardFetched({type: data.type, solution: data.solution, pathwayPrediction});
-              }
-            }),
-            catchError(() => of(new loaderActions.LoadingError())),
-          );
+        .pipe(
+          map((solution) => {
+            return {
+              type: payload,
+              solution,
+            };
+          }),
+          map((data) => {
+            return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design});
+          }),
+          catchError(() => of(new loaderActions.LoadingError())),
+        );
+      } else if (pathwayPrediction) {
+        return this.ninjaService.getAddedReactions(pathwayPrediction, reactions, metabolites).pipe(flatMap((addedReactions) => {
+            pathwayPrediction.added_reactions = addedReactions;
+            payloadSimulate = {
+              model_id: pathwayPrediction.model_id,
+              method: 'pfba',
+              objective: null,
+              objective_direction: null,
+              operations: this.ninjaService.getOperations(pathwayPrediction, reactions),
+            };
+            return this.simulationService.simulate(payloadSimulate);
+          }),
+          map((solution) => {
+            return new fromActions.AddCardFetched({type: payload, solution: solution, pathwayPrediction});
+          }),
+          catchError(() => of(new loaderActions.LoadingError())),
+        );
       } else {
         return this.simulationService.simulate(payloadSimulate)
           .pipe(
@@ -237,9 +239,9 @@ export class InteractiveMapEffects {
       return this
         .http.get(`${environment.apis.maps}/maps/${action.payload.id}`)
         .pipe(map((response: PathwayMap) => ({
-            mapData: response,
-            mapItem: action.payload,
-          })),
+          mapData: response,
+          mapItem: action.payload,
+        })),
           map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
           catchError(() => of(new loaderActions.LoadingError())),
         );
@@ -339,9 +341,9 @@ export class InteractiveMapEffects {
       };
       return this.simulationService.simulate(payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
-            action: newAction,
-            solution,
-          })),
+          action: newAction,
+          solution,
+        })),
           /* tslint:disable */
           map(({action, solution}) => ({
             ...action,

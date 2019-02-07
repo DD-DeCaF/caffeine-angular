@@ -31,6 +31,9 @@ export class DesignService {
   }
 
   saveDesign(card: HydratedCard, projectId: number): Observable<{ id: number }> {
+    const addedReactions = (card.methodCard === 'Pathway')
+      ? card.addedReactions.map((reaction) => JSON.stringify(reaction))
+      : card.addedReactions.map((reaction) => reaction.bigg_id);
     const design = {
       'design': {
         'constraints': card.bounds.map((reaction) => Object.assign({
@@ -39,7 +42,7 @@ export class DesignService {
           'upper_bound': reaction.upperBound,
         }, reaction)),
         'gene_knockouts': card.knockoutGenes,
-        'reaction_knockins': card.addedReactions.map((reaction) => reaction.bigg_id),
+        'reaction_knockins': addedReactions,
         'reaction_knockouts': card.knockoutReactions,
       },
       'model_id': card.model_id,
@@ -58,10 +61,12 @@ export class DesignService {
     return this.http.get<DesignRequest[]>(`${environment.apis.design_storage}/designs`);
   }
 
-  getAddedReactions(reactions_knockins: string[]): Observable<AddedReaction[]> {
-    const addedReactions = reactions_knockins.map((reaction) => {
+  getAddedReactions(design: DesignRequest): Observable<AddedReaction[]> {
+    if (design.method === 'Pathway') {
+      return of(design.design.reaction_knockins.map((reaction) => JSON.parse(reaction)));
+    }
+    const addedReactions = design.design.reaction_knockins.map((reaction) => {
       return this.biggService.search(reaction).pipe(
-        // tslint:disable-next-line:no-any
         flatMap((reactions: AddedReaction[]) => {
           return this.biggService.getDetails(reactions[0]);
         }));
@@ -96,12 +101,14 @@ export class DesignService {
       operation: 'modify',
       type: 'reaction',
     }));
-    const addedReactions = design.design.added_reactions.map((reaction: AddedReaction) => Object.assign({
-      data: mapBiggReactionToCobra(reaction),
-      id: reaction.bigg_id,
-      operation: 'add',
-      type: 'reaction',
-    }));
+    const addedReactions = design.design.added_reactions.map((reaction: AddedReaction) => {
+      return Object.assign({
+        data: mapBiggReactionToCobra(reaction),
+        id: reaction.bigg_id,
+        operation: 'add',
+        type: 'reaction',
+      });
+    });
     const operations = knockoutsReactions.concat(knockoutsGenes).concat(constraints).concat(addedReactions);
     return operations;
   }

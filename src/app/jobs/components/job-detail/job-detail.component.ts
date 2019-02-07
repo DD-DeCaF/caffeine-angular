@@ -15,7 +15,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
-import {Job, PathwayPredictionReactions, PathwayPredictionResult, PathwayResponse} from '../../types';
+import {Job, PathwayPredictionReactions, PathwayPredictionResult, PathwayResponse, PathwayPredictionMetabolites} from '../../types';
 import {Observable, Subscription, timer} from 'rxjs';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
@@ -23,6 +23,7 @@ import {getJob} from '../../store/jobs.selectors';
 import {selectNotNull} from '../../../framework-extensions';
 import {NinjaService} from '../../../services/ninja-service';
 import {getModelName, getOrganismName} from '../../../store/shared.selectors';
+import {DeCaF} from 'src/app/app-interactive-map/types';
 
 
 @Component({
@@ -32,12 +33,14 @@ import {getModelName, getOrganismName} from '../../../store/shared.selectors';
 })
 export class JobDetailComponent implements OnInit, OnDestroy {
   public job: PathwayResponse;
-  model: Observable<string>;
-  organism: Observable<string>;
+  modelName$: Observable<string>;
+  organismName$: Observable<string>;
+  model: DeCaF.Model;
   loadError = false;
   // @ts-ignore
   public tableData: PathwayPredictionResult[];
-  public reactionsData: PathwayPredictionReactions[];
+  public reactionsData: PathwayPredictionReactions;
+  public metabolitesData: PathwayPredictionMetabolites;
   polling: Subscription;
   public jobId: number;
   constructor(
@@ -53,9 +56,10 @@ export class JobDetailComponent implements OnInit, OnDestroy {
     this.store.pipe(selectNotNull(getJob, {jobId}))
       .subscribe((job) => {
         this.job = job;
-        this.model = this.store.pipe(
+        this.model = job.model;
+        this.modelName$ = this.store.pipe(
           select(getModelName(job.model_id)));
-        this.organism = this.store.pipe(
+        this.organismName$ = this.store.pipe(
           select(getOrganismName(job.organism_id)));
       });
 
@@ -63,10 +67,10 @@ export class JobDetailComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
           this.job = jobPrediction;
-
           if (jobPrediction.result) {
             this.tableData = [...jobPrediction.result.cofactor_swap, ...jobPrediction.result.diff_fva, ...jobPrediction.result.opt_gene];
-            this.reactionsData = jobPrediction.result.reactions || [];
+            this.reactionsData = jobPrediction.result.reactions;
+            this.metabolitesData = jobPrediction.result.metabolites;
             this.polling.unsubscribe();
           } else if (jobPrediction.status === 'FAILURE') {
             this.polling.unsubscribe();

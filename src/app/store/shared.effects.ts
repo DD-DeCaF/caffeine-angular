@@ -91,7 +91,7 @@ export class SharedEffects {
     switchMap(() => this.designService.getDesigns()
       .pipe(
         switchMap((designs: DesignRequest[]) => from(designs)),
-        mergeMap((design) => combineLatest(this.modelService.loadModel(design.model_id), this.designService.getAddedReactions(design.design.reaction_knockins))
+        mergeMap((design) => combineLatest(this.modelService.loadModel(design.model_id), this.designService.getAddedReactions(design))
           .pipe(map((data) => ({
             design,
             model: data[0],
