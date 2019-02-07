@@ -30,7 +30,7 @@ import {combineLatest, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {PathwayMap} from '@dd-decaf/escher';
 import {withLatestFrom} from 'rxjs/operators';
-import {SetMap} from './store/interactive-map.actions';
+import {Loaded, SetMap} from './store/interactive-map.actions';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
@@ -143,6 +143,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         } else {
           builder.load_model(card.model);
           builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+          this.store.dispatch(new Loaded())
         }
         builder.set_knockout_reactions(card.knockoutReactions);
         builder.set_knockout_genes(card.knockoutGenes);
@@ -157,6 +158,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         builder.set_knockout_genes(card.knockoutGenes);
         builder.set_highlight_reactions(card.measurements.map((m) => m.id));
         builder._update_data(true, true);
+        this.store.dispatch(new Loaded());
       }
       this.loading = false;
     });

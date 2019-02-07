@@ -281,7 +281,7 @@ export class InteractiveMapEffects {
     ofType(fromActions.LOADED),
     withLatestFrom(this.store$),
     filter(([, storeState]) => storeState.interactiveMap.playing),
-    delay(700),
+    delay(1000),
     mapTo(new fromActions.NextCard()),
   );
 
