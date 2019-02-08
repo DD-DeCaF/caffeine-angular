@@ -87,7 +87,7 @@ export class NinjaService {
     pathwayPrediction: PathwayPredictionResult,
     reactions: PathwayPredictionReactions,
     metabolites: PathwayPredictionMetabolites): Observable<AddedReaction[]> {
-    const addedReactions = pathwayPrediction.heterologous_reactions.map((reactionId) => {
+    const heterologousReactions = pathwayPrediction.heterologous_reactions.map((reactionId) => {
       const metaboliteIds = Object.keys(reactions[reactionId].metabolites);
       return this.mapMnxMetabolitesToBigg(metaboliteIds).pipe(map((ids) => {
         const metabolites_to_add = [];
@@ -95,20 +95,48 @@ export class NinjaService {
         const mnxMetabolites = reactions[reactionId].metabolites;
           for (const mnxId in ids) {
             if (mnxId) {
+              const biggId = ids[mnxId][0] + '_c';
               const metabolite = metabolites[mnxId];
-              metabolite.id = ids[mnxId][0];
+              metabolite.id = biggId;
               metabolites_to_add.push(metabolite);
-              biggMetabolites[ids[mnxId][0]] = mnxMetabolites[mnxId];
+              biggMetabolites[biggId] = mnxMetabolites[mnxId];
             }
           }
         return {
           ...reactions[reactionId],
           metabolites: biggMetabolites,
+          id: reactionId,
           bigg_id: reactionId,
           metabolites_to_add,
         };
       }));
     });
+
+    const syntheticReactions = pathwayPrediction.synthetic_reactions.map((reactionId: string) => {
+      const mnxMetabolite = reactionId.slice(3);
+      return this.mapMnxMetabolitesToBigg([mnxMetabolite]).pipe(map((ids) => {
+        const biggId = ids[mnxMetabolite][0] + '_c';
+        const metabolite_to_add = {
+          name: biggId,
+          id: biggId,
+          annotation: {},
+          charge: -1,
+          compartment: 'c',
+          formula: biggId,
+        };
+        return {
+          id: reactionId,
+          name: reactionId,
+          bigg_id: reactionId,
+          metabolites: {[biggId]: -1},
+          metabolites_to_add: [metabolite_to_add],
+          lower_bound: 0,
+          upper_bound: 1000,
+        };
+      }));
+    });
+
+    const addedReactions = [...heterologousReactions, ...syntheticReactions];
 
     if (addedReactions.length === 0) {
       return of([]);
