@@ -22,8 +22,8 @@ elif [ "${TRAVIS_BRANCH}" = "devel" ]; then
   PROJECT='caffeine-staging'
 fi
 if [ "${TRAVIS_BRANCH}" = "master" ] || [ "${TRAVIS_BRANCH}" = "devel" ]; then
-  sentry-cli releases -o technical-university-of-denmark -p ${PROJECT} new ${TRAVIS_COMMIT}
-  sentry-cli releases -o technical-university-of-denmark -p ${PROJECT} files \
+  sentry-cli releases -o nnf-cfb-cad -p ${PROJECT} new ${TRAVIS_COMMIT}
+  sentry-cli releases -o nnf-cfb-cad -p ${PROJECT} files \
     ${TRAVIS_COMMIT} upload-sourcemaps --url-prefix \
     https://caffeine.dd-decaf.eu/ dist
   rm  dist/*.js.map
