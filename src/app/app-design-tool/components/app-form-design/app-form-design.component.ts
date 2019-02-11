@@ -42,6 +42,7 @@ import {IamService} from '../../../services/iam.service';
 })
 export class AppFormDesignComponent implements OnInit, AfterViewInit {
   designForm: FormGroup;
+  buttonClicked = false;
   @ViewChild('species') speciesSelector: MatSelect;
   @ViewChild('auto') productSelector: MatAutocomplete;
   @ViewChild('projects') projectSelector: MatSelect;
@@ -111,6 +112,9 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
       .pipe(
         debounceTime(300),
         switchMap((value) => this.warehouseService.getProducts(value)));
+
+    this.designForm.valueChanges
+      .subscribe(() => this.buttonClicked = false);
   }
 
   ngAfterViewInit(): void {
@@ -180,5 +184,9 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.designForm.patchValue({
       project_id: '',
     });
+  }
+
+  formSubmitted(): void {
+    this.buttonClicked = !this.buttonClicked;
   }
 }
