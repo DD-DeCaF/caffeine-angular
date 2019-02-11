@@ -21,6 +21,7 @@ import { Subscription, Observable, timer } from 'rxjs';
 import { AppState } from '../../../store/app.reducers';
 import { SessionState } from '../../../session/store/session.reducers';
 import { FetchJobs } from '../../../store/shared.actions';
+import {getOrganismName} from '../../../store/shared.selectors';
 
 @Component({
   selector: 'app-job-list',
@@ -38,11 +39,16 @@ export class JobListComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  displayedColumns: string[] = ['product_name', 'status', 'created', 'details'];
+  displayedColumns: string[] = ['product_name', 'status', 'created', 'details', 'organism'];
 
   constructor(
     private store: Store<AppState>,
   ) {}
+
+  getOrganismNameById(organismId: number): Observable<string> {
+    return this.store.pipe(
+      select(getOrganismName(organismId)));
+  }
 
   ngOnInit(): void {
     let jobsFinished = true;
