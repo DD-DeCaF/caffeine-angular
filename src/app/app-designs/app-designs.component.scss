@@ -13,7 +13,7 @@
 // limitations under the License.
 
 .container {
-  max-width: 700px;
+  max-width: 1000px;
   max-height: 100%;
   margin: 0 auto;
   padding-bottom: 20px;
@@ -27,20 +27,43 @@
 
 .table {
   width: 100%;
+  .mat-cell:first-child,
+  .mat-header-cell:first-child {
+    padding: 0 16px 0 24px;
+  }
+  .mat-cell,
+  .mat-header-cell {
+    padding: 0 16px 0 0;
+  }
 }
 
-.mat-column-id {
-  width: 45px;
+td.mat-cell:first-of-type {
+  padding: 0 0 0 24px;
 }
 
-.mat-column-actions {
-  text-align: center;
-  width: 60px;
+.linkListInner {
+  max-height: 200px;
+  overflow-y: auto;
 }
 
-.inline-button {
-  display: inline;
-  color: black;
+a {
+  cursor: pointer;
+}
+
+.mat-column-select {
+  width: 5%;
+}
+
+.mat-column-name {
+  width: 20%;
+}
+
+.mat-column-organism_id,
+.mat-column-model_id,
+.mat-column-reaction_knockins,
+.mat-column-reaction_knockouts,
+.mat-column-gene_knockouts {
+  width: 15%;
 }
 
 .disabled {

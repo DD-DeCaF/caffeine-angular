@@ -23,11 +23,11 @@
         <mat-icon>delete</mat-icon>
         <span class="share-button">DELETE</span></button>
     </mat-list-item>
-    <table mat-table [dataSource]="dataSource" matSort class="table" matSortActive="name" matSortDirection="asc"
-           matSortDisableClear>
+
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDirection="asc" class="table">
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox (change)="$event ? masterToggle() : null"
+          <mat-checkbox (change)="$event ? masterToggle() : null" 
                         color="primary"
                         [checked]="selection.hasValue() && isAllSelected()"
                         [indeterminate]="selection.hasValue() && !isAllSelected()">
@@ -39,17 +39,124 @@
                         (change)="$event ? selection.toggle(row) : null"
                         [checked]="selection.isSelected(row)">
           </mat-checkbox>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-        <td mat-cell *matCellDef="let element"> {{element.name}}</td>
+        <td mat-cell *matCellDef="let design">{{design.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="organism_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Organism</th>
+        <td mat-cell *matCellDef="let design">{{getOrganismName(design.model.organism_id) | async}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="model_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Model</th>
+        <td mat-cell *matCellDef="let design">{{getModelName(design.model_id) | async}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="reaction_knockins">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Added reactions</th>
+        <td mat-cell *matCellDef="let design">
+          <a>{{design.design.reaction_knockins.length}}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="reaction_knockouts">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Reaction knockouts</th>
+        <td mat-cell *matCellDef="let design">
+          <a>{{design.design.reaction_knockouts.length}}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="gene_knockouts">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Gene knockouts</th>
+          <td mat-cell *matCellDef="let design">
+            <a>{{design.design.gene_knockouts.length}} </a>
+          </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [appDesignsDetailRow]="row"
+        [appDesignsDetailRowTpl]="tpl" (toggleChange)="toggleChange($event)">
     </table>
     <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
+
+  <ng-template #tpl let-design>
+      <tr class="mat-row expandRow">
+        <td colspan="4"></td>
+
+        <td class="linkList">
+          <div class="linkListInner">
+            <div *ngFor="let reaction of design.design.reaction_knockins; let i = index;">
+              <div *ngIf="i < 10">
+                <a [attr.href]="reactionLink(reaction, design.method, true)" target="_blank">
+                  {{getReactionId(reaction, design.method)}}
+                </a>
+              </div>
+              <div *ngIf="i >= 10" [hidden]="!showAllAddedReactions">
+                <a [attr.href]="reactionLink(reaction, design.method, true)" target="_blank">
+                  {{getReactionId(reaction, design.method)}}
+                </a>
+              </div>
+            </div>
+            <div *ngIf="design.design.reaction_knockins.length >= 10">
+              <a (click)="showAllAddedReactions = true;" [hidden]="showAllAddedReactions">
+                ...
+              </a>
+            </div>
+          </div>
+        </td>
+
+        <td class="linkList">
+          <div class="linkListInner">
+            <div *ngFor="let reaction of design.design.reaction_knockouts; let i = index;">
+              <div *ngIf="i < 10">
+                <a [attr.href]="reactionLink(reaction, design.method, false)" target="_blank">
+                  {{reaction}}
+                </a>
+              </div>
+              <div *ngIf="i >= 10" [hidden]="!showAllKnockedOutReactions">
+                <a [attr.href]="reactionLink(reaction, design.method, false)" target="_blank">
+                  {{reaction}}
+                </a>
+              </div>
+            </div>
+            <div *ngIf="design.design.reaction_knockouts.length >= 10">
+              <a (click)="showAllKnockedOutReactions = true;" [hidden]="showAllKnockedOutReactions">
+                ...
+              </a>
+            </div>
+          </div>
+        </td>
+
+        <td class="linkList">
+          <div class="linkListInner">
+            <div *ngFor="let geneId of design.design.gene_knockouts; let i = index;">
+              <div *ngIf="i < 10">
+                <a [attr.href]="geneLink(geneId)" target="_blank">
+                  {{geneId}}
+                </a>
+              </div>
+              <div *ngIf="i >= 10" [hidden]="!showAllGenes">
+                <a [attr.href]="geneLink(geneId)" target="_blank">
+                  {{geneId}}
+                </a>
+              </div>
+            </div>
+            <div *ngIf="design.design.gene_knockouts.length >= 10">
+              <a (click)="showAllGenes = true;" [hidden]="showAllGenes">
+                ...
+              </a>
+            </div>
+          </div>
+        </td>
+
+        <td colspan="6"></td>
+      </tr>
+    </ng-template>
+
 </div>
