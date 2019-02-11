@@ -173,11 +173,11 @@ limitations under the License.
           </div>
         </div>
         <div *ngIf="getManipulations(element.manipulations).length >= 10">
-           <a (click)="showAllManipulations = true;" [hidden]="showAllManipulations" style="cursor: pointer; padding-top: 10px">
+           <a (click)="showAllManipulations = true;" [hidden]="showAllManipulations">
           ...
           </a>
         </div>
-        <div class="legend-manipulations">
+        <div *ngIf="element.manipulations.length > 0" class="legend-manipulations">
         <span class="legend-text-manipulation">↑ up-regulation, ↓ down-regulation<mat-icon
           class="legend-icon">info_outline</mat-icon></span>
         </div>
@@ -207,7 +207,7 @@ limitations under the License.
           </div>
         </div>
         <div *ngIf="element.knockouts.length >= 10">
-          <a (click)="showAllKnockouts = true;" [hidden]="showAllKnockouts" style="cursor: pointer; padding-top: 10px">
+          <a (click)="showAllKnockouts = true;" [hidden]="showAllKnockouts">
             ...
           </a>
         </div>
