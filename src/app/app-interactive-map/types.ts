@@ -94,7 +94,7 @@ export interface Card {
   medium: Medium[];
   genotype: string[];
   solutionUpdated: boolean;
-  operations?: DeCaF.Operatio[];
+  operations?: DeCaF.Operation[];
 
 }
 
