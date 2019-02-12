@@ -146,6 +146,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
+    this.buttonClicked = !this.buttonClicked;
     this.store.dispatch(new StartDesign(this.designForm.value));
   }
 
@@ -184,9 +185,5 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     this.designForm.patchValue({
       project_id: '',
     });
-  }
-
-  formSubmitted(): void {
-    this.buttonClicked = !this.buttonClicked;
   }
 }
