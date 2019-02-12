@@ -102,7 +102,7 @@
       class="design-button"
       type="submit"
       color="primary"
-      [disabled]="!designForm.valid"
+      [disabled]="(!designForm.valid || buttonClicked)"
       #design>DESIGN
     </button>
   </form>
