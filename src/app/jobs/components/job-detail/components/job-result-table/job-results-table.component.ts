@@ -183,6 +183,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
       switch (property) {
         case 'heterologous_pathway':
         case 'manipulations':
+        case 'knockouts':
           return item[property].length;
         default:
           return item[property];
@@ -227,6 +228,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
 
   toggleChange(val: JobResultsDetailRowDirective): void {
     this.showAllManipulations = false;
+    this.showAllKnockouts = false;
     // @ts-ignore
     this.collapseClicked.emit(val);
   }
@@ -282,7 +284,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   public masterToggle(): void {
     this.isAllSelected() ?
       this.selection.clear() :
-      this.dataSource.data.forEach((row) => {
+      this.dataSource.filteredData.forEach((row) => {
         if (row.method !== 'PathwayPredictor+DifferentialFVA') {
           return this.selection.select(row);
         }

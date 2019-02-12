@@ -19,6 +19,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from '../app-material.module';
 import {AppDesignsComponent} from './app-designs.component';
 import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
+import { DesignsDetailRowDirective } from './app-designs-row-detail.directive';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import {DeleteDesignComponent} from './components/delete-design/delete-design.co
   declarations: [
     AppDesignsComponent,
     DeleteDesignComponent,
+    DesignsDetailRowDirective,
   ],
   entryComponents: [AppDesignsComponent, DeleteDesignComponent],
 })
