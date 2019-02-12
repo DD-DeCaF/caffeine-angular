@@ -30,30 +30,32 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
         <td mat-cell *matCellDef="let element" align="center">
-          <a
-             class="inline-button"
-             (click)="editModel(element)"
-             *ngIf="(sessionState | async).authenticated">
-            <mat-icon class="button">edit</mat-icon>
-          </a>
-          <a
-             class="inline-button"
-             matTooltip="Please log in or register to use this functionality!"
-             *ngIf="!(sessionState | async).authenticated">
-            <mat-icon class="button disabled">edit</mat-icon>
-          </a>
-          <a
-             class="inline-button"
-             (click)="removeModel(element)"
-             *ngIf="(sessionState | async).authenticated">
-            <mat-icon class="button">delete</mat-icon>
-          </a>
-          <a
-             class="disabled inline-button"
-             matTooltip="Please log in or register to use this functionality!"
-             *ngIf="!(sessionState | async).authenticated">
-            <mat-icon class="button disabled">delete</mat-icon>
-          </a>
+          <div *ngIf="!(sessionState | async).authenticated">
+            <a class="disabled inline-button" matTooltip="Please log in or register to use this functionality!">
+              <mat-icon class="button disabled">delete</mat-icon>
+            </a>
+            <a class="inline-button" matTooltip="Please log in or register to use this functionality!">
+              <mat-icon class="button disabled">edit</mat-icon>
+            </a>
+          </div>
+          <div *ngIf="(sessionState | async).authenticated">
+            <div *ngIf="element.project_id === null">
+              <a class="inline-button" matTooltip="Public data can not be modified">
+                <mat-icon class="button disabled">edit</mat-icon>
+              </a>
+              <a class="inline-button" matTooltip="Public data can not be modified">
+                <mat-icon class="button disabled">delete</mat-icon>
+              </a>
+            </div>
+            <div *ngIf="element.project_id !== null">
+              <a class="inline-button" (click)="editModel(element)">
+                <mat-icon class="button">edit</mat-icon>
+              </a>
+              <a class="inline-button" (click)="removeModel(element)">
+                <mat-icon class="button">delete</mat-icon>
+              </a>
+            </div>
+          </div>
         </td>
       </ng-container>
 
