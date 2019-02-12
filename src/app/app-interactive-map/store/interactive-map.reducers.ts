@@ -209,7 +209,7 @@ export function interactiveMapReducer(
           species = state.selectedSpecies;
           model_id = design ? design.model_id : pathwayPrediction ? pathwayPrediction.model_id : state.selectedModel.id;
           projectId = design ? design.project_id : null;
-          methodCard = design ? 'Design' : pathwayPrediction ? 'Pathway' : 'Manual';
+          methodCard = (design && design.method) ? design.method : pathwayPrediction ? 'Pathway' : 'Manual';
           saved = !pathwayPrediction;
           break;
         }
