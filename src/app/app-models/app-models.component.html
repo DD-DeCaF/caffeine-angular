@@ -37,10 +37,10 @@
             <mat-icon class="button">edit</mat-icon>
           </a>
           <a
-             class="disabled inline-button"
+             class="inline-button"
              matTooltip="Please log in or register to use this functionality!"
              *ngIf="!(sessionState | async).authenticated">
-            <mat-icon class="button">edit</mat-icon>
+            <mat-icon class="button disabled">edit</mat-icon>
           </a>
           <a
              class="inline-button"
@@ -52,7 +52,7 @@
              class="disabled inline-button"
              matTooltip="Please log in or register to use this functionality!"
              *ngIf="!(sessionState | async).authenticated">
-            <mat-icon class="button">delete</mat-icon>
+            <mat-icon class="button disabled">delete</mat-icon>
           </a>
         </td>
       </ng-container>
