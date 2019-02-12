@@ -144,7 +144,7 @@ export class AddCardFetched implements Action {
 
 export class UpdateSolution implements Action {
   readonly type = UPDATE_SOLUTION;
-  constructor(public payload: types.DeCaF.Solution) {}
+  constructor(public payload: types.DeCaF.Solution, public operations: Operation[]) {}
 }
 
 export class DeleteCard implements Action {
@@ -164,7 +164,7 @@ export class SetMethod implements Action {
 
 export class SetMethodApply implements Action {
   readonly type = SET_METHOD_APPLY;
-  constructor(public payload: types.Methods) {}
+  constructor(public payload: types.Methods, public solution: DeCaF.Solution) {}
 }
 
 export class ReactionOperation implements Action {

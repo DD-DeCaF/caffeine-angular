@@ -20,7 +20,18 @@ import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
-import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap, SetOperations} from '../../store/interactive-map.actions';
+import {
+  SelectCard,
+  NextCard,
+  PreviousCard,
+  SetPlayState,
+  AddCard,
+  DeleteCard,
+  SaveDesign,
+  SetMap,
+  SetOperations,
+  SetMethod,
+} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
@@ -192,11 +203,13 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
   public methodChanged(event: MatSelect): void {
       this.method = event.value;
+      this.store.dispatch(new SetMethod(event.value));
   }
 
   public experimentChanged(event: Experiment): void {
     this.http.get(`${environment.apis.warehouse}/experiments/${event.id}/conditions`).subscribe((conditions: Condition[]) => {
       this.experiment = event.id;
+      this.condition = null;
       this.conditions = conditions;
     });
   }

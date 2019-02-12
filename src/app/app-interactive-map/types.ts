@@ -94,6 +94,8 @@ export interface Card {
   medium: Medium[];
   genotype: string[];
   solutionUpdated: boolean;
+  operations?: DeCaF.Operatio[];
+
 }
 
 export interface HydratedCard extends Card {

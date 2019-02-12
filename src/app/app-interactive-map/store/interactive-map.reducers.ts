@@ -74,6 +74,7 @@ export const emptyCard: Card = {
   genotype: [],
   solutionUpdated: false,
   saved: null,
+  operations: [],
 };
 
 export const initialState: InteractiveMapState = {
@@ -317,6 +318,7 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             solution: action.payload,
+            operations: action.operations,
             solutionUpdated: true,
           };
           break;
@@ -325,6 +327,7 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             method: action.payload,
+            solution: action.solution,
           };
           break;
         }

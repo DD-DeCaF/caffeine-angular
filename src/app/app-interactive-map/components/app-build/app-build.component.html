@@ -178,6 +178,7 @@
             <mat-label class="title">Conditions</mat-label>
             <input type="text"
                    matInput
+                   [value]="condition"
                    [(ngModel)]="queryCondition"
                    [matAutocomplete]="autoCondition">
             <mat-autocomplete #autoCondition="matAutocomplete"

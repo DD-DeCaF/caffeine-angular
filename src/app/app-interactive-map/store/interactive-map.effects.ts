@@ -16,13 +16,25 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Action, Store} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {Observable, combineLatest, of} from 'rxjs';
-import {withLatestFrom, map, mapTo, delay, filter, switchMap, concatMapTo, take, catchError, flatMap} from 'rxjs/operators';
+import {combineLatest, Observable, of} from 'rxjs';
+import {
+  catchError,
+  concatMapTo,
+  delay,
+  filter,
+  flatMap,
+  map,
+  mapTo,
+  switchMap,
+  take,
+  withLatestFrom,
+} from 'rxjs/operators';
 import {AppState} from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
 import {environment} from '../../../environments/environment.staging';
 import * as types from '../types';
+import {CardType, DeCaF} from '../types';
 import {PathwayMap} from '@dd-decaf/escher';
 import {interactiveMapReducer} from './interactive-map.reducers';
 import {SimulationService} from '../services/simulation.service';
@@ -33,7 +45,6 @@ import * as sharedActions from '../../store/shared.actions';
 import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {NinjaService} from './../../services/ninja-service';
-import {DeCaF} from '../types';
 import Model = DeCaF.Model;
 
 
@@ -186,18 +197,18 @@ export class InteractiveMapEffects {
           operations: this.designService.getOperations(design) || [],
         };
         return this.simulationService.simulate(payloadSimulate)
-        .pipe(
-          map((solution) => {
-            return {
-              type: payload,
-              solution,
-            };
-          }),
-          map((data) => {
-            return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design});
-          }),
-          catchError(() => of(new loaderActions.LoadingError())),
-        );
+          .pipe(
+            map((solution) => {
+              return {
+                type: payload,
+                solution,
+              };
+            }),
+            map((data) => {
+              return new fromActions.AddCardFetched({type: data.type, solution: data.solution, design});
+            }),
+            catchError(() => of(new loaderActions.LoadingError())),
+          );
       } else if (pathwayPrediction) {
         return this.ninjaService.getAddedReactions(pathwayPrediction, reactions, metabolites).pipe(flatMap((addedReactions) => {
             pathwayPrediction.added_reactions = addedReactions;
@@ -239,9 +250,9 @@ export class InteractiveMapEffects {
       return this
         .http.get(`${environment.apis.maps}/maps/${action.payload.id}`)
         .pipe(map((response: PathwayMap) => ({
-          mapData: response,
-          mapItem: action.payload,
-        })),
+            mapData: response,
+            mapItem: action.payload,
+          })),
           map(({mapData, mapItem}) => new fromActions.MapFetched({mapData, mapItem})),
           catchError(() => of(new loaderActions.LoadingError())),
         );
@@ -295,55 +306,63 @@ export class InteractiveMapEffects {
       const newAction = new fromActions.operationToApply[action.type](action.payload);
       const IMStore = interactiveMapReducer(store.interactiveMap, newAction);
       const selectedCard = IMStore.cards.cardsById[IMStore.selectedCardId];
-      const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
-        operation: 'add',
-        type: 'reaction',
-        id: reaction.bigg_id,
-        data: mapBiggReactionToCobra(reaction),
-      }));
-
-      const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({
-        operation: 'knockout',
-        type: 'reaction',
-        id: reactionId,
-        data: null,
-      }));
-
-      const knockoutsGenes = selectedCard.knockoutGenes.map((id: string): types.DeCaF.Operation => ({
-        operation: 'knockout',
-        type: 'gene',
-        id: id,
-        data: null,
-      }));
-
-      const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.BoundedReaction): types.DeCaF.Operation => ({
-        operation: 'modify',
-        type: 'reaction',
-        id: reaction.id,
-        data: {
-          ...reaction,
-          lower_bound: lowerBound,
-          upper_bound: upperBound,
-        },
-      }));
 
       const payload: types.SimulateRequest = {
         model_id: selectedCard.model_id,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
         objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
-        operations: [
+        operations: [],
+      };
+
+      if (selectedCard.type === CardType.DataDriven) {
+        payload.operations = selectedCard.operations;
+      } else {
+        const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
+          operation: 'add',
+          type: 'reaction',
+          id: reaction.bigg_id,
+          data: mapBiggReactionToCobra(reaction),
+        }));
+
+        const knockouts = selectedCard.knockoutReactions.map((reactionId: string): types.DeCaF.Operation => ({
+          operation: 'knockout',
+          type: 'reaction',
+          id: reactionId,
+          data: null,
+        }));
+
+        const knockoutsGenes = selectedCard.knockoutGenes.map((id: string): types.DeCaF.Operation => ({
+          operation: 'knockout',
+          type: 'gene',
+          id: id,
+          data: null,
+        }));
+
+        const bounds = selectedCard.bounds.map(({reaction, lowerBound, upperBound}: types.BoundedReaction): types.DeCaF.Operation => ({
+          operation: 'modify',
+          type: 'reaction',
+          id: reaction.id,
+          data: {
+            ...reaction,
+            lower_bound: lowerBound,
+            upper_bound: upperBound,
+          },
+        }));
+
+        payload.operations = [
           ...addedReactions,
           ...knockouts,
           ...knockoutsGenes,
           ...bounds,
-        ],
-      };
+        ];
+      }
+
       return this.simulationService.simulate(payload)
         .pipe(map((solution: types.DeCaF.Solution) => ({
-          action: newAction,
-          solution,
-        })),
+            action: newAction,
+            solution,
+          })),
           /* tslint:disable */
           map(({action, solution}) => ({
             ...action,
@@ -371,7 +390,7 @@ export class InteractiveMapEffects {
       return this.simulationService.simulate(payloadSimulate)
         .pipe(
           map((data) => {
-            return new fromActions.UpdateSolution(data);
+            return new fromActions.UpdateSolution(data, payloadSimulate.operations);
           }),
           catchError(() => of(new loaderActions.LoadingError())),
         );
