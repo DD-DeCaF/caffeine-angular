@@ -14,20 +14,23 @@
 
 <div class="container-card-info">
   <mat-form-field>
-    <mat-select placeholder="Species" [value]="(card | async).species" #species>
+    <mat-label>Species</mat-label>
+    <mat-select placeholder="e.g. Escherichia coli" [value]="(card | async).species" #species>
       <mat-option [value]="species" *ngFor="let species of (allSpecies |async)">{{species.name}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-select placeholder="Models" [value]="(card | async).model_id" #modelSelector>
+    <mat-label>Model</mat-label>
+    <mat-select placeholder="Please choose a model" [value]="(card | async).model_id" #modelSelector>
       <mat-option [value]="model.id"
                   *ngFor="let model of (models |async)">{{model.name}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field>
+    <mat-label>Name</mat-label>
     <input
       matInput
-      placeholder="Name"
+      placeholder="e.g. Superbug 9000"
       (blur)="nameBlur()"
       (keyup.enter)="onKeyEnter()"
       [value]="(card | async).name"
@@ -35,7 +38,8 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Method" [value]="(card | async).method" #method>
+    <mat-label>Method</mat-label>
+    <mat-select placeholder="e.g. parsimonious FBA" [value]="(card | async).method" #method>
       <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
     </mat-select>
   </mat-form-field>
