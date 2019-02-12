@@ -27,18 +27,6 @@
 
 .table {
   width: 100%;
-  .mat-cell:first-child,
-  .mat-header-cell:first-child {
-    padding: 0 16px 0 24px;
-  }
-  .mat-cell,
-  .mat-header-cell {
-    padding: 0 16px 0 0;
-  }
-}
-
-td.mat-cell:first-of-type {
-  padding: 0 0 0 24px;
 }
 
 .linkListInner {
@@ -52,10 +40,12 @@ a {
 
 .mat-column-select {
   width: 5%;
+  padding: 0 16px 0 24px !important;
 }
 
 .mat-column-name {
   width: 20%;
+  padding: 0 16px 0 0;
 }
 
 .mat-column-organism_id,
@@ -64,6 +54,7 @@ a {
 .mat-column-reaction_knockouts,
 .mat-column-gene_knockouts {
   width: 15%;
+  padding: 0 16px 0 0;
 }
 
 .disabled {
