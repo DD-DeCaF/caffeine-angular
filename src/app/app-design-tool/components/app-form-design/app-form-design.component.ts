@@ -76,7 +76,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
       bigg: [true],
       rhea: [true],
       model: [''],
-      max_predictions: [10],
+      max_predictions: [3],
       aerobic: [false, Validators.required],
     });
   }
