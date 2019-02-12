@@ -15,7 +15,7 @@
 <mat-card class="designCard">
   <form  *ngIf="designForm.value.project_id !== 'add'" class="design-form" [formGroup]="designForm" (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <mat-label>Species</mat-label>
+      <mat-label>Organism</mat-label>
       <mat-select type="text"
                   id="species"
                   placeholder="e.g. Escherichia coli"
