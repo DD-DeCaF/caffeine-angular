@@ -43,15 +43,18 @@ export class AppBoundsDetailComponent {
     this.remove.emit(item);
   }
 
-  apply(item: BoundedReaction, lowerBound: string, upperBound: string): void {
-    if (this.lowerBound.nativeElement.value <= this.upperBound.nativeElement.value) {
+  apply(item: BoundedReaction, lower: string, upper: string): void {
+    const lowerBound = parseFloat(lower);
+    const upperBound = parseFloat(upper);
+
+    if (lowerBound <= upperBound) {
       this.update.emit({
         ...item,
-        lowerBound: parseFloat(lowerBound),
-        upperBound: parseFloat(upperBound),
+        lowerBound,
+        upperBound,
       });
-    } else if (this.lowerBound.nativeElement.value > this.upperBound.nativeElement.value) {
-        const dialogRef = this.dialog.open(ErrorMsgComponent, {width: '250px'});
+    } else {
+        this.dialog.open(ErrorMsgComponent, {width: '250px'});
     }
   }
 
