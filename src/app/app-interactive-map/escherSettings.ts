@@ -34,6 +34,7 @@ export default {
   tooltip: 'custom',
   tooltip_callbacks: null,
   enable_editing: false,
+  enable_fva_opacity: true,
   show_gene_reaction_rules: true,
   zoom_extent_canvas: true,
 };

@@ -18,7 +18,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as types from '../types';
 import {DesignRequest} from '../../app-designs/types';
 import {PathwayPredictionResult, PathwayPredictionReactions, PathwayPredictionMetabolites} from '../../jobs/types';
-import {DataResponse, DeCaF} from '../types';
+import {Condition, DataResponse, DeCaF, Experiment} from '../types';
 import Operation = DeCaF.Operation;
 import {HydratedCard} from '../types';
 
@@ -203,8 +203,8 @@ export class SaveNewDesign implements Action {
 
 export class SetOperations implements Action {
   readonly type = SET_OPERATIONS;
-  constructor(public operations: Operation[], public method: string, public experiment: number, public condition: number, public model_id: number,
-              public conditions: DataResponse) {}
+  constructor(public operations: Operation[], public method: string, public experiment: Experiment,
+              public condition: Condition, public model_id: number, public conditions: DataResponse) {}
 }
 
 export const operationToApply = {

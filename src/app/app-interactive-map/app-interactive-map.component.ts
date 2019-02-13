@@ -34,16 +34,6 @@ import {Loaded, SetMap} from './store/interactive-map.actions';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
-const deleteFlux = (
-  // tslint:disable:no-any
-  (obj: { [key: string]: any }) =>
-    Object.assign(
-      {},
-      ...Object.entries(obj)
-        .map(([key, value]) => ({[key]: null})),
-    ));
-
-// tslint:enable:no-any
 
 @Component({
   selector: 'app-interactive-map',
@@ -282,14 +272,19 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     if (card.type === CardType.DataDriven) {
       if (!card.solutionUpdated) {
         builder.load_model(null);
-        builder.set_reaction_data(deleteFlux(card.solution.flux_distribution));
+        const reactionData = _mapValues(card.solution.flux_distribution,
+          (d) => (d.upper_bound + d.lower_bound) / 2);
+        builder.set_reaction_fva_data(reactionData);
+        builder.set_reaction_data(null);
       } else {
         builder.load_model(card.model);
         if (card.method === 'fva' || card.method === 'pfba-fva') {
           const reactionData = _mapValues(card.solution.flux_distribution,
             (d) => (d.upper_bound + d.lower_bound) / 2);
-          builder.set_reaction_fva_data(fluxFilter(reactionData));
+          builder.set_reaction_fva_data(card.solution.flux_distribution);
+          builder.set_reaction_data(fluxFilter(reactionData));
         } else {
+          builder.set_reaction_fva_data(card.solution.flux_distribution);
           builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
         }
         this.store.dispatch(new Loaded());
@@ -304,8 +299,10 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       if (card.method === 'fva' || card.method === 'pfba-fva') {
         const reactionData = _mapValues(card.solution.flux_distribution,
           (d) => (d.upper_bound + d.lower_bound) / 2);
-        builder.set_reaction_fva_data(fluxFilter(reactionData));
+        builder.set_reaction_fva_data(card.solution.flux_distribution);
+        builder.set_reaction_data(fluxFilter(reactionData));
       } else {
+        builder.set_reaction_fva_data(card.solution.flux_distribution);
         builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
       }
       builder.set_knockout_reactions(card.knockoutReactions);

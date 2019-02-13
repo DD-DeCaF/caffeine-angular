@@ -191,7 +191,7 @@ export class InteractiveMapEffects {
       if (design) {
         payloadSimulate = {
           model_id: design.model_id,
-          method: 'pfba',
+          method: design.method,
           objective: null,
           objective_direction: null,
           operations: this.designService.getOperations(design) || [],
@@ -214,7 +214,7 @@ export class InteractiveMapEffects {
             pathwayPrediction.added_reactions = addedReactions;
             payloadSimulate = {
               model_id: pathwayPrediction.model_id,
-              method: 'pfba',
+              method: pathwayPrediction.method,
               objective: null,
               objective_direction: null,
               operations: this.ninjaService.getOperations(pathwayPrediction, reactions),
@@ -399,14 +399,16 @@ export class InteractiveMapEffects {
 
   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
-    ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD, fromActions.REACTION_OPERATION,
-      fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS, sharedActions.FETCH_DESIGNS),
+    ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD,
+      fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS,
+      sharedActions.FETCH_DESIGNS, fromActions.SET_METHOD),
     mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION, fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS),
+    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION,
+      fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY),
     mapTo(new loaderActions.LoadingFinished()),
   );
 
