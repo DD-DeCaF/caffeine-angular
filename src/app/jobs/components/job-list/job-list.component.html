@@ -29,11 +29,6 @@ limitations under the License.
         <td mat-cell *matCellDef="let job">{{job.product_name}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="organism">
-        <th mat-header-cell *matHeaderCellDef>Organism</th>
-        <td mat-cell *matCellDef="let job" matSortActive="name" matSortDirection="asc">{{getOrganismNameById(job.organism_id) | async}}</td>
-      </ng-container>
-
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>State</th>
         <td mat-cell *matCellDef="let job">

@@ -31,7 +31,7 @@ import {ModalErrorComponent} from './components/modal-error/modal-error.componen
 import {PathwayMap} from '@dd-decaf/escher';
 import {withLatestFrom} from 'rxjs/operators';
 import {Loaded, SetMap} from './store/interactive-map.actions';
-import {ErrorMsgComponent} from "./components/app-reaction/components/error-msg/error-msg.component";
+import {ErrorMsgComponent} from './components/app-reaction/components/error-msg/error-msg.component';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 

@@ -11,13 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-error-msg',
   templateUrl: './error-msg.component.html',
-  styleUrls: ['./error-msg.component.css'],
 })
 export class ErrorMsgComponent implements OnInit {
   constructor(
