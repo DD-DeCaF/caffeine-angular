@@ -34,6 +34,7 @@ import {AppRoutingModule} from '../app-routing.module';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {SelectProjectComponent} from './components/app-build/components/select-project/select-project.component';
 import {ShowHelpComponent} from './components/app-build/components/show-help/show-help.component';
+import { ErrorMsgComponent } from './components/app-reaction/components/error-msg/error-msg.component';
 
 
 @NgModule({
@@ -66,6 +67,6 @@ import {ShowHelpComponent} from './components/app-build/components/show-help/sho
   exports: [
     AppInteractiveMapComponent,
   ],
-  entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent, ShowHelpComponent],
+  entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent, ShowHelpComponent, ErrorMsgComponent],
 })
 export class AppInteractiveMapModule {}
