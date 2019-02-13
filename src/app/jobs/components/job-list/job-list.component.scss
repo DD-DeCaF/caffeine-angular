@@ -13,7 +13,7 @@
 // limitations under the License.
 
 .container {
-  max-width: 700px;
+  max-width: 1000px;
   margin: 0 auto;
   padding-bottom: 20px;
   display: flex;
@@ -29,9 +29,22 @@
   vertical-align: super;
 }
 
+.mat-column-product_name,
+.mat-column-organism_id {
+  width: 20%;
+  padding-right: 16px;
+}
+
+.mat-column-model_id,
+.mat-column-status,
+.mat-column.created {
+  width: 15%;
+  padding-right: 16px;
+}
+
 .mat-column-details {
   text-align: right;
-  width: 50px;
+  width: 15%;
 }
 
 .mat-button {
