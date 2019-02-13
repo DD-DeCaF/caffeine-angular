@@ -13,13 +13,16 @@
 // limitations under the License.
 
 import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {fromEvent, Observable} from 'rxjs';
 import {SessionState} from '../session/store/session.reducers';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {Project} from '../projects/types';
 import {SetSelectedProject} from '../store/shared.actions';
 import {colors} from '../themes';
+import {debounceTime, map} from 'rxjs/operators';
+
+const MOBILE_MAX_WIDTH = 425;
 
 @Component({
   selector: 'app-app-home',
@@ -31,13 +34,31 @@ export class AppHomeComponent implements OnInit {
   public allProjects: Observable<Project[]>;
   public selectedProject: Project;
   public colors = colors;
+  public sidenavMode: string;
   public title = 'app';
-
+  public _resize$: Observable<number>;
   constructor(
     private store: Store<AppState>) {
+    if (window.innerWidth > MOBILE_MAX_WIDTH) {
+      this.sidenavMode = 'side';
+    } else {
+      this.sidenavMode = 'over';
+    }
   }
 
   public ngOnInit(): void {
+    this._resize$ = fromEvent(window, 'resize')
+      .pipe(
+        debounceTime(200),
+        map(() => window.innerWidth),
+      );
+    this._resize$.subscribe((width) => {
+      if (width > MOBILE_MAX_WIDTH) {
+        this.sidenavMode = 'side';
+      } else {
+        this.sidenavMode = 'over';
+      }
+    });
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
     this.store.pipe(
       select((store) => store.shared.selectedProject)).subscribe((project) => {

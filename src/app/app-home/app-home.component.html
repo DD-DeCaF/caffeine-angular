@@ -17,7 +17,7 @@
   <mat-sidenav-container>
     <mat-sidenav #sidenav
                  class="mat-elevation-z3"
-                 mode="over">
+                 [mode]="sidenavMode">
 
       <mat-nav-list class="home-list">
         <mat-accordion *ngIf="!selectedProject">
@@ -43,13 +43,15 @@
           <p matLine primary>{{selectedProject.name}}</p>
         </mat-toolbar>
         <mat-divider></mat-divider>
-        <mat-list-item (click)="sidenav.toggle()" routerLink="/" [routerLinkActive]="['highlight']"
+        <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/"
+                       [routerLinkActive]="['highlight']"
                        [routerLinkActiveOptions]="{exact: true}">
           <mat-icon mat-list-icon>home</mat-icon>
           <p matLine>Home</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/pathways"
+        <mat-list-item *ngIf="(sessionState | async).authenticated"
+                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/pathways"
                        [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon svgIcon="design"></mat-icon>
           <p matLine>Design</p>
@@ -61,12 +63,14 @@
           <p matLine>Design</p>
         </mat-list-item>
 
-        <mat-list-item (click)="sidenav.toggle()" routerLink="/interactiveMap" [routerLinkActive]="['highlight']">
+        <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/interactiveMap"
+                       [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon svgIcon="interactive-map"></mat-icon>
           <p matLine>Interactive Map</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/projects"
+        <mat-list-item *ngIf="(sessionState | async).authenticated"
+                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/projects"
                        [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon>subject</mat-icon>
           <p matLine>Projects</p>
@@ -78,7 +82,8 @@
           <p matLine>Projects</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/jobs"
+        <mat-list-item *ngIf="(sessionState | async).authenticated"
+                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/jobs"
                        [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon svgIcon="hourglass-full"></mat-icon>
           <p matLine>Jobs</p>
@@ -90,17 +95,20 @@
           <p matLine>Jobs</p>
         </mat-list-item>
 
-        <mat-list-item (click)="sidenav.toggle()" routerLink="/maps" [routerLinkActive]="['highlight']">
+        <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/maps"
+                       [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon>map</mat-icon>
           <p matLine>Maps</p>
         </mat-list-item>
 
-        <mat-list-item (click)="sidenav.toggle()" routerLink="/models" [routerLinkActive]="['highlight']">
+        <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/models"
+                       [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon>rounded_corner</mat-icon>
           <p matLine>Models</p>
         </mat-list-item>
 
-        <mat-list-item *ngIf="(sessionState | async).authenticated" (click)="sidenav.toggle()" routerLink="/designs"
+        <mat-list-item *ngIf="(sessionState | async).authenticated"
+                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/designs"
                        [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon>person</mat-icon>
           <p matLine>Designs</p>

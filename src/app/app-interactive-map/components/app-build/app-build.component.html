@@ -148,19 +148,14 @@
       <div *ngIf="card.type === cardType.DataDriven" [hidden]="!card.selected">
         <mat-card class="remove-box-shadow" fxLayout="column">
           <mat-form-field>
-            <div>
-              <mat-label>Method</mat-label>
-              <div fxFlex></div>
-              <button mat-icon-button (click)='showHelp($event)'>
-                <mat-icon style="vertical-align: super">help_outline</mat-icon>
-              </button>
-            </div>
+            <mat-label>Method</mat-label>
             <mat-select [value]="card.method" (selectionChange)="methodChanged($event)">
               <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
             </mat-select>
+            <mat-icon matSuffix (click)='showHelp($event)'>help_outline</mat-icon>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Experiment</mat-label>
+            <mat-label>Experiment</mat-label>
             <input type="text"
                    matInput
                    [(ngModel)]="queryExperiment"
@@ -175,7 +170,7 @@
             </mat-autocomplete>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Conditions</mat-label>
+            <mat-label>Conditions</mat-label>
             <input type="text"
                    matInput
                    [(ngModel)]="queryCondition"

@@ -24,9 +24,13 @@ tr.expanded > td {
   border-bottom: none;
 }
 
+a {
+  cursor: pointer;
+}
+
 .linkListInner {
   max-height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .expandRow > td {
