@@ -14,6 +14,7 @@
 
 import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit, OnDestroy} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {Manipulation, PathwayPredictionReactions, PathwayPredictionResult, PathwayPredictionMetabolites} from '../../../../types';
 import {JobResultsDetailRowDirective} from './job-results-table-row-detail.directive';
@@ -107,6 +108,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     private store: Store<AppState>,
     private router: Router,
     private dialog: MatDialog,
+    public snackBar: MatSnackBar,
   ) {
   }
 
@@ -208,6 +210,16 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     return `https://www.metanetx.org/equa_info/${hp.replace('DM_', '')}`;
   }
 
+  showWarning(method: string, checked: boolean): void {
+    if (method === 'PathwayPredictor+DifferentialFVA' && !checked) {
+      this.snackBar.open(`Sharing of DifferentialFVA designs is not completely supported yet.
+      Proceed with caution if you want to inspect the predicted pathways
+      and knockouts on the interactive map.`, '', {
+        duration: 5000,
+      });
+    }
+  }
+
   dispManipulation(
     {direction, id, value}: Manipulation,
   ): string {
@@ -271,12 +283,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   /** Whether the number of selected elements matches the total number of rows. */
   public isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
-    let numRows = 0;
-    this.dataSource.data.forEach((row) => {
-      if (row.method !== 'PathwayPredictor+DifferentialFVA') {
-        numRows++;
-      }
-    });
+    const numRows = this.dataSource.filteredData.length;
     return numSelected === numRows;
   }
 
@@ -285,9 +292,8 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.filteredData.forEach((row) => {
-        if (row.method !== 'PathwayPredictor+DifferentialFVA') {
-          return this.selection.select(row);
-        }
+        this.selection.select(row);
+        this.showWarning(row.method, false);
       });
   }
 
