@@ -60,7 +60,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public allProjects: Observable<Project[]>;
   public selectedProject: number;
-  public product_placeholder = 'vanillate';
+  public product_placeholder = 'e.g. vanillate';
 
   constructor(
     private fb: FormBuilder,

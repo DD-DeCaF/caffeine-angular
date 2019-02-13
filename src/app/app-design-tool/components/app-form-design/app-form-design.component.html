@@ -14,12 +14,11 @@
 
 <mat-card class="designCard">
   <form  *ngIf="designForm.value.project_id !== 'add'" class="design-form" [formGroup]="designForm" (ngSubmit)="onSubmit()">
-
-    <mat-label class="title">Organism*</mat-label>
     <mat-form-field>
+      <mat-label>Organism</mat-label>
       <mat-select type="text"
                   id="species"
-                  placeholder="Escherichia coli"
+                  placeholder="e.g. Escherichia coli"
                   class="form-control"
                   formControlName="species"
                   #species>
@@ -27,8 +26,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-label class="title">Product*</mat-label>
     <mat-form-field class="example-full-width">
+      <mat-label>Product</mat-label>
       <input type="text"
              placeholder="{{product_placeholder}}"
              aria-label="Number"
@@ -42,8 +41,8 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <mat-label class="title">Project*</mat-label>
     <mat-form-field>
+      <mat-label>Project</mat-label>
       <mat-select type="text"
                   color="primary"
                   class="form-control"
@@ -82,16 +81,17 @@
                         color="primary">RHEA
           </mat-checkbox>
         </div>
-        <mat-label class="title">Model</mat-label>
         <mat-form-field>
+          <mat-label>Model</mat-label>
           <mat-select formControlName="model"
                       #model>
             <mat-option [value]="model" *ngFor="let model of (models | async)">{{model.name}}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-label class="title">Maximum pathways predictions</mat-label>
         <mat-form-field>
+          <mat-label>Maximum pathways predictions</mat-label>
           <input formControlName="max_predictions"
+                 placeholder="e.g. 3"
                  type="number"
                  matInput>
         </mat-form-field>

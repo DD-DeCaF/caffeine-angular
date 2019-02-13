@@ -26,11 +26,11 @@
           and validate your model.</span>
         <form class="model-form" [formGroup]="addModelForm" (ngSubmit)="onSubmit()">
           <mat-form-field color="primary">
-            <mat-label class="title">Name*</mat-label>
-            <input color="primary" id="name" type="text" class="form-control" formControlName="name" matInput>
+            <mat-label>Name</mat-label>
+            <input placeholder="e.g. My Favourite Model" color="primary" id="name" type="text" class="form-control" formControlName="name" matInput>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Organism*</mat-label>
+            <mat-label class="title">Organism</mat-label>
             <mat-select type="text"
                         id="organism_id"
                         color="primary"
@@ -49,7 +49,7 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Project*</mat-label>
+            <mat-label>Project</mat-label>
             <mat-select type="text"
                         color="primary"
                         class="form-control"
@@ -66,8 +66,8 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Preferred map</mat-label>
-            <mat-select placeholder="Map"
+            <mat-label>Preferred map</mat-label>
+            <mat-select placeholder="e.g. Central Carbon Metabolism"
                         *ngIf="(maps | async) && (models |async)"
                         formControlName="preferred_map_id">
               <mat-optgroup *ngFor="let modelforMaps of (maps | async).modelIds"
@@ -77,9 +77,11 @@
                 </mat-option>
               </mat-optgroup>
             </mat-select>
+            <mat-hint>The default map displayed on the Interactive Map</mat-hint>
           </mat-form-field>
+          <br>
           <div class="upload-file">
-            <mat-label class="label-title">Upload model*</mat-label>
+            <mat-label class="label-title">Upload model</mat-label>
           </div>
           <div class="upload-file">
             <input #inputFile type="file" (change)="fileChange($event)" placeholder="Upload file"
@@ -88,10 +90,11 @@
                    class="form-control hidden-input" formControlName="model_serialized">
           </div>
           <p class="error" [hidden]="!modelError">The file is not valid.</p>
+          <br>
           <mat-form-field>
-            <mat-label class="title">Default Biomass Reaction*</mat-label>
+            <mat-label class="title">Default Biomass Reaction</mat-label>
             <input type="text"
-                   placeholder="Pick one"
+                   placeholder="Choose a reaction"
                    aria-label="Number"
                    matInput
                    formControlName="default_biomass_reaction"
@@ -120,11 +123,11 @@
       <form class="model-form" [formGroup]="addOrganismForm">
           <h3 class="title">Add new organism</h3>
           <mat-form-field>
-            <mat-label class="title">Organism name*</mat-label>
-            <input matInput cdkFocusInitial formControlName="organism_name"/>
+            <mat-label class="title">Name</mat-label>
+            <input placeholder="e.g. Escherichia coli" matInput cdkFocusInitial formControlName="organism_name"/>
           </mat-form-field>
           <mat-form-field>
-            <mat-label class="title">Project*</mat-label>
+            <mat-label>Project</mat-label>
             <mat-select type="text"
                         color="primary"
                         class="form-control"
@@ -164,8 +167,8 @@
     <div class="create-project" *ngIf="addModelForm.value.project_id === 'add' || addOrganismForm.value.project_id === 'add'">
       <h3 class="title">Add new project</h3>
       <mat-form-field>
-        <mat-label class="title">Project name*</mat-label>
-        <input matInput cdkFocusInitial #newproject/>
+        <mat-label>Name</mat-label>
+        <input placeholder="e.g. My Cool Project" matInput cdkFocusInitial #newproject/>
       </mat-form-field>
       <mat-card-actions align="end">
         <div fxFlex></div>
