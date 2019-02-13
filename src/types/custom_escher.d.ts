@@ -51,6 +51,7 @@ declare module '@dd-decaf/escher' {
       renderSearchBar(hide?: boolean, searchItem?: string): void;
       set_reaction_data(flux: any): void;
       set_knockout_reactions(reactions: string[]): void;
+      set_reaction_fva_data(flux: any): void;
       set_added_reactions(reactions: string[]): void;
       set_highlight_reactions(reactions: string[]): void;
       set_knockout_genes(genes: string[]): void;

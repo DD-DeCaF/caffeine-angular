@@ -164,6 +164,7 @@
                               [displayWith]="displayFn"
                               (optionSelected)="experimentChanged(queryExperiment)">
               <mat-option *ngFor="let experiment of filterByQuery(queryExperiment, (experiments | async))"
+                          matTooltip="{{experiment.name}}"
                           [value]="experiment"
                           >{{experiment.name}}
               </mat-option>
@@ -173,6 +174,7 @@
             <mat-label>Conditions</mat-label>
             <input type="text"
                    matInput
+                   [value]="condition"
                    [(ngModel)]="queryCondition"
                    [matAutocomplete]="autoCondition">
             <mat-autocomplete #autoCondition="matAutocomplete"

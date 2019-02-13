@@ -23,7 +23,7 @@ import * as fromActions from './store/interactive-map.actions';
 import {getSelectedCard} from './store/interactive-map.selectors';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
-import {objectFilter} from '../utils';
+import {_mapValues, objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Subject} from 'rxjs';
@@ -35,15 +35,6 @@ import {ErrorMsgComponent} from './components/app-reaction/components/error-msg/
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 
-const deleteFlux = (
-  // tslint:disable:no-any
-  (obj: {[key: string]: any}) =>
-    Object.assign(
-      {},
-      ...Object.entries(obj)
-        .map(([key, value]) => ({[key]: null})),
-    ));
-// tslint:enable:no-any
 
 @Component({
   selector: 'app-interactive-map',
@@ -122,12 +113,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         this.selectedCard,
         builderObservable,
       )).subscribe(([map, card, builder]: [PathwayMap, Card, escher.BuilderObject]) => {
-      builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-      builder.set_knockout_reactions(card.knockoutReactions);
-      builder.set_knockout_genes(card.knockoutGenes);
-      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
-      builder.set_highlight_reactions(card.measurements.map((m) => m.id));
-      builder._update_data(true, true);
+      this.updateBuilder(builder, card);
     });
 
     // Detect changes in model only..
@@ -137,30 +123,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
       this.loading = true;
       this.card = card;
-      if (card.type === CardType.DataDriven) {
-        if (!card.solutionUpdated) {
-          builder.load_model(null);
-          builder.set_reaction_data(deleteFlux(card.solution.flux_distribution));
-        } else {
-          builder.load_model(card.model);
-          builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-          this.store.dispatch(new Loaded());
-        }
-        builder.set_knockout_reactions(card.knockoutReactions);
-        builder.set_knockout_genes(card.knockoutGenes);
-        builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
-        builder.set_highlight_reactions(card.measurements.map((m) => m.id));
-        builder._update_data(true, true);
-      } else {
-        builder.load_model(card.model);
-        builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
-        builder.set_knockout_reactions(card.knockoutReactions);
-        builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
-        builder.set_knockout_genes(card.knockoutGenes);
-        builder.set_highlight_reactions(card.measurements.map((m) => m.id));
-        builder._update_data(true, true);
-        this.store.dispatch(new Loaded());
-      }
+      this.updateBuilder(builder, card);
       this.loading = false;
     });
 
@@ -310,6 +273,52 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         this.dialog.closeAll();
       });
     });
+  }
+
+  private updateBuilder(builder: escher.BuilderObject, card: Card): void {
+    if (card.type === CardType.DataDriven) {
+      if (!card.solutionUpdated) {
+        builder.load_model(null);
+        const reactionData = _mapValues(card.solution.flux_distribution,
+          (d) => (d.upper_bound + d.lower_bound) / 2);
+        builder.set_reaction_fva_data(reactionData);
+        builder.set_reaction_data(null);
+      } else {
+        builder.load_model(card.model);
+        if (card.method === 'fva' || card.method === 'pfba-fva') {
+          const reactionData = _mapValues(card.solution.flux_distribution,
+            (d) => (d.upper_bound + d.lower_bound) / 2);
+          builder.set_reaction_fva_data(card.solution.flux_distribution);
+          builder.set_reaction_data(fluxFilter(reactionData));
+        } else {
+          builder.set_reaction_fva_data(card.solution.flux_distribution);
+          builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+        }
+        this.store.dispatch(new Loaded());
+      }
+      builder.set_knockout_reactions(card.knockoutReactions);
+      builder.set_knockout_genes(card.knockoutGenes);
+      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder.set_highlight_reactions(card.measurements.map((m) => m.id));
+      builder._update_data(true, true);
+    } else {
+      builder.load_model(card.model);
+      if (card.method === 'fva' || card.method === 'pfba-fva') {
+        const reactionData = _mapValues(card.solution.flux_distribution,
+          (d) => (d.upper_bound + d.lower_bound) / 2);
+        builder.set_reaction_fva_data(card.solution.flux_distribution);
+        builder.set_reaction_data(fluxFilter(reactionData));
+      } else {
+        builder.set_reaction_fva_data(card.solution.flux_distribution);
+        builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
+      }
+      builder.set_knockout_reactions(card.knockoutReactions);
+      builder.set_knockout_genes(card.knockoutGenes);
+      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder.set_highlight_reactions(card.measurements.map((m) => m.id));
+      builder._update_data(true, true);
+      this.store.dispatch(new Loaded());
+    }
   }
 
   ngOnDestroy(): void {

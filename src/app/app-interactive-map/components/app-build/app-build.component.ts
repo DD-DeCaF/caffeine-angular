@@ -20,7 +20,18 @@ import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 
-import {SelectCard, NextCard, PreviousCard, SetPlayState, AddCard, DeleteCard, SaveDesign, SetMap, SetOperations} from '../../store/interactive-map.actions';
+import {
+  SelectCard,
+  NextCard,
+  PreviousCard,
+  SetPlayState,
+  AddCard,
+  DeleteCard,
+  SaveDesign,
+  SetMap,
+  SetOperations,
+  SetMethod,
+} from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
@@ -55,8 +66,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public tabIndex: number = null;
   public experiments: Observable<Experiment[]>;
   public conditions: Condition[];
-  public condition: number;
-  public experiment: number;
+  public condition: Condition;
+  public experiment: Experiment;
   public queryExperiment = '';
   public queryCondition = '';
   public method: string;
@@ -96,6 +107,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       selectNotNull(getSelectedCard)).subscribe((card) => {
       this.selectedCard = card;
       this.method = card.method;
+      this.queryExperiment = card.experiment;
+      this.queryCondition = card.condition;
       if (this.expandedCard) {
         this.expandedCard = card;
       }
@@ -192,11 +205,13 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
   public methodChanged(event: MatSelect): void {
       this.method = event.value;
+      this.store.dispatch(new SetMethod(event.value));
   }
 
   public experimentChanged(event: Experiment): void {
     this.http.get(`${environment.apis.warehouse}/experiments/${event.id}/conditions`).subscribe((conditions: Condition[]) => {
-      this.experiment = event.id;
+      this.experiment = event;
+      this.condition = null;
       this.conditions = conditions;
     });
   }
@@ -205,7 +220,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.openDialog();
     this.http.get(`${environment.apis.warehouse}/conditions/${event.id}/data`).subscribe((condition: DataResponse) => {
       this.http.post(`${environment.apis.model}/models/${this.selectedCard.model_id}/modify`, condition).subscribe((operations: Operation[]) => {
-        this.condition = event.id;
+        this.condition = event;
         this.store.dispatch(new SetOperations(operations, this.method, this.experiment, this.condition, this.selectedCard.model_id, condition));
       });
     });
