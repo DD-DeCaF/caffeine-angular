@@ -74,6 +74,7 @@ export const emptyCard: Card = {
   genotype: [],
   solutionUpdated: false,
   saved: null,
+  operations: [],
 };
 
 export const initialState: InteractiveMapState = {
@@ -209,7 +210,7 @@ export function interactiveMapReducer(
           species = state.selectedSpecies;
           model_id = design ? design.model_id : pathwayPrediction ? pathwayPrediction.model_id : state.selectedModel.id;
           projectId = design ? design.project_id : null;
-          methodCard = design ? 'Design' : pathwayPrediction ? 'Pathway' : 'Manual';
+          methodCard = (design && design.method) ? design.method : pathwayPrediction ? 'Pathway' : 'Manual';
           saved = !pathwayPrediction;
           break;
         }
@@ -317,6 +318,7 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             solution: action.payload,
+            operations: action.operations,
             solutionUpdated: true,
           };
           break;
@@ -325,6 +327,7 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             method: action.payload,
+            solution: action.solution,
           };
           break;
         }

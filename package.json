@@ -24,7 +24,7 @@
     "@angular/platform-browser": "^6.0.2",
     "@angular/platform-browser-dynamic": "^6.0.2",
     "@angular/router": "^6.0.2",
-    "@dd-decaf/escher": "^1.8.1-decaf",
+    "@dd-decaf/escher": "^1.8.2-decaf",
     "@ngrx/effects": "^6.1.0",
     "@ngrx/store": "^6.1.0",
     "@ngrx/store-devtools": "^6.1.0",
@@ -43,7 +43,7 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.6.3",
+    "@angular-devkit/build-angular": "^0.6.3",
     "@angular/cli": "~6.0.3",
     "@angular/compiler-cli": "^6.0.2",
     "@angular/language-service": "^6.0.2",

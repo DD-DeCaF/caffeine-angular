@@ -59,3 +59,9 @@ const matchSelector = <T>(comparators: ((item: T) => boolean)[]) => (items: T[])
 
 export const objectMatcher = <T>(matchers: Partial<T>[]) => (items: T[]) =>
   matchSelector(matchers.map(createComparator))(items);
+
+export const _mapValues = (object, callback) =>
+  Object.assign({},
+    ...Object.entries(object)
+      .map(([key, value]) => ({[key]: callback(value)})));
+

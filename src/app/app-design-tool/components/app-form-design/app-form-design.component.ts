@@ -42,6 +42,7 @@ import {IamService} from '../../../services/iam.service';
 })
 export class AppFormDesignComponent implements OnInit, AfterViewInit {
   designForm: FormGroup;
+  buttonClicked = false;
   @ViewChild('species') speciesSelector: MatSelect;
   @ViewChild('auto') productSelector: MatAutocomplete;
   @ViewChild('projects') projectSelector: MatSelect;
@@ -59,7 +60,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   public models: Observable<types.DeCaF.ModelHeader[]>;
   public allProjects: Observable<Project[]>;
   public selectedProject: number;
-  public product_placeholder = 'vanillate';
+  public product_placeholder = 'e.g. vanillate';
 
   constructor(
     private fb: FormBuilder,
@@ -76,7 +77,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
       bigg: [true],
       rhea: [true],
       model: [''],
-      max_predictions: [10],
+      max_predictions: [3],
       aerobic: [false, Validators.required],
     });
   }
@@ -111,6 +112,9 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
       .pipe(
         debounceTime(300),
         switchMap((value) => this.warehouseService.getProducts(value)));
+
+    this.designForm.valueChanges
+      .subscribe(() => this.buttonClicked = false);
   }
 
   ngAfterViewInit(): void {
@@ -142,6 +146,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
+    this.buttonClicked = !this.buttonClicked;
     this.store.dispatch(new StartDesign(this.designForm.value));
   }
 

@@ -87,13 +87,15 @@ export interface Card {
   designId: number;
   projectId: number;
   methodCard: string;
-  experiment: number;
-  condition: number;
+  experiment: Experiment;
+  condition: Condition;
   saved: boolean;
   measurements: Measurement[];
   medium: Medium[];
   genotype: string[];
   solutionUpdated: boolean;
+  operations?: DeCaF.Operation[];
+
 }
 
 export interface HydratedCard extends Card {

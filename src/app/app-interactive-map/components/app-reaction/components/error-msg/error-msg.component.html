@@ -12,13 +12,9 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<app-panel
-  placeholder="Knockout a gene"
-  title="Knocked out genes:"
-  [queryHits]="(genes$ | async)"
-  #panel>
-  <app-detail
-    [items]="card.knockoutGenes"
-    #detail>
-  </app-detail>
-</app-panel>
+<div mat-dialog-content>
+  <p>The lower bound can not be higher than the upper bound</p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Ok</button>
+</div>

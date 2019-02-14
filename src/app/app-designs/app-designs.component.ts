@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, EventEmitter} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
@@ -28,6 +28,9 @@ import {getSelectedCard} from '../app-interactive-map/store/interactive-map.sele
 import {isLoading} from '../app-interactive-map/components/loader/store/loader.selectors';
 import {LoaderComponent} from '../app-interactive-map/components/loader/loader.component';
 import {ModalErrorComponent} from '../app-interactive-map/components/modal-error/modal-error.component';
+import {getModelName, getOrganismName} from '../store/shared.selectors';
+import {DesignsDetailRowDirective} from './app-designs-row-detail.directive';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-designs',
@@ -46,14 +49,24 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   public designs;
   private cards: { [key: string]: Card; };
   private design: Card;
+  private collapseClicked = new EventEmitter();
+  public expandedId: string = null;
+  public showAllAddedReactions = false;
+  public showAllKnockedOutReactions = false;
+  public showAllGenes = false;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns: string[] = [
     'select',
     'name',
+    'organism_id',
+    'model_id',
+    'reaction_knockins',
+    'reaction_knockouts',
+    'gene_knockouts',
   ];
-
 
   constructor(
     private store: Store<AppState>,
@@ -75,12 +88,63 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     this.mapObservable = this.store.pipe(selectNotNull((store) => store.interactiveMap.selectedMap)).subscribe((map) => {
       this.store.dispatch(new SetMap(map));
     });
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'reaction_knockins':
+        case 'reaction_knockouts':
+        case 'gene_knockouts':
+          return item['design'][property].length;
+        case 'organism_id':
+          return item['model'][property];
+        default:
+          return item[property];
+      }
+    };
+
+    this.collapseClicked.subscribe((value) => {
+      this.expandedId = value ? value.id : null;
+    });
+  }
+
+  getModelName(modelId: number): Observable<string> {
+    return this.store.pipe(select(getModelName(modelId)));
+  }
+
+  getOrganismName(organismId: number): Observable<string> {
+    return this.store.pipe(select(getOrganismName(organismId)));
+  }
+
+  geneLink(geneId: string): string {
+    return `http://bigg.ucsd.edu/search?query=${geneId}`;
+  }
+
+  reactionLink(reaction: string, method: string, isAddedReactions: boolean): string {
+    const reactionId = (isAddedReactions && method === 'Pathway')
+      ? JSON.parse(reaction).bigg_id
+      : reaction;
+    if (reactionId.startsWith('MNX')) {
+      return `https://www.metanetx.org/equa_info/${reactionId}`;
+    } return `http://bigg.ucsd.edu/search?query=${reactionId}`;
+  }
+
+  getReactionId(reaction: string, method: string): string {
+    if (method === 'Pathway') {
+      return JSON.parse(reaction).bigg_id;
+    } return reaction;
   }
 
   deleteDesigns(): void {
     this.dialog.open(DeleteDesignComponent, {
       data: this.selection.selected,
     });
+  }
+
+  toggleChange(val: DesignsDetailRowDirective): void {
+    this.showAllAddedReactions = false;
+    this.showAllKnockedOutReactions = false;
+    this.showAllGenes = false;
+    this.collapseClicked.emit(val);
   }
 
   addCards(): void {

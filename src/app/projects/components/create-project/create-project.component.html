@@ -15,7 +15,8 @@
 <h1 mat-dialog-title>Create a new project</h1>
 <div mat-dialog-content>
   <mat-form-field>
-    <input matInput placeholder="Project name" [(ngModel)]="project.name" cdkFocusInitial>
+    <mat-label>Name</mat-label> 
+    <input matInput placeholder="e.g. My Great Project" [(ngModel)]="project.name" cdkFocusInitial>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

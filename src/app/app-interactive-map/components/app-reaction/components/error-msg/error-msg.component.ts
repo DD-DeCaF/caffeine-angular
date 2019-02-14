@@ -12,45 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-}
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef} from '@angular/material';
 
-.status-item {
-  display: inline-block;
-  margin-right: 12px;
-}
-
-.status-item-pending {
-  vertical-align: super;
-}
-
-.mat-column-product_name,
-.mat-column-organism_id {
-  width: 20%;
-  padding-right: 16px;
-}
-
-.mat-column-model_id,
-.mat-column-status,
-.mat-column.created {
-  width: 15%;
-  padding-right: 16px;
-}
-
-.mat-column-details {
-  text-align: right;
-  width: 15%;
-}
-
-.mat-button {
-  cursor: pointer;
-}
-
-.load-error p {
-  padding: 20px 10px;
+@Component({
+  selector: 'app-error-msg',
+  templateUrl: './error-msg.component.html',
+})
+export class ErrorMsgComponent implements OnInit {
+  constructor(
+    private dialogRef: MatDialogRef<ErrorMsgComponent>,
+  ) {}
+  ngOnInit(): void {
+  }
+  close(): void {
+    this.dialogRef.close();
+  }
 }

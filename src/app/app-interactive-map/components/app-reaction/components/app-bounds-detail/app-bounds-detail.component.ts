@@ -13,14 +13,16 @@
 // limitations under the License.
 
 import {Component, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
-
 import {BoundedReaction} from '../../../../types';
+import {MatDialog} from '@angular/material';
+import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 
 @Component({
   selector: 'app-bounds-detail',
   templateUrl: './app-bounds-detail.component.html',
   styleUrls: ['./app-bounds-detail.component.scss'],
 })
+
 export class AppBoundsDetailComponent {
   @ViewChild('lowerBound') lowerBound: ElementRef;
   @ViewChild('upperBound') upperBound: ElementRef;
@@ -28,6 +30,9 @@ export class AppBoundsDetailComponent {
   @Input() public bounds: BoundedReaction[];
   @Output() public remove = new EventEmitter<BoundedReaction>();
   @Output() public update = new EventEmitter<BoundedReaction>();
+
+
+  constructor(public dialog: MatDialog) {}
 
   public selectedId: string = null;
 
@@ -38,13 +43,19 @@ export class AppBoundsDetailComponent {
     this.remove.emit(item);
   }
 
-  apply(item: BoundedReaction, lowerBound: string, upperBound: string): void {
+  apply(item: BoundedReaction, lower: string, upper: string): void {
+    const lowerBound = parseFloat(lower);
+    const upperBound = parseFloat(upper);
 
-    this.update.emit({
-      ...item,
-      lowerBound: parseInt(lowerBound, 10),
-      upperBound: parseInt(upperBound, 10),
-    });
+    if (lowerBound <= upperBound) {
+      this.update.emit({
+        ...item,
+        lowerBound,
+        upperBound,
+      });
+    } else {
+        this.dialog.open(ErrorMsgComponent, {width: '250px'});
+    }
   }
 
   reset(item: BoundedReaction): void {

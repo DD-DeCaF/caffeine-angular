@@ -63,6 +63,8 @@ export class AppComponent implements OnInit {
     }
     if (!environment.production) {
       this.setTheme(themes[9]);
+    } else {
+      this.setTheme(themes[18]);
     }
     matIconRegistry.addSvgIcon(
       'interactive-map',

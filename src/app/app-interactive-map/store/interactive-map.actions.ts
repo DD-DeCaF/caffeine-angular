@@ -18,7 +18,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as types from '../types';
 import {DesignRequest} from '../../app-designs/types';
 import {PathwayPredictionResult, PathwayPredictionReactions, PathwayPredictionMetabolites} from '../../jobs/types';
-import {DataResponse, DeCaF} from '../types';
+import {Condition, DataResponse, DeCaF, Experiment} from '../types';
 import Operation = DeCaF.Operation;
 import {HydratedCard} from '../types';
 
@@ -144,7 +144,7 @@ export class AddCardFetched implements Action {
 
 export class UpdateSolution implements Action {
   readonly type = UPDATE_SOLUTION;
-  constructor(public payload: types.DeCaF.Solution) {}
+  constructor(public payload: types.DeCaF.Solution, public operations: Operation[]) {}
 }
 
 export class DeleteCard implements Action {
@@ -164,7 +164,7 @@ export class SetMethod implements Action {
 
 export class SetMethodApply implements Action {
   readonly type = SET_METHOD_APPLY;
-  constructor(public payload: types.Methods) {}
+  constructor(public payload: types.Methods, public solution: DeCaF.Solution) {}
 }
 
 export class ReactionOperation implements Action {
@@ -203,8 +203,8 @@ export class SaveNewDesign implements Action {
 
 export class SetOperations implements Action {
   readonly type = SET_OPERATIONS;
-  constructor(public operations: Operation[], public method: string, public experiment: number, public condition: number, public model_id: number,
-              public conditions: DataResponse) {}
+  constructor(public operations: Operation[], public method: string, public experiment: Experiment,
+              public condition: Condition, public model_id: number, public conditions: DataResponse) {}
 }
 
 export const operationToApply = {
