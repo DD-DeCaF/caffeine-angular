@@ -40,7 +40,7 @@ export class SetModel implements Action {
 
 export class EditModel implements Action {
   readonly type = EDIT_MODEL_MODELS;
-  constructor(public payload: typesModel.EditModel) {}
+  constructor(public payload: types.DeCaF.Model) {}
 }
 
 export class RemoveModel implements Action {

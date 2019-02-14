@@ -35,8 +35,8 @@ export class ModelService {
     return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_storage}/models`);
   }
 
-  editModel(modelForm: EditModel): Observable<types.DeCaF.Model> {
-    return this.http.put<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelForm.id}`, modelForm);
+  editModel(modelForm: EditModel): Observable<void> {
+    return this.http.put<void>(`${environment.apis.model_storage}/models/${modelForm.id}`, modelForm);
   }
 
   removeModel(modelId: number): Observable<types.DeCaF.Model> {
