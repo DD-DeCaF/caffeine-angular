@@ -48,7 +48,7 @@ import { ErrorMsgComponent } from './components/app-reaction/components/error-ms
     ModalErrorComponent,
     ShowHelpComponent,
     WarningSaveComponent,
-    ErrorMsgComponentt,
+    ErrorMsgComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +71,6 @@ import { ErrorMsgComponent } from './components/app-reaction/components/error-ms
     AppInteractiveMapComponent,
   ],
   entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent, ShowHelpComponent,
-    WarningSaveComponen, ErrorMsgComponentt],
+    WarningSaveComponent, ErrorMsgComponent],
 })
 export class AppInteractiveMapModule {}
