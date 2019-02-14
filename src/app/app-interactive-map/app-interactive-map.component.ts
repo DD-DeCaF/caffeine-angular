@@ -138,7 +138,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     dialogConfigError.disableClose = true;
     dialogConfigError.autoFocus = true;
     dialogConfigError.panelClass = 'loader';
-    dialogConfigError.id = 'error';
 
     let error = false;
 

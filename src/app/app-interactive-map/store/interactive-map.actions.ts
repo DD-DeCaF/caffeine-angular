@@ -18,7 +18,7 @@ import {PathwayMap} from '@dd-decaf/escher';
 import * as types from '../types';
 import {DesignRequest} from '../../app-designs/types';
 import {PathwayPredictionResult, PathwayPredictionReactions, PathwayPredictionMetabolites} from '../../jobs/types';
-import {Condition, DataResponse, DeCaF, Experiment} from '../types';
+import {Condition, DataResponse, DeCaF, Experiment, Species} from '../types';
 import Operation = DeCaF.Operation;
 import {HydratedCard} from '../types';
 
@@ -59,6 +59,7 @@ export const CHANGE_SELECTED_SPECIES = 'CHANGE_SELECTED_SPECIES';
 export const CHANGE_SELECTED_MODEL = 'CHANGE_SELECTED_MODEL';
 export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
 export const UPDATE_SOLUTION = 'UPDATE_SOLUTION';
+export const UPDATE_CARD = 'UPDATE_CARD';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -144,7 +145,13 @@ export class AddCardFetched implements Action {
 
 export class UpdateSolution implements Action {
   readonly type = UPDATE_SOLUTION;
-  constructor(public payload: types.DeCaF.Solution, public operations: Operation[]) {}
+  constructor(public payload: types.DeCaF.Solution, public operations: Operation[],
+              public cardInfo: {model_id: number, organism_id: number}) {}
+}
+
+export class UpdateCard implements Action {
+  readonly type = UPDATE_CARD;
+  constructor(public model: DeCaF.Model, public species: Species) {}
 }
 
 export class DeleteCard implements Action {
@@ -204,7 +211,8 @@ export class SaveNewDesign implements Action {
 export class SetOperations implements Action {
   readonly type = SET_OPERATIONS;
   constructor(public operations: Operation[], public method: string, public experiment: Experiment,
-              public condition: Condition, public model_id: number, public conditions: DataResponse) {}
+              public condition: Condition, public organism_id: number, public model_id: number,
+              public conditions: DataResponse) {}
 }
 
 export const operationToApply = {
@@ -254,4 +262,5 @@ export type InteractiveMapActions =
   SetSelectedModel |
   SetFullModelDataDriven |
   SetModelDataDriven |
-  UpdateSolution;
+  UpdateSolution |
+  UpdateCard;

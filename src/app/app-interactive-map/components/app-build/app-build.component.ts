@@ -14,7 +14,7 @@
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 
-import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
+import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
@@ -35,7 +35,7 @@ import {
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
 import {AppState} from '../../../store/app.reducers';
-import {CardType, Condition, DataResponse, DeCaF, Experiment, HydratedCard, Method} from '../../types';
+import {CardType, Condition, DataResponse, DeCaF, Experiment, HydratedCard, Method, Strain} from '../../types';
 import {selectNotNull} from '../../../framework-extensions';
 import {getSelectedCard} from '../../store/interactive-map.selectors';
 import {SelectProjectComponent} from './components/select-project/select-project.component';
@@ -46,9 +46,11 @@ import Operation = DeCaF.Operation;
 import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
-import {LoaderComponent} from '../loader/loader.component';
 import {DesignRequest} from '../../../app-designs/types';
 import {WarningSaveComponent} from './components/warning-save/warning-save.component';
+import {Loading, LoadingError} from '../loader/store/loader.actions';
+import {preferredModelBySpecies} from '../../../app-design-tool/store/design-tool.effects';
+import ModelHeader = DeCaF.ModelHeader;
 
 @Component({
   selector: 'app-build',
@@ -75,7 +77,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public method: string;
   public cardType = CardType;
   public designs: DesignRequest[];
-
+  private modelsHeaders: ModelHeader[];
   public methods: Method[] = [
     {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
     {id: 'pfba', name: 'Parsimonious FBA'},
@@ -87,7 +89,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
   public mapItems: Observable<{
     modelIds: string[],
-    mapsByModelId: {[key: string]: types.MapItem[] },
+    mapsByModelId: { [key: string]: types.MapItem[] },
   }>;
 
   constructor(
@@ -124,6 +126,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
     this.mapItems = this.store.pipe(select(mapItemsByModel));
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
+    this.models.subscribe((models) => this.modelsHeaders = models);
   }
 
   ngAfterViewInit(): void {
@@ -222,24 +225,34 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public methodChanged(event: MatSelect): void {
-      this.method = event.value;
-      this.store.dispatch(new SetMethod(event.value));
+    this.method = event.value;
+    this.store.dispatch(new SetMethod(event.value));
   }
 
   public experimentChanged(event: Experiment): void {
     this.http.get(`${environment.apis.warehouse}/experiments/${event.id}/conditions`).subscribe((conditions: Condition[]) => {
       this.experiment = event;
-      this.condition = null;
+      this.queryCondition = null;
       this.conditions = conditions;
     });
   }
 
   public conditionChanged(event: Condition): void {
-    this.openDialog();
+    this.store.dispatch(new Loading());
     this.http.get(`${environment.apis.warehouse}/conditions/${event.id}/data`).subscribe((condition: DataResponse) => {
-      this.http.post(`${environment.apis.model}/models/${this.selectedCard.model_id}/modify`, condition).subscribe((operations: Operation[]) => {
-        this.condition = event;
-        this.store.dispatch(new SetOperations(operations, this.method, this.experiment, this.condition, this.selectedCard.model_id, condition));
+      this.http.get(`${environment.apis.warehouse}/strains/${event.strain_id}`).subscribe((strain: Strain) => {
+        const selectedModel = preferredModelBySpecies[strain.organism_id] ? this.modelsHeaders.find((model) =>
+          model.name === preferredModelBySpecies[strain.organism_id]) :
+          this.modelsHeaders.filter((model) => model.organism_id === strain.organism_id)[0];
+        this.http.post(`${environment.apis.model}/models/${selectedModel.id}/modify`, condition).subscribe((operations: Operation[]) => {
+          this.condition = event;
+          this.store.dispatch(new SetOperations(operations, this.method, this.experiment, this.condition,
+            strain.organism_id, selectedModel.id, condition));
+        }, (error) => {
+          if (error) {
+            this.store.dispatch(new LoadingError());
+          }
+        });
       });
     });
   }
@@ -247,18 +260,6 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public showHelp(event: Event): void {
     event.stopPropagation();
     this.dialog.open(ShowHelpComponent);
-  }
-
-  public openDialog(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loading';
-    dialogConfig.data = 'Calculating flux distribution...';
-    if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
-      this.dialog.open(LoaderComponent, dialogConfig);
-    }
   }
 
   public getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {

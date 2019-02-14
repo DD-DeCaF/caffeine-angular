@@ -309,7 +309,8 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.CHANGE_SELECTED_SPECIES:
     case fromInteractiveMapActions.SET_SELECTED_MODEL:
     case fromInteractiveMapActions.SAVE_NEW_DESIGN:
-    case fromInteractiveMapActions.UPDATE_SOLUTION: {
+    case fromInteractiveMapActions.UPDATE_SOLUTION:
+    case fromInteractiveMapActions.UPDATE_CARD: {
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
@@ -319,6 +320,15 @@ export function interactiveMapReducer(
             ...card,
             solution: action.payload,
             operations: action.operations,
+          };
+          break;
+        }
+        case fromInteractiveMapActions.UPDATE_CARD: {
+          newCard = {
+            ...card,
+            species: action.species,
+            model: action.model.model_serialized,
+            model_id: action.model.id,
             solutionUpdated: true,
           };
           break;

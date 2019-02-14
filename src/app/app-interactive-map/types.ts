@@ -343,3 +343,14 @@ export interface Medium {
   id: string;
   namespace: string;
 }
+
+export interface Strain {
+  created: string;
+  genotype: string;
+  id: number;
+  name: string;
+  organism_id: number;
+  parent_id: number;
+  project_id: number;
+  updated: string;
+}

@@ -14,7 +14,7 @@
 
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Action, Store} from '@ngrx/store';
+import {Action, select, Store} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {combineLatest, Observable, of} from 'rxjs';
 import {
@@ -34,7 +34,7 @@ import {AppState} from '../../store/app.reducers';
 import * as fromActions from './interactive-map.actions';
 import {environment} from '../../../environments/environment.staging';
 import * as types from '../types';
-import {CardType, DeCaF} from '../types';
+import {CardType, DeCaF, Species} from '../types';
 import {PathwayMap} from '@dd-decaf/escher';
 import {interactiveMapReducer} from './interactive-map.reducers';
 import {SimulationService} from '../services/simulation.service';
@@ -387,10 +387,14 @@ export class InteractiveMapEffects {
         // tslint:disable-next-line:no-any
         operations: (<any>operations).operations,
       };
+      const cardInfo = {
+        model_id: payload.model_id,
+        organism_id: payload.organism_id,
+      };
       return this.simulationService.simulate(payloadSimulate)
         .pipe(
           map((data) => {
-            return new fromActions.UpdateSolution(data, payloadSimulate.operations);
+            return new fromActions.UpdateSolution(data, payloadSimulate.operations, cardInfo);
           }),
           catchError(() => of(new loaderActions.LoadingError())),
         );
@@ -407,8 +411,8 @@ export class InteractiveMapEffects {
 
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION,
-      fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY),
+    ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.REACTION_OPERATION_APPLY,
+      sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY),
     mapTo(new loaderActions.LoadingFinished()),
   );
 
@@ -421,6 +425,22 @@ export class InteractiveMapEffects {
         new sharedActions.FetchDesigns()]),
     )),
   );
+
+  @Effect()
+  updateSolution: Observable<Action> = this.actions$.pipe(
+    ofType(fromActions.UPDATE_SOLUTION),
+    withLatestFrom(this.store$.pipe(select((store) => store.shared.allSpecies))),
+    switchMap(([action, species]: [fromActions.UpdateSolution, Species[]]) => {
+      return this.http.get(`${environment.apis.model_storage}/models/${action.cardInfo.model_id}`)
+        .pipe(
+          map((model: Model) => {
+            return new fromActions.UpdateCard(model, species.find((s) => s.id === action.cardInfo.organism_id));
+          }),
+          catchError(() => of(new loaderActions.LoadingError())),
+        );
+    }),
+  );
+
 
   constructor(
     private actions$: Actions,
