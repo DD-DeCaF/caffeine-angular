@@ -26,8 +26,12 @@ export const mapBiggReactionToCobra = (reaction): types.Cobra.Reaction => ({
   name: reaction.name,
   id: reaction.bigg_id || reaction.id,
   gene_reaction_rule: reaction.gene_reaction_rule || '',
-  lower_bound: reaction.lower_bound || defaultBounds.lowerBound,
-  upper_bound: reaction.upper_bound || defaultBounds.upperBound,
+  lower_bound: reaction.hasOwnProperty('lower_bound')
+                ? reaction.lower_bound
+                : defaultBounds.lowerBound,
+  upper_bound: reaction.hasOwnProperty('upper_bound')
+                ? reaction.upper_bound
+                : defaultBounds.upperBound,
   metabolites: reaction.metabolites || {},
   annotation: reaction.annotation || {},
 });
