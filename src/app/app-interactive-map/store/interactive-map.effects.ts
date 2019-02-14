@@ -191,7 +191,7 @@ export class InteractiveMapEffects {
       if (design) {
         payloadSimulate = {
           model_id: design.model_id,
-          method: design.method,
+          method: 'pfba',
           objective: null,
           objective_direction: null,
           operations: this.designService.getOperations(design) || [],
@@ -214,7 +214,7 @@ export class InteractiveMapEffects {
             pathwayPrediction.added_reactions = addedReactions;
             payloadSimulate = {
               model_id: pathwayPrediction.model_id,
-              method: pathwayPrediction.method,
+              method: 'pfba',
               objective: null,
               objective_direction: null,
               operations: this.ninjaService.getOperations(pathwayPrediction, reactions),
