@@ -39,7 +39,10 @@ export class ModelsEffects {
   editModel: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.EDIT_MODEL_MODELS),
     switchMap((action: fromActions.EditModel) => this.modelService.editModel(action.payload).pipe(
-      map((payload: types.DeCaF.Model) => new fromActions.SetModel(payload)),
+      switchMap(() => [
+        new sharedActions.FetchModels(),
+        new fromActions.SetModel(action.payload),
+      ]),
       catchError(() => of(new SetError())),
     )),
   );

@@ -17,7 +17,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as fromActions from '../../store/models.actions';
 import {EditedModelComponent} from './edited-model.component';
@@ -45,6 +45,9 @@ export class EditModelComponent implements OnInit, OnDestroy {
     mapsByModelId: {[key: string]: types.MapItem[] },
   }>;
   public models: Observable<types.DeCaF.ModelHeader[]>;
+  public completeModel: types.DeCaF.Model;
+  private modelSubscription: Subscription;
+  private modelHeadersSubscription: Subscription;
 
   constructor(
     // tslint:disable-next-line:no-any
@@ -70,14 +73,10 @@ export class EditModelComponent implements OnInit, OnDestroy {
     this.maps = this.store.pipe(select(mapItemsByModel));
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.error = this.store.pipe(select((store) => store.models.error));
-    this.store.pipe(select((store) => store.models.model)).subscribe((model) => {
-      if (model && (model.id === this.model.id)) {
-        if (this.edited) {
-          this.dialog.closeAll();
-          this.snackBar.openFromComponent(EditedModelComponent, {
-            duration: 2000,
-          });
-        } else {
+    this.modelSubscription = this.store.pipe(select((store) => store.models.model)).subscribe((model) => {
+      this.completeModel = model;
+
+      if (model && (model.id === this.model.id) && !this.edited) {
           this.reactions = model.model_serialized.reactions.map((reaction) => reaction.id);
           this.modelForm.setValue({
             id: model.id,
@@ -88,7 +87,15 @@ export class EditModelComponent implements OnInit, OnDestroy {
 
           });
           this.loading = false;
-        }
+      }
+    });
+
+    this.modelHeadersSubscription = this.store.pipe(select((store) => store.shared.modelHeaders)).subscribe(() => {
+      if (this.edited) {
+        this.dialog.closeAll();
+        this.snackBar.openFromComponent(EditedModelComponent, {
+          duration: 2000,
+        });
       }
     });
   }
@@ -102,17 +109,22 @@ export class EditModelComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.store.dispatch(new fromActions.EditModel(this.modelForm.value));
+    this.completeModel.name = this.modelForm.value.name;
+    this.completeModel.organism_id = this.modelForm.value.organism_id;
+    this.completeModel.default_biomass_reaction = this.modelForm.value.default_biomass_reaction;
+    this.completeModel.preferred_map_id = this.modelForm.value.preferred_map_id;
+    this.store.dispatch(new fromActions.EditModel(this.completeModel));
     this.loading = true;
     this.edited = true;
   }
 
   ngOnDestroy(): void {
     this.edited = false;
+    this.modelSubscription.unsubscribe();
+    this.modelHeadersSubscription.unsubscribe();
   }
 
   getModel(id: string, models: types.DeCaF.ModelHeader[]): types.DeCaF.ModelHeader {
     return this.modelService.getModel(id, models);
   }
 }
-
