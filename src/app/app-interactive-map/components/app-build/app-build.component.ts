@@ -47,6 +47,8 @@ import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
 import {LoaderComponent} from '../loader/loader.component';
+import {DesignRequest} from '../../../app-designs/types';
+import {WarningSaveComponent} from './components/warning-save/warning-save.component';
 
 @Component({
   selector: 'app-build',
@@ -72,6 +74,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public queryCondition = '';
   public method: string;
   public cardType = CardType;
+  public designs: DesignRequest[];
+
   public methods: Method[] = [
     {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
     {id: 'pfba', name: 'Parsimonious FBA'},
@@ -97,6 +101,10 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
     this.experiments = this.store.pipe(select((store) => store.shared.experiments));
+
+    this.store.pipe(select((state: AppState) => state.shared.designs)).subscribe((designs) => {
+      this.designs = designs;
+    });
 
     this.store.pipe(
       select((store) => store.shared.selectedProject)).subscribe((project) => {
@@ -186,19 +194,29 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public save(card: HydratedCard, projectId: number): void {
-    if (card.projectId) {
-      this.store.dispatch(new SaveDesign(card, card.projectId));
+    const design = this.designs.find((d) => d.name.toLowerCase() === card.name.toLowerCase());
+    if (!card.designId && design) {
+      this.dialog.open(WarningSaveComponent, {
+        data: {
+          design: card,
+          projectId: projectId,
+        },
+      });
     } else {
-      if (projectId) {
-        this.store.dispatch(new SaveDesign(card, projectId));
+      if (card.projectId) {
+        this.store.dispatch(new SaveDesign(card, card.projectId));
       } else {
-        const dialogRef = this.dialog.open(SelectProjectComponent);
-        dialogRef.afterClosed().subscribe(
-          (id) => {
-            if (id) {
-              this.store.dispatch(new SaveDesign(card, id));
-            }
-          });
+        if (projectId) {
+          this.store.dispatch(new SaveDesign(card, projectId));
+        } else {
+          const dialogRef = this.dialog.open(SelectProjectComponent);
+          dialogRef.afterClosed().subscribe(
+            (id) => {
+              if (id) {
+                this.store.dispatch(new SaveDesign(card, id));
+              }
+            });
+        }
       }
     }
   }

@@ -20,7 +20,7 @@ import {MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource} f
 import {DesignRequest} from './types';
 import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
 import {AddCard, SetMap} from '../app-interactive-map/store/interactive-map.actions';
-import {CardType} from '../app-interactive-map/types';
+import {Card, CardType} from '../app-interactive-map/types';
 import {Router} from '@angular/router';
 import {selectNotNull} from '../framework-extensions';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -47,6 +47,8 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   private loadingObservable;
   private errorObservable;
   public designs;
+  private cards: { [key: string]: Card; };
+  private design: Card;
   private collapseClicked = new EventEmitter();
   public expandedId: string = null;
   public showAllAddedReactions = false;
@@ -76,7 +78,10 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.designs = this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
-        this.dataSource.data = designs;
+      this.dataSource.data = designs;
+    });
+    this.store.pipe(select((store) => store.interactiveMap.cards.cardsById)).subscribe((cards) => {
+      this.cards = cards;
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -151,8 +156,17 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
       if (card && this.lastDesign) {
         if (card.name === this.lastDesign.name) {
           if (this.selection.selected.length > 0) {
-            this.lastDesign = this.selection.selected.pop();
-            this.store.dispatch(new AddCard(CardType.Design, this.lastDesign));
+            do {
+              this.lastDesign = this.selection.selected.pop();
+              this.design = Object.values(this.cards).find((c) => c.designId === this.lastDesign.id);
+            }
+            while (this.design && this.selection.selected.length > 0);
+            if (this.design) {
+              this.router.navigateByUrl('/interactiveMap');
+            } else {
+              this.store.dispatch(new AddCard(CardType.Design, this.lastDesign));
+              this.cardAdded = true;
+            }
           } else {
             this.router.navigateByUrl('/interactiveMap');
           }
@@ -161,9 +175,17 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     });
     if (!this.cardAdded) {
       if (this.selection.selected.length > 0) {
-        this.lastDesign = this.selection.selected.pop();
-        this.store.dispatch(new AddCard(CardType.Design, this.lastDesign));
-        this.cardAdded = true;
+        do {
+          this.lastDesign = this.selection.selected.pop();
+          this.design = Object.values(this.cards).find((c) => c.designId === this.lastDesign.id);
+        }
+        while (this.design && this.selection.selected.length > 0);
+        if (this.design) {
+          this.router.navigateByUrl('/interactiveMap');
+        } else {
+          this.store.dispatch(new AddCard(CardType.Design, this.lastDesign));
+          this.cardAdded = true;
+        }
       }
     }
   }

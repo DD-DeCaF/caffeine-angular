@@ -34,6 +34,7 @@ import {AppRoutingModule} from '../app-routing.module';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {SelectProjectComponent} from './components/app-build/components/select-project/select-project.component';
 import {ShowHelpComponent} from './components/app-build/components/show-help/show-help.component';
+import {WarningSaveComponent} from './components/app-build/components/warning-save/warning-save.component';
 import { ErrorMsgComponent } from './components/app-reaction/components/error-msg/error-msg.component';
 
 
@@ -46,6 +47,7 @@ import { ErrorMsgComponent } from './components/app-reaction/components/error-ms
     LoaderComponent,
     ModalErrorComponent,
     ShowHelpComponent,
+    WarningSaveComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,6 +69,7 @@ import { ErrorMsgComponent } from './components/app-reaction/components/error-ms
   exports: [
     AppInteractiveMapComponent,
   ],
-  entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent, ShowHelpComponent, ErrorMsgComponent],
+  entryComponents: [LoaderComponent, ModalErrorComponent, SelectProjectComponent, ShowHelpComponent,
+    WarningSaveComponent, ErrorMsgComponent],
 })
 export class AppInteractiveMapModule {}
