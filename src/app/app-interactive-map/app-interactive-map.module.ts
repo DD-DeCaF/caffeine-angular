@@ -48,7 +48,6 @@ import { ErrorMsgComponent } from './components/app-reaction/components/error-ms
     ModalErrorComponent,
     ShowHelpComponent,
     WarningSaveComponent,
-    ErrorMsgComponent,
   ],
   imports: [
     BrowserModule,
