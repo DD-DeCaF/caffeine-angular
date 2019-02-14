@@ -210,12 +210,12 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     return `https://www.metanetx.org/equa_info/${hp.replace('DM_', '')}`;
   }
 
-  showWarning(method: string, checked: boolean): void {
-    if (method === 'PathwayPredictor+DifferentialFVA' && !checked) {
-      this.snackBar.open(`Sharing of DifferentialFVA designs is not completely supported yet.
+  showWarning(method: string, isChecked: boolean): void {
+    if (method === 'PathwayPredictor+DifferentialFVA' && !isChecked) {
+      this.snackBar.open(`Visualizing DifferentialFVA designs is not completely supported yet.
       Proceed with caution if you want to inspect the predicted pathways
       and knockouts on the interactive map.`, '', {
-        duration: 5000,
+        duration: 12000,
       });
     }
   }
