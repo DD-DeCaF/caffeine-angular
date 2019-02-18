@@ -65,10 +65,9 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field *ngIf="(maps | async) && (models |async)">
             <mat-label>Preferred map</mat-label>
             <mat-select placeholder="e.g. Central Carbon Metabolism"
-                        *ngIf="(maps | async) && (models |async)"
                         formControlName="preferred_map_id">
               <mat-optgroup *ngFor="let modelforMaps of (maps | async).modelIds"
                             [label]="getModel(modelforMaps, models | async).name">
