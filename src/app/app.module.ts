@@ -73,8 +73,8 @@ import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
 import {DesignService} from './services/design.service';
 import {AppDesignsModule} from './app-designs/app-designs.module';
-import {CacheMapService} from "./services/cache-map.service";
-import {CachingInterceptor} from "./caching-interceptor";
+import {CacheMapService} from './services/cache-map.service';
+import {CachingInterceptor} from './caching-interceptor';
 
 
 if (environment.sentry) {
