@@ -137,9 +137,9 @@ export class SessionService {
         this.store.dispatch(new Login());
         localStorage.setItem(AUTHORIZATION_TOKEN, response.jwt);
         localStorage.setItem(REFRESH_TOKEN, JSON.stringify(response.refresh_token));
-        this.store.dispatch(new FetchProjects());
-        this.store.dispatch(new FetchModels());
-        this.store.dispatch(new FetchDesigns());
+        this.store.dispatch(new FetchProjects(true));
+        this.store.dispatch(new FetchModels(true));
+        this.store.dispatch(new FetchDesigns(true));
         resolve();
       }, (error) => {
         reject(error);
@@ -150,11 +150,11 @@ export class SessionService {
   public logout(next: string = null): void {
     localStorage.removeItem(AUTHORIZATION_TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
-    this.store.dispatch(new sharedActions.FetchMaps());
-    this.store.dispatch(new sharedActions.FetchModels());
-    this.store.dispatch(new sharedActions.FetchProjects());
-    this.store.dispatch(new sharedActions.FetchJobs());
-    this.store.dispatch(new sharedActions.FetchDesigns());
+    this.store.dispatch(new sharedActions.FetchMaps(true));
+    this.store.dispatch(new sharedActions.FetchModels(true));
+    this.store.dispatch(new sharedActions.FetchProjects(true));
+    this.store.dispatch(new sharedActions.FetchJobs(true));
+    this.store.dispatch(new sharedActions.FetchDesigns(true));
     this.store.dispatch(new Logout());
   }
 

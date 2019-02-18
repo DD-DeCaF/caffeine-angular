@@ -22,7 +22,8 @@ import { NinjaService } from '../services/ninja-service';
 export class JobsService {
   constructor(public ninjaService: NinjaService) { }
 
-  getJobs(): Observable<Job[]> {
-    return this.ninjaService.getPredictions();
+  getJobs(refresh: boolean = false): Observable<Job[]> {
+
+    return this.ninjaService.getPredictions(refresh);
   }
 }

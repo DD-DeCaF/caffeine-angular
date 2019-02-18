@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as types from '../app-interactive-map/types';
 import {Design, Product} from '../app-design-tool/types';
@@ -61,8 +61,9 @@ export class WarehouseService {
     }
   }
 
-  createOrganisms(organism: NewSpecies): Observable<NewSpeciesResponse> {
-    return this.http.post<NewSpeciesResponse>(`${environment.apis.warehouse}/organisms`, organism);
+  createOrganisms(organism: NewSpecies, refresh: boolean = true): Observable<NewSpeciesResponse> {
+    const params = new HttpParams().set('refresh', refresh.toString());
+    return this.http.post<NewSpeciesResponse>(`${environment.apis.warehouse}/organisms`, organism, {params});
   }
   // TODO:
   // Change it for a real function

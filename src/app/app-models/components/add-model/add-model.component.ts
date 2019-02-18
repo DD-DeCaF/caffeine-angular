@@ -184,7 +184,7 @@ export class AddModelComponent implements OnInit, OnDestroy {
       name: this.addOrganismForm.value.organism_name,
       project_id: this.addOrganismForm.value.project_id,
     };
-    this.warehouseService.createOrganisms(organism).subscribe(
+    this.warehouseService.createOrganisms(organism, true).subscribe(
       (s: NewSpeciesResponse) => {
         this.snackBar.open(`Organism ${organism.name} created`, '', {
           duration: 2000,

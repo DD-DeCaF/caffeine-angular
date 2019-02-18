@@ -31,7 +31,7 @@ export class MapsEffects {
   editMap: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.EDIT_MAP),
     switchMap((action: fromActions.EditMap) => this.mapsService.editMap(action.payload).pipe(
-      map((payload: MapItem) => new sharedActions.FetchMaps()),
+      map((payload: MapItem) => new sharedActions.FetchMaps(true)),
       catchError(() => of(new SetError())),
     )),
   );
@@ -41,7 +41,7 @@ export class MapsEffects {
     ofType(fromActions.REMOVE_MAP),
     switchMap((action: fromActions.RemoveMap) => this.mapsService.removeMap(action.payload).pipe(
       switchMap((payload: MapItem) => [
-        new sharedActions.FetchMaps(),
+        new sharedActions.FetchMaps(true),
         new fromActions.RemovedMap(),
       ]),
       catchError(() => of(new SetError())),
@@ -52,7 +52,7 @@ export class MapsEffects {
   addMap: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_MAP),
     switchMap((action: fromActions.AddMap) => this.mapsService.uploadMap(action.payload).pipe(
-      map(() => new sharedActions.FetchMaps()),
+      map(() => new sharedActions.FetchMaps(true)),
       catchError(() => of(new SetError())),
     )),
   );

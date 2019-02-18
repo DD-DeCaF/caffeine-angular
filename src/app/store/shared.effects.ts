@@ -13,13 +13,11 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {catchError, map, mergeMap, switchMap, tap, toArray} from 'rxjs/operators';
 import {combineLatest, from, Observable, of} from 'rxjs';
 
-import {environment} from '../../environments/environment';
 import * as types from '../app-interactive-map/types';
 import {ModelService} from '../services/model.service';
 import * as fromActions from './shared.actions';
@@ -32,6 +30,7 @@ import {DesignService} from '../services/design.service';
 import {DesignRequest} from '../app-designs/types';
 import {Experiment} from '../app-interactive-map/types';
 import {mapBiggReactionToCobra} from '../lib';
+import {IamService} from '../services/iam.service';
 
 
 @Injectable()
@@ -40,7 +39,7 @@ export class SharedEffects {
   @Effect()
   fetchModels: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MODELS),
-    switchMap(() => this.modelService.loadModels().pipe(
+    switchMap((payload: fromActions.FetchModels) => this.modelService.loadModels(payload.refresh).pipe(
       map((models: types.DeCaF.Model[]) => new fromActions.SetModels(models)),
       catchError(() => of(new fromActions.SetModelsError())),
     )),
@@ -59,7 +58,7 @@ export class SharedEffects {
   @Effect()
   fetchProjects: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_PROJECTS),
-    switchMap(() => this.http.get<Project[]>(`${environment.apis.iam}/projects`).pipe(
+    switchMap((payloadProject: fromActions.FetchProjects) => this.iamService.getProjects(payloadProject.refresh).pipe(
       map((payload: Project[]) => new fromActions.SetProjects(payload)),
       catchError(() => of(new fromActions.SetProjectsError())),
     )),
@@ -68,8 +67,8 @@ export class SharedEffects {
   @Effect()
   fetchMaps: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_MAPS),
-    switchMap(() =>
-      this.mapsService.loadMaps().pipe(
+    switchMap((payload: fromActions.FetchMaps) =>
+      this.mapsService.loadMaps(payload.refresh).pipe(
         map((maps: types.MapItem[]) => new fromActions.SetMaps(maps)),
         catchError(() => of(new fromActions.SetMapsError())),
       )),
@@ -78,8 +77,8 @@ export class SharedEffects {
   @Effect()
   fetchJobs: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_JOBS),
-    switchMap(() =>
-      this.jobsService.getJobs().pipe(
+    switchMap((payload: fromActions.FetchJobs) =>
+      this.jobsService.getJobs(payload.refresh).pipe(
         map((jobs: Job[]) => new fromActions.SetJobs(jobs)),
         catchError(() => of(new fromActions.SetJobsError())),
       )),
@@ -88,7 +87,7 @@ export class SharedEffects {
   @Effect()
   fetchDesigns: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.FETCH_DESIGNS),
-    switchMap(() => this.designService.getDesigns()
+    switchMap((payloadDesign: fromActions.FetchDesigns) => this.designService.getDesigns(payloadDesign.refresh)
       .pipe(
         switchMap((designs: DesignRequest[]) => from(designs)),
         mergeMap((design) => combineLatest(this.modelService.loadModel(design.model_id), this.designService.getAddedReactions(design))
@@ -133,6 +132,6 @@ export class SharedEffects {
     private jobsService: JobsService,
     private mapsService: MapsService,
     private designService: DesignService,
-    private http: HttpClient,
+    private iamService: IamService,
   ) {}
 }

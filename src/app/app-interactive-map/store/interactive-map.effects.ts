@@ -418,7 +418,7 @@ export class InteractiveMapEffects {
     switchMap((action: fromActions.SaveDesign) => this.designService.saveDesign(action.payload, action.projectId).pipe(
       switchMap((designId: { id: number }) => [
         new fromActions.SaveNewDesign(designId),
-        new sharedActions.FetchDesigns()]),
+        new sharedActions.FetchDesigns(true)]),
     )),
   );
 

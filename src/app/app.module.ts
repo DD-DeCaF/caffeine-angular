@@ -17,7 +17,7 @@ import * as Raven from 'raven-js';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule, ErrorHandler} from '@angular/core';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {EffectsModule} from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
@@ -73,6 +73,8 @@ import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
 import {DesignService} from './services/design.service';
 import {AppDesignsModule} from './app-designs/app-designs.module';
+import {CacheMapService} from "./services/cache-map.service";
+import {CachingInterceptor} from "./caching-interceptor";
 
 
 if (environment.sentry) {
@@ -146,6 +148,9 @@ export class RavenErrorHandler implements ErrorHandler {
     MapsService,
     DesignService,
     FormBuilder,
+    CacheMapService,
+    { provide: Cache, useClass: CacheMapService },
+    { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],
   bootstrap: [AppComponent],

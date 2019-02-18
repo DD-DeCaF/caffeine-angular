@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {EditMap} from '../app-maps/types';
@@ -28,8 +28,9 @@ export class MapsService {
     private http: HttpClient,
   ) {}
 
-  loadMaps(): Observable<types.MapItem[]> {
-    return this.http.get<types.MapItem[]>(`${environment.apis.maps}/maps`);
+  loadMaps(refresh: boolean = false): Observable<types.MapItem[]> {
+    const params = new HttpParams().set('refresh', refresh.toString());
+    return this.http.get<types.MapItem[]>(`${environment.apis.maps}/maps`, {params: params});
   }
 
   editMap(mapForm: EditMap): Observable <MapItem> {

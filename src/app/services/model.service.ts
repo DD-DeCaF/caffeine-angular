@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import * as types from '../app-interactive-map/types';
@@ -27,12 +27,16 @@ export class ModelService {
   ) {
   }
 
-  loadModel(modelId: number): Observable<types.DeCaF.Model> {
-    return this.http.get<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`);
+  loadModel(modelId: number, refresh: boolean = false): Observable<types.DeCaF.Model> {
+    const params = new HttpParams().set('refresh', refresh.toString());
+    return this.http.get<types.DeCaF.Model>(`${environment.apis.model_storage}/models/${modelId}`,
+      {params: params});
   }
 
-  loadModels(): Observable<types.DeCaF.ModelHeader[]> {
-    return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_storage}/models`);
+  loadModels(refresh: boolean = false): Observable<types.DeCaF.ModelHeader[]> {
+    const params = new HttpParams().set('refresh', refresh.toString());
+    return this.http.get<types.DeCaF.ModelHeader[]>(`${environment.apis.model_storage}/models`,
+      {params: params});
   }
 
   editModel(modelForm: EditModel): Observable<void> {

@@ -52,7 +52,7 @@ export class CreateProjectComponent {
           this.snackBar.open(`Project ${this.project.name} created`, '', {
             duration: 2000,
           });
-          this.store.dispatch(new actions.FetchProjects());
+          this.store.dispatch(new actions.FetchProjects(true));
         },
       ),
     );

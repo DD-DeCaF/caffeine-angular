@@ -52,7 +52,7 @@ export class DeleteDesignComponent {
         this.snackBar.open(`Designs deleted`, '', {
           duration: 2000,
         });
-        this.store.dispatch(new actions.FetchDesigns());
+        this.store.dispatch(new actions.FetchDesigns(true));
       }));
   }
 

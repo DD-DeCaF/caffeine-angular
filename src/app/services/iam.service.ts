@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { environment } from '../../environments/environment';
 import {Project, NewProjectResponse} from '../projects/types';
@@ -27,5 +27,10 @@ export class IamService {
 
   createProject(project: Project): Observable<NewProjectResponse> {
     return this.http.post<NewProjectResponse>(`${environment.apis.iam}/projects`, project);
+  }
+
+  getProjects(refresh: boolean = false): Observable<Project[]> {
+    const params = new HttpParams().set('refresh', refresh.toString());
+    return this.http.get<Project[]>(`${environment.apis.iam}/projects`, {params: params});
   }
 }

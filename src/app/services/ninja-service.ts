@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, of, forkJoin} from 'rxjs';
 import {environment} from '../../environments/environment';
 import * as typesDesign from '../app-design-tool/types';
@@ -56,8 +56,9 @@ export class NinjaService {
     };
   }
 
-  getPredictions(): Observable<Job[]> {
-    return this.http.get<Job[]>(`${environment.apis.metabolic_ninja}/predictions`).pipe(switchMap((predictions: Job[]) => {
+  getPredictions(refresh: boolean = false): Observable<Job[]> {
+    const params = new HttpParams().set('refresh', refresh.toString());
+    return this.http.get<Job[]>(`${environment.apis.metabolic_ninja}/predictions`, {params: params}).pipe(switchMap((predictions: Job[]) => {
       return this.processPredictions(predictions);
     }));
   }

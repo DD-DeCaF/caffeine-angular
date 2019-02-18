@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {forkJoin, Observable, of} from 'rxjs';
 import {AddedReaction, DeCaF, HydratedCard} from '../app-interactive-map/types';
@@ -57,8 +57,9 @@ export class DesignService {
     }
   }
 
-  getDesigns(): Observable<DesignRequest[]> {
-    return this.http.get<DesignRequest[]>(`${environment.apis.design_storage}/designs`);
+  getDesigns(refresh: boolean = false): Observable<DesignRequest[]> {
+    const params = new HttpParams().set('refresh', refresh.toString());
+    return this.http.get<DesignRequest[]>(`${environment.apis.design_storage}/designs`, {params: params});
   }
 
   getAddedReactions(design: DesignRequest): Observable<AddedReaction[]> {

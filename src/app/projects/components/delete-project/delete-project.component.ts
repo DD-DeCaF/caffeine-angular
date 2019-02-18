@@ -50,7 +50,7 @@ export class DeleteProjectComponent {
           this.snackBar.open(`Project deleted`, '', {
             duration: 2000,
           });
-          this.store.dispatch(new actions.FetchProjects());
+          this.store.dispatch(new actions.FetchProjects(true));
         },
       ),
     );

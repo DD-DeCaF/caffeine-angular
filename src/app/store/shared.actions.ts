@@ -45,6 +45,8 @@ export const SET_EXPERIMENTS = 'SET_EXPERIMENTS';
 
 export class FetchModels implements Action {
   readonly type = FETCH_MODELS;
+  constructor(public refresh: boolean = false) {
+  }
 }
 
 export class SetModels implements Action {
@@ -67,6 +69,8 @@ export class SetSpecies implements Action {
 
 export class FetchProjects implements Action {
   readonly type = FETCH_PROJECTS;
+  constructor(public refresh: boolean = false) {
+  }
 }
 
 export class SetProjects implements Action {
@@ -78,6 +82,8 @@ export class SetProjects implements Action {
 
 export class FetchMaps implements Action {
   readonly type = FETCH_MAPS;
+  constructor(public refresh: boolean = false) {
+  }
 }
 
 export class SetMaps implements Action {
@@ -89,6 +95,8 @@ export class SetMaps implements Action {
 
 export class FetchJobs implements Action {
   readonly type = FETCH_JOBS;
+  constructor(public refresh: boolean = false) {
+  }
 }
 
 export class SetJobs implements Action {
@@ -131,6 +139,8 @@ export class SetJobsError implements Action {
 
 export class FetchDesigns implements Action {
   readonly type = FETCH_DESIGNS;
+  constructor(public refresh: boolean = false) {
+  }
 }
 
 export class SetDesigns implements Action {

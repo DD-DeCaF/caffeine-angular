@@ -41,9 +41,7 @@ export const environment: Configuration = {
     storage_bucket: 'dd-decaf-cfbf6.appspot.com',
     sender_id: '972933293195',
   },
-  trustedURLs: ['https://api-staging.dd-decaf.eu/iam', 'https://api-staging.dd-decaf.eu/mstorage', 'https://api-staging.dd-decaf.eu/mcaffeine',
-  'https://api-staging.dd-decaf.eu/pathways-caffeine', 'https://api-staging.dd-decaf.eu/warehouse', 'https://api-staging.dd-decaf.eu/maps',
-  'https://api-staging.dd-decaf.eu/design-storage', 'https://api.dd-decaf.eu/id-mapper/query'],
+  trustedURLs: ['https://api-staging.dd-decaf.eu'],
 };
 
 /*
