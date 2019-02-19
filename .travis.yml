@@ -51,6 +51,10 @@ before_deploy:
   - docker build -t ${IMAGE_REPO}:${TRAVIS_COMMIT::12} -t ${IMAGE_REPO}:${TRAVIS_BRANCH} .
   - docker push ${IMAGE_REPO}:${TRAVIS_COMMIT::12}
   - docker push ${IMAGE_REPO}:${TRAVIS_BRANCH}
+  - ng build --sourceMap=true --configuration local
+  - docker build -t dddecaf/caffeine
+  - echo ${DOCKER_HUB_PASSWORD} | docker login -u ${DOCKER_HUB_USERNAME} --password-stdin
+  - docker push dddecaf/caffeine
 
 deploy:
   provider: script
