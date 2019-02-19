@@ -149,7 +149,6 @@ export class RavenErrorHandler implements ErrorHandler {
     DesignService,
     FormBuilder,
     CacheMapService,
-    { provide: Cache, useClass: CacheMapService },
     { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],

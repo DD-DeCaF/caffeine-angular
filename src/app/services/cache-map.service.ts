@@ -14,11 +14,17 @@
 
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse } from '@angular/common/http';
-import { Cache } from '../cache';
-import { CacheEntry, MAX_CACHE_AGE } from '../cache-entry';
+const MAX_CACHE_AGE = 1800000; // 30 minutes on miliseconds
+
+export interface CacheEntry {
+  url: string;
+  // tslint:disable-next-line:no-any
+  response: HttpResponse<any>;
+  entryTime: number;
+}
 
 @Injectable()
-export class CacheMapService implements Cache {
+export class CacheMapService {
   cacheMap = new Map<string, CacheEntry>();
   // tslint:disable-next-line:no-any
   get(req: HttpRequest<any>): HttpResponse<any> | null {
