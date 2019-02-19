@@ -41,5 +41,6 @@ export interface Configuration {
     storage_bucket: string;
     sender_id: string;
   };
+  hotjar: boolean;
   trustedURLs: string[];
 }
