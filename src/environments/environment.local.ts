@@ -28,13 +28,8 @@ export const environment: Configuration = {
     design_storage: 'http://localhost:8007',
     id_mapper: 'http://localhost:8008/query',
   },
-  GA: {
-    trackingID: 'UA-106144097-3',
-  },
-  sentry: {
-    DSN: 'https://4ae40dd008994d91bc5632437fd5c395@sentry.io/1233153',
-    release: 'SENTRY_PROJECT',
-  },
+  GA: null,
+  sentry: null,
   firebase: {
     api_key: 'AIzaSyApbLMKp7TprhjH75lpcmJs514uI11fEIo',
     auth_domain: 'dd-decaf-cfbf6.firebaseapp.com',
