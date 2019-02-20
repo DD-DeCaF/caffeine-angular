@@ -79,8 +79,13 @@
             matTooltip="Unsaved strain" *ngIf="expandedCard.saved === false">*</span>
           </h4>
         </div>
-        <button mat-button *ngIf="expandedCard.saved === false" (click)="save(expandedCard, selectedProjectId)">SAVE
-        </button>
+        <div matTooltip="Please log in or register to use this functionality!"
+             [matTooltipDisabled]="(sessionState$ | async).authenticated">
+          <button mat-button *ngIf="expandedCard.saved === false"
+            (click)="save(expandedCard, selectedProjectId)"
+            [disabled]="!(sessionState$ | async).authenticated">SAVE
+          </button>
+        </div>
       </div>
 
       <mat-tab-group mat-stretch-tabs [selectedIndex]="tabIndex">
@@ -190,8 +195,15 @@
           </mat-form-field>
         </mat-card>
       </div>
-      <div fxLayoutAlign="end space-around" *ngIf="card.saved === false && card.selected" class="save-button">
-        <button mat-flat-button class="save-button" style="color: white" (click)="save(card)">SAVE</button>
+      <div fxLayoutAlign="end space-around"
+           *ngIf="card.saved === false && card.selected"
+           class="save-button"
+           matTooltip="Please log in or register to use this functionality!"
+           [matTooltipDisabled]="(sessionState$ | async).authenticated">
+        <button mat-flat-button class="save-button" style="color: white"
+                [disabled]="!(sessionState$ | async).authenticated"
+                (click)="save(card)">SAVE
+        </button>
       </div>
     </div>
   </div>
