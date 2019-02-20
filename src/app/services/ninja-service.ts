@@ -95,29 +95,39 @@ export class NinjaService {
       const mnxMetaboliteIds = Object.keys(mnxMetabolitesInReaction);
       return this.mapMnxMetabolitesToBigg(mnxMetaboliteIds).pipe(map((ids) => {
         const metabolites_to_add = [];
-        const biggMetabolites = {};
-        for (const mnxId of Object.keys(ids)) {
-          const mappedBiggIds = ids[mnxId];
+        const biggMetabolitesInReaction = {};
+        for (const mnxId of mnxMetaboliteIds) {
+          let isMnxIdMappedToBigg = true;
           let isMetaboliteInModel = false;
           let biggId;
-          // if id-mapper returns more than 1 mapped bigg id, take the one that is in the model
-          mappedBiggIds.forEach((id) => {
-            if (metabolitesInModel.has(id + '_c')) {
-              isMetaboliteInModel = true;
-              biggId = id + '_c';
-            }
-          });
+          let mappedBiggIds;
+          if (!ids.hasOwnProperty(mnxId)) {
+            isMnxIdMappedToBigg = false;
+          } else {
+            mappedBiggIds = ids[mnxId];
+            // if id-mapper returns more than 1 mapped bigg id, take the one that is in the model
+            mappedBiggIds.forEach((id) => {
+              if (metabolitesInModel.has(id + '_c')) {
+                isMetaboliteInModel = true;
+                biggId = id + '_c';
+              }
+            });
+          }
           if (!isMetaboliteInModel) {
-            biggId = mappedBiggIds[0];
+            // if id-mapper doesn't return mapped bigg id, keep the mnx id for the metabolite
             const metabolite = metabolites[mnxId];
-            metabolite.id = biggId;
+            biggId = mnxId;
+            if (isMnxIdMappedToBigg) {
+              biggId = mappedBiggIds[0] + '_c';
+              metabolite.id = biggId;
+            }
             metabolites_to_add.push(metabolite);
           }
-          biggMetabolites[biggId] = mnxMetabolitesInReaction[mnxId];
+          biggMetabolitesInReaction[biggId] = mnxMetabolitesInReaction[mnxId];
         }
         return {
           ...reactions[reactionId],
-          metabolites: biggMetabolites,
+          metabolites: biggMetabolitesInReaction,
           id: reactionId,
           bigg_id: reactionId,
           metabolites_to_add,
@@ -132,7 +142,7 @@ export class NinjaService {
     return forkJoin(addedReactions);
   }
 
-  getOperations(pathwayPrediction: PathwayPredictionResult, reactions: PathwayPredictionReactions): DeCaF.Operation[] {
+  getOperations(pathwayPrediction: PathwayPredictionResult): DeCaF.Operation[] {
     let knockoutReactions = [];
     let knockoutGenes = [];
     if (pathwayPrediction.method === 'PathwayPredictor+OptGene') {
