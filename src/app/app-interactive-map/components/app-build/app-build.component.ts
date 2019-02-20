@@ -49,6 +49,7 @@ import {ModelService} from '../../../services/model.service';
 import {LoaderComponent} from '../loader/loader.component';
 import {DesignRequest} from '../../../app-designs/types';
 import {WarningSaveComponent} from './components/warning-save/warning-save.component';
+import {SessionState} from './../../../session/store/session.reducers';
 
 @Component({
   selector: 'app-build',
@@ -75,6 +76,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public method: string;
   public cardType = CardType;
   public designs: DesignRequest[];
+  public sessionState$: Observable<SessionState>;
 
   public methods: Method[] = [
     {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
@@ -124,6 +126,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     this.selectedMap = this.store.pipe(select((store) => store.interactiveMap.selectedMap));
     this.mapItems = this.store.pipe(select(mapItemsByModel));
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
+    this.sessionState$ = this.store.select('session');
   }
 
   ngAfterViewInit(): void {
