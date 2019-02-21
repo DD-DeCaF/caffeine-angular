@@ -32,7 +32,7 @@ import {
 import {AppState} from '../../store/app.reducers';
 
 import * as fromActions from './interactive-map.actions';
-import {environment} from '../../../environments/environment.staging';
+import {environment} from '../../../environments/environment';
 import * as types from '../types';
 import {CardType, DeCaF} from '../types';
 import {PathwayMap} from '@dd-decaf/escher';
