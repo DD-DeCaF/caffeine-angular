@@ -401,7 +401,7 @@ export class InteractiveMapEffects {
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD,
       fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS,
-      sharedActions.FETCH_DESIGNS, fromActions.SET_METHOD),
+      sharedActions.FETCH_DESIGNS, fromActions.SET_METHOD, fromActions.CHANGE_SELECTED_MODEL),
     mapTo(new loaderActions.Loading()),
   );
 
