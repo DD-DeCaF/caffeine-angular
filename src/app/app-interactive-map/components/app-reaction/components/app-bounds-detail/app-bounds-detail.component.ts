@@ -14,8 +14,8 @@
 
 import {Component, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
 import {BoundedReaction} from '../../../../types';
-import {MatDialog} from '@angular/material';
-import { ErrorMsgComponent } from '../error-msg/error-msg.component';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import { ErrorMsgComponent } from '../../../error-msg/error-msg.component';
 
 @Component({
   selector: 'app-bounds-detail',
@@ -54,7 +54,9 @@ export class AppBoundsDetailComponent {
         upperBound,
       });
     } else {
-        this.dialog.open(ErrorMsgComponent, {width: '250px'});
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.data = 'The lower bound can not be higher than the upper bound';
+      this.dialog.open(ErrorMsgComponent, dialogConfig);
     }
   }
 

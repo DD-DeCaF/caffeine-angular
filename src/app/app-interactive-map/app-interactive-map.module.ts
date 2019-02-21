@@ -35,7 +35,7 @@ import {ModalErrorComponent} from './components/modal-error/modal-error.componen
 import {SelectProjectComponent} from './components/app-build/components/select-project/select-project.component';
 import {ShowHelpComponent} from './components/app-build/components/show-help/show-help.component';
 import {WarningSaveComponent} from './components/app-build/components/warning-save/warning-save.component';
-import { ErrorMsgComponent } from './components/app-reaction/components/error-msg/error-msg.component';
+import { ErrorMsgComponent } from './components/error-msg/error-msg.component';
 
 
 @NgModule({

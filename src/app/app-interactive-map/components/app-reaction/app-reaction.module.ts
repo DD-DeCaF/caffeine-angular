@@ -30,7 +30,7 @@ import { AppBoundsComponent } from './components/app-bounds/app-bounds.component
 import { AppObjectiveDetailComponent } from './components/app-objective-detail/app-objective-detail.component';
 import {AppKnockoutGenesComponent} from './components/app-knockout-genes/app-knockout-genes.component';
 import {SelectProjectComponent} from '../app-build/components/select-project/select-project.component';
-import { ErrorMsgComponent } from './components/error-msg/error-msg.component';
+import { ErrorMsgComponent } from '../error-msg/error-msg.component';
 
 @NgModule({
   declarations: [

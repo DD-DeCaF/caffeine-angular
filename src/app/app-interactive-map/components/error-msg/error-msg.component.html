@@ -13,7 +13,7 @@
 <!--limitations under the License.-->
 
 <div mat-dialog-content>
-  <p>The lower bound can not be higher than the upper bound</p>
+  <p [innerHTML]="data"></p>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button (click)="close()">Ok</button>

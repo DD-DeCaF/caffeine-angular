@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef} from '@angular/material';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-error-msg',
   templateUrl: './error-msg.component.html',
 })
-export class ErrorMsgComponent implements OnInit {
+export class ErrorMsgComponent {
   constructor(
     private dialogRef: MatDialogRef<ErrorMsgComponent>,
-  ) {}
-  ngOnInit(): void {
+    @Inject(MAT_DIALOG_DATA) public data: string) {
   }
+
   close(): void {
     this.dialogRef.close();
   }

@@ -14,11 +14,11 @@
 
 import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 
-import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
+import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 
 import {
   SelectCard,
@@ -48,9 +48,10 @@ import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
 import {DesignRequest} from '../../../app-designs/types';
 import {WarningSaveComponent} from './components/warning-save/warning-save.component';
-import {Loading, LoadingError} from '../loader/store/loader.actions';
+import {Loading, LoadingFinished} from '../loader/store/loader.actions';
 import {preferredModelBySpecies} from '../../../app-design-tool/store/design-tool.effects';
 import ModelHeader = DeCaF.ModelHeader;
+import {ErrorMsgComponent} from '../error-msg/error-msg.component';
 
 @Component({
   selector: 'app-build',
@@ -248,9 +249,14 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
           this.condition = event;
           this.store.dispatch(new SetOperations(operations, this.method, this.experiment, this.condition,
             strain.organism_id, selectedModel.id, condition));
-        }, (error) => {
+        }, (error: HttpErrorResponse) => {
           if (error) {
-            this.store.dispatch(new LoadingError());
+            const dialogConfig = new MatDialogConfig();
+            dialogConfig.data = error.error.errors.join('<br>');
+            const dialogRef = this.dialog.open(ErrorMsgComponent, dialogConfig);
+            dialogRef.afterClosed().subscribe(() => {
+              this.store.dispatch(new LoadingFinished());
+            });
           }
         });
       });
