@@ -87,56 +87,53 @@ export class NinjaService {
     pathwayPrediction: PathwayPredictionResult,
     reactions: PathwayPredictionReactions,
     metabolites: PathwayPredictionMetabolites): Observable<AddedReaction[]> {
-    const heterologousReactions = pathwayPrediction.heterologous_reactions.map((reactionId) => {
-      const metaboliteIds = Object.keys(reactions[reactionId].metabolites);
-      return this.mapMnxMetabolitesToBigg(metaboliteIds).pipe(map((ids) => {
+    const addedReactionIds = [...pathwayPrediction.heterologous_reactions, ...pathwayPrediction.synthetic_reactions];
+    const metabolitesInModel = new Set(pathwayPrediction.model.model_serialized.metabolites.map((metabolite) => metabolite.id));
+
+    const addedReactions = addedReactionIds.map((reactionId) => {
+      const mnxMetabolitesInReaction = reactions[reactionId].metabolites;
+      const mnxMetaboliteIds = Object.keys(mnxMetabolitesInReaction);
+      return this.mapMnxMetabolitesToBigg(mnxMetaboliteIds).pipe(map((ids) => {
         const metabolites_to_add = [];
-        const biggMetabolites = {};
-        const mnxMetabolites = reactions[reactionId].metabolites;
-          for (const mnxId in ids) {
-            if (mnxId) {
-              const biggId = ids[mnxId][0] + '_c';
-              const metabolite = metabolites[mnxId];
-              metabolite.id = biggId;
-              metabolites_to_add.push(metabolite);
-              biggMetabolites[biggId] = mnxMetabolites[mnxId];
-            }
+        const biggMetabolitesInReaction = {};
+        for (const mnxId of mnxMetaboliteIds) {
+          let isMnxIdMappedToBigg = true;
+          let isMetaboliteInModel = false;
+          let biggId;
+          let mappedBiggIds;
+          if (!ids.hasOwnProperty(mnxId)) {
+            isMnxIdMappedToBigg = false;
+          } else {
+            mappedBiggIds = ids[mnxId];
+            // if id-mapper returns more than 1 mapped bigg id, take the one that is in the model
+            mappedBiggIds.forEach((id) => {
+              if (metabolitesInModel.has(id + '_c')) {
+                isMetaboliteInModel = true;
+                biggId = id + '_c';
+              }
+            });
           }
+          if (!isMetaboliteInModel) {
+            // if id-mapper doesn't return mapped bigg id, keep the mnx id for the metabolite
+            const metabolite = metabolites[mnxId];
+            biggId = mnxId;
+            if (isMnxIdMappedToBigg) {
+              biggId = mappedBiggIds[0] + '_c';
+              metabolite.id = biggId;
+            }
+            metabolites_to_add.push(metabolite);
+          }
+          biggMetabolitesInReaction[biggId] = mnxMetabolitesInReaction[mnxId];
+        }
         return {
           ...reactions[reactionId],
-          metabolites: biggMetabolites,
+          metabolites: biggMetabolitesInReaction,
           id: reactionId,
           bigg_id: reactionId,
           metabolites_to_add,
         };
       }));
     });
-
-    const syntheticReactions = pathwayPrediction.synthetic_reactions.map((reactionId: string) => {
-      const mnxMetabolite = reactionId.slice(3);
-      return this.mapMnxMetabolitesToBigg([mnxMetabolite]).pipe(map((ids) => {
-        const biggId = ids[mnxMetabolite][0] + '_c';
-        const metabolite_to_add = {
-          name: biggId,
-          id: biggId,
-          annotation: {},
-          charge: -1,
-          compartment: 'c',
-          formula: biggId,
-        };
-        return {
-          id: reactionId,
-          name: reactionId,
-          bigg_id: reactionId,
-          metabolites: {[biggId]: -1},
-          metabolites_to_add: [metabolite_to_add],
-          lower_bound: 0,
-          upper_bound: 1000,
-        };
-      }));
-    });
-
-    const addedReactions = [...heterologousReactions, ...syntheticReactions];
 
     if (addedReactions.length === 0) {
       return of([]);
@@ -145,7 +142,7 @@ export class NinjaService {
     return forkJoin(addedReactions);
   }
 
-  getOperations(pathwayPrediction: PathwayPredictionResult, reactions: PathwayPredictionReactions): DeCaF.Operation[] {
+  getOperations(pathwayPrediction: PathwayPredictionResult): DeCaF.Operation[] {
     let knockoutReactions = [];
     let knockoutGenes = [];
     if (pathwayPrediction.method === 'PathwayPredictor+OptGene') {

@@ -217,7 +217,7 @@ export class InteractiveMapEffects {
               method: 'pfba',
               objective: null,
               objective_direction: null,
-              operations: this.ninjaService.getOperations(pathwayPrediction, reactions),
+              operations: this.ninjaService.getOperations(pathwayPrediction),
             };
             return this.simulationService.simulate(payloadSimulate);
           }),
