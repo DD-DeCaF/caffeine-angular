@@ -16,7 +16,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Action, Store} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {combineLatest, Observable, of, empty} from 'rxjs';
+import {combineLatest, Observable, of, EMPTY} from 'rxjs';
 import {
   catchError,
   concatMapTo,
@@ -88,10 +88,10 @@ export class InteractiveMapEffects {
       const {maps} = storeState.shared;
       const mapSelector = MapService.createMapSelector(model);
       if (Boolean(mapSelector(maps))) {
-        return of(new fromActions.SetMap(mapSelector(maps)))
+        return of(new fromActions.SetMap(mapSelector(maps)));
       }
-      return empty();
-      })
+      return EMPTY;
+      }),
     );
 
   @Effect()
