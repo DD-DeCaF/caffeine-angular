@@ -50,6 +50,7 @@ import {LoaderComponent} from '../loader/loader.component';
 import {DesignRequest} from '../../../app-designs/types';
 import {WarningSaveComponent} from './components/warning-save/warning-save.component';
 import {SessionState} from './../../../session/store/session.reducers';
+import { Loading } from './../loader/store/loader.actions';
 
 @Component({
   selector: 'app-build',
@@ -141,6 +142,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
         map((change: MatSelectChange): types.MapItem => change.value),
       )
       .subscribe((mapItem: types.MapItem) => {
+        this.store.dispatch(new Loading());
         this.store.dispatch(new SetMap(mapItem));
       });
   }

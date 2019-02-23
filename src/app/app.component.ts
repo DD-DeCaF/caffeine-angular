@@ -101,7 +101,7 @@ export class AppComponent implements OnInit {
       this.store.pipe(select((store) => store.shared.modelHeaders))).subscribe(([species, models]) => {
       if (species && models.length > 0) {
         this.store.dispatch(new SelectFirstModel(species, models));
-        this.store.dispatch(new SetModelDataDriven(models.find((model) => model.name === 'iJO1366')));
+        this.store.dispatch(new SetModelDataDriven(models.find((model) => model.name === 'iJO1366') || models[0]));
       }
     });
 
