@@ -28,11 +28,17 @@ export class AppObjectiveDetailComponent {
   @ViewChild('remove') removeButton: MatButton;
 
   @Input() public objectiveReaction: Observable<ObjectiveReactionPayload>;
+  // tslint:disable-next-line:no-any
+  @Input() private reactions: any[];
   @Output() public changeDirection: EventEmitter<'max' | 'min'> = new EventEmitter();
   @Output() public remove: EventEmitter<string> = new EventEmitter();
 
   toggleChange({checked}: MatSlideToggleChange): void {
     this.changeDirection.emit(checked ? 'max' : 'min');
+  }
+
+  getReactionName(reactionId: string): string {
+    return this.reactions.find((reaction) => reaction.id === reactionId).name;
   }
 
   removeObjective(): void {

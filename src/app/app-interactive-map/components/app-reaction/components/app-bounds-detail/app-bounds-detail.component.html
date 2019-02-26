@@ -19,7 +19,7 @@
         <p>
           <span>{{ bound.lowerBound || '-' }}</span>
           <span class="item-display">
-              &#8804; <span>{{ bound.reaction.id }}</span>
+              &#8804; <span matTooltip={{bound.reaction.name}}>{{ bound.reaction.id }}</span>
               &#8804;
           </span>
           <span>{{ bound.upperBound || '-' }}</span>

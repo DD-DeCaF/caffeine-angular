@@ -14,11 +14,13 @@
 
 <app-panel
   placeholder="Knockout a gene"
-  title="Knocked out genes:"
+  [title]="'Knocked out genes:'"
   [queryHits]="(genes$ | async)"
   #panel>
   <app-detail
     [items]="card.knockoutGenes"
+    [model]="card.model"
+    type="genes"
     #detail>
   </app-detail>
 </app-panel>
