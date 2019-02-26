@@ -18,7 +18,7 @@ import {Action, Store} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {combineLatest, Observable, of, EMPTY} from 'rxjs';
 import {
-  catchError,
+  catchError, concatMap,
   concatMapTo,
   delay,
   filter,
@@ -224,8 +224,13 @@ export class InteractiveMapEffects {
             };
             return this.simulationService.simulate(payloadSimulate);
           }),
-          map((solution) => {
-            return new fromActions.AddCardFetched({type: payload, solution: solution, pathwayPrediction});
+          concatMap((solution) => {
+            const {maps} = store.shared;
+            const mapSelector = MapService.createMapSelector(pathwayPrediction.model);
+            return [
+              new fromActions.SetMap(mapSelector(maps)),
+              new fromActions.AddCardFetched({type: payload, solution: solution, pathwayPrediction}),
+            ];
           }),
           catchError(() => of(new loaderActions.LoadingError())),
         );
