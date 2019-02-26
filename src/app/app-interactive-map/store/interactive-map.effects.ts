@@ -16,7 +16,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Action, Store} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {combineLatest, Observable, of} from 'rxjs';
+import {combineLatest, Observable, of, EMPTY} from 'rxjs';
 import {
   catchError,
   concatMapTo,
@@ -26,7 +26,6 @@ import {
   map,
   mapTo,
   switchMap,
-  take,
   withLatestFrom,
 } from 'rxjs/operators';
 import {AppState} from '../../store/app.reducers';
@@ -46,6 +45,8 @@ import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {NinjaService} from './../../services/ninja-service';
 import Model = DeCaF.Model;
+import { RESET_REMOVED_MODEL_MODELS } from './../../app-models/store/models.actions';
+import { RESET_REMOVED_MAP } from './../../app-maps/store/maps.actions';
 
 
 const ACTION_OFFSETS = {
@@ -73,23 +74,25 @@ export class InteractiveMapEffects {
   );
 
   @Effect()
-  setMaps: Observable<Action> = combineLatest(
+  setMaps: Observable<never | Action> = combineLatest(
     this.actions$.pipe(
       ofType(fromActions.SET_MODEL)),
     this.actions$.pipe(
       ofType(sharedActions.SET_MAPS),
-      take(1),
     ),
   ).pipe(
     map(([action]) => action),
     withLatestFrom(this.store$),
-    map(([action, storeState]: [fromActions.SetModel, AppState]) => {
+    switchMap(([action, storeState]: [fromActions.SetModel, AppState]) => {
       const model = action.payload;
       const {maps} = storeState.shared;
       const mapSelector = MapService.createMapSelector(model);
-      return new fromActions.SetMap(mapSelector(maps));
-    }),
-  );
+      if (Boolean(mapSelector(maps))) {
+        return of(new fromActions.SetMap(mapSelector(maps)));
+      }
+      return EMPTY;
+      }),
+    );
 
   @Effect()
   resetCards: Observable<Action> = this.actions$.pipe(
@@ -408,7 +411,8 @@ export class InteractiveMapEffects {
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.LOADED, fromActions.ADD_CARD_FETCHED, fromActions.UPDATE_SOLUTION,
-      fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY),
+      fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY,
+      RESET_REMOVED_MODEL_MODELS, RESET_REMOVED_MAP),
     mapTo(new loaderActions.LoadingFinished()),
   );
 

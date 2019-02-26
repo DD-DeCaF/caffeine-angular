@@ -45,10 +45,12 @@
                   [matTooltipPosition]="'after'">Data driven
           </button>
         </mat-menu>
-
-        <button mat-icon-button [matMenuTriggerFor]="addMenu">
-          <mat-icon>add</mat-icon>
-        </button>
+        <div matTooltip="Please add a model to use this functionality!"
+             [matTooltipDisabled]="(models | async).length !== 0">
+          <button mat-icon-button [matMenuTriggerFor]="addMenu" [disabled]="(models | async).length === 0">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
       </div>
 
       <button mat-icon-button (click)="previous()">
