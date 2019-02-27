@@ -298,7 +298,10 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       }
       builder.set_knockout_reactions(card.knockoutReactions);
       builder.set_knockout_genes(card.knockoutGenes);
-      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder.set_added_reactions(card.addedReactions
+        .filter((reaction) => !reaction.bigg_id.startsWith('DM_'))
+        .map((reaction) => reaction.bigg_id),
+      );
       builder.set_highlight_reactions(card.measurements.map((m) => m.id));
       builder._update_data(true, true);
     } else {
@@ -314,7 +317,10 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       }
       builder.set_knockout_reactions(card.knockoutReactions);
       builder.set_knockout_genes(card.knockoutGenes);
-      builder.set_added_reactions(card.addedReactions.map((reaction) => reaction.bigg_id));
+      builder.set_added_reactions(card.addedReactions
+        .filter((reaction) => !reaction.bigg_id.startsWith('DM_'))
+        .map((reaction) => reaction.bigg_id),
+      );
       builder.set_highlight_reactions(card.measurements.map((m) => m.id));
       builder._update_data(true, true);
       this.store.dispatch(new Loaded());
