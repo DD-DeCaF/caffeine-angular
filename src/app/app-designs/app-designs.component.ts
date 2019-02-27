@@ -12,7 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnDestroy, OnInit, ViewChild, EventEmitter} from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
 import {MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
@@ -72,6 +80,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     private store: Store<AppState>,
     private dialog: MatDialog,
     private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {
     this.subscribeObservableLoading();
   }
@@ -79,9 +88,11 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.designs = this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
       this.dataSource.data = designs;
+      this.cdr.detectChanges();
     });
     this.store.pipe(select((store) => store.interactiveMap.cards.cardsById)).subscribe((cards) => {
       this.cards = cards;
+      this.cdr.detectChanges();
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

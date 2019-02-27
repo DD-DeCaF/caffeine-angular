@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
 import { MatSelect, MatSelectChange } from '@angular/material';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -28,6 +28,7 @@ import * as types from '../../types';
   selector: 'app-card-info',
   templateUrl: './app-card-info.component.html',
   styleUrls: ['./app-card-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppCardInfoComponent implements OnInit, AfterViewInit {
   @ViewChild('method') method: MatSelect;

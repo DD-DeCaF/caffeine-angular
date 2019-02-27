@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -23,6 +23,7 @@ import {MAT_DIALOG_DATA} from '@angular/material';
   selector: 'app-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 export class LoaderComponent implements OnInit {

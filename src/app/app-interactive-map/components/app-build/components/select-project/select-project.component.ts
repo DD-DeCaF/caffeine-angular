@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
@@ -24,6 +24,7 @@ import {SetSelectedProject} from '../../../../../store/shared.actions';
   selector: 'app-select-project',
   templateUrl: './select-project.component.html',
   styleUrls: ['./select-project.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class SelectProjectComponent implements OnInit {

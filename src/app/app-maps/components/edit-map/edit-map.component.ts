@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {AppState} from '../../../store/app.reducers';
@@ -27,6 +27,7 @@ import {Project} from '../../../projects/types';
   selector: 'app-loader',
   templateUrl: './edit-map.component.html',
   styleUrls: ['./edit-map.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 

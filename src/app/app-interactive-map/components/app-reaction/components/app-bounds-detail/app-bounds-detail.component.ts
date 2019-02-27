@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, ElementRef, Input, Output, EventEmitter} from '@angular/core';
+import {Component, ViewChild, ElementRef, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {BoundedReaction} from '../../../../types';
 import {MatDialog} from '@angular/material';
 import { ErrorMsgComponent } from '../error-msg/error-msg.component';
@@ -21,6 +21,7 @@ import { ErrorMsgComponent } from '../error-msg/error-msg.component';
   selector: 'app-bounds-detail',
   templateUrl: './app-bounds-detail.component.html',
   styleUrls: ['./app-bounds-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class AppBoundsDetailComponent {

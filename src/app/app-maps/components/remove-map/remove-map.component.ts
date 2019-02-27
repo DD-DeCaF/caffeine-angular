@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.reducers';
 import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
@@ -25,6 +25,7 @@ import {RemovedMapComponent} from './removed-map.component';
   selector: 'app-remove-model',
   templateUrl: './remove-map.component.html',
   styleUrls: ['./remove-map.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RemoveMapComponent implements OnInit {
 

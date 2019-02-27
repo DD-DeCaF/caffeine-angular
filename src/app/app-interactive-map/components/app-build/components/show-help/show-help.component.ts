@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import { MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-delete-project',
   templateUrl: './show-help.component.html',
   styleUrls: ['./show-help.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class ShowHelpComponent {

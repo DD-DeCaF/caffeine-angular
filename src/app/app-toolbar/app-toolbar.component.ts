@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {MatSidenav} from '@angular/material';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
@@ -24,6 +24,7 @@ import {Observable} from 'rxjs';
   selector: 'app-toolbar',
   templateUrl: './app-toolbar.component.html',
   styleUrls: ['./app-toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppToolbarComponent implements OnInit {
   public sessionState: Observable<SessionState>;

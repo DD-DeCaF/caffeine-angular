@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as types from '../../../app-interactive-map/types';
 import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
@@ -104,7 +104,7 @@ export class AddMapComponent implements OnInit, OnDestroy {
     const fileReader = new FileReader(); // New instance fileReader
     fileReader.onload = () => {  // Called when a read operation successfully completes
       this.addMapForm.patchValue({
-        map: JSON.parse(fileReader.result),
+        map: JSON.parse(fileReader.result as string),
       });
     };
     if (file) {

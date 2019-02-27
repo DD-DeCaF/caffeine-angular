@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatSort, MatDialog, MatPaginator} from '@angular/material';
 import {AppState} from '../store/app.reducers';
 import {select, Store} from '@ngrx/store';
@@ -28,6 +28,7 @@ import {SessionState} from '../session/store/session.reducers';
   selector: 'app-models',
   templateUrl: './app-models.component.html',
   styleUrls: ['./app-models.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppModelsComponent implements OnInit {
   public dataSource = new MatTableDataSource<types.DeCaF.ModelHeader>([]);

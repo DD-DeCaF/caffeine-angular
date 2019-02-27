@@ -12,11 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './app-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class AppDetailComponent {

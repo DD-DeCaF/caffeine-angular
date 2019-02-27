@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, OnInit, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
 
 import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
@@ -56,6 +56,7 @@ import { Loading } from './../loader/store/loader.actions';
   selector: 'app-build',
   templateUrl: './app-build.component.html',
   styleUrls: ['./app-build.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppBuildComponent implements OnInit, AfterViewInit {
   @ViewChild('play') playButton: MatButton;

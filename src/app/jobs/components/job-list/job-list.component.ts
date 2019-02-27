@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 
@@ -32,6 +32,7 @@ export class JobListComponent implements OnInit, OnDestroy {
   public dataSource = new MatTableDataSource<Job>([]);
   public polling: Subscription;
   public sessionState$: Observable<SessionState>;
+  public jobs: Subscription;
 
   // isLoading = true;
   // loadError = false;
@@ -43,6 +44,7 @@ export class JobListComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   getOrganismNameById(organismId: number): Observable<string> {
@@ -60,7 +62,7 @@ export class JobListComponent implements OnInit, OnDestroy {
     this.polling = timer(0, 20000)
       .subscribe(() => {
         this.store.dispatch(new FetchJobs());
-        this.store.pipe(select((state) => state.shared.jobs))
+        this.jobs = this.store.pipe(select((state) => state.shared.jobs))
           .subscribe((jobs) => {
             for (let i = 0; i < jobs.length; i++) {
               if (jobs[i].state === 'STARTED' || jobs[i].state === 'PENDING') {
@@ -72,6 +74,7 @@ export class JobListComponent implements OnInit, OnDestroy {
               this.polling.unsubscribe();
             }
             this.dataSource.data = jobs;
+            this.cdr.detectChanges();
           });
       });
     this.dataSource.sort = this.sort;
@@ -81,5 +84,8 @@ export class JobListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.polling.unsubscribe();
+    if (this.jobs) {
+      this.jobs.unsubscribe();
+    }
   }
 }

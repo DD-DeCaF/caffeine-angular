@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {fromEvent, Observable} from 'rxjs';
 import {SessionState} from '../session/store/session.reducers';
 import {select, Store} from '@ngrx/store';
@@ -28,6 +28,7 @@ const MOBILE_MAX_WIDTH = 425;
   selector: 'app-app-home',
   templateUrl: './app-home.component.html',
   styleUrls: ['./app-home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppHomeComponent implements OnInit {
   public sessionState: Observable<SessionState>;
