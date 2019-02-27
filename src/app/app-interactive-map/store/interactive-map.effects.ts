@@ -160,7 +160,7 @@ export class InteractiveMapEffects {
         model_id: action.payload,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
-        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        objective_id: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
         operations: [
           ...addedReactions,
           ...knockouts,
@@ -186,7 +186,7 @@ export class InteractiveMapEffects {
       let payloadSimulate: types.SimulateRequest = {
         model_id: store.interactiveMap.selectedModelHeader.id,
         method: 'pfba',
-        objective: null,
+        objective_id: null,
         objective_direction: null,
         operations: [],
       };
@@ -195,7 +195,7 @@ export class InteractiveMapEffects {
         payloadSimulate = {
           model_id: design.model_id,
           method: 'pfba',
-          objective: null,
+          objective_id: null,
           objective_direction: null,
           operations: this.designService.getOperations(design) || [],
         };
@@ -218,7 +218,7 @@ export class InteractiveMapEffects {
             payloadSimulate = {
               model_id: pathwayPrediction.model_id,
               method: 'pfba',
-              objective: null,
+              objective_id: null,
               objective_direction: null,
               operations: this.ninjaService.getOperations(pathwayPrediction),
             };
@@ -319,7 +319,7 @@ export class InteractiveMapEffects {
         model_id: selectedCard.model_id,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
-        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        objective_id: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
         operations: [],
       };
 
@@ -390,7 +390,7 @@ export class InteractiveMapEffects {
       const payloadSimulate: types.SimulateRequest = {
         model_id: payload.model_id,
         method: payload.method,
-        objective: null,
+        objective_id: null,
         objective_direction: null,
         // tslint:disable-next-line:no-any
         operations: (<any>operations).operations,
