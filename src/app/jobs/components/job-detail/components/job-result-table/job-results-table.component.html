@@ -20,7 +20,8 @@ limitations under the License.
   <mat-card>
     <div class="buttons-table">
       <h3 class="inline">Results</h3>
-      <button (click)="addCards()" class="mat-primary inline" mat-button matSuffix style="float: right" [disabled]="selection.selected.length < 1">
+      <button (click)="addCards()" class="mat-primary inline" mat-button matSuffix style="float: right"
+              [disabled]="selection.selected.length < 1">
         <mat-icon>share</mat-icon>
         <span class="share-button">VISUALIZE</span>
       </button>
@@ -28,12 +29,15 @@ limitations under the License.
     <table mat-table [dataSource]="dataSource" matSort class="table" class="jobs-table">
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox (change)="$event ? masterToggle() : null" color="primary" [checked]="selection.hasValue() && isAllSelected()"
-            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          <mat-checkbox (change)="$event ? masterToggle() : null" color="primary"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()">
           </mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let row">
-          <mat-checkbox (click)="$event.stopPropagation(); showWarning(row.method, selection.isSelected(row))" color="primary" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+          <mat-checkbox (click)="$event.stopPropagation(); showWarning(row.method, selection.isSelected(row))"
+                        color="primary" (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)">
           </mat-checkbox>
       </ng-container>
 
@@ -135,8 +139,9 @@ limitations under the License.
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row" [appJobResultsDetailRow]="row"
-        [appJobResultsDetailRowTpl]="tpl" (toggleChange)="toggleChange($event)">
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row"
+          [appJobResultsDetailRow]="row"
+          [appJobResultsDetailRowTpl]="tpl" (toggleChange)="toggleChange($event)">
       </tr>
     </table>
   </mat-card>
@@ -149,31 +154,45 @@ limitations under the License.
       <div class="linkListInner">
         <div *ngFor="let manipulation of getManipulations(element.manipulations); let i = index;">
           <div *ngIf="i < 10">
-            <a *ngIf="element.method === 'PathwayPredictor+DifferentialFVA'" [attr.href]="geneLink(manipulation)" target="_blank">
+            <a *ngIf="element.method === 'PathwayPredictor+DifferentialFVA'"
+               [attr.href]="geneLink(manipulation)" target="_blank"
+               [matTooltip]="'Score: ' + manipulation.value.toFixed(2)"
+               [matTooltipPosition]="'below'">
               {{dispManipulation(manipulation)}}
             </a>
-            <a *ngIf="element.method === 'PathwayPredictor+CofactorSwap'" [attr.href]="geneLink(manipulation)" target="_blank">
-            <span class="aligned-with-icon">
+            <a *ngIf="element.method === 'PathwayPredictor+CofactorSwap'"
+               [attr.href]="geneLink(manipulation)" target="_blank"
+               [matTooltip]="'Score: ' + manipulation.value.toFixed(2)"
+               [matTooltipPosition]="'below'">
+              <span class="aligned-with-icon">
               {{manipulation.from}}
-              <mat-icon class="arrow-icon">arrow_forward</mat-icon> {{manipulation.to}}
+                <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+                {{manipulation.to}}
             </span>
             </a>
           </div>
           <div *ngIf="i >= 10" [hidden]="!showAllManipulations">
-            <a *ngIf="element.method === 'PathwayPredictor+DifferentialFVA'" [attr.href]="geneLink(manipulation)" target="_blank">
+            <a *ngIf="element.method === 'PathwayPredictor+DifferentialFVA'" [attr.href]="geneLink(manipulation)"
+               target="_blank"
+               [matTooltip]="'Score: ' + manipulation.value.toFixed(2)"
+               [matTooltipPosition]="'below'">
               {{dispManipulation(manipulation)}}
             </a>
-            <a *ngIf="element.method === 'PathwayPredictor+CofactorSwap'" [attr.href]="geneLink(manipulation)" target="_blank">
+            <a *ngIf="element.method === 'PathwayPredictor+CofactorSwap'" [attr.href]="geneLink(manipulation)"
+               target="_blank"
+               [matTooltip]="'Score: ' + manipulation.value.toFixed(2)"
+               [matTooltipPosition]="'below'">
             <span class="aligned-with-icon">
               {{manipulation.from}}
-              <mat-icon class="arrow-icon">arrow_forward</mat-icon> {{manipulation.to}}
+              <mat-icon class="arrow-icon">arrow_forward</mat-icon>
+              {{manipulation.to}}
             </span>
             </a>
           </div>
         </div>
         <div *ngIf="getManipulations(element.manipulations).length >= 10">
-           <a (click)="showAllManipulations = true;" [hidden]="showAllManipulations">
-          ...
+          <a (click)="showAllManipulations = true;" [hidden]="showAllManipulations">
+            ...
           </a>
         </div>
         <div *ngIf="element.manipulations.length > 0" class="legend-manipulations">
