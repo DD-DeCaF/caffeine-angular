@@ -244,9 +244,9 @@ export function interactiveMapReducer(
               solution,
               saved,
               addedReactions: design
-              ? design.design.added_reactions.filter((reaction) => !reaction.bigg_id.startsWith('DM_'))
+              ? design.design.added_reactions
               : pathwayPrediction
-                ? pathwayPrediction.added_reactions.filter((reaction) => !reaction.bigg_id.startsWith('DM_')) || []
+                ? pathwayPrediction.added_reactions || []
                 : [],
               bounds: design ? design.design.constraints.map((reaction) => Object.assign({
                 reaction: {id: reaction.id},
