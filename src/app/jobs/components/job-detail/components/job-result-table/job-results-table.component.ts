@@ -20,7 +20,7 @@ import {
   EventEmitter,
   OnInit,
   OnDestroy,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from '@angular/material';
 import {MatSnackBar} from '@angular/material/snack-bar';

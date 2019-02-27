@@ -18,7 +18,6 @@ import {
   OnInit,
   ViewChild,
   EventEmitter,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
 import {select, Store} from '@ngrx/store';
