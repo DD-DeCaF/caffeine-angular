@@ -29,6 +29,18 @@ const mockedIMInitialState: InteractiveMapState = {
           reactionId: 'fooBar',
           direction: 'max',
         },
+        model: {
+          reactions: [{
+            id: 'fooBar',
+            name: 'name',
+          }],
+          genes: [{
+            id: 'id',
+            name: 'name',
+          }],
+          metabolites: [],
+          id: 'id',
+        },
       },
     },
   },

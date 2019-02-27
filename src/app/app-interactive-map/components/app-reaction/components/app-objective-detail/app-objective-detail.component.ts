@@ -16,7 +16,7 @@ import {Component, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import { MatSlideToggle, MatButton, MatSlideToggleChange } from '@angular/material';
 
-import { ObjectiveReactionPayload } from '../../../../types';
+import { ObjectiveReactionPayload, Cobra } from '../../../../types';
 
 @Component({
   selector: 'app-objective-detail',
@@ -28,8 +28,7 @@ export class AppObjectiveDetailComponent {
   @ViewChild('remove') removeButton: MatButton;
 
   @Input() public objectiveReaction: Observable<ObjectiveReactionPayload>;
-  // tslint:disable-next-line:no-any
-  @Input() private reactions: any[];
+  @Input() private model: Cobra.Model;
   @Output() public changeDirection: EventEmitter<'max' | 'min'> = new EventEmitter();
   @Output() public remove: EventEmitter<string> = new EventEmitter();
 
@@ -38,7 +37,7 @@ export class AppObjectiveDetailComponent {
   }
 
   getReactionName(reactionId: string): string {
-    return this.reactions.find((reaction) => reaction.id === reactionId).name;
+    return this.model.reactions.find((r) => r.id === reactionId).name;
   }
 
   removeObjective(): void {
