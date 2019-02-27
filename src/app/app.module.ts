@@ -24,6 +24,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import {CallbackPipe} from './pipes/callback.pipe';
 import {AppComponent} from './app.component';
@@ -73,7 +74,6 @@ import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
 import {DesignService} from './services/design.service';
 import {AppDesignsModule} from './app-designs/app-designs.module';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 if (environment.sentry) {
