@@ -73,6 +73,7 @@ import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
 import {DesignService} from './services/design.service';
 import {AppDesignsModule} from './app-designs/app-designs.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 if (environment.sentry) {
@@ -138,6 +139,7 @@ export class RavenErrorHandler implements ErrorHandler {
     StoreDevtoolsModule.instrument({
       name: 'Caffeine',
     }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     SessionService,
