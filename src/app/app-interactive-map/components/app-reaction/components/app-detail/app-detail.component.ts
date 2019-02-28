@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Cobra, AddedReaction} from 'src/app/app-interactive-map/types';
 
 @Component({
   selector: 'app-detail',
@@ -24,7 +25,19 @@ export class AppDetailComponent {
   @Input() public items: any[] = [];
   // tslint:disable-next-line:no-any
   @Input() public display: (item: any) => string;
+  @Input() private model: Cobra.Model;
+  @Input() private type: string;
   @Output() public remove = new EventEmitter<string>();
+
+  getItemName(item: AddedReaction | string): string {
+    if (this.type === 'added_reactions') {
+      return item['name'];
+    }
+    if (this.type === 'reactions') {
+      return this.model.reactions.find((reaction) => reaction.id === item).name;
+    }
+    return this.model.genes.find((gene) => gene.id === item).name;
+  }
 
   // tslint:disable-next-line:no-any
   displayFn(item: any): string {

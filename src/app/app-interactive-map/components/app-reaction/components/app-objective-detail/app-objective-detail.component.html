@@ -13,7 +13,10 @@
 <!--limitations under the License.-->
 
 <div *ngIf="objectiveReaction">
-  <span class="item-name">{{ objectiveReaction.reactionId}}</span>
+  <span [matTooltip]="getReactionName(objectiveReaction.reactionId)"
+        class="item-name">
+        {{objectiveReaction.reactionId}}
+    </span>
   <span>Min</span>
   <mat-slide-toggle
     class="mat-primary"

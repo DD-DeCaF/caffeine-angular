@@ -14,11 +14,13 @@
 
 <app-panel
   placeholder="Knockout a reaction"
-  title="Knocked out reactions:"
+  [title]="'Knocked out reactions:'"
   [queryHits]="(reactions$ | async)"
   #panel>
   <app-detail
     [items]="card.knockoutReactions"
+    [type]="'reactions'"
+    [model]="card.model"
     #detail>
   </app-detail>
 </app-panel>
