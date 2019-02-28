@@ -14,11 +14,12 @@
 
 <app-panel
   placeholder="Change model objective"
-  title="Objective:"
+  [title]="'Objective:'"
   [queryHits]="(reactions$ | async)"
   #panel>
   <app-objective-detail
     [objectiveReaction]="card.objectiveReaction"
+    [model]="card.model"
     #detail>
   </app-objective-detail>
 </app-panel>

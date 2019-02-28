@@ -14,7 +14,7 @@
 
 <app-panel
   placeholder="Change a reaction's bounds"
-  title="Changed reactions:"
+  [title]="'Changed reactions:'"
   [display]="display"
   [queryHits]="(reactions$ | async)"
   #panel

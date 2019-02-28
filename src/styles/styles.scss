@@ -13,8 +13,7 @@
 // limitations under the License.
 
 /* You can add global styles to this file, and also import other style files */
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic');
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import '~typeface-roboto/index.css';
 @import '~@angular/material/theming';
 
 html, body {

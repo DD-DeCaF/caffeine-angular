@@ -14,7 +14,7 @@
 
 <app-panel
   placeholder="Add a reaction"
-  title="Added reactions:"
+  [title]="'Added reactions:'"
   [display]="display"
   [queryHits]="(reactions$ | async)"
   #panel
@@ -22,6 +22,7 @@
   <app-detail
     [items]="card.addedReactions"
     [display]="display"
+    [type]="'added_reactions'"
     #detail
     >
   </app-detail>

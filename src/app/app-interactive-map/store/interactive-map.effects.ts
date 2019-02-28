@@ -18,7 +18,7 @@ import {Action, Store} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {combineLatest, Observable, of, EMPTY} from 'rxjs';
 import {
-  catchError,
+  catchError, concatMap,
   concatMapTo,
   delay,
   filter,
@@ -160,7 +160,7 @@ export class InteractiveMapEffects {
         model_id: action.payload,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
-        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        objective_id: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
         operations: [
           ...addedReactions,
           ...knockouts,
@@ -186,7 +186,7 @@ export class InteractiveMapEffects {
       let payloadSimulate: types.SimulateRequest = {
         model_id: store.interactiveMap.selectedModelHeader.id,
         method: 'pfba',
-        objective: null,
+        objective_id: null,
         objective_direction: null,
         operations: [],
       };
@@ -195,7 +195,7 @@ export class InteractiveMapEffects {
         payloadSimulate = {
           model_id: design.model_id,
           method: 'pfba',
-          objective: null,
+          objective_id: null,
           objective_direction: null,
           operations: this.designService.getOperations(design) || [],
         };
@@ -218,14 +218,19 @@ export class InteractiveMapEffects {
             payloadSimulate = {
               model_id: pathwayPrediction.model_id,
               method: 'pfba',
-              objective: null,
+              objective_id: null,
               objective_direction: null,
               operations: this.ninjaService.getOperations(pathwayPrediction),
             };
             return this.simulationService.simulate(payloadSimulate);
           }),
-          map((solution) => {
-            return new fromActions.AddCardFetched({type: payload, solution: solution, pathwayPrediction});
+          concatMap((solution) => {
+            const {maps} = store.shared;
+            const mapSelector = MapService.createMapSelector(pathwayPrediction.model);
+            return [
+              new fromActions.SetMap(mapSelector(maps)),
+              new fromActions.AddCardFetched({type: payload, solution: solution, pathwayPrediction}),
+            ];
           }),
           catchError(() => of(new loaderActions.LoadingError())),
         );
@@ -314,7 +319,7 @@ export class InteractiveMapEffects {
         model_id: selectedCard.model_id,
         method: selectedCard.method,
         objective_direction: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.direction : null,
-        objective: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
+        objective_id: selectedCard.objectiveReaction ? selectedCard.objectiveReaction.reactionId : null,
         operations: [],
       };
 
@@ -385,7 +390,7 @@ export class InteractiveMapEffects {
       const payloadSimulate: types.SimulateRequest = {
         model_id: payload.model_id,
         method: payload.method,
-        objective: null,
+        objective_id: null,
         objective_direction: null,
         // tslint:disable-next-line:no-any
         operations: (<any>operations).operations,

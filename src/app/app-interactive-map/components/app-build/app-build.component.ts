@@ -288,7 +288,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public filterByQueryConditions(query: string): Condition[] {
-    if (query) {
+    if (query && this.conditions) {
       return this.conditions.filter((s) => new RegExp(query.toString().toLowerCase()).test(s.name.toLowerCase())).slice(0, 9);
     } else {
       return this.conditions;

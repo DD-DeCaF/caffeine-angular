@@ -24,6 +24,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {FormBuilder} from '@angular/forms';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import {CallbackPipe} from './pipes/callback.pipe';
 import {AppComponent} from './app.component';
@@ -138,6 +139,7 @@ export class RavenErrorHandler implements ErrorHandler {
     StoreDevtoolsModule.instrument({
       name: 'Caffeine',
     }),
+    ServiceWorkerModule.register('./ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     SessionService,

@@ -233,7 +233,7 @@ export declare namespace DeCaF {
 export interface SimulateRequest {
   model_id: number;
   method: string;
-  objective?: string;
+  objective_id?: string;
   objective_direction: ObjectiveDirection;
   operations: DeCaF.Operation[];
 }
