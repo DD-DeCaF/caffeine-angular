@@ -19,7 +19,7 @@ import {MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource} f
 
 import {DesignRequest} from './types';
 import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
-import {AddCard, SetMap} from '../app-interactive-map/store/interactive-map.actions';
+import {AddCard} from '../app-interactive-map/store/interactive-map.actions';
 import {Card, CardType} from '../app-interactive-map/types';
 import {Router} from '@angular/router';
 import {selectNotNull} from '../framework-extensions';
@@ -43,7 +43,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
 
   private cardAdded = false;
   private lastDesign: DesignRequest;
-  private mapObservable;
   private loadingObservable;
   private errorObservable;
   public designs;
@@ -85,9 +84,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.mapObservable = this.store.pipe(selectNotNull((store) => store.interactiveMap.selectedMap)).subscribe((map) => {
-      this.store.dispatch(new SetMap(map));
-    });
 
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -246,7 +242,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.designs.unsubscribe();
-    this.mapObservable.unsubscribe();
     if (this.loadingObservable) {
       this.loadingObservable.unsubscribe();
     }
