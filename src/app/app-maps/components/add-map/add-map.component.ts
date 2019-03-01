@@ -62,7 +62,7 @@ export class AddMapComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
-    this.error = this.store.pipe(select((store) => store.models.error));
+    this.error = this.store.pipe(select((store) => store.maps.error));
     this.store.pipe(select((store) => store.shared.maps)).subscribe(() => {
       if (this.addedMap) {
         this.dialog.closeAll();
