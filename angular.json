@@ -27,9 +27,6 @@
               "src/styles/styles.scss",
               "src/styles/default-theme.scss",
               "src/assets/material-icons/material-icons.css"
-            ],
-            "scripts": [
-              "src/google-analytics.js"
             ]
           },
           "configurations": {
