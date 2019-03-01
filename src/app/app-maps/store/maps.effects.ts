@@ -15,13 +15,13 @@
 import { Injectable } from '@angular/core';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {catchError, switchMap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import * as fromActions from './maps.actions';
 import {SetError} from './maps.actions';
 import * as sharedActions from '../../store/shared.actions';
-import {MapItem} from '../../app-interactive-map/types';
 import {MapsService} from '../../services/maps.service';
+import * as loaderActions from '../../app-interactive-map/components/loader/store/loader.actions';
 
 
 @Injectable()
@@ -31,7 +31,10 @@ export class MapsEffects {
   editMap: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.EDIT_MAP),
     switchMap((action: fromActions.EditMap) => this.mapsService.editMap(action.payload).pipe(
-      map((payload: MapItem) => new sharedActions.FetchMaps()),
+      switchMap(() => [
+        new sharedActions.FetchMaps(),
+        new loaderActions.LoadingFinished(),
+      ]),
       catchError(() => of(new SetError())),
     )),
   );
@@ -40,7 +43,7 @@ export class MapsEffects {
   removeMap: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.REMOVE_MAP),
     switchMap((action: fromActions.RemoveMap) => this.mapsService.removeMap(action.payload).pipe(
-      switchMap((payload: MapItem) => [
+      switchMap(() => [
         new sharedActions.FetchMaps(),
         new fromActions.RemovedMap(),
       ]),
@@ -52,7 +55,10 @@ export class MapsEffects {
   addMap: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.ADD_MAP),
     switchMap((action: fromActions.AddMap) => this.mapsService.uploadMap(action.payload).pipe(
-      map(() => new sharedActions.FetchMaps()),
+      switchMap(() => [
+        new sharedActions.FetchMaps(),
+        new loaderActions.LoadingFinished(),
+      ]),
       catchError(() => of(new SetError())),
     )),
   );
