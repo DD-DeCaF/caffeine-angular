@@ -15,7 +15,10 @@
 <mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
   <div class="map-progress">
     <div class="box">
-      <span class="error" [hidden]="!(error | async)">An error ocurred adding the model. Please try again later.</span>
+      <span class="error" [hidden]="!(error | async)">
+        Could not upload your map. Please verify that the uploaded file is a
+        <a href="https://escher.readthedocs.io/en/stable/convert_maps.html">valid Escher map</a>.
+      </span>
       <mat-spinner style="margin:0 auto;" color="primary" *ngIf="(loading | async) && !(error | async)"></mat-spinner>
       <div [hidden]="(error | async) || (loading | async)"
            *ngIf="addMapForm.value.project_id !== 'add' && addMapForm.value.organism_id !== 'add'">
