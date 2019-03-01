@@ -44,7 +44,7 @@ export class AddMapComponent implements OnInit, OnDestroy {
   public fileType = '.json';
   public reactions: string[] = [];
   public addedMap = false;
-  public loading = false;
+  public loading: Observable<Boolean>;
   public project: Project = {
     id: null,
     name: '',
@@ -63,6 +63,7 @@ export class AddMapComponent implements OnInit, OnDestroy {
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
     this.models = this.store.pipe(select((store) => store.shared.modelHeaders));
     this.error = this.store.pipe(select((store) => store.maps.error));
+    this.loading = this.store.pipe(select((store) => store.maps.loading));
     this.store.pipe(select((store) => store.shared.maps)).subscribe(() => {
       if (this.addedMap) {
         this.dialog.closeAll();
@@ -88,7 +89,6 @@ export class AddMapComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     this.store.dispatch(new AddMap(this.addMapForm.value));
     this.addedMap = true;
-    this.loading = true;
   }
 
   // tslint:disable-next-line:no-any
@@ -151,7 +151,6 @@ export class AddMapComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.addedMap = false;
-    this.loading = false;
   }
 }
 

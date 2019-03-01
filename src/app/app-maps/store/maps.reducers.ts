@@ -19,12 +19,14 @@ export interface MapsState {
   map: MapItem;
   error: boolean;
   removedMap: boolean;
+  loading: boolean;
 }
 
 export const initialState: MapsState = {
   map: null,
   error: false,
   removedMap: false,
+  loading: true,
 };
 
 
@@ -33,15 +35,22 @@ export function mapsReducer(
   action: fromMapsActions.MapsActions,
 ): MapsState {
   switch (action.type) {
+    case fromMapsActions.ADD_MAP:
+      return {
+        ...state,
+        loading: true,
+      };
     case fromMapsActions.SET_MAP:
       return {
         ...state,
         map: action.payload,
+        loading: false,
       };
     case fromMapsActions.SET_ERROR_MAP:
       return {
         ...state,
         error: true,
+        loading: false,
       };
     case fromMapsActions.RESET_ERROR_MAP:
       return {
