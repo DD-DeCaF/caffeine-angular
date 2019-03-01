@@ -20,7 +20,6 @@ export const environment: Configuration = {
     iam: 'https://api-staging.dd-decaf.eu/iam',
     model: 'https://api-staging.dd-decaf.eu/mcaffeine',
     model_storage: 'https://api-staging.dd-decaf.eu/mstorage',
-    map: 'https://api-staging.dd-decaf.eu/maps',
     bigg: 'https://api.dd-decaf.eu/bigg',
     metabolic_ninja: 'https://api-staging.dd-decaf.eu/pathways-caffeine',
     warehouse: 'https://api-staging.dd-decaf.eu/warehouse',
