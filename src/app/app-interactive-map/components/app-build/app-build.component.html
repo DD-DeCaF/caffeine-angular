@@ -114,9 +114,20 @@
     <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async)">
       <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
         <div class="left-section">
-          <h4 [ngClass]="{'unsaved': card.saved === false}">{{card.name}}<span matTooltip="Unsaved strain"
-                                                                               *ngIf="card.saved === false">*</span>
+          <h4 [ngClass]="{'unsaved': card.saved === false}"
+              class="title-edit"
+              *ngIf="editeName === false"
+              (click)="editeName = true; $event.preventDefault()">{{card.name}}<span matTooltip="Unsaved strain"
+                                                                                     *ngIf="card.saved === false">*</span>
           </h4>
+          <input
+            matInput
+            placeholder="e.g. {{card.name}}"
+            (keydown)="keyDownFunction($event)"
+            [hidden]="editeName === false"
+            (blur)="nameBlur()"
+            autofocus
+            #name/>
         </div>
         <button mat-icon-button (click)="delete(card)">
           <mat-icon>close</mat-icon>
