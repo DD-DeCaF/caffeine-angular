@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit, OnDestroy} from '@angular/core';
-import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {Manipulation, PathwayPredictionReactions, PathwayPredictionResult, PathwayPredictionMetabolites} from '../../../../types';
@@ -55,6 +55,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   @Input() organismId: number;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   model_name: Observable<string>;
   organism_name: Observable<string>;
 
@@ -174,6 +175,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = this.createFilter();
     setTimeout(
       () =>

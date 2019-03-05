@@ -14,6 +14,7 @@
 
 .container {
   max-width: 1000px;
+  min-width: 600px;
   margin: 0 auto;
   padding-bottom: 20px;
   display: flex;
@@ -45,6 +46,7 @@
 .mat-column-details {
   text-align: right;
   width: 15%;
+  padding-right: 16px;
 }
 
 .mat-button {

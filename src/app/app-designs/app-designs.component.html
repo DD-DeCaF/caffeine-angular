@@ -103,7 +103,7 @@
                 </a>
               </div>
             </div>
-            <div *ngIf="design.design.reaction_knockins.length >= 10">
+            <div *ngIf="design.design.reaction_knockins.length > 10">
               <a (click)="showAllAddedReactions = true;" [hidden]="showAllAddedReactions">
                 ...
               </a>
@@ -125,7 +125,7 @@
                 </a>
               </div>
             </div>
-            <div *ngIf="design.design.reaction_knockouts.length >= 10">
+            <div *ngIf="design.design.reaction_knockouts.length > 10">
               <a (click)="showAllKnockedOutReactions = true;" [hidden]="showAllKnockedOutReactions">
                 ...
               </a>
@@ -147,7 +147,7 @@
                 </a>
               </div>
             </div>
-            <div *ngIf="design.design.gene_knockouts.length >= 10">
+            <div *ngIf="design.design.gene_knockouts.length > 10">
               <a (click)="showAllGenes = true;" [hidden]="showAllGenes">
                 ...
               </a>
