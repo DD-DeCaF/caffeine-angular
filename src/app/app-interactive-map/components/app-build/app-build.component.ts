@@ -79,7 +79,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public cardType = CardType;
   public designs: DesignRequest[];
   public sessionState$: Observable<SessionState>;
-  public editeName = false;
+  public editeName = null;
   public methods: Method[] = [
     {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
     {id: 'pfba', name: 'Parsimonious FBA'},
@@ -259,7 +259,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     if (this.name.nativeElement.value.length > 0) {
       this.store.dispatch(new RenameCard(this.name.nativeElement.value));
     }
-    this.editeName = false;
+    this.editeName = null;
   }
 
   // tslint:disable-next-line:no-any
@@ -268,7 +268,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       if (this.name.nativeElement.value.length > 0) {
         this.store.dispatch(new RenameCard(this.name.nativeElement.value));
       }
-      this.editeName = false;
+      this.editeName = null;
     }
   }
 

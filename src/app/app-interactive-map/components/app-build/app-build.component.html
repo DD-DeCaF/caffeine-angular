@@ -116,15 +116,15 @@
         <div class="left-section">
           <h4 [ngClass]="{'unsaved': card.saved === false}"
               class="title-edit"
-              *ngIf="editeName === false"
-              (click)="editeName = true; $event.preventDefault()">{{card.name}}<span matTooltip="Unsaved strain"
+              *ngIf="editeName !== card.id"
+              (click)="editeName = card.id; select(card); $event.preventDefault()">{{card.name}}<span matTooltip="Unsaved strain"
                                                                                      *ngIf="card.saved === false">*</span>
           </h4>
           <input
             matInput
             placeholder="e.g. {{card.name}}"
             (keydown)="keyDownFunction($event)"
-            [hidden]="editeName === false"
+            *ngIf="editeName === card.id"
             (blur)="nameBlur()"
             autofocus
             #name/>
