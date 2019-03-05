@@ -456,7 +456,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   getManipulations(manipulations: Manipulation[]): Manipulation[] {
-    return manipulations.sort((a, b) => (Math.abs(a.value) > Math.abs(b.value)) ? 1 : -1);
+    return manipulations.sort((a, b) => (Math.abs(a.value) < Math.abs(b.value)) ? 1 : -1);
   }
 
   ngOnDestroy(): void {
