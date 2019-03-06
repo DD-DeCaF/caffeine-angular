@@ -27,7 +27,7 @@ import {
 } from '../../store/design-tool.actions';
 import {activeModels} from '../../store/design-tool.selectors';
 import * as typesDesign from '../../types';
-import {Project} from '../../../projects/types';
+import {NewProjectResponse, Project} from '../../../projects/types';
 import {debounceTime, switchMap} from 'rxjs/operators';
 import {WarehouseService} from '../../../services/warehouse.service';
 import * as actions from '../../../store/shared.actions';
@@ -158,16 +158,14 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
     };
     this.iamService.createProject(project).subscribe(
       // Refresh the token to include the newly created project when fetching new projects
-      () => this.session.refresh().subscribe(
+      (p: NewProjectResponse) => this.session.refresh().subscribe(
         () => {
           this.snackBar.open(`Project ${project.name} created`, '', {
             duration: 2000,
           });
           this.store.dispatch(new actions.FetchProjects());
-          this.store.pipe(select((store) => store.shared.projects)).subscribe((projects) => {
-            this.designForm.patchValue({
-              project_id: projects.slice(-1).pop().id,
-            });
+          this.designForm.patchValue({
+            project_id: p.project_id,
           });
         },
       ),
