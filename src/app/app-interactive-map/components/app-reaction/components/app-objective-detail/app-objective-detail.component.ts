@@ -28,7 +28,7 @@ export class AppObjectiveDetailComponent {
   @ViewChild('toggle') toggleSwitch: MatSlideToggle;
   @ViewChild('remove') removeButton: MatButton;
 
-  @Input() public objectiveReaction: Observable<ObjectiveReactionPayload>;
+  @Input() public objectiveReaction: ObjectiveReactionPayload;
   @Input() private model: Cobra.Model;
   @Output() public changeDirection: EventEmitter<'max' | 'min'> = new EventEmitter();
   @Output() public remove: EventEmitter<string> = new EventEmitter();
