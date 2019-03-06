@@ -21,7 +21,6 @@ export const environment: Configuration = {
     model: 'http://localhost:8004',
     model_storage: 'http://localhost:8005',
     bigg: 'https://api.dd-decaf.eu/bigg',
-    map: 'http://localhost:8002',
     metabolic_ninja: 'http://localhost:8003',
     warehouse: 'http://localhost:8006',
     maps: 'http://localhost:8002',

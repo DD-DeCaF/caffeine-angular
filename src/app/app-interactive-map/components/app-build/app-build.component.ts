@@ -30,7 +30,7 @@ import {
   SaveDesign,
   SetMap,
   SetOperations,
-  SetMethod,
+  SetMethod, RenameCard,
 } from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
@@ -61,6 +61,7 @@ import { Loading } from './../loader/store/loader.actions';
 export class AppBuildComponent implements OnInit, AfterViewInit {
   @ViewChild('play') playButton: MatButton;
   @ViewChild('map') mapSelector: MatSelect;
+  @ViewChild('name') name: ElementRef;
 
   interactiveMapState: Observable<AppState>;
   public cards: Observable<HydratedCard[]>;
@@ -79,7 +80,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public cardType = CardType;
   public designs: DesignRequest[];
   public sessionState$: Observable<SessionState>;
-
+  public editeName = null;
   public methods: Method[] = [
     {id: 'fba', name: 'Flux Balance Analysis (FBA)'},
     {id: 'pfba', name: 'Parsimonious FBA'},
@@ -253,6 +254,23 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   public showHelp(event: Event): void {
     event.stopPropagation();
     this.dialog.open(ShowHelpComponent);
+  }
+
+  nameBlur(): void {
+    if (this.name.nativeElement.value.length > 0) {
+      this.store.dispatch(new RenameCard(this.name.nativeElement.value));
+    }
+    this.editeName = null;
+  }
+
+  // tslint:disable-next-line:no-any
+  keyDownFunction(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      if (this.name.nativeElement.value.length > 0) {
+        this.store.dispatch(new RenameCard(this.name.nativeElement.value));
+      }
+      this.editeName = null;
+    }
   }
 
   public openDialog(): void {
