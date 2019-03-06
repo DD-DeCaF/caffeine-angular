@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, HostBinding, OnInit} from '@angular/core';
+import {Compiler, Component, HostBinding, OnInit, } from '@angular/core';
 import {Router, NavigationEnd, Event} from '@angular/router';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -51,7 +51,9 @@ export class AppComponent implements OnInit {
     domSanitizer: DomSanitizer,
     private store: Store<AppState>,
     private sessionService: SessionService,
+    private _runtimeCompiler: Compiler,
   ) {
+    this._runtimeCompiler.clearCache();
     if (environment.GA) {
       ga('create', environment.GA.trackingID, 'auto');
       router.events.subscribe((event: Event) => {
