@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as fromActions from '../../store/models.actions';
 import {EditedModelComponent} from './edited-model.component';
@@ -28,6 +28,7 @@ import {ModelService} from '../../../services/model.service';
   selector: 'app-loader',
   templateUrl: './edit-model.component.html',
   styleUrls: ['./edit-model.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 
@@ -37,8 +38,8 @@ export class EditModelComponent implements OnInit, OnDestroy {
   public model: types.DeCaF.Model;
   public modelForm: FormGroup;
   public reactions: string[];
-  public loading = true;
-  public error: Observable<Boolean>;
+  public loading: Observable<boolean>;
+  public error: Observable<boolean>;
   private edited = false;
   public maps: Observable<{
     modelIds: string[],
@@ -56,7 +57,8 @@ export class EditModelComponent implements OnInit, OnDestroy {
     public fb: FormBuilder,
     private dialog: MatDialog,
     private modelService: ModelService,
-    public snackBar: MatSnackBar) {
+    public snackBar: MatSnackBar,
+    private cdr: ChangeDetectorRef) {
     this.modelForm = this.fb.group({
       id: ['', Validators.required],
       name: ['', Validators.required],
@@ -67,6 +69,7 @@ export class EditModelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.loading = of(true);
     this.model = this.data.model;
     this.store.dispatch(new fromActions.FetchModel(this.model));
     this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
@@ -75,9 +78,8 @@ export class EditModelComponent implements OnInit, OnDestroy {
     this.error = this.store.pipe(select((store) => store.models.error));
     this.modelSubscription = this.store.pipe(select((store) => store.models.model)).subscribe((model) => {
       this.completeModel = model;
-
       if (model && (model.id === this.model.id) && !this.edited) {
-          this.reactions = model.model_serialized.reactions.map((reaction) => reaction.id);
+        this.reactions = model.model_serialized.reactions.map((reaction) => reaction.id);
           this.modelForm.setValue({
             id: model.id,
             organism_id: model.organism_id,
@@ -86,8 +88,9 @@ export class EditModelComponent implements OnInit, OnDestroy {
             preferred_map_id: model.preferred_map_id,
 
           });
-          this.loading = false;
+          this.loading = of(false);
       }
+      this.cdr.detectChanges();
     });
 
     this.modelHeadersSubscription = this.store.pipe(select((store) => store.shared.modelHeaders)).subscribe(() => {
@@ -114,7 +117,7 @@ export class EditModelComponent implements OnInit, OnDestroy {
     this.completeModel.default_biomass_reaction = this.modelForm.value.default_biomass_reaction;
     this.completeModel.preferred_map_id = this.modelForm.value.preferred_map_id;
     this.store.dispatch(new fromActions.EditModel(this.completeModel));
-    this.loading = true;
+    this.loading = of(true);
     this.edited = true;
   }
 

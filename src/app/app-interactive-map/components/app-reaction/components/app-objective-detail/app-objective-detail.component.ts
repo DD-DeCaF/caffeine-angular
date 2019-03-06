@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, Input, Output, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, ViewChild, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import { MatSlideToggle, MatButton, MatSlideToggleChange } from '@angular/material';
 
 import { ObjectiveReactionPayload, Cobra } from '../../../../types';
@@ -22,12 +21,13 @@ import { ObjectiveReactionPayload, Cobra } from '../../../../types';
   selector: 'app-objective-detail',
   templateUrl: './app-objective-detail.component.html',
   styleUrls: ['./app-objective-detail.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppObjectiveDetailComponent {
   @ViewChild('toggle') toggleSwitch: MatSlideToggle;
   @ViewChild('remove') removeButton: MatButton;
 
-  @Input() public objectiveReaction: Observable<ObjectiveReactionPayload>;
+  @Input() public objectiveReaction: ObjectiveReactionPayload;
   @Input() private model: Cobra.Model;
   @Output() public changeDirection: EventEmitter<'max' | 'min'> = new EventEmitter();
   @Output() public remove: EventEmitter<string> = new EventEmitter();
@@ -37,7 +37,9 @@ export class AppObjectiveDetailComponent {
   }
 
   getReactionName(reactionId: string): string {
-    return this.model.reactions.find((r) => r.id === reactionId).name;
+    const name = this.model.reactions.find((r) => r.id === reactionId) ?
+      this.model.reactions.find((r) => r.id === reactionId) : '';
+    return name;
   }
 
   removeObjective(): void {

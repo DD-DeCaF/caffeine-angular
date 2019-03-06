@@ -15,9 +15,9 @@
 <mat-dialog-content class="mat-primary" fxLayout="colum" fxFlexAlign="center center">
   <div class="map-progress">
     <div class="box">
-      <mat-spinner style="margin:0 auto;" color="primary" *ngIf="loading && !(error | async)"></mat-spinner>
+      <mat-spinner style="margin:0 auto;" color="primary" *ngIf="(loading | async) && !(error | async)"></mat-spinner>
       <span class="error" [hidden]="!(error | async)">An error ocurred editing the model. Please try again later.</span>
-      <div  *ngIf="!loading">
+      <div  *ngIf="!(loading | async)">
         <h3 class="title">Edit {{model.name}}</h3>
         <form class="model-form" [formGroup]="modelForm" (ngSubmit)="onSubmit()" >
           <mat-form-field color="primary">

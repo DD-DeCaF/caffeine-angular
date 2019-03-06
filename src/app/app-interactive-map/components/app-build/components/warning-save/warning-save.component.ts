@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {MAT_DIALOG_DATA, MatDialog, MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs';
@@ -25,6 +25,7 @@ import {HydratedCard} from '../../../../types';
   selector: 'app-remove-model',
   templateUrl: './warning-save.component.html',
   styleUrls: ['./warning-save.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WarningSaveComponent implements OnInit {
   @ViewChild('newname') newName: ElementRef;

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource, MatSort, MatDialog, MatPaginator} from '@angular/material';
 import {AppState} from '../store/app.reducers';
 import {select, Store} from '@ngrx/store';
@@ -29,6 +29,7 @@ import {ModelService} from '../services/model.service';
   selector: 'app-models',
   templateUrl: './app-maps.component.html',
   styleUrls: ['./app-maps.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppMapsComponent implements OnInit {
   public dataSource = new MatTableDataSource<types.MapItem>([]);

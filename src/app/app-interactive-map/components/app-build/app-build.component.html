@@ -77,15 +77,26 @@
           <button mat-icon-button (click)="shrink()">
             <mat-icon>chevron_left</mat-icon>
           </button>
-          <h4 [ngClass]="{'unsaved': expandedCard.saved === false}">{{expandedCard.name}}<span
+          <h4 [ngClass]="{'unsaved': expandedCard.saved === false}"
+              class="title-edit"
+              *ngIf="editeName !== expandedCard.id"
+              (click)="editeName = expandedCard.id; $event.preventDefault()">{{expandedCard.name}}<span
             matTooltip="Unsaved strain" *ngIf="expandedCard.saved === false">*</span>
           </h4>
+          <input
+            matInput
+            placeholder="e.g. {{expandedCard.name}}"
+            (keydown)="keyDownFunction($event)"
+            *ngIf="editeName === expandedCard.id"
+            (blur)="nameBlur()"
+            autofocus
+            #name/>
         </div>
         <div matTooltip="Please log in or register to use this functionality!"
              [matTooltipDisabled]="(sessionState$ | async).authenticated">
           <button mat-button *ngIf="expandedCard.saved === false"
-            (click)="save(expandedCard, selectedProjectId)"
-            [disabled]="!(sessionState$ | async).authenticated">SAVE
+                  (click)="save(expandedCard, selectedProjectId)"
+                  [disabled]="!(sessionState$ | async).authenticated">SAVE
           </button>
         </div>
       </div>
@@ -114,9 +125,21 @@
     <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async)">
       <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
         <div class="left-section">
-          <h4 [ngClass]="{'unsaved': card.saved === false}">{{card.name}}<span matTooltip="Unsaved strain"
-                                                                               *ngIf="card.saved === false">*</span>
+          <h4 [ngClass]="{'unsaved': card.saved === false}"
+              class="title-edit"
+              *ngIf="editeName !== card.id"
+              (click)="editeName = card.id; select(card); $event.preventDefault()">{{card.name}}<span
+            matTooltip="Unsaved strain"
+            *ngIf="card.saved === false">*</span>
           </h4>
+          <input
+            matInput
+            placeholder="e.g. {{card.name}}"
+            (keydown)="keyDownFunction($event)"
+            *ngIf="editeName === card.id"
+            (blur)="nameBlur()"
+            autofocus
+            #name/>
         </div>
         <button mat-icon-button (click)="delete(card)">
           <mat-icon>close</mat-icon>
@@ -173,7 +196,7 @@
               <mat-option *ngFor="let experiment of filterByQuery(queryExperiment, (experiments | async))"
                           matTooltip="{{experiment.name}}"
                           [value]="experiment"
-                          >{{experiment.name}}
+              >{{experiment.name}}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>

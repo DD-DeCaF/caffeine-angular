@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import { MatDialogRef, MatSnackBar } from '@angular/material';
 import { Store } from '@ngrx/store';
 
@@ -26,6 +26,7 @@ import {IamService} from '../../../services/iam.service';
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
   styleUrls: ['./create-project.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class CreateProjectComponent {

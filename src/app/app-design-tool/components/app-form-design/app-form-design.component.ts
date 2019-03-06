@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MatButton, MatSelect, MatSelectChange, MatAutocomplete, MatSnackBar} from '@angular/material';
 import * as types from '../../../app-interactive-map/types';
 import {combineLatest, Observable} from 'rxjs';
@@ -39,6 +39,7 @@ import {IamService} from '../../../services/iam.service';
   selector: 'app-form-design',
   templateUrl: './app-form-design.component.html',
   styleUrls: ['./app-form-design.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppFormDesignComponent implements OnInit, AfterViewInit {
   designForm: FormGroup;

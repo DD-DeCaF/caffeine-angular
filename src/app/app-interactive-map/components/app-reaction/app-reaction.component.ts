@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -25,6 +25,7 @@ import { selectNotNull } from '../../../framework-extensions';
 @Component({
   selector: 'app-reaction',
   templateUrl: './app-reaction.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppReactionComponent implements OnInit {
   @ViewChild('addedPanel') addedPanel: AppPanelComponent;

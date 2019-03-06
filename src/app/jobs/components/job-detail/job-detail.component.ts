@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 import {Job, PathwayPredictionReactions, PathwayPredictionResult, PathwayResponse, PathwayPredictionMetabolites} from '../../types';
@@ -43,17 +43,21 @@ export class JobDetailComponent implements OnInit, OnDestroy {
   public metabolitesData: PathwayPredictionMetabolites;
   polling: Subscription;
   public jobId: number;
+  private getJob: Subscription;
+  private updateJob: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
     private ninjaService: NinjaService,
+    private cdr: ChangeDetectorRef,
   ) {
     this.jobId = this.route.snapshot.params.id;
   }
 
   ngOnInit(): void {
     const jobId = this.route.snapshot.params.id;
-    this.store.pipe(selectNotNull(getJob, {jobId}))
+    this.getJob = this.store.pipe(selectNotNull(getJob, {jobId}))
       .subscribe((job) => {
         this.job = job;
         this.model = job.model;
@@ -61,11 +65,12 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           select(getModelName(job.model_id)));
         this.organismName$ = this.store.pipe(
           select(getOrganismName(job.organism_id)));
+        this.cdr.detectChanges();
       });
 
     this.polling = timer(0, 20000)
       .subscribe(() => {
-        this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
+        this.updateJob = this.ninjaService.getPredict(jobId).subscribe((jobPrediction: PathwayResponse) => {
           this.job = jobPrediction;
           if (jobPrediction.result) {
             this.tableData = [...jobPrediction.result.cofactor_swap, ...jobPrediction.result.diff_fva, ...jobPrediction.result.opt_gene];
@@ -75,6 +80,7 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           } else if (jobPrediction.status === 'FAILURE') {
             this.polling.unsubscribe();
           }
+          this.cdr.detectChanges();
         });
       });
   }
@@ -89,5 +95,11 @@ export class JobDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.polling.unsubscribe();
+    if (this.getJob) {
+      this.getJob.unsubscribe();
+    }
+    if (this.updateJob) {
+      this.updateJob.unsubscribe();
+    }
   }
 }

@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'app-not-found',
   templateUrl: './app-not-found.component.html',
   styleUrls: ['./app-not-found.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppNotFoundComponent {
 

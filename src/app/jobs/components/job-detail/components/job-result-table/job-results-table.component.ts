@@ -12,7 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, Input, ViewChild, AfterViewInit, EventEmitter, OnInit, OnDestroy} from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  AfterViewInit,
+  EventEmitter,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -43,6 +52,7 @@ const indicators = {
   selector: 'app-job-results-table',
   templateUrl: './job-results-table.component.html',
   styleUrls: ['./job-results-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy {
   @Input() tableData: PathwayPredictionResult[];
@@ -458,7 +468,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   getManipulations(manipulations: Manipulation[]): Manipulation[] {
-    return manipulations.sort((a, b) => (Math.abs(a.value) > Math.abs(b.value)) ? 1 : -1);
+    return manipulations.sort((a, b) => (Math.abs(a.value) < Math.abs(b.value)) ? 1 : -1);
   }
 
   ngOnDestroy(): void {

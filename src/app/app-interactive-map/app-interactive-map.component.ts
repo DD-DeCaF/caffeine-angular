@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy, NgZone} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy, NgZone, ChangeDetectionStrategy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -40,6 +40,7 @@ const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
   selector: 'app-interactive-map',
   templateUrl: './app-interactive-map.component.html',
   styleUrls: ['./app-interactive-map.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDestroy {
