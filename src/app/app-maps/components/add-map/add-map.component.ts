@@ -18,7 +18,7 @@ import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Project} from 'src/app/projects/types';
+import {NewProjectResponse, Project} from 'src/app/projects/types';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {AddedMapComponent} from './added-map.component';
 import * as actions from '../../../store/shared.actions';
@@ -119,16 +119,14 @@ export class AddMapComponent implements OnInit, OnDestroy {
     };
     this.iamService.createProject(project).subscribe(
       // Refresh the token to include the newly created project when fetching new projects
-      () => this.session.refresh().subscribe(
+      (p: NewProjectResponse) => this.session.refresh().subscribe(
         () => {
           this.snackBar.open(`Project ${project.name} created`, '', {
             duration: 2000,
           });
           this.store.dispatch(new actions.FetchProjects());
-          this.store.pipe(select((store) => store.shared.projects)).subscribe((projects) => {
-            this.addMapForm.patchValue({
-              project_id: projects.slice(-1).pop().id,
-            });
+          this.addMapForm.patchValue({
+            project_id: p.project_id,
           });
         },
       ),
