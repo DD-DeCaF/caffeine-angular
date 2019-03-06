@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import {Component, ViewChild, OnInit, AfterViewInit, ChangeDetectionStrategy, ElementRef} from '@angular/core';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
@@ -64,7 +65,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   @ViewChild('name') name: ElementRef;
 
   interactiveMapState: Observable<AppState>;
-  public cards: Observable<HydratedCard[]>;
+  public cards: HydratedCard[] = null;
   public playing: Observable<boolean>;
   public selectedProjectId: number;
   public expandedCard: HydratedCard = null;
@@ -103,7 +104,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.cards = this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards));
+    this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards)).subscribe((cards) => this.cards = cards);
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
     this.experiments = this.store.pipe(select((store) => store.shared.experiments));
 
@@ -311,5 +312,11 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
     } else {
       return this.conditions;
     }
+  }
+
+  // tslint:disable-next-line:no-any
+  drop(event: CdkDragDrop<string[]>): void {
+    console.log('DRRROP');
+    moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
   }
 }
