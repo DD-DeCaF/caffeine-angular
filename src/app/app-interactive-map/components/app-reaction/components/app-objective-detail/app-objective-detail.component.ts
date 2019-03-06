@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import {Component, ViewChild, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
-import {Observable} from 'rxjs';
 import { MatSlideToggle, MatButton, MatSlideToggleChange } from '@angular/material';
 
 import { ObjectiveReactionPayload, Cobra } from '../../../../types';

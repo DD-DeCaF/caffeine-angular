@@ -14,7 +14,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, Subscriber, TeardownLogic} from 'rxjs';
 import * as types from '../app-interactive-map/types';
 import {Design, Product} from '../app-design-tool/types';
 import {environment} from '../../environments/environment';
@@ -66,8 +66,10 @@ export class WarehouseService {
   }
   // TODO:
   // Change it for a real function
-  startDesign(design: Design): Observable<void> {
-    const fixtures$ = Observable.create((observer) => {
+  startDesign(design: Design): Observable<{}> {
+    const create = <T>(subscribe?: (subscriber: Subscriber<T>) => TeardownLogic) =>
+      new Observable<T>(subscribe);
+    const fixtures$ = create((observer) => {
       observer.next('OK');
     });
     return fixtures$;
