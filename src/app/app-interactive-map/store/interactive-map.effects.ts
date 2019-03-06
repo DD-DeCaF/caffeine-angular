@@ -417,7 +417,7 @@ export class InteractiveMapEffects {
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
     ofType(fromActions.LOADED, fromActions.UPDATE_SOLUTION,
       fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY,
-      RESET_REMOVED_MODEL_MODELS, RESET_REMOVED_MAP),
+      RESET_REMOVED_MODEL_MODELS, RESET_REMOVED_MAP, fromActions.ADD_CARD_FETCHED),
     mapTo(new loaderActions.LoadingFinished()),
   );
 
