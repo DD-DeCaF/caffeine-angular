@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, OnInit, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, ViewChild, OnInit, AfterViewInit, ChangeDetectionStrategy, ElementRef} from '@angular/core';
 
 import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
