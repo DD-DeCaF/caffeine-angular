@@ -38,7 +38,9 @@ export class AppObjectiveDetailComponent {
   }
 
   getReactionName(reactionId: string): string {
-    return this.model.reactions.find((r) => r.id === reactionId).name;
+    const name = this.model.reactions.find((r) => r.id === reactionId) ?
+      this.model.reactions.find((r) => r.id === reactionId) : '';
+    return name;
   }
 
   removeObjective(): void {
