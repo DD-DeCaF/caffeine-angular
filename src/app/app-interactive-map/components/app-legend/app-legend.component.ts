@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'app-legend',
   templateUrl: './app-legend.component.html',
   styleUrls: ['./app-legend.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class AppLegendComponent {

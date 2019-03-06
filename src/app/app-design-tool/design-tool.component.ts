@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component } from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 
@@ -20,6 +20,7 @@ import {Observable} from 'rxjs';
   selector: 'app-design-tool',
   templateUrl: './design-tool.component.html',
   styleUrls: ['./design-tool.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DesignToolComponent {
 

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
 import { MatDialog, MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { select, Store } from '@ngrx/store';
 
@@ -28,6 +28,7 @@ import { DeleteProjectComponent } from './components/delete-project/delete-proje
   selector: 'app-projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProjectsComponent implements OnInit {
   public dataSource = new MatTableDataSource<types.Project>([]);

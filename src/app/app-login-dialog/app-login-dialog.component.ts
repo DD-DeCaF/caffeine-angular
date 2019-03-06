@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, NgZone, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {MatDialog, MatDialogRef} from '@angular/material';
 import {SessionService} from '../session/session.service';
@@ -26,6 +26,8 @@ import {AppState} from '../store/app.reducers';
   selector: 'app-login-dialog',
   templateUrl: './app-login-dialog.component.html',
   styleUrls: ['./app-login-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class AppLoginDialogComponent implements OnInit {
 

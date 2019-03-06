@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as types from '../../../app-interactive-map/types';
 import {AppState} from '../../../store/app.reducers';
 import {select, Store} from '@ngrx/store';
@@ -34,6 +34,7 @@ import {ModelService} from '../../../services/model.service';
   selector: 'app-loader',
   templateUrl: './add-model.component.html',
   styleUrls: ['./add-model.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 
@@ -128,9 +129,9 @@ export class AddModelComponent implements OnInit, OnDestroy {
   fileUploaded(file: File): void {
     const fileReader = new FileReader(); // New instance fileReader
     fileReader.onload = () => {  // Called when a read operation successfully completes
-      const model = JSON.parse(fileReader.result);
+      const model = JSON.parse(fileReader.result as string);
       this.addModelForm.patchValue({
-        model_serialized: JSON.parse(fileReader.result),
+        model_serialized: JSON.parse(fileReader.result as string),
       });
       if (model.reactions) {
         this.modelError = false;

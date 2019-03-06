@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, Inject } from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { Store } from '@ngrx/store';
@@ -27,6 +27,7 @@ import { environment } from '../../../../environments/environment';
   selector: 'app-delete-project',
   templateUrl: './delete-project.component.html',
   styleUrls: ['./delete-project.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class DeleteProjectComponent {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, ViewChild, Input, AfterViewInit } from '@angular/core';
+import {Component, ViewChild, Input, AfterViewInit, ChangeDetectionStrategy} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Store } from '@ngrx/store';
 
@@ -26,6 +26,7 @@ import { AppPanelComponent } from '../app-panel/app-panel.component';
 @Component({
   selector: 'app-bounds',
   templateUrl: './app-bounds.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppBoundsComponent implements AfterViewInit {
   @ViewChild('panel') panel: AppPanelComponent;

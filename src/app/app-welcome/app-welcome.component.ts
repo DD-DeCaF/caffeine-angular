@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 
 @Component({
   selector: 'app-app-welcome',
@@ -23,6 +23,7 @@ import {Component} from '@angular/core';
     </div>
   </div>`,
   styleUrls: ['./app-welcome.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppWelcomeComponent {
 

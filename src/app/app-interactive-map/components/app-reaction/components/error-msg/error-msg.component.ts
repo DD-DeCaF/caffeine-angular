@@ -12,12 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { MatDialogRef} from '@angular/material';
 
 @Component({
   selector: 'app-error-msg',
   templateUrl: './error-msg.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ErrorMsgComponent implements OnInit {
   constructor(

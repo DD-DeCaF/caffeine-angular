@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ViewChild, Input} from '@angular/core';
+import {Component, AfterViewInit, ViewChild, Input, ChangeDetectionStrategy} from '@angular/core';
 import { Store } from '@ngrx/store';
 import {map, switchMap} from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
@@ -27,6 +27,7 @@ import { ReactionOperation } from '../../../../store/interactive-map.actions';
 @Component({
   selector: 'app-added',
   templateUrl: './app-added.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppAddedComponent implements AfterViewInit {
   @ViewChild('panel') panel: AppPanelComponent;

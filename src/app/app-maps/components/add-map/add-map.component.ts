@@ -104,7 +104,7 @@ export class AddMapComponent implements OnInit, OnDestroy {
     const fileReader = new FileReader(); // New instance fileReader
     fileReader.onload = () => {  // Called when a read operation successfully completes
       this.addMapForm.patchValue({
-        map: JSON.parse(fileReader.result),
+        map: JSON.parse(fileReader.result as string),
       });
     };
     if (file) {

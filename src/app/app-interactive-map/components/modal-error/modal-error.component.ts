@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {MatDialog} from '@angular/material';
 
@@ -20,6 +20,7 @@ import {MatDialog} from '@angular/material';
   selector: 'app-loader',
   templateUrl: './modal-error.component.html',
   styleUrls: ['./modal-error.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
 export class ModalErrorComponent {
