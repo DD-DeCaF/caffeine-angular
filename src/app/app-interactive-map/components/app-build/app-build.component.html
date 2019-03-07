@@ -12,7 +12,7 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 
-<div class="container" >
+<div class="container">
 
   <div [hidden]="expandedCard">
     <div fxLayoutAlign="space-around center">
@@ -46,8 +46,8 @@
           </button>
         </mat-menu>
         <div matTooltip="Please add a model to use this functionality!"
-             [matTooltipDisabled]="(models | async).length !== 0">
-          <button mat-icon-button [matMenuTriggerFor]="addMenu" [disabled]="(models | async).length === 0">
+             [matTooltipDisabled]="(models | async)?.length !== 0">
+          <button mat-icon-button [matMenuTriggerFor]="addMenu" [disabled]="(models | async)?.length === 0">
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -121,7 +121,7 @@
     </div>
   </div>
 
-  <div *ngIf="!expandedCard && cards.length > 0" >
+  <div *ngIf="!expandedCard">
     <div cdkDropList (cdkDropListDropped)="drop($event)">
       <div cdkDrag class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of cards">
         <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
@@ -147,17 +147,18 @@
           </button>
         </div>
 
-        <div fxLayout="row" fxLayoutAlign="space-around center" [hidden]="!card.selected">
+        <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="card.selected">
           <button mat-icon-button (click)="grow(card, 0)">
             <mat-icon matTooltip="Information">info</mat-icon>
           </button>
 
-          <button mat-icon-button (click)="grow(card, 1)" [disabled]="card.type === cardType.DataDriven">
+          <button mat-icon-button (click)="grow(card, 1)" [disabled]="card.type === cardType.DataDriven"
+                  *ngIf="card.selected">
             <mat-icon matTooltip="Model changes">edit</mat-icon>
           </button>
         </div>
 
-        <div class="content">
+        <div class="content" [hidden]="!card.selected">
           <div class="displayRow">
             <label>Species:</label>
             <label class="right-text">{{card.species.name}}</label>

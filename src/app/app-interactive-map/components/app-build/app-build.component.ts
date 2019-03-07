@@ -12,7 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, ViewChild, OnInit, AfterViewInit, ChangeDetectionStrategy, ElementRef} from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ElementRef,
+  ChangeDetectorRef
+} from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
 import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
@@ -31,7 +39,7 @@ import {
   SaveDesign,
   SetMap,
   SetOperations,
-  SetMethod, RenameCard,
+  SetMethod, RenameCard, Drop,
 } from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
@@ -51,7 +59,7 @@ import {LoaderComponent} from '../loader/loader.component';
 import {DesignRequest} from '../../../app-designs/types';
 import {WarningSaveComponent} from './components/warning-save/warning-save.component';
 import {SessionState} from './../../../session/store/session.reducers';
-import { Loading } from './../loader/store/loader.actions';
+import {Loading} from './../loader/store/loader.actions';
 
 @Component({
   selector: 'app-build',
@@ -93,18 +101,19 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
   public mapItems: Observable<{
     modelIds: string[],
-    mapsByModelId: {[key: string]: types.MapItem[] },
+    mapsByModelId: { [key: string]: types.MapItem[] },
   }>;
+
 
   constructor(
     private store: Store<AppState>,
     private dialog: MatDialog,
     private http: HttpClient,
-    private modelService: ModelService) {
+    private modelService: ModelService,
+    private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
-    this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards)).subscribe((cards) => this.cards = cards);
     this.playing = this.store.pipe(select((state: AppState) => state.interactiveMap.playing));
     this.experiments = this.store.pipe(select((store) => store.shared.experiments));
 
@@ -148,6 +157,10 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new Loading());
         this.store.dispatch(new SetMap(mapItem));
       });
+    this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards)).subscribe((cards) => {
+      this.cards = cards;
+      this.cdr.detectChanges();
+    });
   }
 
   public select(card: HydratedCard): void {
@@ -230,8 +243,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public methodChanged(event: MatSelect): void {
-      this.method = event.value;
-      this.store.dispatch(new SetMethod(event.value));
+    this.method = event.value;
+    this.store.dispatch(new SetMethod(event.value));
   }
 
   public experimentChanged(event: Experiment): void {
@@ -316,7 +329,8 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
 
   // tslint:disable-next-line:no-any
   drop(event: CdkDragDrop<string[]>): void {
-    console.log('DRRROP');
     moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
+    this.store.dispatch(new Drop(this.cards));
+    this.store.dispatch(new SelectCard(event.currentIndex.toString()));
   }
 }
