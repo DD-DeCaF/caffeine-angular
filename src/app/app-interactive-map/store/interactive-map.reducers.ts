@@ -206,7 +206,11 @@ export function interactiveMapReducer(
           }
           designId = design ? design.id : pathwayPrediction ? pathwayPrediction.id : null;
           name = design ? design.name : pathwayPrediction ? pathwayPrediction.name : 'Design';
-          model = design ? design.model.model_serialized : pathwayPrediction ? pathwayPrediction.model.model_serialized : state.selectedModel.model_serialized;
+          model = design
+                    ? {...design.model.model_serialized, name: design.model.name}
+                    : pathwayPrediction
+                      ? {...pathwayPrediction.model.model_serialized, name: pathwayPrediction.model.name}
+                      : {...state.selectedModel.model_serialized, name: state.selectedModel.name};
           species = state.selectedSpecies;
           model_id = design ? design.model_id : pathwayPrediction ? pathwayPrediction.model_id : state.selectedModel.id;
           projectId = design ? design.project_id : null;
@@ -216,7 +220,7 @@ export function interactiveMapReducer(
         }
         case CardType.DataDriven: {
           name = 'Data Driven';
-          model = state.selectedModelDataDriven.model_serialized;
+          model = {...state.selectedModelDataDriven.model_serialized, name: state.selectedModelDataDriven.name};
           species = state.selectedSpecies;
           model_id = state.selectedModelDataDriven.id;
           break;
@@ -342,7 +346,7 @@ export function interactiveMapReducer(
           newCard = {
             ...card,
             model_id: action.payload.id,
-            model: action.payload.model_serialized,
+            model: {...action.payload.model_serialized, name: action.payload.name},
             solution: action.solution,
           };
           break;
