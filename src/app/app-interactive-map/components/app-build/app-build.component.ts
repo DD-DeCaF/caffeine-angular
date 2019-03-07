@@ -19,7 +19,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ElementRef,
-  ChangeDetectorRef
+  ChangeDetectorRef,
 } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
