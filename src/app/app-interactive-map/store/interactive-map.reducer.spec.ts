@@ -52,6 +52,7 @@ const testModel: types.DeCaF.Model = {
   },
   default_biomass_reaction: 'bar',
   preferred_map_id: 1,
+  name: 'name',
 };
 
 const testSolution: types.DeCaF.Solution = {
@@ -99,7 +100,7 @@ describe('interactiveMapReducer', () => {
             '0': {
               name: 'Design',
               type: types.CardType.Design,
-              model: testModel.model_serialized,
+              model: {...testModel.model_serialized, name: testModel.name},
               species: null,
               solution: testSolution,
               method: 'pfba',
