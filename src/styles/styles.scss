@@ -134,3 +134,8 @@ mat-sidenav-container {
 .mat-form-field-required-marker {
   color: gray !important;
 }
+
+.mat-focused .mat-form-field-required-marker {
+  color: red !important;
+}
+
