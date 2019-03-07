@@ -41,6 +41,44 @@ a {
   margin-top: 10px;
 }
 
+.reaction-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 12px;
+  margin: 10px;
+}
+
+.reaction-info-name {
+  padding-bottom: 5px;
+}
+
+.mat-menu-panel {
+  background: #FDFCFC !important;
+  border-radius: 5px !important;
+}
+
+.mat-menu-content {
+  padding-top: 0px !important;
+  width: 200px;
+}
+
+.mat-menu-item {
+  height: 30px;
+  font-size: 14px;
+  line-height: 0px;
+  padding: 0px;
+}
+
+.mat-menu-item-link {
+  display: block;
+  padding: 1em;
+}
+
+.mat-divider {
+  padding-bottom: 8px;
+}
+
 @mixin jobs-details($theme) {
   .custom-slider {
     width: 110px !important;
@@ -113,6 +151,61 @@ a {
 .inline {
   display: inline;
 }
+
+.mat-column-select {
+  width: 3%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-manipulations {
+  width: 11%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-heterologous_reactions {
+  width: 11%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-knockouts {
+  width: 11%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-fitness {
+  width: 11%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-yield {
+  width: 11%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-product {
+  width: 11%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-biomass {
+  width: 11%;
+  padding: 0 16px 0 0;
+}
+
+.mat-column-method {
+  width: 20%;
+  justify-content: start;
+  padding: 0 16px 0 0;
+}
+
+.mat-sort-header-container {
+  height: 50px;
+}
+
+.mat-sort-header-button {
+  flex-direction: column;
+}
+
 .mat-header-cell p {
   font-size: 12px;
   font-weight: 500;
@@ -120,7 +213,6 @@ a {
 
 .units {
   vertical-align: central;
-  margin-left: 3px;
   font-size: 10px;
 }
 

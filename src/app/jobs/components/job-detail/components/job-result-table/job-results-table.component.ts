@@ -22,7 +22,7 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {Manipulation, PathwayPredictionReactions, PathwayPredictionResult, PathwayPredictionMetabolites} from '../../../../types';
@@ -65,6 +65,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   @Input() organismId: number;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   model_name: Observable<string>;
   organism_name: Observable<string>;
 
@@ -184,6 +185,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = this.createFilter();
     setTimeout(
       () =>
@@ -216,8 +218,16 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     return `http://bigg.ucsd.edu/search?query=${knockout}`;
   }
 
-  hpLink(hp: string): string {
-    return `https://www.metanetx.org/equa_info/${hp.replace('DM_', '')}`;
+  hpLinkMetanetx(hp: string): string {
+    return `https://www.metanetx.org/equa_info/${hp}`;
+  }
+
+  hpLinkUniprot(hp: string): string {
+    return `https://www.uniprot.org/uniprot/?query=${hp}`;
+  }
+
+  hpLinkGmgc(hp: string): string {
+    return `http://gmgc.embl.de/search/${hp}`;
   }
 
   showWarning(method: string, isChecked: boolean): void {

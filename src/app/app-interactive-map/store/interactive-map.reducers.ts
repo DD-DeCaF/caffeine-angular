@@ -137,6 +137,15 @@ export function interactiveMapReducer(
         ...state,
         selectedSpecies: action.payload,
       };
+    case fromInteractiveMapActions.DROP:
+      return {
+        ...state,
+        cards: {
+          ids: state.cards.ids,
+          // tslint:disable-next-line:no-any
+          cardsById: {...action.payload as any},
+        },
+      };
     case fromInteractiveMapActions.SET_MODEL:
       return {
         ...state,

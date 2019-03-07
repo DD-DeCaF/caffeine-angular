@@ -131,21 +131,23 @@ limitations under the License.
       <ng-container matColumnDef="method">
         <th mat-header-cell *matHeaderCellDef>
           <p mat-sort-header>Method</p>
-          <mat-form-field class="example-full-width">
+          <mat-form-field>
             <input class="method-input" matInput [formControl]="methodFilter">
           </mat-form-field>
         </th>
         <td mat-cell *matCellDef="let element"> {{element.method}}</td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row"
           [appJobResultsDetailRow]="row"
           [appJobResultsDetailRowTpl]="tpl" (toggleChange)="toggleChange($event)">
       </tr>
     </table>
+    <mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </mat-card>
 </ng-template>
+
 <ng-template #tpl let-element>
   <tr class="mat-row expandRow">
     <td colspan="1"></td>
@@ -196,7 +198,8 @@ limitations under the License.
           </a>
         </div>
         <div *ngIf="element.manipulations.length > 0" class="legend-manipulations">
-        <span class="legend-text-manipulation">↑ up-regulation, ↓ down-regulation<mat-icon
+        <span class="legend-text-manipulation">↑ up-regulation,<br>
+          ↓ down-regulation<mat-icon
           class="legend-icon">info_outline</mat-icon></span>
         </div>
       </div>
@@ -204,13 +207,29 @@ limitations under the License.
 
     <td class="linkList">
       <div *ngFor="let hp of element.heterologous_reactions">
-        <a [hidden]="hp.startsWith('DM')" [attr.href]="hpLink(hp)" target="_blank">
+        <a [hidden]="hp.startsWith('DM')" [matMenuTriggerFor]="menu">
           {{hp}}
         </a>
+        <mat-menu #menu [overlapTrigger]="false">
+          <div class="reaction-info">
+            <span class="reaction-info-name"><strong>{{reactions[hp].name}}</strong></span>
+            <span>{{reactions[hp].annotation.Description.split("`").join("")}}</span>
+          </div>
+          <mat-divider></mat-divider>
+          <button mat-menu-item>
+            <a class="mat-menu-item-link" [attr.href]="hpLinkMetanetx(hp)" target="_blank">MetaNetX</a>
+          </button>
+          <button mat-menu-item *ngIf="reactions[hp].annotation.EC">
+            <a class="mat-menu-item-link" [attr.href]="hpLinkUniprot(reactions[hp].annotation.EC)" target="_blank">UniProt</a>
+          </button>
+          <button mat-menu-item *ngIf="reactions[hp].annotation.EC">
+            <a class="mat-menu-item-link" [attr.href]="hpLinkGmgc(reactions[hp].annotation.EC)" target="_blank">GMGC</a>
+          </button>
+        </mat-menu>
       </div>
     </td>
 
-    <td class="linkList">
+   <td class="linkList">
       <div class="linkListInner">
         <div *ngFor="let knockout of element.knockouts; let i = index;">
           <div *ngIf="i < 10">

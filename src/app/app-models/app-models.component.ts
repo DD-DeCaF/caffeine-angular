@@ -39,7 +39,6 @@ export class AppModelsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   displayedColumns: string[] = [
-    'id',
     'name',
     'actions',
   ];
