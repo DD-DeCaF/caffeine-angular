@@ -130,3 +130,7 @@ mat-sidenav-container {
 .blue-grey {
   color: mat-color($mat-blue-grey, 700);
 }
+
+.mat-form-field-required-marker {
+  color: gray !important;
+}
