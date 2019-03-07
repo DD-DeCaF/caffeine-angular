@@ -50,6 +50,12 @@
           <p matLine>Home</p>
         </mat-list-item>
 
+        <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/interactiveMap"
+                       [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon svgIcon="interactive-map"></mat-icon>
+          <p matLine>Interactive Map</p>
+        </mat-list-item>
+
         <mat-list-item *ngIf="(sessionState | async).authenticated"
                        (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/pathways"
                        [routerLinkActive]="['highlight']">
@@ -61,25 +67,6 @@
                        matTooltip="Please log in or register to use this functionality!" class="disabled">
           <mat-icon mat-list-icon svgIcon="design"></mat-icon>
           <p matLine>Design</p>
-        </mat-list-item>
-
-        <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/interactiveMap"
-                       [routerLinkActive]="['highlight']">
-          <mat-icon mat-list-icon svgIcon="interactive-map"></mat-icon>
-          <p matLine>Interactive Map</p>
-        </mat-list-item>
-
-        <mat-list-item *ngIf="(sessionState | async).authenticated"
-                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/projects"
-                       [routerLinkActive]="['highlight']">
-          <mat-icon mat-list-icon>subject</mat-icon>
-          <p matLine>Projects</p>
-        </mat-list-item>
-
-        <mat-list-item *ngIf="!(sessionState | async).authenticated"
-                       matTooltip="Please log in or register to use this functionality!" class="disabled">
-          <mat-icon mat-list-icon>subject</mat-icon>
-          <p matLine>Projects</p>
         </mat-list-item>
 
         <mat-list-item *ngIf="(sessionState | async).authenticated"
@@ -95,6 +82,32 @@
           <p matLine>Jobs</p>
         </mat-list-item>
 
+        <mat-list-item *ngIf="(sessionState | async).authenticated"
+                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/designs"
+                       [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon>device_hub</mat-icon>
+          <p matLine>Designs</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                       matTooltip="Please log in or register to use this functionality!" class="disabled">
+          <mat-icon mat-list-icon>device_hub</mat-icon>
+          <p matLine>Designs</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="(sessionState | async).authenticated"
+                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/projects"
+                       [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon>subject</mat-icon>
+          <p matLine>Projects</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                       matTooltip="Please log in or register to use this functionality!" class="disabled">
+          <mat-icon mat-list-icon>subject</mat-icon>
+          <p matLine>Projects</p>
+        </mat-list-item>
+
         <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/maps"
                        [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon>map</mat-icon>
@@ -105,18 +118,6 @@
                        [routerLinkActive]="['highlight']">
           <mat-icon mat-list-icon>rounded_corner</mat-icon>
           <p matLine>Models</p>
-        </mat-list-item>
-
-        <mat-list-item *ngIf="(sessionState | async).authenticated"
-                       (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/designs"
-                       [routerLinkActive]="['highlight']">
-          <mat-icon mat-list-icon>person</mat-icon>
-          <p matLine>Designs</p>
-        </mat-list-item>
-        <mat-list-item *ngIf="!(sessionState | async).authenticated"
-                       matTooltip="Please log in or register to use this functionality!" class="disabled">
-          <mat-icon mat-list-icon>person</mat-icon>
-          <p matLine>Designs</p>
         </mat-list-item>
       </mat-nav-list>
 
