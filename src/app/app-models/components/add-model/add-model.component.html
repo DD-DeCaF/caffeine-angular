@@ -27,7 +27,8 @@
         <form class="model-form" [formGroup]="addModelForm" (ngSubmit)="onSubmit()">
           <mat-form-field color="primary">
             <mat-label>Name</mat-label>
-            <input placeholder="e.g. My Favourite Model" color="primary" id="name" type="text" class="form-control" formControlName="name" matInput>
+            <input placeholder="e.g. My Favourite Model" color="primary" id="name" type="text" class="form-control"
+                   formControlName="name" required matInput>
           </mat-form-field>
           <mat-form-field>
             <mat-label class="title">Organism</mat-label>
@@ -36,6 +37,7 @@
                         color="primary"
                         class="form-control"
                         formControlName="organism_id"
+                        required
                         #species>
               <mat-option color="primary"
                           class="mat-primary"
@@ -53,7 +55,8 @@
             <mat-select type="text"
                         color="primary"
                         class="form-control"
-                        formControlName="project_id">
+                        formControlName="project_id"
+                        required>
               <mat-option color="primary"
                           class="mat-primary"
                           [value]="project.id"
@@ -80,7 +83,7 @@
           </mat-form-field>
           <br>
           <div class="upload-file">
-            <mat-label class="label-title">Upload JSON model</mat-label>
+            <mat-label class="label-title">Upload JSON model *</mat-label>
           </div>
           <div class="upload-file">
             <input #inputFile type="file" (change)="fileChange($event)" placeholder="Upload file"
@@ -97,7 +100,8 @@
                    aria-label="Number"
                    matInput
                    formControlName="default_biomass_reaction"
-                   [matAutocomplete]="auto">
+                   [matAutocomplete]="auto"
+                   required>
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let reaction of filterReactions(this.addModelForm.value.default_biomass_reaction)"
                           [value]="reaction">{{reaction}}
@@ -118,52 +122,54 @@
         </form>
       </div>
     </div>
-    <div class="create-organism" *ngIf="addModelForm.value.organism_id === 'add' && addOrganismForm.value.project_id !== 'add'">
+    <div class="create-organism"
+         *ngIf="addModelForm.value.organism_id === 'add' && addOrganismForm.value.project_id !== 'add'">
       <form class="model-form" [formGroup]="addOrganismForm">
-          <h3 class="title">Add new organism</h3>
-          <mat-form-field>
-            <mat-label class="title">Name</mat-label>
-            <input placeholder="e.g. Escherichia coli" matInput cdkFocusInitial formControlName="organism_name"/>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Project</mat-label>
-            <mat-select type="text"
-                        color="primary"
-                        class="form-control"
-                        formControlName="project_id">
-              <mat-option color="primary"
-                          class="mat-primary"
-                          [value]="project.id"
-                          *ngFor="let project of (allProjects | async)">{{project.name}}
-              </mat-option>
-              <mat-option [value]="'add'">
-                <mat-icon>add_circle</mat-icon>
-                Add project
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-card-actions align="end">
-            <div fxFlex></div>
-            <div fxFlex fxLayoutAlign="space-between">
-              <button
-                type="button"
-                mat-button
-                (click)="cancelOrganism()"
-              >Cancel
-              </button>
-              <button
-                type="button"
-                mat-button
-                (click)="submitOrganism()"
-                [disabled]="!isValidOrganism()"
-              >
-                Create
-              </button>
-            </div>
-          </mat-card-actions>
+        <h3 class="title">Add new organism</h3>
+        <mat-form-field>
+          <mat-label class="title">Name</mat-label>
+          <input placeholder="e.g. Escherichia coli" matInput cdkFocusInitial formControlName="organism_name"/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Project</mat-label>
+          <mat-select type="text"
+                      color="primary"
+                      class="form-control"
+                      formControlName="project_id">
+            <mat-option color="primary"
+                        class="mat-primary"
+                        [value]="project.id"
+                        *ngFor="let project of (allProjects | async)">{{project.name}}
+            </mat-option>
+            <mat-option [value]="'add'">
+              <mat-icon>add_circle</mat-icon>
+              Add project
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-card-actions align="end">
+          <div fxFlex></div>
+          <div fxFlex fxLayoutAlign="space-between">
+            <button
+              type="button"
+              mat-button
+              (click)="cancelOrganism()"
+            >Cancel
+            </button>
+            <button
+              type="button"
+              mat-button
+              (click)="submitOrganism()"
+              [disabled]="!isValidOrganism()"
+            >
+              Create
+            </button>
+          </div>
+        </mat-card-actions>
       </form>
     </div>
-    <div class="create-project" *ngIf="addModelForm.value.project_id === 'add' || addOrganismForm.value.project_id === 'add'">
+    <div class="create-project"
+         *ngIf="addModelForm.value.project_id === 'add' || addOrganismForm.value.project_id === 'add'">
       <h3 class="title">Add new project</h3>
       <mat-form-field>
         <mat-label>Name</mat-label>

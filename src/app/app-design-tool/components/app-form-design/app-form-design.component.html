@@ -13,7 +13,8 @@
 <!--limitations under the License.-->
 
 <mat-card class="designCard">
-  <form  *ngIf="designForm.value.project_id !== 'add'" class="design-form" [formGroup]="designForm" (ngSubmit)="onSubmit()">
+  <form *ngIf="designForm.value.project_id !== 'add'" class="design-form" [formGroup]="designForm"
+        (ngSubmit)="onSubmit()">
     <mat-form-field>
       <mat-label>Organism</mat-label>
       <mat-select type="text"
@@ -21,6 +22,7 @@
                   placeholder="e.g. Escherichia coli"
                   class="form-control"
                   formControlName="species"
+                  required
                   #species>
         <mat-option [value]="species" *ngFor="let species of (allSpecies | async)">{{species.name}}
         </mat-option>
@@ -34,7 +36,8 @@
              matInput
              formControlName="product"
              [matAutocomplete]="auto"
-             >
+             required
+      >
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let product of (products | async)" [value]="product.name">
           {{product.name}}
@@ -48,6 +51,7 @@
                   class="form-control"
                   placeholder="Your project"
                   formControlName="project_id"
+                  required
                   #projects>
         <mat-option color="primary"
                     class="mat-primary"
@@ -63,7 +67,8 @@
     <mat-label class="title">Aerobic</mat-label>
     <mat-checkbox
       formControlName="aerobic"
-      color="primary">
+      color="primary"
+    >
     </mat-checkbox>
     <mat-accordion>
       <mat-expansion-panel class="expansion-panel">
@@ -108,30 +113,30 @@
   </form>
 </mat-card>
 <mat-card class="designCard">
-<div class="create-project" *ngIf="designForm.value.project_id === 'add'">
-  <h3 class="title">Add new project</h3>
-  <mat-form-field>
-    <mat-label class="title">Project name*</mat-label>
-    <input matInput cdkFocusInitial #newproject/>
-  </mat-form-field>
-  <mat-card-actions align="end">
-    <div fxFlex></div>
-    <div fxFlex fxLayoutAlign="space-between">
-      <button
-        type="button"
-        mat-button
-        (click)="cancelProject()"
-      >Cancel
-      </button>
-      <button
-        type="button"
-        mat-button
-        (click)="submitProject()"
-        [disabled]="!isValidProject()"
-      >
-        Create
-      </button>
-    </div>
-  </mat-card-actions>
-</div>
+  <div class="create-project" *ngIf="designForm.value.project_id === 'add'">
+    <h3 class="title">Add new project</h3>
+    <mat-form-field>
+      <mat-label class="title">Project name*</mat-label>
+      <input matInput cdkFocusInitial #newproject/>
+    </mat-form-field>
+    <mat-card-actions align="end">
+      <div fxFlex></div>
+      <div fxFlex fxLayoutAlign="space-between">
+        <button
+          type="button"
+          mat-button
+          (click)="cancelProject()"
+        >Cancel
+        </button>
+        <button
+          type="button"
+          mat-button
+          (click)="submitProject()"
+          [disabled]="!isValidProject()"
+        >
+          Create
+        </button>
+      </div>
+    </mat-card-actions>
+  </div>
 </mat-card>

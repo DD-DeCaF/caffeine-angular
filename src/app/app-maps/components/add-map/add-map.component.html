@@ -27,14 +27,22 @@
         <form class="model-form" [formGroup]="addMapForm" (ngSubmit)="onSubmit()">
           <mat-form-field color="primary">
             <mat-label>Name</mat-label>
-            <input placeholder="e.g. My First Escher Map" color="primary" id="name" type="text" class="form-control" formControlName="name" matInput>
+            <input placeholder="e.g. My First Escher Map"
+                   color="primary"
+                   id="name"
+                   type="text"
+                   class="form-control"
+                   formControlName="name"
+                   required
+                   matInput>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Project</mat-label>
             <mat-select type="text"
                         color="primary"
                         class="form-control"
-                        formControlName="project_id">
+                        formControlName="project_id"
+                        required>
               <mat-option color="primary"
                           class="mat-primary"
                           [value]="project.id"
@@ -51,7 +59,8 @@
             <mat-select type="text"
                         color="primary"
                         class="form-control"
-                        formControlName="model_id">
+                        formControlName="model_id"
+                        required>
               <mat-option color="primary"
                           class="mat-primary"
                           [value]="model.id"
@@ -60,7 +69,7 @@
             </mat-select>
           </mat-form-field>
           <div class="upload-file">
-            <mat-label class="label-title">Upload map</mat-label>
+            <mat-label class="label-title">Upload map *</mat-label>
           </div>
           <div class="upload-file">
             <input #inputFile type="file" (change)="fileChange($event)" placeholder="Upload file"
