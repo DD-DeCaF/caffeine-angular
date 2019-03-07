@@ -59,6 +59,7 @@ export const CHANGE_SELECTED_SPECIES = 'CHANGE_SELECTED_SPECIES';
 export const CHANGE_SELECTED_MODEL = 'CHANGE_SELECTED_MODEL';
 export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
 export const UPDATE_SOLUTION = 'UPDATE_SOLUTION';
+export const DROP = 'DROP';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -228,6 +229,11 @@ export class SetSelectedModel implements Action {
   constructor(public payload: types.DeCaF.Model, public solution: types.DeCaF.Solution) {}
 }
 
+export class Drop implements Action {
+  readonly type = DROP;
+  constructor(public payload: types.HydratedCard[]) {}
+}
+
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions =
   SetSelectedSpecies |
@@ -254,4 +260,5 @@ export type InteractiveMapActions =
   SetSelectedModel |
   SetFullModelDataDriven |
   SetModelDataDriven |
-  UpdateSolution;
+  UpdateSolution |
+  Drop;
