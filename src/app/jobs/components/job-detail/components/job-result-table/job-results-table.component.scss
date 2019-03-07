@@ -41,6 +41,44 @@ a {
   margin-top: 10px;
 }
 
+.reaction-info {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 12px;
+  margin: 10px;
+}
+
+.reaction-info-name {
+  padding-bottom: 5px;
+}
+
+.mat-menu-panel {
+  background: #FDFCFC !important;
+  border-radius: 5px !important;
+}
+
+.mat-menu-content {
+  padding-top: 0px !important;
+  width: 200px;
+}
+
+.mat-menu-item {
+  height: 30px;
+  font-size: 14px;
+  line-height: 0px;
+  padding: 0px;
+}
+
+.mat-menu-item-link {
+  display: block;
+  padding: 1em;
+}
+
+.mat-divider {
+  padding-bottom: 8px;
+}
+
 @mixin jobs-details($theme) {
   .custom-slider {
     width: 110px !important;

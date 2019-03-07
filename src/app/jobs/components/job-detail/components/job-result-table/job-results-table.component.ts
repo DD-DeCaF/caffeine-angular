@@ -218,8 +218,16 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
     return `http://bigg.ucsd.edu/search?query=${knockout}`;
   }
 
-  hpLink(hp: string): string {
-    return `https://www.metanetx.org/equa_info/${hp.replace('DM_', '')}`;
+  hpLinkMetanetx(hp: string): string {
+    return `https://www.metanetx.org/equa_info/${hp}`;
+  }
+
+  hpLinkUniprot(hp: string): string {
+    return `https://www.uniprot.org/uniprot/?query=${hp}`;
+  }
+
+  hpLinkGmgc(hp: string): string {
+    return `http://gmgc.embl.de/search/${hp}`;
   }
 
   showWarning(method: string, isChecked: boolean): void {
