@@ -222,10 +222,9 @@
       </div>
       <div fxLayoutAlign="end space-around"
            *ngIf="card.saved === false && card.selected"
-           class="save-button"
            matTooltip="Please log in or register to use this functionality!"
            [matTooltipDisabled]="(sessionState$ | async).authenticated">
-        <button mat-flat-button class="save-button" style="color: white"
+        <button mat-flat-button class="save-button mat-primary" style="color: white"
                 [disabled]="!(sessionState$ | async).authenticated"
                 (click)="save(card)">SAVE
         </button>

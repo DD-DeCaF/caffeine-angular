@@ -37,6 +37,10 @@ a {
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
+.method-form-field {
+  display: block !important;
+}
+
 .method-input {
   margin-top: 10px;
 }
@@ -198,7 +202,9 @@ a {
   padding: 0 16px 0 0;
 }
 
-.mat-sort-header-container {
+.job-table-header {
+  display: flex;
+  justify-content: center;
   height: 50px;
 }
 
