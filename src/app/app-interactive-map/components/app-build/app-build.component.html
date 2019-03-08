@@ -46,8 +46,8 @@
           </button>
         </mat-menu>
         <div matTooltip="Please add a model to use this functionality!"
-             [matTooltipDisabled]="(models | async).length !== 0">
-          <button mat-icon-button [matMenuTriggerFor]="addMenu" [disabled]="(models | async).length === 0">
+             [matTooltipDisabled]="(models | async)?.length !== 0">
+          <button mat-icon-button [matMenuTriggerFor]="addMenu" [disabled]="(models | async)?.length === 0">
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -122,112 +122,114 @@
   </div>
 
   <div *ngIf="!expandedCard">
-    <div class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of (cards | async)">
-      <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
-        <div class="left-section">
-          <h4 [ngClass]="{'unsaved': card.saved === false}"
-              class="title-edit"
-              *ngIf="editeName !== card.id"
-              (click)="editeName = card.id; select(card); $event.preventDefault()">{{card.name}}<span
-            matTooltip="Unsaved strain"
-            *ngIf="card.saved === false">*</span>
-          </h4>
-          <input
-            matInput
-            placeholder="e.g. {{card.name}}"
-            (keydown)="keyDownFunction($event)"
-            *ngIf="editeName === card.id"
-            (blur)="nameBlur()"
-            autofocus
-            #name/>
+    <div cdkDropList (cdkDropListDropped)="drop($event)">
+      <div cdkDrag class="card" [ngClass]="{'expanded': card.expanded}" *ngFor="let card of cards">
+        <div class="header" [ngClass]="{'selected': card.selected}" (click)="select(card)">
+          <div class="left-section">
+            <h4 [ngClass]="{'unsaved': card.saved === false}"
+                class="title-edit"
+                *ngIf="editeName !== card.id"
+                (click)="editeName = card.id; select(card); $event.preventDefault()">{{card.name}}<span
+              matTooltip="Unsaved strain"
+              *ngIf="card.saved === false">*</span>
+            </h4>
+            <input
+              matInput
+              placeholder="e.g. {{card.name}}"
+              (keydown)="keyDownFunction($event)"
+              *ngIf="editeName === card.id"
+              (blur)="nameBlur()"
+              autofocus
+              #name/>
+          </div>
+          <button mat-icon-button (click)="delete(card)">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
-        <button mat-icon-button (click)="delete(card)">
-          <mat-icon>close</mat-icon>
-        </button>
-      </div>
 
-      <div fxLayout="row" fxLayoutAlign="space-around center">
-        <button mat-icon-button (click)="grow(card, 0)">
-          <mat-icon matTooltip="Information">info</mat-icon>
-        </button>
+        <div fxLayout="row" fxLayoutAlign="space-around center" *ngIf="card.selected">
+          <button mat-icon-button (click)="grow(card, 0)">
+            <mat-icon matTooltip="Information">info</mat-icon>
+          </button>
 
-        <button mat-icon-button (click)="grow(card, 1)" [disabled]="card.type === cardType.DataDriven">
-          <mat-icon matTooltip="Model changes">edit</mat-icon>
-        </button>
-      </div>
-
-      <div class="content">
-        <div class="displayRow">
-          <label>Species:</label>
-          <label class="right-text">{{card.species.name}}</label>
+          <button mat-icon-button (click)="grow(card, 1)" [disabled]="card.type === cardType.DataDriven"
+                  *ngIf="card.selected">
+            <mat-icon matTooltip="Model changes">edit</mat-icon>
+          </button>
         </div>
-        <div class="displayRow">
-          <label>Model:</label>
-          <label class="right-text">{{card.model.id}}</label>
+        <div class="content" [hidden]="!card.selected">
+          <div class="displayRow">
+            <label>Species:</label>
+            <label class="right-text">{{card.species.name}}</label>
+          </div>
+          <div class="displayRow">
+            <label>Model:</label>
+            <label class="right-text">{{card.model.name}}</label>
+          </div>
+          <div class="displayRow">
+            <label>Method:</label>
+            <label>{{card.method}}</label>
+          </div>
+          <div class="displayRow" *ngIf="card.solution"
+               [ngStyle]="{'background-color': growthRateBackground(card.solution.growth_rate)}">
+            <label>Growth rate:</label>
+            <label>{{formatGrowthRate(card.solution.growth_rate)}} <i>h<sup>-1</sup></i></label>
+          </div>
         </div>
-        <div class="displayRow">
-          <label>Method:</label>
-          <label>{{card.method}}</label>
+        <div *ngIf="card.type === cardType.DataDriven" [hidden]="!card.selected">
+          <mat-card class="remove-box-shadow" fxLayout="column">
+            <mat-form-field>
+              <mat-label>Method</mat-label>
+              <mat-select [value]="card.method" (selectionChange)="methodChanged($event)">
+                <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
+              </mat-select>
+              <mat-icon matSuffix (click)='showHelp($event)'>help_outline</mat-icon>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Experiment</mat-label>
+              <input type="text"
+                     matInput
+                     [(ngModel)]="queryExperiment"
+                     [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete"
+                                [displayWith]="displayFn"
+                                (optionSelected)="experimentChanged(queryExperiment)">
+                <mat-option *ngFor="let experiment of filterByQuery(queryExperiment, (experiments | async))"
+                            matTooltip="{{experiment.name}}"
+                            [value]="experiment"
+                >{{experiment.name}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Conditions</mat-label>
+              <input type="text"
+                     matInput
+                     [value]="condition"
+                     [(ngModel)]="queryCondition"
+                     [matAutocomplete]="autoCondition">
+              <mat-autocomplete #autoCondition="matAutocomplete"
+                                [displayWith]="displayFnCondition"
+                                (optionSelected)="conditionChanged(queryCondition)">
+                <mat-option *ngFor="let condition of filterByQueryConditions(queryCondition)"
+                            [value]="condition"
+                >
+                  <span *ngIf="condition.protocol.length > 0">{{condition.name}}, {{condition.protocol}}</span>
+                  <span *ngIf="condition.protocol.length === 0">{{condition.name}}</span>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </mat-card>
         </div>
-        <div class="displayRow" *ngIf="card.solution"
-             [ngStyle]="{'background-color': growthRateBackground(card.solution.growth_rate)}">
-          <label>Growth rate:</label>
-          <label>{{formatGrowthRate(card.solution.growth_rate)}} <i>h<sup>-1</sup></i></label>
+        <div fxLayoutAlign="end space-around"
+             *ngIf="card.saved === false && card.selected"
+             matTooltip="Please log in or register to use this functionality!"
+             [matTooltipDisabled]="(sessionState$ | async).authenticated">
+          <button mat-flat-button class="save-button mat-primary" style="color: white"
+                  [disabled]="!(sessionState$ | async).authenticated"
+                  (click)="save(card)">SAVE
+          </button>
         </div>
-      </div>
-      <div *ngIf="card.type === cardType.DataDriven" [hidden]="!card.selected">
-        <mat-card class="remove-box-shadow" fxLayout="column">
-          <mat-form-field>
-            <mat-label>Method</mat-label>
-            <mat-select [value]="card.method" (selectionChange)="methodChanged($event)">
-              <mat-option [value]="method.id" *ngFor="let method of methods">{{method.name}}</mat-option>
-            </mat-select>
-            <mat-icon matSuffix (click)='showHelp($event)'>help_outline</mat-icon>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Experiment</mat-label>
-            <input type="text"
-                   matInput
-                   [(ngModel)]="queryExperiment"
-                   [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete"
-                              [displayWith]="displayFn"
-                              (optionSelected)="experimentChanged(queryExperiment)">
-              <mat-option *ngFor="let experiment of filterByQuery(queryExperiment, (experiments | async))"
-                          matTooltip="{{experiment.name}}"
-                          [value]="experiment"
-              >{{experiment.name}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Conditions</mat-label>
-            <input type="text"
-                   matInput
-                   [value]="condition"
-                   [(ngModel)]="queryCondition"
-                   [matAutocomplete]="autoCondition">
-            <mat-autocomplete #autoCondition="matAutocomplete"
-                              [displayWith]="displayFnCondition"
-                              (optionSelected)="conditionChanged(queryCondition)">
-              <mat-option *ngFor="let condition of filterByQueryConditions(queryCondition)"
-                          [value]="condition"
-              >
-                <span *ngIf="condition.protocol.length > 0">{{condition.name}}, {{condition.protocol}}</span>
-                <span *ngIf="condition.protocol.length === 0">{{condition.name}}</span>
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </mat-card>
-      </div>
-      <div fxLayoutAlign="end space-around"
-           *ngIf="card.saved === false && card.selected"
-           matTooltip="Please log in or register to use this functionality!"
-           [matTooltipDisabled]="(sessionState$ | async).authenticated">
-        <button mat-flat-button class="save-button mat-primary" style="color: white"
-                [disabled]="!(sessionState$ | async).authenticated"
-                (click)="save(card)">SAVE
-        </button>
       </div>
     </div>
   </div>

@@ -36,6 +36,7 @@ import {SelectProjectComponent} from './components/app-build/components/select-p
 import {ShowHelpComponent} from './components/app-build/components/show-help/show-help.component';
 import {WarningSaveComponent} from './components/app-build/components/warning-save/warning-save.component';
 import { ErrorMsgComponent } from './components/app-reaction/components/error-msg/error-msg.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { ErrorMsgComponent } from './components/app-reaction/components/error-ms
     FlexLayoutModule,
     AppRoutingModule,
     AppMaterialModule,
+    DragDropModule,
 
     ReactionModule,
   ],
