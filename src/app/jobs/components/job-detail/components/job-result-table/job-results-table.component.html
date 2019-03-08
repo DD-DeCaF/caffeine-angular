@@ -43,7 +43,7 @@ limitations under the License.
 
       <ng-container matColumnDef="manipulations">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Manipulations</p>
+          <p mat-sort-header class="job-table-header">Manipulations</p>
           <div class="custom-slider">
             <ng5-slider [options]="options['manipulations']" [formControl]="manipulationsFilter"></ng5-slider>
           </div>
@@ -55,7 +55,7 @@ limitations under the License.
 
       <ng-container matColumnDef="heterologous_reactions">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Heterologous Reactions</p>
+          <p mat-sort-header class="job-table-header">Heterologous Reactions</p>
           <div class="custom-slider">
             <ng5-slider [options]="options['reactions']" [formControl]="reactionsFilter"></ng5-slider>
           </div>
@@ -67,7 +67,7 @@ limitations under the License.
 
       <ng-container matColumnDef="knockouts">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Knockouts</p>
+          <p mat-sort-header class="job-table-header">Knockouts</p>
           <div class="custom-slider">
             <ng5-slider [options]="options['knockouts']" [formControl]="knockoutsFilter"></ng5-slider>
           </div>
@@ -79,7 +79,7 @@ limitations under the License.
 
       <ng-container matColumnDef="product">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Production
+          <p mat-sort-header class="job-table-header">Production
             <span class="units">[mmol gDW
               <sup>-1</sup> h
               <sup>-1</sup>]</span>
@@ -93,7 +93,7 @@ limitations under the License.
 
       <ng-container matColumnDef="biomass">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Growth
+          <p mat-sort-header class="job-table-header">Growth
             <span class="units">[h
               <sup>-1</sup>]</span>
           </p>
@@ -106,7 +106,7 @@ limitations under the License.
 
       <ng-container matColumnDef="yield">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Yield
+          <p mat-sort-header class="job-table-header">Yield
             <span class="units">[C-mol/C-mol]</span>
           </p>
           <div class="custom-slider">
@@ -118,7 +118,7 @@ limitations under the License.
 
       <ng-container matColumnDef="fitness">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Fitness
+          <p mat-sort-header class="job-table-header">Fitness
             <span class="units">[(Production * Growth / Carbon uptake)]</span>
           </p>
           <div class="custom-slider">
@@ -130,8 +130,8 @@ limitations under the License.
 
       <ng-container matColumnDef="method">
         <th mat-header-cell *matHeaderCellDef>
-          <p mat-sort-header>Method</p>
-          <mat-form-field>
+          <p mat-sort-header class="job-table-header">Method</p>
+          <mat-form-field class="method-form-field">
             <input class="method-input" matInput [formControl]="methodFilter">
           </mat-form-field>
         </th>

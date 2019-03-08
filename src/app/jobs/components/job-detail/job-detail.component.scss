@@ -20,8 +20,14 @@
   min-width: 1200px;
 }
 
-.mat-list-item {
+.job-info {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.job-info-item {
   float: right;
+  width: 200px;
 }
 
 .card {
