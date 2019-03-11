@@ -16,6 +16,10 @@ mat-sidenav {
   width: 280px;
 }
 
+mat-sidenav.mobile {
+  width: 220px;
+}
+
 /deep/.mat-tab, /deep/.mat-tab-label {
   min-width: 50px !important;
 }

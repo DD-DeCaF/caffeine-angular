@@ -13,10 +13,11 @@
 <!--limitations under the License.-->
 <div class="container">
     <mat-sidenav-container
-      hasBackdrop="false"
+      [hasBackdrop]="isMobile"
     >
-      <mat-sidenav #sidenav
+      <mat-sidenav
         class="mat-elevation-z3"
+        [class.mobile]="isMobile"
         mode="over"
         opened
         position="end"

@@ -34,6 +34,7 @@ import {Loaded, SetMap} from './store/interactive-map.actions';
 import {ErrorMsgComponent} from './components/app-reaction/components/error-msg/error-msg.component';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
+const MOBILE_MAX_WIDTH = 425;
 
 
 @Component({
@@ -57,6 +58,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
   private loadingObservable;
   private errorObservable;
   private cardSelected;
+  public isMobile: boolean;
 
   readonly escherSettings = {
     ...escherSettingsConst,
@@ -90,6 +92,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     private dialog: MatDialog,
     private ngZoneService: NgZone,
   ) {
+    this.isMobile = window.innerWidth <= MOBILE_MAX_WIDTH;
   }
 
   ngOnInit(): void {
