@@ -37,7 +37,7 @@ import {LoaderComponent} from '../app-interactive-map/components/loader/loader.c
 import {ModalErrorComponent} from '../app-interactive-map/components/modal-error/modal-error.component';
 import {getModelName, getOrganismName} from '../store/shared.selectors';
 import {DesignsDetailRowDirective} from './app-designs-row-detail.directive';
-import { Observable } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-designs',
@@ -52,7 +52,9 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   private lastDesign: DesignRequest;
   private loadingObservable;
   private errorObservable;
-  public designs;
+  public designs: Subscription;
+  public cardsSubscription: Subscription;
+
   private cards: { [key: string]: Card; };
   private design: Card;
   private collapseClicked = new EventEmitter();
@@ -88,7 +90,8 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
       this.dataSource.data = designs;
       this.cdr.detectChanges();
     });
-    this.store.pipe(select((store) => store.interactiveMap.cards.cardsById)).subscribe((cards) => {
+    this.cardsSubscription = this.store.pipe(select((store) =>
+      store.interactiveMap.cards.cardsById)).subscribe((cards) => {
       this.cards = cards;
       this.cdr.detectChanges();
     });
@@ -252,6 +255,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.designs.unsubscribe();
+    this.cardsSubscription.unsubscribe();
     if (this.loadingObservable) {
       this.loadingObservable.unsubscribe();
     }
