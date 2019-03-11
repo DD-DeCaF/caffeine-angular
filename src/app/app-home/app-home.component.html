@@ -42,7 +42,6 @@
           <mat-icon mat-list-icon>chevron_left</mat-icon>
           <p matLine primary>{{selectedProject.name}}</p>
         </mat-toolbar>
-        <mat-divider></mat-divider>
         <mat-list-item (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/"
                        [routerLinkActive]="['highlight']"
                        [routerLinkActiveOptions]="{exact: true}">
