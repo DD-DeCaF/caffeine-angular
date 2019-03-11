@@ -84,8 +84,6 @@ export class JobListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.polling.unsubscribe();
-    if (this.jobs) {
-      this.jobs.unsubscribe();
-    }
+    this.jobs.unsubscribe();
   }
 }

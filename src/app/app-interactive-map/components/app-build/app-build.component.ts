@@ -275,6 +275,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new RenameCard(this.name.nativeElement.value));
     }
     this.editeName = null;
+    this.cdr.detectChanges();
   }
 
   // tslint:disable-next-line:no-any
@@ -284,6 +285,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new RenameCard(this.name.nativeElement.value));
       }
       this.editeName = null;
+      this.cdr.detectChanges();
     }
   }
 
