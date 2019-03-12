@@ -328,7 +328,11 @@ export class InteractiveMapEffects {
       };
 
       if (selectedCard.type === CardType.DataDriven) {
-        payload.operations = selectedCard.operations;
+        if (selectedCard.solutionUpdated) {
+          payload.operations = selectedCard.operations;
+        } else {
+          return of(newAction);
+        }
       } else {
         const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
           operation: 'add',
@@ -412,7 +416,7 @@ export class InteractiveMapEffects {
   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD,
-      sharedActions.FETCH_DESIGNS, fromActions.CHANGE_SELECTED_MODEL),
+      sharedActions.FETCH_DESIGNS),
     mapTo(new loaderActions.Loading()),
   );
 

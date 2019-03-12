@@ -153,6 +153,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.REACTION_OPERATION:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION:
     case fromInteractiveMapActions.SET_METHOD:
+    case fromInteractiveMapActions.CHANGE_SELECTED_MODEL:
       return {
         ...state,
         progressBar: true,
