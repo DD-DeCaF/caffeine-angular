@@ -17,11 +17,20 @@ import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, ReactionState} from './types';
+import {
+  AddedReaction, BoundedReaction,
+  BoundOperationPayload,
+  Card,
+  CardType,
+  ObjectiveReactionPayload,
+  OperationDirection,
+  OperationPayload,
+  ReactionState,
+} from './types';
 import escherSettingsConst from './escherSettings';
 import * as fromActions from './store/interactive-map.actions';
 import {getSelectedCard} from './store/interactive-map.selectors';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig, MatSnackBar} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {_mapValues, objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
@@ -59,6 +68,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
   private errorObservable;
   private cardSelected;
   public progressBar: Observable<boolean>;
+  public action: Observable<string>;
+
   public isMobile: boolean;
 
   readonly escherSettings = {
@@ -92,6 +103,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     private store: Store<AppState>,
     private dialog: MatDialog,
     private ngZoneService: NgZone,
+    public snackBar: MatSnackBar,
   ) {
     this.isMobile = window.innerWidth <= MOBILE_MAX_WIDTH;
   }
@@ -169,6 +181,31 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     });
 
     this.progressBar = this.store.pipe(select((store) => store.interactiveMap.progressBar));
+    this.store.pipe(select((store) => store.interactiveMap.action)).subscribe(
+      (action: OperationPayload | ObjectiveReactionPayload | BoundOperationPayload) => {
+        if (action) {
+          const {item, operationTarget, direction} = action;
+          let actionString;
+          if (operationTarget) {
+            if (operationTarget === 'bounds') {
+              actionString = direction === 'DO' ? `Bounds of reaction ${(<BoundedReaction>item).reaction.id} were changed.` :
+                `Bounds of reaction ${(<BoundedReaction>item).reaction.id} were reset.`;
+            } else if (operationTarget === 'addedReactions') {
+              actionString = direction === 'DO' ? `Reaction ${(<AddedReaction>item).bigg_id} was added.` :
+                `Reaction ${(<AddedReaction>item).bigg_id} was removed.`;
+            } else {
+              actionString = direction === 'DO' ? `Reaction ${item} was knocked out.` :
+                `Reaction ${item} was undo knocked out.`;
+            }
+          } else {
+            actionString = direction ? `Reaction ${(<ObjectiveReactionPayload>action).reactionId} was set as objective.` :
+              `Reaction ${(<ObjectiveReactionPayload>action).reactionId} was undo set as objective.`;
+          }
+          this.snackBar.open(`${actionString}`, '', {
+            duration: 20000,
+          });
+        }
+      });
   }
 
   ngAfterViewInit(): void {

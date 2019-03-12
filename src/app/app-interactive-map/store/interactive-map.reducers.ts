@@ -15,7 +15,21 @@
 import {PathwayMap} from '@dd-decaf/escher';
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {Card, CardType, OperationDirection, BoundedReaction, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
+import {
+  Card,
+  CardType,
+  OperationDirection,
+  BoundedReaction,
+  OperationTarget,
+  Cobra,
+  MapItem,
+  AddedReaction,
+  DeCaF,
+  Species,
+  OperationPayload,
+  ObjectiveReactionPayload,
+  BoundOperationPayload,
+} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import {mapBiggReactionToCobra} from '../../lib';
 import {debug} from '../../logger';
@@ -50,6 +64,7 @@ export interface InteractiveMapState {
     cardsById: { [key: string]: Card; };
   };
   progressBar: boolean;
+  action: OperationPayload | ObjectiveReactionPayload | BoundOperationPayload;
 }
 
 export const emptyCard: Card = {
@@ -93,6 +108,7 @@ export const initialState: InteractiveMapState = {
     cardsById: {},
   },
   progressBar: false,
+  action: null,
 };
 
 export const appendUnique = (array, item) => array.includes(item) ? array : [...array, item];
@@ -335,6 +351,7 @@ export function interactiveMapReducer(
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
+      let actionString: OperationPayload | ObjectiveReactionPayload | BoundOperationPayload;
       switch (action.type) {
         case fromInteractiveMapActions.UPDATE_SOLUTION: {
           newCard = {
@@ -395,6 +412,7 @@ export function interactiveMapReducer(
               }
             }
           }
+          actionString = action.payload;
           newCard = {
             ...card,
             saved: saved || false,
@@ -416,6 +434,7 @@ export function interactiveMapReducer(
         }
         case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
           const {reactionId, direction} = action.payload;
+          actionString = action.payload;
           newCard = {
             ...card,
             objectiveReaction: {
@@ -437,6 +456,7 @@ export function interactiveMapReducer(
       return {
         ...state,
         progressBar: false,
+        action: actionString,
         cards: {
           ...state.cards,
           cardsById: {
