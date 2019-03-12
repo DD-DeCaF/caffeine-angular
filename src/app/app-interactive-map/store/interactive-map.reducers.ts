@@ -49,6 +49,7 @@ export interface InteractiveMapState {
     ids: string[];
     cardsById: { [key: string]: Card; };
   };
+  progressBar: boolean;
 }
 
 export const emptyCard: Card = {
@@ -91,6 +92,7 @@ export const initialState: InteractiveMapState = {
     ids: [],
     cardsById: {},
   },
+  progressBar: false,
 };
 
 export const appendUnique = (array, item) => array.includes(item) ? array : [...array, item];
@@ -132,6 +134,13 @@ export function interactiveMapReducer(
 ): InteractiveMapState {
   debug('Action map:', action);
   switch (action.type) {
+    case fromInteractiveMapActions.REACTION_OPERATION:
+    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION:
+    case fromInteractiveMapActions.SET_METHOD:
+      return {
+        ...state,
+        progressBar: true,
+      };
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
         ...state,
@@ -427,6 +436,7 @@ export function interactiveMapReducer(
       /* tslint:enable */
       return {
         ...state,
+        progressBar: false,
         cards: {
           ...state.cards,
           cardsById: {

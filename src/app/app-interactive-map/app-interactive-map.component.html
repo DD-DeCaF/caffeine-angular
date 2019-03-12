@@ -12,30 +12,31 @@
 <!--See the License for the specific language governing permissions and-->
 <!--limitations under the License.-->
 <div class="container">
-    <mat-sidenav-container
-      [hasBackdrop]="isMobile"
+  <mat-sidenav-container
+    [hasBackdrop]="isMobile"
+  >
+    <mat-sidenav
+      class="mat-elevation-z3"
+      [class.mobile]="isMobile"
+      mode="over"
+      opened
+      position="end"
+      #sidenav
     >
-      <mat-sidenav
-        class="mat-elevation-z3"
-        [class.mobile]="isMobile"
-        mode="over"
-        opened
-        position="end"
-        #sidenav
-      >
 
       <app-build></app-build>
 
 
-      </mat-sidenav>
+    </mat-sidenav>
+    <mat-progress-bar style="margin-top: 2px; position: absolute; top: 0; z-index: 1000;" *ngIf="progressBar | async"
+                      mode="indeterminate"></mat-progress-bar>
+    <div class="escher-builder" (click)="sidenav.close()"></div>
 
-      <div class="escher-builder" (click)="sidenav.close()"></div>
-
-      <div class="floating-menu">
-        <button mat-mini-fab color="primary" (click)="sidenav.open()">
-          <mat-icon>apps</mat-icon>
-        </button>
-      </div>
-    </mat-sidenav-container>
-    <app-legend></app-legend>
+    <div class="floating-menu">
+      <button mat-mini-fab color="primary" (click)="sidenav.open()">
+        <mat-icon>apps</mat-icon>
+      </button>
+    </div>
+  </mat-sidenav-container>
+  <app-legend></app-legend>
 </div>

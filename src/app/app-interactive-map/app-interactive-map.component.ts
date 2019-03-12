@@ -26,7 +26,7 @@ import {LoaderComponent} from './components/loader/loader.component';
 import {_mapValues, objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
-import {combineLatest, Subject} from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {PathwayMap} from '@dd-decaf/escher';
 import {withLatestFrom} from 'rxjs/operators';
@@ -58,6 +58,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
   private loadingObservable;
   private errorObservable;
   private cardSelected;
+  public progressBar: Observable<boolean>;
   public isMobile: boolean;
 
   readonly escherSettings = {
@@ -166,6 +167,8 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         });
       }
     });
+
+    this.progressBar = this.store.pipe(select((store) => store.interactiveMap.progressBar));
   }
 
   ngAfterViewInit(): void {

@@ -408,15 +408,13 @@ export class InteractiveMapEffects {
   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD,
-      fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS,
-      sharedActions.FETCH_DESIGNS, fromActions.SET_METHOD, fromActions.CHANGE_SELECTED_MODEL),
+      sharedActions.FETCH_DESIGNS, fromActions.CHANGE_SELECTED_MODEL),
     mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED, fromActions.UPDATE_SOLUTION,
-      fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY,
+    ofType(fromActions.LOADED, fromActions.UPDATE_SOLUTION, sharedActions.SET_DESIGNS,
       RESET_REMOVED_MODEL_MODELS, RESET_REMOVED_MAP, fromActions.ADD_CARD_FETCHED),
     mapTo(new loaderActions.LoadingFinished()),
   );
