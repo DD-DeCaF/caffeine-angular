@@ -194,15 +194,20 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
               actionString = direction === 'DO' ? `Reaction ${(<AddedReaction>item).bigg_id} was added.` :
                 `Reaction ${(<AddedReaction>item).bigg_id} was removed.`;
             } else {
-              actionString = direction === 'DO' ? `Reaction ${item} was knocked out.` :
-                `Reaction ${item} was undo knocked out.`;
+              if (operationTarget === 'knockoutGenes') {
+                actionString = direction === 'DO' ? `Gene ${item} was knocked out.` :
+                  `Gene ${item} was undo knocked out.`;
+              } else {
+                actionString = direction === 'DO' ? `Reaction ${item} was knocked out.` :
+                  `Reaction ${item} was undo knocked out.`;
+              }
             }
           } else {
             actionString = direction ? `Reaction ${(<ObjectiveReactionPayload>action).reactionId} was set as objective.` :
               `Reaction ${(<ObjectiveReactionPayload>action).reactionId} was undo set as objective.`;
           }
           this.snackBar.open(`${actionString}`, '', {
-            duration: 20000,
+            duration: 2000,
           });
         }
       });
