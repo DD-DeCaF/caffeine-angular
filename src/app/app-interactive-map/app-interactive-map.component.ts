@@ -323,9 +323,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     if (card.type === CardType.DataDriven) {
       if (!card.solutionUpdated) {
         builder.load_model(null);
-        const reactionData = _mapValues(card.solution.flux_distribution,
-          (d) => (d.upper_bound + d.lower_bound) / 2);
-        builder.set_reaction_fva_data(reactionData);
+        builder.set_reaction_fva_data(null);
         builder.set_reaction_data(null);
       } else {
         builder.load_model(card.model);
@@ -338,6 +336,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
           builder.set_reaction_fva_data(card.solution.flux_distribution);
           builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
         }
+        this.closeDialogs();
         this.store.dispatch(new Loaded());
       }
       builder.set_knockout_reactions(card.knockoutReactions);

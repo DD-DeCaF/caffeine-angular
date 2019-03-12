@@ -45,8 +45,8 @@ import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {NinjaService} from './../../services/ninja-service';
 import Model = DeCaF.Model;
-import { RESET_REMOVED_MODEL_MODELS } from './../../app-models/store/models.actions';
-import { RESET_REMOVED_MAP } from './../../app-maps/store/maps.actions';
+import {RESET_REMOVED_MODEL_MODELS} from './../../app-models/store/models.actions';
+import {RESET_REMOVED_MAP} from './../../app-maps/store/maps.actions';
 
 
 const ACTION_OFFSETS = {
@@ -91,8 +91,8 @@ export class InteractiveMapEffects {
         return of(new fromActions.SetMap(mapSelector(maps)));
       }
       return EMPTY;
-      }),
-    );
+    }),
+  );
 
   @Effect()
   resetCards: Observable<Action> = this.actions$.pipe(
@@ -235,18 +235,22 @@ export class InteractiveMapEffects {
           catchError(() => of(new loaderActions.LoadingError())),
         );
       } else {
-        return this.simulationService.simulate(payloadSimulate)
-          .pipe(
-            map((solution) => ({
-              type: payload,
-              solution,
-            })),
-            map((data) => {
-              const dataDesign = {type: data.type, solution: data.solution, design};
-              return new fromActions.AddCardFetched(dataDesign);
-            }),
-            catchError(() => of(new loaderActions.LoadingError())),
-          );
+        if (payload === CardType.DataDriven) {
+          return of(new fromActions.AddCardFetched({type: payload, solution: null, design}));
+        } else {
+          return this.simulationService.simulate(payloadSimulate)
+            .pipe(
+              map((solution) => ({
+                type: payload,
+                solution,
+              })),
+              map((data) => {
+                const dataDesign = {type: data.type, solution: data.solution, design};
+                return new fromActions.AddCardFetched(dataDesign);
+              }),
+              catchError(() => of(new loaderActions.LoadingError())),
+            );
+        }
       }
     }),
   );
