@@ -28,7 +28,7 @@ import {
   Species,
   OperationPayload,
   ObjectiveReactionPayload,
-  BoundOperationPayload, Methods,
+  BoundOperationPayload,
 } from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import {mapBiggReactionToCobra} from '../../lib';
