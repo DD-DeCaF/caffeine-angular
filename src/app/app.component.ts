@@ -16,6 +16,7 @@ import {Component, HostBinding, OnInit} from '@angular/core';
 import {Router, NavigationEnd, Event} from '@angular/router';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
+import {SwUpdate} from '@angular/service-worker';
 
 import {select, Store} from '@ngrx/store';
 
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit {
     domSanitizer: DomSanitizer,
     private store: Store<AppState>,
     private sessionService: SessionService,
+    private swUpdate: SwUpdate,
   ) {
     if (environment.GA) {
       ga('create', environment.GA.trackingID, 'auto');
@@ -118,6 +120,9 @@ export class AppComponent implements OnInit {
       }
       this.setTheme(theme);
     });
+    if (environment.production) {
+      this.swUpdate.checkForUpdate();
+    }
   }
 
   setTheme(theme: string): void {
