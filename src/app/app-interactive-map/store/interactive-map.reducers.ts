@@ -28,7 +28,7 @@ import {
   Species,
   OperationPayload,
   ObjectiveReactionPayload,
-  BoundOperationPayload,
+  BoundOperationPayload, Methods,
 } from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import {mapBiggReactionToCobra} from '../../lib';
@@ -351,7 +351,8 @@ export function interactiveMapReducer(
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
-      let actionString: OperationPayload | ObjectiveReactionPayload | BoundOperationPayload;
+      // tslint:disable-next-line:no-any
+      let actionString: any;
       switch (action.type) {
         case fromInteractiveMapActions.UPDATE_SOLUTION: {
           newCard = {
@@ -363,6 +364,7 @@ export function interactiveMapReducer(
           break;
         }
         case fromInteractiveMapActions.SET_METHOD_APPLY: {
+          actionString = action.payload;
           newCard = {
             ...card,
             method: action.payload,
