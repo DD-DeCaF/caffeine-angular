@@ -157,7 +157,7 @@
             <mat-icon matTooltip="Model changes">edit</mat-icon>
           </button>
         </div>
-        <div class="content" [hidden]="!card.selected">
+        <div class="content" *ngIf="card.selected">
           <div class="displayRow">
             <label>Species:</label>
             <label class="right-text">{{card.species.name}}</label>
