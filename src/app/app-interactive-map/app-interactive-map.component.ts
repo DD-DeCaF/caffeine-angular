@@ -17,16 +17,25 @@ import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
 
-import {Card, CardType, OperationDirection, ReactionState} from './types';
+import {
+  AddedReaction, BoundedReaction,
+  BoundOperationPayload,
+  Card,
+  CardType,
+  ObjectiveReactionPayload,
+  OperationDirection,
+  OperationPayload,
+  ReactionState,
+} from './types';
 import escherSettingsConst from './escherSettings';
 import * as fromActions from './store/interactive-map.actions';
 import {getSelectedCard} from './store/interactive-map.selectors';
-import {MatDialog, MatDialogConfig} from '@angular/material';
+import {MatDialog, MatDialogConfig, MatSnackBar} from '@angular/material';
 import {LoaderComponent} from './components/loader/loader.component';
 import {_mapValues, objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
-import {combineLatest, Subject} from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {PathwayMap} from '@dd-decaf/escher';
 import {withLatestFrom} from 'rxjs/operators';
@@ -58,6 +67,9 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
   private loadingObservable;
   private errorObservable;
   private cardSelected;
+  public progressBar: Observable<boolean>;
+  public action: Observable<string>;
+
   public isMobile: boolean;
 
   readonly escherSettings = {
@@ -91,6 +103,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     private store: Store<AppState>,
     private dialog: MatDialog,
     private ngZoneService: NgZone,
+    public snackBar: MatSnackBar,
   ) {
     this.isMobile = window.innerWidth <= MOBILE_MAX_WIDTH;
   }
@@ -166,6 +179,42 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         });
       }
     });
+
+    this.progressBar = this.store.pipe(select((store) => store.interactiveMap.progressBar));
+    this.store.pipe(select((store) => store.interactiveMap.action)).subscribe(
+      (action: OperationPayload | ObjectiveReactionPayload | BoundOperationPayload) => {
+        if (action) {
+          const {item, operationTarget, direction} = action;
+          let actionString;
+          if (typeof action === 'string') {
+            actionString = `Method changed to ${action}.`;
+          } else {
+            if (operationTarget) {
+              if (operationTarget === 'bounds') {
+                actionString = direction === 'DO' ? `Bounds of reaction ${(<BoundedReaction>item).reaction.id} were changed.` :
+                  `Bounds of reaction ${(<BoundedReaction>item).reaction.id} were reset.`;
+              } else if (operationTarget === 'addedReactions') {
+                actionString = direction === 'DO' ? `Reaction ${(<AddedReaction>item).bigg_id} was added.` :
+                  `Reaction ${(<AddedReaction>item).bigg_id} was removed.`;
+              } else {
+                if (operationTarget === 'knockoutGenes') {
+                  actionString = direction === 'DO' ? `Gene ${item} was knocked out.` :
+                    `Gene ${item} was undo knocked out.`;
+                } else {
+                  actionString = direction === 'DO' ? `Reaction ${item} was knocked out.` :
+                    `Reaction ${item} was undo knocked out.`;
+                }
+              }
+            } else {
+              actionString = direction ? `Reaction ${(<ObjectiveReactionPayload>action).reactionId} was set as objective.` :
+                `Reaction ${(<ObjectiveReactionPayload>action).reactionId} was undo set as objective.`;
+            }
+          }
+          this.snackBar.open(`${actionString}`, '', {
+            duration: 2000,
+          });
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -283,9 +332,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     if (card.type === CardType.DataDriven) {
       if (!card.solutionUpdated) {
         builder.load_model(null);
-        const reactionData = _mapValues(card.solution.flux_distribution,
-          (d) => (d.upper_bound + d.lower_bound) / 2);
-        builder.set_reaction_fva_data(reactionData);
+        builder.set_reaction_fva_data(null);
         builder.set_reaction_data(null);
       } else {
         builder.load_model(card.model);
@@ -298,6 +345,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
           builder.set_reaction_fva_data(card.solution.flux_distribution);
           builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
         }
+        this.closeDialogs();
         this.store.dispatch(new Loaded());
       }
       builder.set_knockout_reactions(card.knockoutReactions);

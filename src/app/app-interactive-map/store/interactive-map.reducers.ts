@@ -15,7 +15,21 @@
 import {PathwayMap} from '@dd-decaf/escher';
 
 import * as fromInteractiveMapActions from './interactive-map.actions';
-import {Card, CardType, OperationDirection, BoundedReaction, OperationTarget, Cobra, MapItem, AddedReaction, DeCaF, Species} from '../types';
+import {
+  Card,
+  CardType,
+  OperationDirection,
+  BoundedReaction,
+  OperationTarget,
+  Cobra,
+  MapItem,
+  AddedReaction,
+  DeCaF,
+  Species,
+  OperationPayload,
+  ObjectiveReactionPayload,
+  BoundOperationPayload,
+} from '../types';
 import {appendOrUpdate, appendOrUpdateStringList} from '../../utils';
 import {mapBiggReactionToCobra} from '../../lib';
 import {debug} from '../../logger';
@@ -49,6 +63,8 @@ export interface InteractiveMapState {
     ids: string[];
     cardsById: { [key: string]: Card; };
   };
+  progressBar: boolean;
+  action: OperationPayload | ObjectiveReactionPayload | BoundOperationPayload;
 }
 
 export const emptyCard: Card = {
@@ -91,6 +107,8 @@ export const initialState: InteractiveMapState = {
     ids: [],
     cardsById: {},
   },
+  progressBar: false,
+  action: null,
 };
 
 export const appendUnique = (array, item) => array.includes(item) ? array : [...array, item];
@@ -132,6 +150,14 @@ export function interactiveMapReducer(
 ): InteractiveMapState {
   debug('Action map:', action);
   switch (action.type) {
+    case fromInteractiveMapActions.REACTION_OPERATION:
+    case fromInteractiveMapActions.SET_OBJECTIVE_REACTION:
+    case fromInteractiveMapActions.SET_METHOD:
+    case fromInteractiveMapActions.CHANGE_SELECTED_MODEL:
+      return {
+        ...state,
+        progressBar: true,
+      };
     case fromInteractiveMapActions.SET_SELECTED_SPECIES:
       return {
         ...state,
@@ -326,6 +352,8 @@ export function interactiveMapReducer(
       const {selectedCardId: cardId} = state;
       const {[cardId]: card} = state.cards.cardsById;
       let newCard: Card;
+      // tslint:disable-next-line:no-any
+      let actionString: any;
       switch (action.type) {
         case fromInteractiveMapActions.UPDATE_SOLUTION: {
           newCard = {
@@ -337,6 +365,7 @@ export function interactiveMapReducer(
           break;
         }
         case fromInteractiveMapActions.SET_METHOD_APPLY: {
+          actionString = action.payload;
           newCard = {
             ...card,
             method: action.payload,
@@ -386,6 +415,7 @@ export function interactiveMapReducer(
               }
             }
           }
+          actionString = action.payload;
           newCard = {
             ...card,
             saved: saved || false,
@@ -407,6 +437,7 @@ export function interactiveMapReducer(
         }
         case fromInteractiveMapActions.SET_OBJECTIVE_REACTION_APPLY: {
           const {reactionId, direction} = action.payload;
+          actionString = action.payload;
           newCard = {
             ...card,
             objectiveReaction: {
@@ -427,6 +458,8 @@ export function interactiveMapReducer(
       /* tslint:enable */
       return {
         ...state,
+        progressBar: false,
+        action: actionString,
         cards: {
           ...state.cards,
           cardsById: {

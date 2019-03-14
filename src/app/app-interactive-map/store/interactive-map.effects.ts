@@ -45,8 +45,8 @@ import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {NinjaService} from './../../services/ninja-service';
 import Model = DeCaF.Model;
-import { RESET_REMOVED_MODEL_MODELS } from './../../app-models/store/models.actions';
-import { RESET_REMOVED_MAP } from './../../app-maps/store/maps.actions';
+import {RESET_REMOVED_MODEL_MODELS} from './../../app-models/store/models.actions';
+import {RESET_REMOVED_MAP} from './../../app-maps/store/maps.actions';
 
 
 const ACTION_OFFSETS = {
@@ -91,8 +91,8 @@ export class InteractiveMapEffects {
         return of(new fromActions.SetMap(mapSelector(maps)));
       }
       return EMPTY;
-      }),
-    );
+    }),
+  );
 
   @Effect()
   resetCards: Observable<Action> = this.actions$.pipe(
@@ -235,18 +235,22 @@ export class InteractiveMapEffects {
           catchError(() => of(new loaderActions.LoadingError())),
         );
       } else {
-        return this.simulationService.simulate(payloadSimulate)
-          .pipe(
-            map((solution) => ({
-              type: payload,
-              solution,
-            })),
-            map((data) => {
-              const dataDesign = {type: data.type, solution: data.solution, design};
-              return new fromActions.AddCardFetched(dataDesign);
-            }),
-            catchError(() => of(new loaderActions.LoadingError())),
-          );
+        if (payload === CardType.DataDriven) {
+          return of(new fromActions.AddCardFetched({type: payload, solution: null, design}));
+        } else {
+          return this.simulationService.simulate(payloadSimulate)
+            .pipe(
+              map((solution) => ({
+                type: payload,
+                solution,
+              })),
+              map((data) => {
+                const dataDesign = {type: data.type, solution: data.solution, design};
+                return new fromActions.AddCardFetched(dataDesign);
+              }),
+              catchError(() => of(new loaderActions.LoadingError())),
+            );
+        }
       }
     }),
   );
@@ -324,7 +328,11 @@ export class InteractiveMapEffects {
       };
 
       if (selectedCard.type === CardType.DataDriven) {
-        payload.operations = selectedCard.operations;
+        if (selectedCard.solutionUpdated) {
+          payload.operations = selectedCard.operations;
+        } else {
+          return of(newAction);
+        }
       } else {
         const addedReactions = selectedCard.addedReactions.map((reaction: types.AddedReaction): types.DeCaF.Operation => ({
           operation: 'add',
@@ -408,15 +416,13 @@ export class InteractiveMapEffects {
   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD,
-      fromActions.REACTION_OPERATION, fromActions.SET_OBJECTIVE_REACTION, fromActions.SET_OPERATIONS,
-      sharedActions.FETCH_DESIGNS, fromActions.SET_METHOD, fromActions.CHANGE_SELECTED_MODEL),
+      sharedActions.FETCH_DESIGNS),
     mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
   loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED, fromActions.UPDATE_SOLUTION,
-      fromActions.REACTION_OPERATION_APPLY, sharedActions.SET_DESIGNS, fromActions.SET_METHOD_APPLY,
+    ofType(fromActions.LOADED, fromActions.UPDATE_SOLUTION, sharedActions.SET_DESIGNS,
       RESET_REMOVED_MODEL_MODELS, RESET_REMOVED_MAP, fromActions.ADD_CARD_FETCHED),
     mapTo(new loaderActions.LoadingFinished()),
   );

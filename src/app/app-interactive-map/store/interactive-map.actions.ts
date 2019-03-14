@@ -249,6 +249,9 @@ export type InteractiveMapActions =
   DeleteCard |
   RenameCard |
   SetMethodApply |
+  ReactionOperation |
+  SetObjectiveReaction |
+  SetMethod |
   ReactionOperationApply |
   SetObjectiveReactionApply |
   SaveDesign |

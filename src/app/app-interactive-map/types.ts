@@ -67,6 +67,8 @@ export type ObjectiveDirection = 'min' | 'max';
 export interface ObjectiveReactionPayload {
   direction: ObjectiveDirection;
   reactionId: string;
+  operationTarget?: string;
+  item?: string;
 }
 
 export type ObjectiveReaction = ObjectiveReactionPayload;
