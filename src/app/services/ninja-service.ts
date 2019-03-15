@@ -91,7 +91,7 @@ export class NinjaService {
     const metabolitesInModel = new Set(pathwayPrediction.model.model_serialized.metabolites.map((metabolite) => metabolite.id));
 
     const addedReactions = addedReactionIds.map((reactionId) => {
-      const mnxMetabolitesInReaction = reactions[reactionId].metabolites;
+      const mnxMetabolitesInReaction = reactions[reactionId].metabolites || [];
       const mnxMetaboliteIds = Object.keys(mnxMetabolitesInReaction);
       return this.mapMnxMetabolitesToBigg(mnxMetaboliteIds).pipe(map((ids) => {
         const metabolites_to_add = [];
