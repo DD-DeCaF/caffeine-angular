@@ -20,5 +20,9 @@ export const activeModels = createSelector(
   (state: AppState) => state.shared.modelHeaders,
   (state: AppState) => state.designTool.selectedSpecies,
   (models, selectedSpecies) => models
-    .filter((m) => m.organism_id === selectedSpecies.id),
+    .filter((m) => {
+      if (m && selectedSpecies) {
+        return m.organism_id === selectedSpecies.id;
+      }
+    }),
 );
