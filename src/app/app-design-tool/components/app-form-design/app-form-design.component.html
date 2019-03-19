@@ -111,8 +111,6 @@
       #design>DESIGN
     </button>
   </form>
-</mat-card>
-<mat-card class="designCard">
   <div class="create-project" *ngIf="designForm.value.project_id === 'add'">
     <h3 class="title">Add new project</h3>
     <mat-form-field>
@@ -121,22 +119,8 @@
     </mat-form-field>
     <mat-card-actions align="end">
       <div fxFlex></div>
-      <div fxFlex fxLayoutAlign="space-between">
-        <button
-          type="button"
-          mat-button
-          (click)="cancelProject()"
-        >Cancel
-        </button>
-        <button
-          type="button"
-          mat-button
-          (click)="submitProject()"
-          [disabled]="!isValidProject()"
-        >
-          Create
-        </button>
-      </div>
+      <button type="button" mat-button (click)="cancelProject()">Cancel</button>
+      <button type="button" mat-button (click)="submitProject()" [disabled]="!isValidProject()">Create</button>
     </mat-card-actions>
   </div>
 </mat-card>
