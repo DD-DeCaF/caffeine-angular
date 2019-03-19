@@ -264,4 +264,5 @@ export type InteractiveMapActions =
   SetFullModelDataDriven |
   SetModelDataDriven |
   UpdateSolution |
+  SetMap |
   Drop;

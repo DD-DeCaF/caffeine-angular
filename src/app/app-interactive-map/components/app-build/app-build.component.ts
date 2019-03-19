@@ -154,7 +154,6 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
         map((change: MatSelectChange): types.MapItem => change.value),
       )
       .subscribe((mapItem: types.MapItem) => {
-        this.store.dispatch(new Loading());
         this.store.dispatch(new SetMap(mapItem));
       });
     this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards)).subscribe((cards) => {
