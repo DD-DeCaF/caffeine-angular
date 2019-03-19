@@ -59,7 +59,6 @@ import {LoaderComponent} from '../loader/loader.component';
 import {DesignRequest} from '../../../app-designs/types';
 import {WarningSaveComponent} from './components/warning-save/warning-save.component';
 import {SessionState} from './../../../session/store/session.reducers';
-import {Loading} from './../loader/store/loader.actions';
 
 @Component({
   selector: 'app-build',
