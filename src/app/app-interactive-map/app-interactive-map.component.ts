@@ -74,7 +74,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
 
   readonly escherSettings = {
     ...escherSettingsConst,
-    reaction_state: (args) => this.reactionState(args),
+    reaction_state: (id, type) => this.reactionState(id, type),
     tooltip_callbacks: {
       knockout: (args) => {
         this.handleKnockout(args);
@@ -303,15 +303,19 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     return reaction ? reaction.lowerBound : reactionModel ? reactionModel.lower_bound : null;
   }
 
-  reactionState(reactionId: string): ReactionState {
+  reactionState(id: string, type?: string): ReactionState {
     return {
-      includedInModel: this.cardSelected.type === CardType.DataDriven ? false : Boolean(this.card.model.reactions.find((r) => r.id === reactionId)),
-      knockout: this.card.knockoutReactions.includes(reactionId),
-      knockoutGenes: this.card.knockoutGenes.includes(reactionId),
+      includedInModel: this.cardSelected.type === CardType.DataDriven
+        ? false
+        : type === 'gene'
+          ? Boolean(this.card.model.genes.find((g) => g.id === id))
+          : Boolean(this.card.model.reactions.find((r) => r.id === id)),
+      knockout: this.card.knockoutReactions.includes(id),
+      knockoutGenes: this.card.knockoutGenes.includes(id),
       objective: this.card.objectiveReaction,
       bounds: {
-        lowerbound: this.lowerBound(reactionId),
-        upperbound: this.upperBound(reactionId),
+        lowerbound: this.lowerBound(id),
+        upperbound: this.upperBound(id),
       },
     };
   }
