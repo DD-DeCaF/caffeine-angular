@@ -373,8 +373,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       );
       builder.set_knockout_reactions(card.knockoutReactions);
       builder.set_knockout_genes(card.knockoutGenes);
-      builder.set_knockout_reactions(card.knockoutReactions);
-      builder.set_knockout_genes(card.knockoutGenes);
       builder._update_data(true, true);
       this.store.dispatch(new Loaded());
     }
