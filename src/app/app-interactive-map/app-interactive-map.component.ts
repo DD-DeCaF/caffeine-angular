@@ -348,13 +348,13 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         this.closeDialogs();
         this.store.dispatch(new Loaded());
       }
-      builder.set_knockout_reactions(card.knockoutReactions);
-      builder.set_knockout_genes(card.knockoutGenes);
       builder.set_added_reactions(card.addedReactions
         .filter((reaction) => !reaction.bigg_id.startsWith('DM_'))
         .map((reaction) => reaction.bigg_id),
       );
       builder.set_highlight_reactions(card.measurements.map((m) => m.id));
+      builder.set_knockout_reactions(card.knockoutReactions);
+      builder.set_knockout_genes(card.knockoutGenes);
       builder._update_data(true, true);
     } else {
       builder.load_model(card.model);
@@ -367,13 +367,12 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         builder.set_reaction_fva_data(card.solution.flux_distribution);
         builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
       }
-      builder.set_knockout_reactions(card.knockoutReactions);
-      builder.set_knockout_genes(card.knockoutGenes);
       builder.set_added_reactions(card.addedReactions
         .filter((reaction) => !reaction.bigg_id.startsWith('DM_'))
         .map((reaction) => reaction.bigg_id),
       );
-      builder.set_highlight_reactions(card.measurements.map((m) => m.id));
+      builder.set_knockout_reactions(card.knockoutReactions);
+      builder.set_knockout_genes(card.knockoutGenes);
       builder._update_data(true, true);
       this.store.dispatch(new Loaded());
     }
