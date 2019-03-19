@@ -153,6 +153,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.REACTION_OPERATION:
     case fromInteractiveMapActions.SET_OBJECTIVE_REACTION:
     case fromInteractiveMapActions.SET_METHOD:
+    case fromInteractiveMapActions.SET_MAP:
     case fromInteractiveMapActions.CHANGE_SELECTED_MODEL:
       return {
         ...state,
@@ -198,6 +199,7 @@ export function interactiveMapReducer(
         // tslint:disable-next-line:no-any
         mapData: (<any> action.payload.mapData).map as PathwayMap,
         selectedMap: action.payload.mapItem,
+        progressBar: false,
       };
     case fromInteractiveMapActions.RESET_CARDS:
       return {
