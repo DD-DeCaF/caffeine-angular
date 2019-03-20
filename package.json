@@ -26,7 +26,7 @@
     "@angular/platform-server": "^7.2.6",
     "@angular/router": "^7.2.6",
     "@angular/service-worker": "^7.2.7",
-    "@dd-decaf/escher": "^1.8.5-decaf",
+    "@dd-decaf/escher": "^1.8.6-decaf",
     "@ngrx/effects": "^6.1.0",
     "@ngrx/store": "^6.1.0",
     "@ngrx/store-devtools": "^6.1.0",
