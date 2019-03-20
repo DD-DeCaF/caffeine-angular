@@ -186,7 +186,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         if (action) {
           const {item, operationTarget, direction} = action;
           let actionString;
-          if (typeof action === 'string') {
+          if (typeof action === 'string' || action instanceof String) {
             actionString = `Method changed to ${action}.`;
           } else {
             if (operationTarget) {
