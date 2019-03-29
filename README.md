@@ -1,5 +1,5 @@
 # Caffeine
-<a href="https://zenhub.com"><img src="https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png"></a>
+[![DOI](https://zenodo.org/badge/137465781.svg)](https://zenodo.org/badge/latestdoi/137465781)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.3.
 
