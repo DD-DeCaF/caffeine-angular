@@ -42,4 +42,5 @@ export interface Configuration {
   };
   hotjar: boolean;
   trustedURLs: string[];
+  versionCheckURL?: string;
 }

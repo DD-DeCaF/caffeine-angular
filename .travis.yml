@@ -38,6 +38,7 @@ cache:
 
 script:
   - node scripts/transpileMd.js src/app/app-welcome/app-welcome.content.md src/app/app-welcome/app-welcome.content.html
+  - node ./scripts/post-build.js
   - ng lint
   - ng test --watch false
   - ./scripts/create_sentry_release.sh
