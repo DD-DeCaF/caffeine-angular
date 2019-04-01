@@ -66,5 +66,5 @@ export class StartDesign implements Action {
   constructor(public payload: typesDesign.Design) {}
 }
 
-export type DesignToolActions = SetSelectedSpeciesDesign  | FetchProductsDesign | SetProductsDesign | StartDesign | AbortJobDesign
+export type DesignToolActions = SetSelectedSpeciesDesign | FetchProductsDesign | SetProductsDesign | StartDesign | AbortJobDesign
   | SetLastJobDesign;
