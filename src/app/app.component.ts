@@ -35,7 +35,7 @@ import {SelectFirstModel, SetModelDataDriven} from './app-interactive-map/store/
 
 import {themes} from './themes';
 import {withLatestFrom} from 'rxjs/operators';
-import {VersionCheckService} from "./services/version-check.service";
+import {VersionCheckService} from './services/version-check.service';
 
 @Component({
   selector: 'app-root',
