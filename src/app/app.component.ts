@@ -35,6 +35,7 @@ import {SelectFirstModel, SetModelDataDriven} from './app-interactive-map/store/
 
 import {themes} from './themes';
 import {withLatestFrom} from 'rxjs/operators';
+import {VersionCheckService} from "./services/version-check.service";
 
 @Component({
   selector: 'app-root',
@@ -50,6 +51,7 @@ export class AppComponent implements OnInit {
     router: Router,
     matIconRegistry: MatIconRegistry,
     domSanitizer: DomSanitizer,
+    private versionCheckService: VersionCheckService,
     private store: Store<AppState>,
     private sessionService: SessionService,
     private swUpdate: SwUpdate,
@@ -122,6 +124,7 @@ export class AppComponent implements OnInit {
     });
     if (environment.production) {
       this.swUpdate.checkForUpdate();
+      this.versionCheckService.initVersionCheck(environment.versionCheckURL);
     }
   }
 

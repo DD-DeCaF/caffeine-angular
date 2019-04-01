@@ -74,6 +74,7 @@ import {MapsService} from './services/maps.service';
 import {MapsEffects} from './app-maps/store/maps.effects';
 import {DesignService} from './services/design.service';
 import {AppDesignsModule} from './app-designs/app-designs.module';
+import {VersionCheckService} from './services/version-check.service';
 
 
 if (environment.sentry) {
@@ -148,6 +149,7 @@ export class RavenErrorHandler implements ErrorHandler {
     MapsService,
     DesignService,
     FormBuilder,
+    VersionCheckService,
     ...(environment.sentry ? [{provide: ErrorHandler, useClass: RavenErrorHandler}] : []),
   ],
   bootstrap: [AppComponent],
