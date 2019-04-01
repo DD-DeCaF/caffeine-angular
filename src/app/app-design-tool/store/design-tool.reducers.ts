@@ -45,11 +45,6 @@ export function designToolReducer(
         ...state,
         selectedSpecies: action.payload,
       };
-    case fromDesingToolActions.SET_MODEL_DESIGN:
-      return {
-        ...state,
-        selectedModel: action.payload,
-      };
     case fromDesingToolActions.SET_PRODUCTS_DESIGN:
       return {
         ...state,

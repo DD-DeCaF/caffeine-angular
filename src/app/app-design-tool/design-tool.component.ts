@@ -14,7 +14,6 @@
 
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-design-tool',
@@ -25,7 +24,6 @@ import {Observable} from 'rxjs';
 export class DesignToolComponent {
 
   public designForm: FormGroup;
-  public designStarted: Observable<boolean>;
 
   constructor(
     public fb: FormBuilder,

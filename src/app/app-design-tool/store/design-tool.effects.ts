@@ -15,7 +15,7 @@
 import {Injectable} from '@angular/core';
 import {Action} from '@ngrx/store';
 import {Actions, Effect, ofType} from '@ngrx/effects';
-import {concatMapTo, map, switchMap} from 'rxjs/operators';
+import {map, switchMap} from 'rxjs/operators';
 import * as fromActions from './design-tool.actions';
 import {Observable} from 'rxjs';
 import {WarehouseService} from '../../services/warehouse.service';
@@ -31,14 +31,6 @@ export const preferredModelBySpecies = {
 
 @Injectable()
 export class DesignToolEffects {
-
-  @Effect()
-  initDesign: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.INIT_DESIGN),
-    concatMapTo([
-      new fromActions.FetchProductsDesign(),
-    ]),
-  );
 
   @Effect()
   setSpeciesDesign: Observable<Action> = this.actions$.pipe(
@@ -96,16 +88,6 @@ export class DesignToolEffects {
     }),
   );
 
-  @Effect()
-  selectFirstModel: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SELECT_FIRST_MODEL),
-    map((payload: fromActions.SelectFirstModel) => {
-      const selectedModel = preferredModelBySpecies[payload.species.id] ? payload.models.find((model) =>
-        model.name === preferredModelBySpecies[payload.species.id]) :
-        payload.models.filter((model) => model.organism_id === payload.species.id)[0];
-      return new fromActions.SetModelDesign(selectedModel);
-    }),
-  );
 
   constructor(
     private actions$: Actions,
