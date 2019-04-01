@@ -25,7 +25,6 @@ import {Observable} from 'rxjs';
 export class DesignToolComponent {
 
   public designForm: FormGroup;
-  public designStarted: Observable<boolean>;
 
   constructor(
     public fb: FormBuilder,

@@ -17,10 +17,7 @@ import * as types from '../../app-interactive-map/types';
 import * as typesDesign from '../types';
 import {StatePrediction} from '../types';
 
-export const INIT_DESIGN = 'INIT_DESIGN';
 export const SET_SELECTED_SPECIES_DESIGN = 'SET_SELECTED_SPECIES_DESIGN';
-export const SET_MODEL_DESIGN = 'SET_MODEL_DESIGN';
-export const SELECT_FIRST_MODEL = 'SELECT_FIRST_MODEL';
 export const FETCH_PRODUCTS_DESIGN = 'FETCH_PRODUCTS_DESIGN';
 export const SET_PRODUCTS_DESIGN = 'SET_PRODUCTS_DESIGN';
 export const FETCH_JOBS_DESIGN = 'FETCH_JOBS_DESIGN';
@@ -29,24 +26,10 @@ export const SET_LAST_JOB_DESIGN = 'SET_LAST_JOB_DESIGN';
 export const ABORT_JOB_DESIGN = 'ABORT_JOB_DESIGN';
 export const START_DESIGN = 'START_DESIGN';
 
-export class InitDesign implements Action {
-  readonly type = INIT_DESIGN;
-}
-
 
 export class SetSelectedSpeciesDesign implements Action {
   readonly type = SET_SELECTED_SPECIES_DESIGN;
   constructor(public payload: types.Species) {}
-}
-
-export class SetModelDesign implements Action {
-  readonly type = SET_MODEL_DESIGN;
-  constructor(public payload: types.DeCaF.ModelHeader) {}
-}
-
-export class SelectFirstModel implements Action {
-  readonly type = SELECT_FIRST_MODEL;
-  constructor(public species: types.Species, public models: types.DeCaF.ModelHeader[]) {}
 }
 
 export class FetchProductsDesign implements Action {
@@ -83,5 +66,5 @@ export class StartDesign implements Action {
   constructor(public payload: typesDesign.Design) {}
 }
 
-export type DesignToolActions = InitDesign | SetSelectedSpeciesDesign | SetModelDesign | FetchProductsDesign | SetProductsDesign | StartDesign | AbortJobDesign
-  | SetLastJobDesign | SelectFirstModel;
+export type DesignToolActions = SetSelectedSpeciesDesign  | FetchProductsDesign | SetProductsDesign | StartDesign | AbortJobDesign
+  | SetLastJobDesign;

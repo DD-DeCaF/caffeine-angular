@@ -21,7 +21,6 @@ import {AppState} from '../../../store/app.reducers';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {
-  InitDesign, SelectFirstModel, SetModelDesign,
   SetSelectedSpeciesDesign,
   StartDesign,
 } from '../../store/design-tool.actions';
@@ -33,6 +32,7 @@ import {WarehouseService} from '../../../services/warehouse.service';
 import * as actions from '../../../store/shared.actions';
 import {SessionService} from '../../../session/session.service';
 import {IamService} from '../../../services/iam.service';
+import {preferredModelBySpecies} from '../../store/design-tool.effects';
 
 
 @Component({
@@ -84,8 +84,6 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new InitDesign());
-
     this.allSpecies = this.store.pipe(select((store) => store.shared.allSpecies));
     this.selectedSpecies = this.store.pipe(select((store) => store.designTool.selectedSpecies));
     this.store.pipe(
@@ -98,15 +96,15 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
     combineLatest(this.selectedSpecies, this.models).subscribe(([species, models]) => {
       if (species && models) {
-        this.store.dispatch(new SelectFirstModel(species, models));
+        const selectedModel = preferredModelBySpecies[species.id] ? models.find((model) =>
+          model.name === preferredModelBySpecies[species.id]) :
+          models.filter((model) => model.organism_id === species.id)[0];
+          this.designForm.patchValue({
+            model: selectedModel,
+          });
       }
     });
     this.allProjects = this.store.pipe(select((store) => store.shared.projects));
-    this.store.pipe(select((store) => store.designTool.selectedModel)).subscribe((selectedModel) => {
-      this.designForm.patchValue({
-        model: selectedModel,
-      });
-    });
     this.products = this.designForm
       .get('product')
       .valueChanges
@@ -137,7 +135,9 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
 
     this.modelSelector.selectionChange
       .subscribe((change: MatSelectChange) => {
-        this.store.dispatch(new SetModelDesign(change.value));
+        this.designForm.patchValue({
+          model: change.value,
+        });
       });
   }
 

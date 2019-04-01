@@ -33,14 +33,6 @@ export const preferredModelBySpecies = {
 export class DesignToolEffects {
 
   @Effect()
-  initDesign: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.INIT_DESIGN),
-    concatMapTo([
-      new fromActions.FetchProductsDesign(),
-    ]),
-  );
-
-  @Effect()
   setSpeciesDesign: Observable<Action> = this.actions$.pipe(
     ofType(sharedActions.SET_SPECIES),
     map((action: sharedActions.SetSpecies) => new fromActions.SetSelectedSpeciesDesign(WarehouseService.preferredSpecies(action.payload))));
@@ -96,16 +88,6 @@ export class DesignToolEffects {
     }),
   );
 
-  @Effect()
-  selectFirstModel: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.SELECT_FIRST_MODEL),
-    map((payload: fromActions.SelectFirstModel) => {
-      const selectedModel = preferredModelBySpecies[payload.species.id] ? payload.models.find((model) =>
-        model.name === preferredModelBySpecies[payload.species.id]) :
-        payload.models.filter((model) => model.organism_id === payload.species.id)[0];
-      return new fromActions.SetModelDesign(selectedModel);
-    }),
-  );
 
   constructor(
     private actions$: Actions,
