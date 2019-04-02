@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
-import {AppState} from '../../../store/app.reducers';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {MatDialogRef} from '@angular/material';
 import {select, Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
-import {isLoading} from './store/loader.selectors';
-import {MAT_DIALOG_DATA} from '@angular/material';
+
+import {AppState} from '../../../store/app.reducers';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-loader',
@@ -26,16 +26,27 @@ import {MAT_DIALOG_DATA} from '@angular/material';
   changeDetection: ChangeDetectionStrategy.OnPush,
 
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements OnInit, OnDestroy {
 
-  constructor(
-    private store: Store<AppState>,
-    @Inject(MAT_DIALOG_DATA) public data: string) { }
+  private loadingSubscription: Subscription;
 
-  loading: Observable<boolean>;
+  constructor (
+    public dialogRef: MatDialogRef<LoaderComponent>,
+    public store: Store<AppState>,
+  ) {}
 
   ngOnInit(): void {
-    this.loading = this.store.pipe(select(isLoading));
+    this.loadingSubscription = this.store.pipe(select((store) => store.loader.loading)).subscribe((loading) => {
+      if (!loading) {
+        setTimeout(() => {
+          this.dialogRef.close();
+        }, 0);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.loadingSubscription.unsubscribe();
   }
 }
 

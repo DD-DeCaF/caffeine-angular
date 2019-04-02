@@ -155,6 +155,7 @@ export function interactiveMapReducer(
     case fromInteractiveMapActions.SET_METHOD:
     case fromInteractiveMapActions.SET_MAP:
     case fromInteractiveMapActions.CHANGE_SELECTED_MODEL:
+    case fromInteractiveMapActions.SHOW_PROGRESS_BAR:
       return {
         ...state,
         progressBar: true,

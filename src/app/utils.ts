@@ -17,6 +17,8 @@
 // If in doubt about where to put a certain helper, think about if it could be published.
 // If it's too specific to this application, place it in lib, else utils.
 
+import {MatDialogConfig} from '@angular/material';
+
 export const notNull = (data) => data !== null;
 
 export const appendOrUpdate = <T>(predicate: (a: T) => (b: T) => boolean) => (array: T[], item: T) => {
@@ -65,3 +67,9 @@ export const _mapValues = (object, callback) =>
     ...Object.entries(object)
       .map(([key, value]) => ({[key]: callback(value)})));
 
+
+export const dialogConfig = new MatDialogConfig();
+dialogConfig.disableClose = true;
+dialogConfig.autoFocus = true;
+dialogConfig.panelClass = 'loader';
+dialogConfig.id = 'loading';

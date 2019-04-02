@@ -12,12 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {select, Store} from '@ngrx/store';
+import {LoaderComponent} from '../app-interactive-map/components/loader/loader.component';
+import {AppState} from '../store/app.reducers';
+import {MatDialog} from '@angular/material';
+import {Subscription} from 'rxjs';
+import {dialogConfig} from '../utils';
 
 @Component({
   selector: 'app-jobs',
   template: `<router-outlet></router-outlet>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JobsComponent {
+export class JobsComponent implements OnInit, OnDestroy {
+  public loadingObservable: Subscription;
+  public dialogRef;
+
+  constructor(
+    private store: Store<AppState>,
+    private dialog: MatDialog,
+  ) {
+  }
+  ngOnInit(): void {
+    this.loadingObservable = this.store.pipe(select((store) => store.loader.loading)).subscribe((loading: boolean) => {
+      if (loading) {
+        setTimeout(() => {
+          this.dialogRef = this.dialog.open(LoaderComponent, dialogConfig);
+        }, 0);
+      } else {
+        if (this.dialogRef) {
+          this.dialogRef.close();
+        }
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.loadingObservable.unsubscribe();
+  }
 }

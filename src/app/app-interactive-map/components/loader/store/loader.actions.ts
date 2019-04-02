@@ -18,6 +18,7 @@ import {Action} from '@ngrx/store';
 export const LOADING = 'LOADING';
 export const LOADING_FINISHED = 'LOADING_FINISHED';
 export const LOADING_ERROR = 'LOADING_ERROR';
+export const LOADING_ERROR_FINISHED = 'LOADING_ERROR_FINISHED';
 
 
 export class Loading implements Action {
@@ -32,4 +33,7 @@ export class LoadingError implements Action {
   readonly type = LOADING_ERROR;
 }
 
-export type LoaderActions = Loading | LoadingFinished | LoadingError;
+export class LoadingErrorFinished implements Action {
+  readonly type = LOADING_ERROR_FINISHED;
+}
+export type LoaderActions = Loading | LoadingFinished | LoadingError | LoadingErrorFinished;

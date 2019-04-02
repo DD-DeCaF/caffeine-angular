@@ -38,9 +38,9 @@ import {getSelectedCard} from '../../../../../app-interactive-map/store/interact
 import {AddCard} from '../../../../../app-interactive-map/store/interactive-map.actions';
 import {CardType, DeCaF} from '../../../../../app-interactive-map/types';
 import {Router} from '@angular/router';
-import {isLoading} from '../../../../../app-interactive-map/components/loader/store/loader.selectors';
 import {LoaderComponent} from '../../../../../app-interactive-map/components/loader/loader.component';
 import {ModalErrorComponent} from '../../../../../app-interactive-map/components/modal-error/modal-error.component';
+import {Loading, LoadingFinished} from "../../../../../app-interactive-map/components/loader/store/loader.actions";
 
 const indicators = {
   delta: 'Δ',
@@ -86,8 +86,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   public methodFilter = new FormControl('');
   private lastPrediction: PathwayPredictionResult;
   private cardAdded = false;
-  private loadingObservable;
-  private errorObservable;
   public showAllManipulations = false;
   public showAllKnockouts = false;
 
@@ -118,7 +116,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   constructor(
     private store: Store<AppState>,
     private router: Router,
-    private dialog: MatDialog,
     public snackBar: MatSnackBar,
   ) {
   }
@@ -325,7 +322,7 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   addCards(): void {
-    this.subscribeObservableLoading();
+    this.store.dispatch(new Loading());
     const selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
     );
@@ -342,9 +339,11 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
                 this.lastPrediction.heterologous_reactions[this.lastPrediction.heterologous_reactions.length - 1]);
               if (lastAddedReaction) {
                 this.cardAdded = false;
+                this.store.dispatch(new LoadingFinished());
                 this.router.navigateByUrl('/interactiveMap');
               }
             } else {
+              this.store.dispatch(new LoadingFinished());
               this.router.navigateByUrl('/interactiveMap');
             }
           }
@@ -359,46 +358,6 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
         this.cardAdded = true;
       }
     }
-  }
-
-  public subscribeObservableLoading(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loading';
-
-    const dialogConfigError = new MatDialogConfig();
-    dialogConfigError.disableClose = true;
-    dialogConfigError.autoFocus = true;
-    dialogConfigError.panelClass = 'loader';
-    dialogConfigError.id = 'error';
-
-    let error = false;
-
-    this.loadingObservable = this.store.pipe(
-      select(isLoading),
-    ).subscribe((loading) => {
-      if (loading) {
-        // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
-        // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
-        // setTimeout(() => ...., 0);
-        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
-          setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
-        }
-      } else {
-        this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
-          if (loadingError && !error) {
-            setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
-            error = true;
-          } else {
-            this.dialog.closeAll();
-            error = false;
-
-          }
-        });
-      }
-    });
   }
 
   getValues(): void {
@@ -480,11 +439,5 @@ export class JobResultTableComponent implements AfterViewInit, OnInit, OnDestroy
   }
 
   ngOnDestroy(): void {
-    if (this.loadingObservable) {
-      this.loadingObservable.unsubscribe();
-    }
-    if (this.errorObservable) {
-      this.errorObservable.unsubscribe();
-    }
   }
 }

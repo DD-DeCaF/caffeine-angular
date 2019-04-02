@@ -32,6 +32,8 @@ import {DesignService} from '../services/design.service';
 import {DesignRequest} from '../app-designs/types';
 import {Experiment} from '../app-interactive-map/types';
 import {mapBiggReactionToCobra} from '../lib';
+import {LOGOUT} from "../session/store/session.actions";
+import {SetProjects} from "./shared.actions";
 
 
 @Injectable()
@@ -125,6 +127,17 @@ export class SharedEffects {
       map((payload: Experiment[]) => new fromActions.SetExperiments(payload)),
     )),
   );
+
+  @Effect()
+  logOut: Observable<Action> = this.actions$.pipe(
+    ofType(LOGOUT),
+    switchMap(() =>
+      [
+        new fromActions.SetProjects([]),
+        new fromActions.SetJobs([]),
+        new fromActions.SetDesigns([]),
+      ],
+    ));
 
   constructor(
     private actions$: Actions,
