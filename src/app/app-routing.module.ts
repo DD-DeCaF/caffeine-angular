@@ -83,7 +83,7 @@ const appRoutes: Route[] = [
   ],
   providers: [
     AuthGuard,
-  ]
+  ],
 })
 export class AppRoutingModule {
 }

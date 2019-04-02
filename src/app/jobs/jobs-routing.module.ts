@@ -16,11 +16,13 @@ import {Route} from '@angular/router';
 import { JobListComponent } from './components/job-list/job-list.component';
 import { JobDetailComponent } from './components/job-detail/job-detail.component';
 import { JobsComponent } from './jobs.component';
+import { AuthGuard } from '../auth-guard.service';
 
 export const jobsRoutes: Route[] = [
   {
     path: 'jobs',
     component: JobsComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',

@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from './store/app.reducers';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   private sessionState$: Observable<SessionState>;
@@ -15,18 +15,18 @@ export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,
     private store: Store<AppState>,
-  ) { 
+  ) {
     this.sessionState$ = this.store.select('session');
   }
 
-  canActivate() {
+  canActivate(): Observable<boolean> {
     return this.sessionState$.pipe(map((state) => {
       if (state.authenticated) {
-        return true
+        return true;
       }
 
       this.router.navigateByUrl('');
-      return false
-    }))
+      return false;
+    }));
   }
 }
