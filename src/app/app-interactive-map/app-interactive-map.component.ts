@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy, NgZone, ChangeDetectionStrategy} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -34,12 +34,11 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {_mapValues, objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
-import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
+import {combineLatest, Observable, Subject} from 'rxjs';
 import {PathwayMap} from '@dd-decaf/escher';
 import {withLatestFrom} from 'rxjs/operators';
 import {SetMap} from './store/interactive-map.actions';
 import {ErrorMsgComponent} from './components/app-reaction/components/error-msg/error-msg.component';
-import {LoaderComponent} from './components/loader/loader.component';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
 const MOBILE_MAX_WIDTH = 425;

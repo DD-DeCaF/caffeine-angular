@@ -17,7 +17,7 @@ import {MatDialogRef} from '@angular/material';
 import {select, Store} from '@ngrx/store';
 
 import {AppState} from '../../../store/app.reducers';
-import {Subscription} from "rxjs";
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-loader',

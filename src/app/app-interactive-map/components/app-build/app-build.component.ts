@@ -23,7 +23,7 @@ import {
 } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
-import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
+import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';

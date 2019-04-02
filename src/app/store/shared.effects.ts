@@ -32,8 +32,7 @@ import {DesignService} from '../services/design.service';
 import {DesignRequest} from '../app-designs/types';
 import {Experiment} from '../app-interactive-map/types';
 import {mapBiggReactionToCobra} from '../lib';
-import {LOGOUT} from "../session/store/session.actions";
-import {SetProjects} from "./shared.actions";
+import {LOGOUT} from '../session/store/session.actions';
 
 
 @Injectable()

@@ -45,8 +45,6 @@ import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {NinjaService} from './../../services/ninja-service';
 import Model = DeCaF.Model;
-import {RESET_REMOVED_MODEL_MODELS} from './../../app-models/store/models.actions';
-import {RESET_REMOVED_MAP} from './../../app-maps/store/maps.actions';
 
 
 const ACTION_OFFSETS = {

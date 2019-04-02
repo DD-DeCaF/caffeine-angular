@@ -22,7 +22,7 @@ import {
   OnDestroy,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import {MatDialog, MatDialogConfig, MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
+import {MatSort, MatTableDataSource, MatPaginator} from '@angular/material';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
 import {Manipulation, PathwayPredictionReactions, PathwayPredictionResult, PathwayPredictionMetabolites} from '../../../../types';
@@ -38,9 +38,7 @@ import {getSelectedCard} from '../../../../../app-interactive-map/store/interact
 import {AddCard} from '../../../../../app-interactive-map/store/interactive-map.actions';
 import {CardType, DeCaF} from '../../../../../app-interactive-map/types';
 import {Router} from '@angular/router';
-import {LoaderComponent} from '../../../../../app-interactive-map/components/loader/loader.component';
-import {ModalErrorComponent} from '../../../../../app-interactive-map/components/modal-error/modal-error.component';
-import {Loading, LoadingFinished} from "../../../../../app-interactive-map/components/loader/store/loader.actions";
+import {Loading, LoadingFinished} from '../../../../../app-interactive-map/components/loader/store/loader.actions';
 
 const indicators = {
   delta: 'Δ',
