@@ -27,6 +27,7 @@ import {Logout, Login} from './store/session.actions';
 import {AUTHORIZATION_TOKEN, REFRESH_TOKEN} from './consts';
 import {FetchDesigns, FetchModels, FetchProjects} from '../store/shared.actions';
 import * as sharedActions from '../store/shared.actions';
+import {Router} from '@angular/router';
 
 class UserCredentials {
   constructor(
@@ -69,6 +70,7 @@ export class SessionService {
   constructor(
     private http: HttpClient,
     private store: Store<AppState>,
+    private router: Router,
   ) {
     this.githubProvider.addScope('user:email');
     this.googleProvider.addScope('email');
@@ -153,6 +155,12 @@ export class SessionService {
     this.store.dispatch(new sharedActions.FetchMaps());
     this.store.dispatch(new sharedActions.FetchModels());
     this.store.dispatch(new Logout());
+    if (this.router.url === '/projects' ||
+        this.router.url === '/pathways' ||
+        this.router.url === '/designs' ||
+        this.router.url.startsWith('/jobs')) {
+        this.router.navigateByUrl('');
+    }
   }
 
   public isTrustedURL(url: string): boolean {
