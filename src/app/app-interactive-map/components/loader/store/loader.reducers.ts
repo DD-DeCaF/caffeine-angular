@@ -17,13 +17,11 @@ import { debug } from '../../../../logger';
 
 
 export interface LoaderState {
-  count: number;
   loadingError: boolean;
   loading: boolean;
 }
 
 export const initialState: LoaderState = {
-  count: 0,
   loadingError: false,
   loading: false,
 };

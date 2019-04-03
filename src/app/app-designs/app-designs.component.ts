@@ -22,7 +22,8 @@ import {
 } from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {AppState} from '../store/app.reducers';
-import {MatDialog, MatDialogConfig, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {Observable, Subscription} from 'rxjs';
 
 import {DesignRequest} from './types';
 import {DeleteDesignComponent} from './components/delete-design/delete-design.component';
@@ -32,12 +33,11 @@ import {Router} from '@angular/router';
 import {selectNotNull} from '../framework-extensions';
 import {SelectionModel} from '@angular/cdk/collections';
 import {getSelectedCard} from '../app-interactive-map/store/interactive-map.selectors';
-import {isLoading} from '../app-interactive-map/components/loader/store/loader.selectors';
 import {LoaderComponent} from '../app-interactive-map/components/loader/loader.component';
-import {ModalErrorComponent} from '../app-interactive-map/components/modal-error/modal-error.component';
 import {getModelName, getOrganismName} from '../store/shared.selectors';
 import {DesignsDetailRowDirective} from './app-designs-row-detail.directive';
-import {Observable, Subscription} from 'rxjs';
+import {dialogConfig} from '../utils';
+import {Loading, LoadingFinished} from '../app-interactive-map/components/loader/store/loader.actions';
 
 @Component({
   selector: 'app-designs',
@@ -50,8 +50,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
 
   private cardAdded = false;
   private lastDesign: DesignRequest;
-  private loadingObservable;
-  private errorObservable;
   public designs: Subscription;
   public cardsSubscription: Subscription;
 
@@ -62,6 +60,8 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   public showAllAddedReactions = false;
   public showAllKnockedOutReactions = false;
   public showAllGenes = false;
+  public loadingObservable: Subscription;
+  public dialogRef;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -82,7 +82,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {
-    this.subscribeObservableLoading();
   }
 
   ngOnInit(): void {
@@ -113,6 +112,17 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
 
     this.collapseClicked.subscribe((value) => {
       this.expandedId = value ? value.id : null;
+    });
+    this.loadingObservable = this.store.pipe(select((store) => store.loader.loading)).subscribe((loading: boolean) => {
+      if (loading) {
+        setTimeout(() => {
+          this.dialogRef = this.dialog.open(LoaderComponent, dialogConfig);
+        }, 0);
+      } else {
+        if (this.dialogRef) {
+          this.dialogRef.close();
+        }
+      }
     });
   }
 
@@ -157,7 +167,7 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   }
 
   addCards(): void {
-    this.subscribeObservableLoading();
+    this.store.dispatch(new Loading());
     const selectedCard = this.store.pipe(
       selectNotNull(getSelectedCard),
     );
@@ -171,12 +181,14 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
             }
             while (this.design && this.selection.selected.length > 0);
             if (this.design) {
+              this.store.dispatch(new LoadingFinished());
               this.router.navigateByUrl('/interactiveMap');
             } else {
               this.store.dispatch(new AddCard(CardType.Design, this.lastDesign));
               this.cardAdded = true;
             }
           } else {
+            this.store.dispatch(new LoadingFinished());
             this.router.navigateByUrl('/interactiveMap');
           }
         }
@@ -199,46 +211,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
     }
   }
 
-  public subscribeObservableLoading(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loading';
-
-    const dialogConfigError = new MatDialogConfig();
-    dialogConfigError.disableClose = true;
-    dialogConfigError.autoFocus = true;
-    dialogConfigError.panelClass = 'loader';
-    dialogConfigError.id = 'error';
-
-    let error = false;
-
-    this.loadingObservable = this.store.pipe(
-      select(isLoading),
-    ).subscribe((loading) => {
-      if (loading) {
-        // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
-        // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
-        // setTimeout(() => ...., 0);
-        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
-          setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
-        }
-      } else {
-        this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
-          if (loadingError && !error) {
-            setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
-            error = true;
-          } else {
-            this.dialog.closeAll();
-            error = false;
-
-          }
-        });
-      }
-    });
-  }
-
   /** Whether the number of selected elements matches the total number of rows. */
   public isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
@@ -256,11 +228,6 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.designs.unsubscribe();
     this.cardsSubscription.unsubscribe();
-    if (this.loadingObservable) {
-      this.loadingObservable.unsubscribe();
-    }
-    if (this.errorObservable) {
-      this.errorObservable.unsubscribe();
-    }
+    this.loadingObservable.unsubscribe();
   }
 }

@@ -60,6 +60,7 @@ export const CHANGE_SELECTED_MODEL = 'CHANGE_SELECTED_MODEL';
 export const SET_SELECTED_MODEL = 'SET_SELECTED_MODEL';
 export const UPDATE_SOLUTION = 'UPDATE_SOLUTION';
 export const DROP = 'DROP';
+export const SHOW_PROGRESS_BAR = 'SHOW_PROGRESS_BAR';
 
 export class SetSelectedSpecies implements Action {
   readonly type = SET_SELECTED_SPECIES;
@@ -234,6 +235,10 @@ export class Drop implements Action {
   constructor(public payload: types.HydratedCard[]) {}
 }
 
+export class ShowProgressBar implements Action {
+  readonly type = SHOW_PROGRESS_BAR;
+}
+
 export type OperationAction = SetObjectiveReaction | ReactionOperation;
 export type InteractiveMapActions =
   SetSelectedSpecies |
@@ -265,4 +270,5 @@ export type InteractiveMapActions =
   SetModelDataDriven |
   UpdateSolution |
   SetMap |
-  Drop;
+  Drop |
+  ShowProgressBar;

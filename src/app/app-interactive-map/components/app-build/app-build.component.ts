@@ -23,7 +23,7 @@ import {
 } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 
-import {MatButton, MatDialog, MatDialogConfig, MatSelect, MatSelectChange} from '@angular/material';
+import {MatButton, MatDialog, MatSelect, MatSelectChange} from '@angular/material';
 import {Store, select} from '@ngrx/store';
 import {Observable, fromEvent} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
@@ -39,7 +39,10 @@ import {
   SaveDesign,
   SetMap,
   SetOperations,
-  SetMethod, RenameCard, Drop,
+  SetMethod,
+  RenameCard,
+  Drop,
+  ShowProgressBar,
 } from '../../store/interactive-map.actions';
 import * as fromInteractiveMapSelectors from '../../store/interactive-map.selectors';
 
@@ -55,7 +58,6 @@ import Operation = DeCaF.Operation;
 import {mapItemsByModel} from '../../store/interactive-map.selectors';
 import * as types from '../../types';
 import {ModelService} from '../../../services/model.service';
-import {LoaderComponent} from '../loader/loader.component';
 import {DesignRequest} from '../../../app-designs/types';
 import {WarningSaveComponent} from './components/warning-save/warning-save.component';
 import {SessionState} from './../../../session/store/session.reducers';
@@ -254,7 +256,7 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
   }
 
   public conditionChanged(event: Condition): void {
-    this.openDialog();
+    this.store.dispatch(new ShowProgressBar());
     this.http.get(`${environment.apis.warehouse}/conditions/${event.id}/data`).subscribe((condition: DataResponse) => {
       this.http.post(`${environment.apis.model}/models/${this.selectedCard.model_id}/modify`, condition).subscribe((operations: Operation[]) => {
         this.condition = event;
@@ -284,18 +286,6 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       }
       this.editeName = null;
       this.cdr.detectChanges();
-    }
-  }
-
-  public openDialog(): void {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loading';
-    dialogConfig.data = 'Calculating flux distribution...';
-    if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
-      this.dialog.open(LoaderComponent, dialogConfig);
     }
   }
 

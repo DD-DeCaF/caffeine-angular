@@ -45,8 +45,6 @@ import * as loaderActions from '../components/loader/store/loader.actions';
 import {DesignService} from '../../services/design.service';
 import {NinjaService} from './../../services/ninja-service';
 import Model = DeCaF.Model;
-import {RESET_REMOVED_MODEL_MODELS} from './../../app-models/store/models.actions';
-import {RESET_REMOVED_MAP} from './../../app-maps/store/maps.actions';
 
 
 const ACTION_OFFSETS = {
@@ -415,15 +413,13 @@ export class InteractiveMapEffects {
 
   @Effect()
   loadingRequest: Observable<Action> = this.actions$.pipe(
-    ofType(sharedActions.FETCH_SPECIES, sharedActions.FETCH_MODELS, sharedActions.FETCH_MAPS, fromActions.ADD_CARD,
-      sharedActions.FETCH_DESIGNS),
+    ofType(sharedActions.FETCH_JOBS, sharedActions.FETCH_DESIGNS),
     mapTo(new loaderActions.Loading()),
   );
 
   @Effect()
-  loadingFinishedRequest: Observable<Action> = this.actions$.pipe(
-    ofType(fromActions.LOADED, fromActions.UPDATE_SOLUTION, sharedActions.SET_DESIGNS,
-      RESET_REMOVED_MODEL_MODELS, RESET_REMOVED_MAP, fromActions.ADD_CARD_FETCHED),
+  loadingRequestFinished: Observable<Action> = this.actions$.pipe(
+    ofType(sharedActions.SET_JOBS, sharedActions.SET_DESIGNS),
     mapTo(new loaderActions.LoadingFinished()),
   );
 

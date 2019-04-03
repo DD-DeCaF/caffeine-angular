@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy, NgZone, ChangeDetectionStrategy} from '@angular/core';
+import {Component, AfterViewInit, ElementRef, OnInit, OnDestroy, ChangeDetectionStrategy} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {select as d3Select} from 'd3';
 import * as escher from '@dd-decaf/escher';
@@ -30,16 +30,14 @@ import {
 import escherSettingsConst from './escherSettings';
 import * as fromActions from './store/interactive-map.actions';
 import {getSelectedCard} from './store/interactive-map.selectors';
-import {MatDialog, MatDialogConfig, MatSnackBar} from '@angular/material';
-import {LoaderComponent} from './components/loader/loader.component';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {_mapValues, objectFilter} from '../utils';
 import {AppState} from '../store/app.reducers';
 import {selectNotNull} from '../framework-extensions';
 import {combineLatest, Observable, Subject} from 'rxjs';
-import {ModalErrorComponent} from './components/modal-error/modal-error.component';
 import {PathwayMap} from '@dd-decaf/escher';
 import {withLatestFrom} from 'rxjs/operators';
-import {Loaded, SetMap} from './store/interactive-map.actions';
+import {SetMap} from './store/interactive-map.actions';
 import {ErrorMsgComponent} from './components/app-reaction/components/error-msg/error-msg.component';
 
 const fluxFilter = objectFilter((key, value) => Math.abs(value) > 1e-7);
@@ -58,18 +56,14 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
   private builder: escher.BuilderObject = null;
   private builderSubject = new Subject<escher.BuilderObject>();
   public map: escher.PathwayMap;
-  public loading = true;
   private card: Card;
   private selectedCard;
   private selectedCardBuilder;
   private mapObservable;
   private updateReactions;
-  private loadingObservable;
-  private errorObservable;
   private cardSelected;
   public progressBar: Observable<boolean>;
   public action: Observable<string>;
-
   public isMobile: boolean;
 
   readonly escherSettings = {
@@ -102,7 +96,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     private elRef: ElementRef,
     private store: Store<AppState>,
     private dialog: MatDialog,
-    private ngZoneService: NgZone,
     public snackBar: MatSnackBar,
   ) {
     this.isMobile = window.innerWidth <= MOBILE_MAX_WIDTH;
@@ -138,47 +131,10 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       this.selectedCard,
       builderObservable,
     ).subscribe(([card, builder]: [Card, escher.BuilderObject]) => {
-      this.loading = true;
       this.card = card;
       this.updateBuilder(builder, card);
-      this.loading = false;
     });
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.panelClass = 'loader';
-    dialogConfig.id = 'loading';
-    dialogConfig.data = 'Calculating flux distribution...';
-
-    const dialogConfigError = new MatDialogConfig();
-    dialogConfigError.disableClose = true;
-    dialogConfigError.autoFocus = true;
-    dialogConfigError.panelClass = 'loader';
-    dialogConfigError.id = 'error';
-
-    let error = false;
-
-    this.loadingObservable = this.store.pipe(select((store) => store.loader.loading)).subscribe((loading) => {
-      if (loading) {
-        // opening the dialog throws ExpressionChangedAfterItHasBeenCheckedError
-        // See https://github.com/angular/material2/issues/5268#issuecomment-416686390
-        // setTimeout(() => ...., 0);
-        if (!this.dialog.openDialogs.find((dialog) => dialog.id === 'loading')) {
-          setTimeout(() => this.dialog.open(LoaderComponent, dialogConfig), 0);
-        }
-      } else {
-        this.errorObservable = this.store.pipe(select((store) => store.loader.loadingError)).subscribe((loadingError) => {
-          if (loadingError && !error) {
-            setTimeout(() => this.dialog.open(ModalErrorComponent, dialogConfigError), 0);
-            error = true;
-          } else {
-            setTimeout(() => this.closeDialogs(), 0);
-            error = false;
-          }
-        });
-      }
-    });
 
     this.progressBar = this.store.pipe(select((store) => store.interactiveMap.progressBar));
     this.store.pipe(select((store) => store.interactiveMap.action)).subscribe(
@@ -324,14 +280,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     this.builderSubject.next(this.builder);
   }
 
-  public closeDialogs(): void {
-    this.ngZoneService.runOutsideAngular(() => {
-      this.ngZoneService.run(() => {
-        this.dialog.closeAll();
-      });
-    });
-  }
-
   private updateBuilder(builder: escher.BuilderObject, card: Card): void {
     if (card.type === CardType.DataDriven) {
       if (!card.solutionUpdated) {
@@ -349,8 +297,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
           builder.set_reaction_fva_data(card.solution.flux_distribution);
           builder.set_reaction_data(fluxFilter(card.solution.flux_distribution));
         }
-        this.closeDialogs();
-        this.store.dispatch(new Loaded());
       }
       builder.set_added_reactions(card.addedReactions
         .filter((reaction) => !reaction.bigg_id.startsWith('DM_'))
@@ -378,7 +324,6 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
       builder.set_knockout_reactions(card.knockoutReactions);
       builder.set_knockout_genes(card.knockoutGenes);
       builder._update_data(true, true);
-      this.store.dispatch(new Loaded());
     }
   }
 
@@ -390,9 +335,5 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
     });
     this.mapObservable.unsubscribe();
     this.updateReactions.unsubscribe();
-    this.loadingObservable.unsubscribe();
-    if (this.errorObservable) {
-      this.errorObservable.unsubscribe();
-    }
   }
 }

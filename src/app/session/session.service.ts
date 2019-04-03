@@ -152,9 +152,6 @@ export class SessionService {
     localStorage.removeItem(REFRESH_TOKEN);
     this.store.dispatch(new sharedActions.FetchMaps());
     this.store.dispatch(new sharedActions.FetchModels());
-    this.store.dispatch(new sharedActions.FetchProjects());
-    this.store.dispatch(new sharedActions.FetchJobs());
-    this.store.dispatch(new sharedActions.FetchDesigns());
     this.store.dispatch(new Logout());
   }
 
