@@ -27,6 +27,8 @@ import {StoreModule} from '@ngrx/store';
 import {SessionService} from './session.service';
 import {reducers} from '../store/app.reducers';
 import {environment} from '../../environments/environment';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
 const UNTRUSTED_URL = 'https://foobar.com/';
 
@@ -52,9 +54,14 @@ describe(`SessionInterceptor`, () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
+        RouterTestingModule,
         StoreModule.forRoot(reducers),
       ],
       providers: [
+        { 
+          provide: Router, 
+          useClass: class { navigate = jasmine.createSpy("navigate"); }
+        },
         MockDataService,
         {
           provide: HTTP_INTERCEPTORS,

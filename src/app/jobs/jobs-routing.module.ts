@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {Route} from '@angular/router';
+import { Route } from '@angular/router';
 import { JobListComponent } from './components/job-list/job-list.component';
 import { JobDetailComponent } from './components/job-detail/job-detail.component';
 import { JobsComponent } from './jobs.component';

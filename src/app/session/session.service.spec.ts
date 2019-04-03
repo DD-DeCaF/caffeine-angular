@@ -15,6 +15,7 @@
 import { TestBed, getTestBed, inject, async } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 
 import { SessionService } from './session.service';
@@ -46,6 +47,7 @@ describe('SessionService', () => {
       imports: [
         AppModule,
         HttpClientTestingModule,
+        RouterTestingModule,
         StoreModule.forRoot(reducers)],
       providers: [
         SessionService,

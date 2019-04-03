@@ -22,6 +22,7 @@ import {AppMaterialModule} from '../app-material.module';
 import {AppToolbarComponent} from './app-toolbar.component';
 import {reducers} from '../store/app.reducers';
 import {SessionService} from '../session/session.service';
+import { Router } from '@angular/router';
 
 describe('AppToolbarComponent', () => {
   let component: AppToolbarComponent;
@@ -37,6 +38,10 @@ describe('AppToolbarComponent', () => {
       ],
       declarations: [AppToolbarComponent],
       providers: [
+        { 
+          provide: Router, 
+          useClass: class { navigate = jasmine.createSpy("navigate"); }
+        },
         SessionService,
         HttpClient,
       ],
