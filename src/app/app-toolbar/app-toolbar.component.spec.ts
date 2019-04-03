@@ -38,9 +38,9 @@ describe('AppToolbarComponent', () => {
       ],
       declarations: [AppToolbarComponent],
       providers: [
-        { 
-          provide: Router, 
-          useClass: class { navigate = jasmine.createSpy("navigate"); }
+        {
+          provide: Router,
+          useClass: class { navigate = jasmine.createSpy('navigate'); },
         },
         SessionService,
         HttpClient,

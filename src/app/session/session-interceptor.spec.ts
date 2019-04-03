@@ -58,9 +58,9 @@ describe(`SessionInterceptor`, () => {
         StoreModule.forRoot(reducers),
       ],
       providers: [
-        { 
-          provide: Router, 
-          useClass: class { navigate = jasmine.createSpy("navigate"); }
+        {
+          provide: Router,
+          useClass: class { navigate = jasmine.createSpy('navigate'); },
         },
         MockDataService,
         {
