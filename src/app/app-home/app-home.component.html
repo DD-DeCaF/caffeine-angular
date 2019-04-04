@@ -118,9 +118,20 @@
           <mat-icon mat-list-icon>rounded_corner</mat-icon>
           <p matLine>Models</p>
         </mat-list-item>
+
+        <mat-list-item *ngIf="(sessionState | async).authenticated"
+                      (click)="sidenavMode === 'over' ? sidenav.toggle() : ''" routerLink="/experiments"
+                      [routerLinkActive]="['highlight']">
+          <mat-icon mat-list-icon>highlight</mat-icon>
+          <p matLine>Experiments</p>
+        </mat-list-item>
+
+        <mat-list-item *ngIf="!(sessionState | async).authenticated"
+                      matTooltip="Please log in or register to use this functionality!" class="disabled">
+          <mat-icon mat-list-icon>highlight</mat-icon>
+          <p matLine>Experiments</p>
+        </mat-list-item>
       </mat-nav-list>
-
-
     </mat-sidenav>
 
     <mat-sidenav-content fxFlex class="content">

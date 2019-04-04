@@ -26,6 +26,7 @@ import {AppModelsComponent} from './app-models/app-models.component';
 import {AppMapsComponent} from './app-maps/app-maps.component';
 import {AppDesignsComponent} from './app-designs/app-designs.component';
 import { AuthGuard } from './auth-guard.service';
+import { ExperimentsComponent } from './experiments/experiments.component';
 
 
 const appRoutes: Route[] = [
@@ -63,6 +64,11 @@ const appRoutes: Route[] = [
       {
         path: 'designs',
         component: AppDesignsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'experiments',
+        component: ExperimentsComponent,
         canActivate: [AuthGuard],
       },
       {

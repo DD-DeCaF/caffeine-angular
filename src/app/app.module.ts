@@ -75,6 +75,7 @@ import {MapsEffects} from './app-maps/store/maps.effects';
 import {DesignService} from './services/design.service';
 import {AppDesignsModule} from './app-designs/app-designs.module';
 import {VersionCheckService} from './services/version-check.service';
+import { ExperimentsModule } from './experiments/experiments.module';
 
 
 if (environment.sentry) {
@@ -127,6 +128,7 @@ export class RavenErrorHandler implements ErrorHandler {
     ProjectsModule,
     AppMapsModule,
     AppDesignsModule,
+    ExperimentsModule,
 
     // NgRX imports
     StoreModule.forRoot(reducers),
