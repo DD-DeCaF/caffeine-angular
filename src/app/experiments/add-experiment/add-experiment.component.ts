@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-add-experiment',
   templateUrl: './add-experiment.component.html',
-  styleUrls: ['./add-experiment.component.scss']
+  styleUrls: ['./add-experiment.component.scss'],
 })
 export class AddExperimentComponent {
 

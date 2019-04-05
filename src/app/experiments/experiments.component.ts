@@ -19,7 +19,7 @@ import { AddExperimentComponent } from './add-experiment/add-experiment.componen
 @Component({
   selector: 'app-experiments',
   templateUrl: './experiments.component.html',
-  styleUrls: ['./experiments.component.scss']
+  styleUrls: ['./experiments.component.scss'],
 })
 export class ExperimentsComponent {
 
@@ -27,11 +27,11 @@ export class ExperimentsComponent {
     private dialog: MatDialog,
   ) { }
 
-  addExperiment() {
+  addExperiment(): void {
     this.dialog.open(AddExperimentComponent, {
       height: '700px',
       width: '1000px',
-      panelClass: 'dnd-dialog-container'
+      panelClass: 'dnd-dialog-container',
     });
   }
 
