@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
 import {select, Store} from '@ngrx/store';
 
@@ -23,8 +23,6 @@ import {Subscription} from 'rxjs';
   selector: 'app-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-
 })
 export class LoaderComponent implements OnInit, OnDestroy {
 
@@ -36,11 +34,13 @@ export class LoaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadingSubscription = this.store.pipe(select((store) => store.loader.loading)).subscribe((loading) => {
-      if (!loading) {
-        setTimeout(() => {
-          this.dialogRef.close();
-        }, 0);
+    this.loadingSubscription = this.store.pipe(select((store) => store.session.authenticated)).subscribe((authenticated) => {
+      if (!authenticated) {
+        if (this.dialogRef) {
+          setTimeout(() => {
+            this.dialogRef.close();
+          }, 0);
+        }
       }
     });
   }

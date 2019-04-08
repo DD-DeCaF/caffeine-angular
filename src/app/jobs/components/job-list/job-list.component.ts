@@ -74,7 +74,9 @@ export class JobListComponent implements OnInit, OnDestroy {
               this.polling.unsubscribe();
             }
             this.dataSource.data = jobs;
-            this.cdr.detectChanges();
+            if (!this.cdr['destroyed']) {
+              this.cdr.detectChanges();
+            }
           });
       });
     this.dataSource.sort = this.sort;

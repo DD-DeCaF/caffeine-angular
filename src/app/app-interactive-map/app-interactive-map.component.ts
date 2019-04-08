@@ -321,6 +321,7 @@ export class AppInteractiveMapComponent implements OnInit, AfterViewInit, OnDest
         .filter((reaction) => !reaction.bigg_id.startsWith('DM_'))
         .map((reaction) => reaction.bigg_id),
       );
+      builder.set_highlight_reactions(card.measurements.map((m) => m.id));
       builder.set_knockout_reactions(card.knockoutReactions);
       builder.set_knockout_genes(card.knockoutGenes);
       builder._update_data(true, true);
