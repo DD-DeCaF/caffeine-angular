@@ -34,13 +34,11 @@ export class LoaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadingSubscription = this.store.pipe(select((store) => store.session.authenticated)).subscribe((authenticated) => {
-      if (!authenticated) {
-        if (this.dialogRef) {
-          setTimeout(() => {
-            this.dialogRef.close();
-          }, 0);
-        }
+    this.loadingSubscription = this.store.pipe(select((store) => store.loader.loading)).subscribe((loading) => {
+      if (!loading) {
+        setTimeout(() => {
+          this.dialogRef.close();
+        }, 0);
       }
     });
   }
