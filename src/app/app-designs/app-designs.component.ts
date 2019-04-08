@@ -87,12 +87,16 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.designs = this.store.pipe(select((store) => store.shared.designs)).subscribe((designs) => {
       this.dataSource.data = designs;
-      this.cdr.detectChanges();
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
     this.cardsSubscription = this.store.pipe(select((store) =>
       store.interactiveMap.cards.cardsById)).subscribe((cards) => {
       this.cards = cards;
-      this.cdr.detectChanges();
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -120,7 +124,9 @@ export class AppDesignsComponent implements OnInit, OnDestroy {
         }, 0);
       } else {
         if (this.dialogRef) {
-          this.dialogRef.close();
+          setTimeout(() => {
+            this.dialogRef.close();
+          }, 0);
         }
       }
     });

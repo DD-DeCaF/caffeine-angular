@@ -65,7 +65,9 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           select(getModelName(job.model_id)));
         this.organismName$ = this.store.pipe(
           select(getOrganismName(job.organism_id)));
-        this.cdr.detectChanges();
+        if (!this.cdr['destroyed']) {
+          this.cdr.detectChanges();
+        }
       });
 
     this.polling = timer(0, 20000)
@@ -80,7 +82,9 @@ export class JobDetailComponent implements OnInit, OnDestroy {
           } else if (jobPrediction.status === 'FAILURE') {
             this.polling.unsubscribe();
           }
-          this.cdr.detectChanges();
+          if (!this.cdr['destroyed']) {
+            this.cdr.detectChanges();
+          }
         });
       });
   }

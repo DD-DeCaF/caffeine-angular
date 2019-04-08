@@ -159,7 +159,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       });
     this.store.pipe(select(fromInteractiveMapSelectors.getHydratedCards)).subscribe((cards) => {
       this.cards = cards;
-      this.cdr.detectChanges();
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
   }
 
@@ -275,7 +277,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new RenameCard(this.name.nativeElement.value));
     }
     this.editeName = null;
-    this.cdr.detectChanges();
+    if (!this.cdr['destroyed']) {
+      this.cdr.detectChanges();
+    }
   }
 
   // tslint:disable-next-line:no-any
@@ -285,7 +289,9 @@ export class AppBuildComponent implements OnInit, AfterViewInit {
         this.store.dispatch(new RenameCard(this.name.nativeElement.value));
       }
       this.editeName = null;
-      this.cdr.detectChanges();
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     }
   }
 

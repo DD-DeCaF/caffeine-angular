@@ -42,7 +42,9 @@ export class JobsComponent implements OnInit, OnDestroy {
         }, 0);
       } else {
         if (this.dialogRef) {
-          this.dialogRef.close();
+          setTimeout(() => {
+            this.dialogRef.close();
+          }, 0);
         }
       }
     });

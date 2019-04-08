@@ -90,7 +90,9 @@ export class EditModelComponent implements OnInit, OnDestroy {
           });
           this.loading = of(false);
       }
-      this.cdr.detectChanges();
+      if (!this.cdr['destroyed']) {
+        this.cdr.detectChanges();
+      }
     });
 
     this.modelHeadersSubscription = this.store.pipe(select((store) => store.shared.modelHeaders)).subscribe(() => {
