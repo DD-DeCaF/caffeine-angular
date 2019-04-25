@@ -126,7 +126,7 @@ export class AddMapComponent implements OnInit, OnDestroy {
           });
           this.store.dispatch(new actions.FetchProjects());
           this.addMapForm.patchValue({
-            project_id: p.project_id,
+            project_id: p.id,
           });
         },
       ),

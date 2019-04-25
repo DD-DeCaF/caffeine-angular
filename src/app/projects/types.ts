@@ -18,5 +18,5 @@ export interface Project {
 }
 
 export interface NewProjectResponse {
-  project_id: number;
+  id: number;
 }

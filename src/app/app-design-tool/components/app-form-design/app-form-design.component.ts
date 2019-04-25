@@ -165,7 +165,7 @@ export class AppFormDesignComponent implements OnInit, AfterViewInit {
           });
           this.store.dispatch(new actions.FetchProjects());
           this.designForm.patchValue({
-            project_id: p.project_id,
+            project_id: p.id,
           });
         },
       ),
