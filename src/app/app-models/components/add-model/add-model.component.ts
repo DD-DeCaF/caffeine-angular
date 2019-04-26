@@ -168,11 +168,11 @@ export class AddModelComponent implements OnInit, OnDestroy {
           this.store.dispatch(new actions.FetchProjects());
           if (this.addModelForm.value.project_id === 'add') {
             this.addModelForm.patchValue({
-              project_id: p.project_id,
+              project_id: p.id,
             });
           } else if (this.addOrganismForm.value.project_id === 'add') {
             this.addOrganismForm.patchValue({
-              project_id: p.project_id,
+              project_id: p.id,
             });
           }
         },
