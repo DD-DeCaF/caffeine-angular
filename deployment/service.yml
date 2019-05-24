@@ -1,12 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: caffeine-staging
+  name: caffeine-angular
   annotations:
     prometheus.io/probe: "true"
 spec:
   selector:
-    app: caffeine
+    app: caffeine-angular
     env: staging
   ports:
   - name: web

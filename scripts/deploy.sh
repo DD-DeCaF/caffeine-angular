@@ -17,7 +17,7 @@
 set -xeu
 
 if [ "${TRAVIS_BRANCH}" = "devel" ]; then
-  DEPLOYMENT=caffeine-staging
+  DEPLOYMENT=caffeine-angular
 else
   echo "Skipping deployment for branch ${TRAVIS_BRANCH}"
   exit 0

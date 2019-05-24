@@ -1,19 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: caffeine-staging
+  name: caffeine-angular
   annotations:
     kubernetes.io/ingress.class: "nginx"
 spec:
   tls:
   - hosts:
-    - caffeine.dd-decaf.eu
+    - previous.dd-decaf.eu
     secretName: decaf-tls
   rules:
-  - host: caffeine.dd-decaf.eu
+  - host: previous.dd-decaf.eu
     http:
       paths:
       - path: /
         backend:
-          serviceName: caffeine-staging
+          serviceName: caffeine-angular
           servicePort: 80

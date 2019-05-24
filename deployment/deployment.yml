@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: caffeine-staging
+  name: caffeine-angular
 spec:
   selector:
     matchLabels:
-      app: caffeine
+      app: caffeine-angular
       env: staging
   replicas: 1
   template:
     metadata:
       labels:
-        app: caffeine
+        app: caffeine-angular
         env: staging
     spec:
       containers:
