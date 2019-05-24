@@ -44,7 +44,7 @@ script:
   - ./scripts/verify_license_headers.sh src
   - ./scripts/build.sh
   - node ./scripts/post-build.js
-  - ./scripts/push_sentry_sourcemaps.sh
+#  - ./scripts/push_sentry_sourcemaps.sh
 
 before_deploy:
   - ./scripts/install_gcloud.sh
